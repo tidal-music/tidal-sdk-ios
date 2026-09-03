@@ -39,37 +39,61 @@ public enum UserPlaybackStatesAPITidal {
 
 
 	/**
-     Delete from installations relationship (\&quot;to-many\&quot;).
+     Get activePlayer relationship (\&quot;to-one\&quot;).
+     
+     - returns: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument
+     */
+	public static func userPlaybackStatesIdRelationshipsActivePlayerGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesActivePlayerSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsActivePlayerGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Update activePlayer relationship (\&quot;to-one\&quot;).
+     
+     - returns: UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument
+     */
+	public static func userPlaybackStatesIdRelationshipsActivePlayerPatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload? = nil) async throws -> UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsActivePlayerPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Delete from availablePlayers relationship (\&quot;to-many\&quot;).
      
      - returns: MutationResponseDocument
      */
-	public static func userPlaybackStatesIdRelationshipsInstallationsDelete(id: String, idempotencyKey: String? = nil, userPlaybackStatesInstallationsRelationshipRemoveOperationPayload: UserPlaybackStatesInstallationsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func userPlaybackStatesIdRelationshipsAvailablePlayersDelete(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsInstallationsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesInstallationsRelationshipRemoveOperationPayload: userPlaybackStatesInstallationsRelationshipRemoveOperationPayload)
+			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload)
 		}
 	}
 
 
 	/**
-     Get installations relationship (\&quot;to-many\&quot;).
+     Get availablePlayers relationship (\&quot;to-many\&quot;).
      
-     - returns: UserPlaybackStatesInstallationsMultiRelationshipDataDocument
+     - returns: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument
      */
-	public static func userPlaybackStatesIdRelationshipsInstallationsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesInstallationsMultiRelationshipDataDocument {
+	public static func userPlaybackStatesIdRelationshipsAvailablePlayersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsInstallationsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
 
 	/**
-     Add to installations relationship (\&quot;to-many\&quot;).
+     Add to availablePlayers relationship (\&quot;to-many\&quot;).
      
-     - returns: UserPlaybackStatesInstallationsAddMultiRelationshipDataDocument
+     - returns: UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument
      */
-	public static func userPlaybackStatesIdRelationshipsInstallationsPost(id: String, idempotencyKey: String? = nil, userPlaybackStatesInstallationsRelationshipAddOperationPayload: UserPlaybackStatesInstallationsRelationshipAddOperationPayload? = nil) async throws -> UserPlaybackStatesInstallationsAddMultiRelationshipDataDocument {
+	public static func userPlaybackStatesIdRelationshipsAvailablePlayersPost(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload? = nil) async throws -> UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsInstallationsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesInstallationsRelationshipAddOperationPayload: userPlaybackStatesInstallationsRelationshipAddOperationPayload)
+			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload)
 		}
 	}
 
@@ -94,30 +118,6 @@ public enum UserPlaybackStatesAPITidal {
 	public static func userPlaybackStatesIdRelationshipsPlayQueuePatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload: UserPlaybackStatesPlayQueueRelationshipUpdateOperationPayload? = nil) async throws -> UserPlaybackStatesPlayQueueUpdateSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsPlayQueuePatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload: userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload)
-		}
-	}
-
-
-	/**
-     Get player relationship (\&quot;to-one\&quot;).
-     
-     - returns: UserPlaybackStatesPlayerSingleRelationshipDataDocument
-     */
-	public static func userPlaybackStatesIdRelationshipsPlayerGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesPlayerSingleRelationshipDataDocument {
-		return try await RequestHelper.createRequest {
-			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsPlayerGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
-		}
-	}
-
-
-	/**
-     Update player relationship (\&quot;to-one\&quot;).
-     
-     - returns: UserPlaybackStatesPlayerUpdateSingleRelationshipDataDocument
-     */
-	public static func userPlaybackStatesIdRelationshipsPlayerPatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesPlayerRelationshipUpdateOperationPayload: UserPlaybackStatesPlayerRelationshipUpdateOperationPayload? = nil) async throws -> UserPlaybackStatesPlayerUpdateSingleRelationshipDataDocument {
-		return try await RequestHelper.createRequest {
-			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsPlayerPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesPlayerRelationshipUpdateOperationPayload: userPlaybackStatesPlayerRelationshipUpdateOperationPayload)
 		}
 	}
 }

@@ -12,32 +12,32 @@ import AnyCodable
 
 public struct UserPlaybackStatesRelationships: Codable, Hashable {
 
-    public var installations: UserPlaybackStatesInstallationsMultiRelationshipDataDocument?
+    public var activePlayer: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument?
+    public var availablePlayers: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument?
     public var playQueue: UserPlaybackStatesPlayQueueSingleRelationshipDataDocument?
-    public var player: UserPlaybackStatesPlayerSingleRelationshipDataDocument?
 
     public init(
-        installations: UserPlaybackStatesInstallationsMultiRelationshipDataDocument? = nil,
-        playQueue: UserPlaybackStatesPlayQueueSingleRelationshipDataDocument? = nil,
-        player: UserPlaybackStatesPlayerSingleRelationshipDataDocument? = nil
+        activePlayer: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument? = nil,
+        availablePlayers: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument? = nil,
+        playQueue: UserPlaybackStatesPlayQueueSingleRelationshipDataDocument? = nil
     ) {
-        self.installations = installations
+        self.activePlayer = activePlayer
+        self.availablePlayers = availablePlayers
         self.playQueue = playQueue
-        self.player = player
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case installations
+        case activePlayer
+        case availablePlayers
         case playQueue
-        case player
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(installations, forKey: .installations)
+        try container.encodeIfPresent(activePlayer, forKey: .activePlayer)
+        try container.encodeIfPresent(availablePlayers, forKey: .availablePlayers)
         try container.encodeIfPresent(playQueue, forKey: .playQueue)
-        try container.encodeIfPresent(player, forKey: .player)
     }
 }

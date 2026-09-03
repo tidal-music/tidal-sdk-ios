@@ -6,13 +6,13 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**userPlaybackStatesIdGet**](UserPlaybackStatesAPI.md#userplaybackstatesidget) | **GET** /userPlaybackStates/{id} | Get single userPlaybackState.
 [**userPlaybackStatesIdPatch**](UserPlaybackStatesAPI.md#userplaybackstatesidpatch) | **PATCH** /userPlaybackStates/{id} | Update single userPlaybackState.
-[**userPlaybackStatesIdRelationshipsInstallationsDelete**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsinstallationsdelete) | **DELETE** /userPlaybackStates/{id}/relationships/installations | Delete from installations relationship (\&quot;to-many\&quot;).
-[**userPlaybackStatesIdRelationshipsInstallationsGet**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsinstallationsget) | **GET** /userPlaybackStates/{id}/relationships/installations | Get installations relationship (\&quot;to-many\&quot;).
-[**userPlaybackStatesIdRelationshipsInstallationsPost**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsinstallationspost) | **POST** /userPlaybackStates/{id}/relationships/installations | Add to installations relationship (\&quot;to-many\&quot;).
+[**userPlaybackStatesIdRelationshipsActivePlayerGet**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsactiveplayerget) | **GET** /userPlaybackStates/{id}/relationships/activePlayer | Get activePlayer relationship (\&quot;to-one\&quot;).
+[**userPlaybackStatesIdRelationshipsActivePlayerPatch**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsactiveplayerpatch) | **PATCH** /userPlaybackStates/{id}/relationships/activePlayer | Update activePlayer relationship (\&quot;to-one\&quot;).
+[**userPlaybackStatesIdRelationshipsAvailablePlayersDelete**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsavailableplayersdelete) | **DELETE** /userPlaybackStates/{id}/relationships/availablePlayers | Delete from availablePlayers relationship (\&quot;to-many\&quot;).
+[**userPlaybackStatesIdRelationshipsAvailablePlayersGet**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsavailableplayersget) | **GET** /userPlaybackStates/{id}/relationships/availablePlayers | Get availablePlayers relationship (\&quot;to-many\&quot;).
+[**userPlaybackStatesIdRelationshipsAvailablePlayersPost**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsavailableplayerspost) | **POST** /userPlaybackStates/{id}/relationships/availablePlayers | Add to availablePlayers relationship (\&quot;to-many\&quot;).
 [**userPlaybackStatesIdRelationshipsPlayQueueGet**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsplayqueueget) | **GET** /userPlaybackStates/{id}/relationships/playQueue | Get playQueue relationship (\&quot;to-one\&quot;).
 [**userPlaybackStatesIdRelationshipsPlayQueuePatch**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsplayqueuepatch) | **PATCH** /userPlaybackStates/{id}/relationships/playQueue | Update playQueue relationship (\&quot;to-one\&quot;).
-[**userPlaybackStatesIdRelationshipsPlayerGet**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsplayerget) | **GET** /userPlaybackStates/{id}/relationships/player | Get player relationship (\&quot;to-one\&quot;).
-[**userPlaybackStatesIdRelationshipsPlayerPatch**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsplayerpatch) | **PATCH** /userPlaybackStates/{id}/relationships/player | Update player relationship (\&quot;to-one\&quot;).
 
 
 # **userPlaybackStatesIdGet**
@@ -30,8 +30,8 @@ Retrieves single userPlaybackState by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: installations, playQueue, player (optional)
-let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: installations.offlineInventory (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, playQueue (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: activePlayer.offlineInventory (optional)
 
 // Get single userPlaybackState.
 UserPlaybackStatesAPI.userPlaybackStatesIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
@@ -51,8 +51,8 @@ UserPlaybackStatesAPI.userPlaybackStatesIdGet(id: id, include: include, replaceM
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: installations, playQueue, player | [optional] 
- **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: installations.offlineInventory | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, playQueue | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory | [optional] 
 
 ### Return type
 
@@ -123,14 +123,68 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **userPlaybackStatesIdRelationshipsInstallationsDelete**
+# **userPlaybackStatesIdRelationshipsActivePlayerGet**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsInstallationsDelete(id: String, idempotencyKey: String? = nil, userPlaybackStatesInstallationsRelationshipRemoveOperationPayload: UserPlaybackStatesInstallationsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsActivePlayerGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
-Delete from installations relationship (\"to-many\").
+Get activePlayer relationship (\"to-one\").
 
-Deletes item(s) from installations relationship.
+Retrieves activePlayer relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: activePlayer (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: activePlayer.offlineInventory (optional)
+
+// Get activePlayer relationship (\"to-one\").
+UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsActivePlayerGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: activePlayer | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory | [optional] 
+
+### Return type
+
+[**UserPlaybackStatesActivePlayerSingleRelationshipDataDocument**](UserPlaybackStatesActivePlayerSingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **userPlaybackStatesIdRelationshipsActivePlayerPatch**
+```swift
+    open class func userPlaybackStatesIdRelationshipsActivePlayerPatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Update activePlayer relationship (\"to-one\").
+
+Updates activePlayer relationship.
 
 ### Example
 ```swift
@@ -139,10 +193,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let userPlaybackStatesInstallationsRelationshipRemoveOperationPayload = UserPlaybackStatesInstallationsRelationshipRemoveOperation_Payload(data: [UserPlaybackStatesInstallationsRelationshipOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserPlaybackStatesInstallationsRelationshipRemoveOperationPayload |  (optional)
+let userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload = UserPlaybackStatesActivePlayerRelationshipUpdateOperation_Payload(data: UserPlaybackStatesActivePlayerRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")) // UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload |  (optional)
 
-// Delete from installations relationship (\"to-many\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsInstallationsDelete(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesInstallationsRelationshipRemoveOperationPayload: userPlaybackStatesInstallationsRelationshipRemoveOperationPayload) { (response, error) in
+// Update activePlayer relationship (\"to-one\").
+UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsActivePlayerPatch(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -160,7 +214,61 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
- **userPlaybackStatesInstallationsRelationshipRemoveOperationPayload** | [**UserPlaybackStatesInstallationsRelationshipRemoveOperationPayload**](UserPlaybackStatesInstallationsRelationshipRemoveOperationPayload.md) |  | [optional] 
+ **userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload** | [**UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload**](UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+[**UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument**](UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **userPlaybackStatesIdRelationshipsAvailablePlayersDelete**
+```swift
+    open class func userPlaybackStatesIdRelationshipsAvailablePlayersDelete(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+```
+
+Delete from availablePlayers relationship (\"to-many\").
+
+Deletes item(s) from availablePlayers relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload = UserPlaybackStatesAvailablePlayersRelationshipRemoveOperation_Payload(data: [UserPlaybackStatesAvailablePlayersRelationshipOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload |  (optional)
+
+// Delete from availablePlayers relationship (\"to-many\").
+UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersDelete(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload** | [**UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload**](UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
 
@@ -177,14 +285,14 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **userPlaybackStatesIdRelationshipsInstallationsGet**
+# **userPlaybackStatesIdRelationshipsAvailablePlayersGet**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsInstallationsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserPlaybackStatesInstallationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsAvailablePlayersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get installations relationship (\"to-many\").
+Get availablePlayers relationship (\"to-many\").
 
-Retrieves installations relationship.
+Retrieves availablePlayers relationship.
 
 ### Example
 ```swift
@@ -192,12 +300,12 @@ Retrieves installations relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: installations (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: availablePlayers (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: installations.offlineInventory (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: availablePlayers.offlineInventory (optional)
 
-// Get installations relationship (\"to-many\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsInstallationsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+// Get availablePlayers relationship (\"to-many\").
+UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -214,13 +322,13 @@ UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsInstallationsGet(id: id, 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: installations | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: availablePlayers | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: installations.offlineInventory | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: availablePlayers.offlineInventory | [optional] 
 
 ### Return type
 
-[**UserPlaybackStatesInstallationsMultiRelationshipDataDocument**](UserPlaybackStatesInstallationsMultiRelationshipDataDocument.md)
+[**UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument**](UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -233,14 +341,14 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **userPlaybackStatesIdRelationshipsInstallationsPost**
+# **userPlaybackStatesIdRelationshipsAvailablePlayersPost**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsInstallationsPost(id: String, idempotencyKey: String? = nil, userPlaybackStatesInstallationsRelationshipAddOperationPayload: UserPlaybackStatesInstallationsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserPlaybackStatesInstallationsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsAvailablePlayersPost(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
-Add to installations relationship (\"to-many\").
+Add to availablePlayers relationship (\"to-many\").
 
-Adds item(s) to installations relationship.
+Adds item(s) to availablePlayers relationship.
 
 ### Example
 ```swift
@@ -249,10 +357,10 @@ import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let userPlaybackStatesInstallationsRelationshipAddOperationPayload = UserPlaybackStatesInstallationsRelationshipAddOperation_Payload(data: [UserPlaybackStatesInstallationsRelationshipOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserPlaybackStatesInstallationsRelationshipAddOperationPayload |  (optional)
+let userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload = UserPlaybackStatesAvailablePlayersRelationshipAddOperation_Payload(data: [UserPlaybackStatesAvailablePlayersRelationshipOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload |  (optional)
 
-// Add to installations relationship (\"to-many\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsInstallationsPost(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesInstallationsRelationshipAddOperationPayload: userPlaybackStatesInstallationsRelationshipAddOperationPayload) { (response, error) in
+// Add to availablePlayers relationship (\"to-many\").
+UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersPost(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -270,11 +378,11 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
- **userPlaybackStatesInstallationsRelationshipAddOperationPayload** | [**UserPlaybackStatesInstallationsRelationshipAddOperationPayload**](UserPlaybackStatesInstallationsRelationshipAddOperationPayload.md) |  | [optional] 
+ **userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload** | [**UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload**](UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
 
-[**UserPlaybackStatesInstallationsAddMultiRelationshipDataDocument**](UserPlaybackStatesInstallationsAddMultiRelationshipDataDocument.md)
+[**UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument**](UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -383,114 +491,6 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**UserPlaybackStatesPlayQueueUpdateSingleRelationshipDataDocument**](UserPlaybackStatesPlayQueueUpdateSingleRelationshipDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: application/vnd.api+json
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **userPlaybackStatesIdRelationshipsPlayerGet**
-```swift
-    open class func userPlaybackStatesIdRelationshipsPlayerGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserPlaybackStatesPlayerSingleRelationshipDataDocument?, _ error: Error?) -> Void)
-```
-
-Get player relationship (\"to-one\").
-
-Retrieves player relationship.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: player (optional)
-let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: player.offlineInventory (optional)
-
-// Get player relationship (\"to-one\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsPlayerGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: player | [optional] 
- **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: player.offlineInventory | [optional] 
-
-### Return type
-
-[**UserPlaybackStatesPlayerSingleRelationshipDataDocument**](UserPlaybackStatesPlayerSingleRelationshipDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **userPlaybackStatesIdRelationshipsPlayerPatch**
-```swift
-    open class func userPlaybackStatesIdRelationshipsPlayerPatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesPlayerRelationshipUpdateOperationPayload: UserPlaybackStatesPlayerRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: UserPlaybackStatesPlayerUpdateSingleRelationshipDataDocument?, _ error: Error?) -> Void)
-```
-
-Update player relationship (\"to-one\").
-
-Updates player relationship.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let userPlaybackStatesPlayerRelationshipUpdateOperationPayload = UserPlaybackStatesPlayerRelationshipUpdateOperation_Payload(data: UserPlaybackStatesPlayerRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")) // UserPlaybackStatesPlayerRelationshipUpdateOperationPayload |  (optional)
-
-// Update player relationship (\"to-one\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsPlayerPatch(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesPlayerRelationshipUpdateOperationPayload: userPlaybackStatesPlayerRelationshipUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
- **userPlaybackStatesPlayerRelationshipUpdateOperationPayload** | [**UserPlaybackStatesPlayerRelationshipUpdateOperationPayload**](UserPlaybackStatesPlayerRelationshipUpdateOperationPayload.md) |  | [optional] 
-
-### Return type
-
-[**UserPlaybackStatesPlayerUpdateSingleRelationshipDataDocument**](UserPlaybackStatesPlayerUpdateSingleRelationshipDataDocument.md)
 
 ### Authorization
 

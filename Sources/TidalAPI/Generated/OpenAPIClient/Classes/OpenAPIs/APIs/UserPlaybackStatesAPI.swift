@@ -16,8 +16,8 @@ internal class UserPlaybackStatesAPI {
      Get single userPlaybackState.
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: installations, playQueue, player (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: installations.offlineInventory (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, playQueue (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
      - returns: UserPlaybackStatesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -38,8 +38,8 @@ internal class UserPlaybackStatesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: installations, playQueue, player (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: installations.offlineInventory (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, playQueue (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
      - returns: RequestBuilder<UserPlaybackStatesSingleResourceDataDocument> 
      */
     internal class func userPlaybackStatesIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserPlaybackStatesSingleResourceDataDocument> {
@@ -120,17 +120,17 @@ internal class UserPlaybackStatesAPI {
     }
 
     /**
-     Delete from installations relationship (\"to-many\").
+     Get activePlayer relationship (\"to-one\").
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - parameter userPlaybackStatesInstallationsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: MutationResponseDocument
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
+     - returns: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userPlaybackStatesIdRelationshipsInstallationsDelete(id: String, idempotencyKey: String? = nil, userPlaybackStatesInstallationsRelationshipRemoveOperationPayload: UserPlaybackStatesInstallationsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
+    internal class func userPlaybackStatesIdRelationshipsActivePlayerGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesActivePlayerSingleRelationshipDataDocument {
         do {
-            return try await userPlaybackStatesIdRelationshipsInstallationsDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesInstallationsRelationshipRemoveOperationPayload: userPlaybackStatesInstallationsRelationshipRemoveOperationPayload).execute().body
+            return try await userPlaybackStatesIdRelationshipsActivePlayerGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -138,24 +138,131 @@ internal class UserPlaybackStatesAPI {
     }
 
     /**
-     Delete from installations relationship (\"to-many\").
-     - DELETE /userPlaybackStates/{id}/relationships/installations
-     - Deletes item(s) from installations relationship.
+     Get activePlayer relationship (\"to-one\").
+     - GET /userPlaybackStates/{id}/relationships/activePlayer
+     - Retrieves activePlayer relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
+     - returns: RequestBuilder<UserPlaybackStatesActivePlayerSingleRelationshipDataDocument> 
+     */
+    internal class func userPlaybackStatesIdRelationshipsActivePlayerGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserPlaybackStatesActivePlayerSingleRelationshipDataDocument> {
+        var localVariablePath = "/userPlaybackStates/{id}/relationships/activePlayer"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UserPlaybackStatesActivePlayerSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Update activePlayer relationship (\"to-one\").
+     
+     - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func userPlaybackStatesIdRelationshipsActivePlayerPatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload? = nil) async throws -> UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument {
+        do {
+            return try await userPlaybackStatesIdRelationshipsActivePlayerPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Update activePlayer relationship (\"to-one\").
+     - PATCH /userPlaybackStates/{id}/relationships/activePlayer
+     - Updates activePlayer relationship.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - parameter userPlaybackStatesInstallationsRelationshipRemoveOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<MutationResponseDocument> 
+     - parameter userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument> 
      */
-    internal class func userPlaybackStatesIdRelationshipsInstallationsDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userPlaybackStatesInstallationsRelationshipRemoveOperationPayload: UserPlaybackStatesInstallationsRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
-        var localVariablePath = "/userPlaybackStates/{id}/relationships/installations"
+    internal class func userPlaybackStatesIdRelationshipsActivePlayerPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument> {
+        var localVariablePath = "/userPlaybackStates/{id}/relationships/activePlayer"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userPlaybackStatesInstallationsRelationshipRemoveOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Delete from availablePlayers relationship (\"to-many\").
+     
+     - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: (body)  (optional)
+     - returns: MutationResponseDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func userPlaybackStatesIdRelationshipsAvailablePlayersDelete(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
+        do {
+            return try await userPlaybackStatesIdRelationshipsAvailablePlayersDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Delete from availablePlayers relationship (\"to-many\").
+     - DELETE /userPlaybackStates/{id}/relationships/availablePlayers
+     - Deletes item(s) from availablePlayers relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<MutationResponseDocument> 
+     */
+    internal class func userPlaybackStatesIdRelationshipsAvailablePlayersDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
+        var localVariablePath = "/userPlaybackStates/{id}/relationships/availablePlayers"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -172,18 +279,18 @@ internal class UserPlaybackStatesAPI {
     }
 
     /**
-     Get installations relationship (\"to-many\").
+     Get availablePlayers relationship (\"to-many\").
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: installations (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: availablePlayers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: installations.offlineInventory (optional)
-     - returns: UserPlaybackStatesInstallationsMultiRelationshipDataDocument
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: availablePlayers.offlineInventory (optional)
+     - returns: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userPlaybackStatesIdRelationshipsInstallationsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesInstallationsMultiRelationshipDataDocument {
+    internal class func userPlaybackStatesIdRelationshipsAvailablePlayersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument {
         do {
-            return try await userPlaybackStatesIdRelationshipsInstallationsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
+            return try await userPlaybackStatesIdRelationshipsAvailablePlayersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -191,20 +298,20 @@ internal class UserPlaybackStatesAPI {
     }
 
     /**
-     Get installations relationship (\"to-many\").
-     - GET /userPlaybackStates/{id}/relationships/installations
-     - Retrieves installations relationship.
+     Get availablePlayers relationship (\"to-many\").
+     - GET /userPlaybackStates/{id}/relationships/availablePlayers
+     - Retrieves availablePlayers relationship.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: installations (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: availablePlayers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: installations.offlineInventory (optional)
-     - returns: RequestBuilder<UserPlaybackStatesInstallationsMultiRelationshipDataDocument> 
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: availablePlayers.offlineInventory (optional)
+     - returns: RequestBuilder<UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument> 
      */
-    internal class func userPlaybackStatesIdRelationshipsInstallationsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserPlaybackStatesInstallationsMultiRelationshipDataDocument> {
-        var localVariablePath = "/userPlaybackStates/{id}/relationships/installations"
+    internal class func userPlaybackStatesIdRelationshipsAvailablePlayersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument> {
+        var localVariablePath = "/userPlaybackStates/{id}/relationships/availablePlayers"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
@@ -224,23 +331,23 @@ internal class UserPlaybackStatesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserPlaybackStatesInstallationsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**
-     Add to installations relationship (\"to-many\").
+     Add to availablePlayers relationship (\"to-many\").
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - parameter userPlaybackStatesInstallationsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: UserPlaybackStatesInstallationsAddMultiRelationshipDataDocument
+     - parameter userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: (body)  (optional)
+     - returns: UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userPlaybackStatesIdRelationshipsInstallationsPost(id: String, idempotencyKey: String? = nil, userPlaybackStatesInstallationsRelationshipAddOperationPayload: UserPlaybackStatesInstallationsRelationshipAddOperationPayload? = nil) async throws -> UserPlaybackStatesInstallationsAddMultiRelationshipDataDocument {
+    internal class func userPlaybackStatesIdRelationshipsAvailablePlayersPost(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload? = nil) async throws -> UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument {
         do {
-            return try await userPlaybackStatesIdRelationshipsInstallationsPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesInstallationsRelationshipAddOperationPayload: userPlaybackStatesInstallationsRelationshipAddOperationPayload).execute().body
+            return try await userPlaybackStatesIdRelationshipsAvailablePlayersPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -248,24 +355,24 @@ internal class UserPlaybackStatesAPI {
     }
 
     /**
-     Add to installations relationship (\"to-many\").
-     - POST /userPlaybackStates/{id}/relationships/installations
-     - Adds item(s) to installations relationship.
+     Add to availablePlayers relationship (\"to-many\").
+     - POST /userPlaybackStates/{id}/relationships/availablePlayers
+     - Adds item(s) to availablePlayers relationship.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - parameter userPlaybackStatesInstallationsRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<UserPlaybackStatesInstallationsAddMultiRelationshipDataDocument> 
+     - parameter userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument> 
      */
-    internal class func userPlaybackStatesIdRelationshipsInstallationsPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userPlaybackStatesInstallationsRelationshipAddOperationPayload: UserPlaybackStatesInstallationsRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserPlaybackStatesInstallationsAddMultiRelationshipDataDocument> {
-        var localVariablePath = "/userPlaybackStates/{id}/relationships/installations"
+    internal class func userPlaybackStatesIdRelationshipsAvailablePlayersPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload? = nil) -> RequestBuilder<UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument> {
+        var localVariablePath = "/userPlaybackStates/{id}/relationships/availablePlayers"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userPlaybackStatesInstallationsRelationshipAddOperationPayload)
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload)
 
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
@@ -276,7 +383,7 @@ internal class UserPlaybackStatesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserPlaybackStatesInstallationsAddMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -384,113 +491,6 @@ internal class UserPlaybackStatesAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<UserPlaybackStatesPlayQueueUpdateSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
-     Get player relationship (\"to-one\").
-     
-     - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: player (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: player.offlineInventory (optional)
-     - returns: UserPlaybackStatesPlayerSingleRelationshipDataDocument
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userPlaybackStatesIdRelationshipsPlayerGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesPlayerSingleRelationshipDataDocument {
-        do {
-            return try await userPlaybackStatesIdRelationshipsPlayerGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Get player relationship (\"to-one\").
-     - GET /userPlaybackStates/{id}/relationships/player
-     - Retrieves player relationship.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: player (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: player.offlineInventory (optional)
-     - returns: RequestBuilder<UserPlaybackStatesPlayerSingleRelationshipDataDocument> 
-     */
-    internal class func userPlaybackStatesIdRelationshipsPlayerGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserPlaybackStatesPlayerSingleRelationshipDataDocument> {
-        var localVariablePath = "/userPlaybackStates/{id}/relationships/player"
-        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
-        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
-        ])
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            :
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<UserPlaybackStatesPlayerSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
-     Update player relationship (\"to-one\").
-     
-     - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - parameter userPlaybackStatesPlayerRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: UserPlaybackStatesPlayerUpdateSingleRelationshipDataDocument
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userPlaybackStatesIdRelationshipsPlayerPatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesPlayerRelationshipUpdateOperationPayload: UserPlaybackStatesPlayerRelationshipUpdateOperationPayload? = nil) async throws -> UserPlaybackStatesPlayerUpdateSingleRelationshipDataDocument {
-        do {
-            return try await userPlaybackStatesIdRelationshipsPlayerPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesPlayerRelationshipUpdateOperationPayload: userPlaybackStatesPlayerRelationshipUpdateOperationPayload).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Update player relationship (\"to-one\").
-     - PATCH /userPlaybackStates/{id}/relationships/player
-     - Updates player relationship.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - parameter userPlaybackStatesPlayerRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<UserPlaybackStatesPlayerUpdateSingleRelationshipDataDocument> 
-     */
-    internal class func userPlaybackStatesIdRelationshipsPlayerPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, userPlaybackStatesPlayerRelationshipUpdateOperationPayload: UserPlaybackStatesPlayerRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<UserPlaybackStatesPlayerUpdateSingleRelationshipDataDocument> {
-        var localVariablePath = "/userPlaybackStates/{id}/relationships/player"
-        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
-        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: userPlaybackStatesPlayerRelationshipUpdateOperationPayload)
-
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
-            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<UserPlaybackStatesPlayerUpdateSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

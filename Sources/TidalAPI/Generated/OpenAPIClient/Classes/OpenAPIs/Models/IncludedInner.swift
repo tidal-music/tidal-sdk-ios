@@ -73,7 +73,6 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userCollectionSaveForLatersResourceObject(UserCollectionSaveForLatersResourceObject)
     case userCollectionTracksResourceObject(UserCollectionTracksResourceObject)
     case userCollectionVideosResourceObject(UserCollectionVideosResourceObject)
-    case userCollectionsResourceObject(UserCollectionsResourceObject)
     case userDailyMixesResourceObject(UserDailyMixesResourceObject)
     case userDataExportRequestsResourceObject(UserDataExportRequestsResourceObject)
     case userDiscoveryMixesResourceObject(UserDiscoveryMixesResourceObject)
@@ -213,8 +212,6 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .userCollectionTracksResourceObject(let value):
             try container.encode(value)
         case .userCollectionVideosResourceObject(let value):
-            try container.encode(value)
-        case .userCollectionsResourceObject(let value):
             try container.encode(value)
         case .userDailyMixesResourceObject(let value):
             try container.encode(value)
@@ -438,9 +435,6 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userCollectionVideos":
             let value = try UserCollectionVideosResourceObject(from: decoder)
             self = .userCollectionVideosResourceObject(value)
-        case "userCollections":
-            let value = try UserCollectionsResourceObject(from: decoder)
-            self = .userCollectionsResourceObject(value)
         case "userDailyMixes":
             let value = try UserDailyMixesResourceObject(from: decoder)
             self = .userDailyMixesResourceObject(value)
@@ -549,7 +543,6 @@ extension IncludedInner: Identifiable {
         case .userCollectionSaveForLatersResourceObject(let value): return value.id
         case .userCollectionTracksResourceObject(let value): return value.id
         case .userCollectionVideosResourceObject(let value): return value.id
-        case .userCollectionsResourceObject(let value): return value.id
         case .userDailyMixesResourceObject(let value): return value.id
         case .userDataExportRequestsResourceObject(let value): return value.id
         case .userDiscoveryMixesResourceObject(let value): return value.id
