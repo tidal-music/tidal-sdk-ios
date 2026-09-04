@@ -16,7 +16,7 @@ internal class UserPlaybackStatesAPI {
      Get single userPlaybackState.
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, playQueue (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, changeEventTopic, playQueue (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
      - returns: UserPlaybackStatesSingleResourceDataDocument
      */
@@ -38,7 +38,7 @@ internal class UserPlaybackStatesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, playQueue (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, changeEventTopic, playQueue (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
      - returns: RequestBuilder<UserPlaybackStatesSingleResourceDataDocument> 
      */
@@ -386,6 +386,58 @@ internal class UserPlaybackStatesAPI {
         let localVariableRequestBuilder: RequestBuilder<UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get changeEventTopic relationship (\"to-one\").
+     
+     - parameter id: (path)  
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventTopic (optional)
+     - returns: UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func userPlaybackStatesIdRelationshipsChangeEventTopicGet(id: String, include: [String]? = nil) async throws -> UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument {
+        do {
+            return try await userPlaybackStatesIdRelationshipsChangeEventTopicGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get changeEventTopic relationship (\"to-one\").
+     - GET /userPlaybackStates/{id}/relationships/changeEventTopic
+     - Retrieves changeEventTopic relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path)  
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventTopic (optional)
+     - returns: RequestBuilder<UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument> 
+     */
+    internal class func userPlaybackStatesIdRelationshipsChangeEventTopicGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument> {
+        var localVariablePath = "/userPlaybackStates/{id}/relationships/changeEventTopic"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**

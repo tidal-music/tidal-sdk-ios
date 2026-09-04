@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**playQueuesIdDelete**](PlayQueuesAPI.md#playqueuesiddelete) | **DELETE** /playQueues/{id} | Delete single playQueue.
 [**playQueuesIdGet**](PlayQueuesAPI.md#playqueuesidget) | **GET** /playQueues/{id} | Get single playQueue.
 [**playQueuesIdPatch**](PlayQueuesAPI.md#playqueuesidpatch) | **PATCH** /playQueues/{id} | Update single playQueue.
+[**playQueuesIdRelationshipsChangeEventTopicGet**](PlayQueuesAPI.md#playqueuesidrelationshipschangeeventtopicget) | **GET** /playQueues/{id}/relationships/changeEventTopic | Get changeEventTopic relationship (\&quot;to-one\&quot;).
 [**playQueuesIdRelationshipsCurrentGet**](PlayQueuesAPI.md#playqueuesidrelationshipscurrentget) | **GET** /playQueues/{id}/relationships/current | Get current relationship (\&quot;to-one\&quot;).
 [**playQueuesIdRelationshipsCurrentPatch**](PlayQueuesAPI.md#playqueuesidrelationshipscurrentpatch) | **PATCH** /playQueues/{id}/relationships/current | Update current relationship (\&quot;to-one\&quot;).
 [**playQueuesIdRelationshipsFutureDelete**](PlayQueuesAPI.md#playqueuesidrelationshipsfuturedelete) | **DELETE** /playQueues/{id}/relationships/future | Delete from future relationship (\&quot;to-many\&quot;).
@@ -35,7 +36,7 @@ import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: changeEventTopic, current, future, owners, past (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: current (optional)
 
 // Get multiple playQueues.
@@ -57,7 +58,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: current, future, owners, past | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: changeEventTopic, current, future, owners, past | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current | [optional] 
 
 ### Return type
@@ -142,7 +143,7 @@ Retrieves single playQueue by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: changeEventTopic, current, future, owners, past (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: current (optional)
 
 // Get single playQueue.
@@ -163,7 +164,7 @@ PlayQueuesAPI.playQueuesIdGet(id: id, include: include, replaceMedia: replaceMed
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: current, future, owners, past | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: changeEventTopic, current, future, owners, past | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current | [optional] 
 
 ### Return type
@@ -231,6 +232,58 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **playQueuesIdRelationshipsChangeEventTopicGet**
+```swift
+    open class func playQueuesIdRelationshipsChangeEventTopicGet(id: String, include: [String]? = nil, completion: @escaping (_ data: PlayQueuesChangeEventTopicSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get changeEventTopic relationship (\"to-one\").
+
+Retrieves changeEventTopic relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | 
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: changeEventTopic (optional)
+
+// Get changeEventTopic relationship (\"to-one\").
+PlayQueuesAPI.playQueuesIdRelationshipsChangeEventTopicGet(id: id, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** |  | 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: changeEventTopic | [optional] 
+
+### Return type
+
+[**PlayQueuesChangeEventTopicSingleRelationshipDataDocument**](PlayQueuesChangeEventTopicSingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

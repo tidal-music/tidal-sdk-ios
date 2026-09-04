@@ -99,6 +99,18 @@ public enum UserPlaybackStatesAPITidal {
 
 
 	/**
+     Get changeEventTopic relationship (\&quot;to-one\&quot;).
+     
+     - returns: UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument
+     */
+	public static func userPlaybackStatesIdRelationshipsChangeEventTopicGet(id: String, include: [String]? = nil) async throws -> UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsChangeEventTopicGetWithRequestBuilder(id: id, include: include)
+		}
+	}
+
+
+	/**
      Get playQueue relationship (\&quot;to-one\&quot;).
      
      - returns: UserPlaybackStatesPlayQueueSingleRelationshipDataDocument

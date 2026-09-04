@@ -63,6 +63,18 @@ public enum PlayQueuesAPITidal {
 
 
 	/**
+     Get changeEventTopic relationship (\&quot;to-one\&quot;).
+     
+     - returns: PlayQueuesChangeEventTopicSingleRelationshipDataDocument
+     */
+	public static func playQueuesIdRelationshipsChangeEventTopicGet(id: String, include: [String]? = nil) async throws -> PlayQueuesChangeEventTopicSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlayQueuesAPI.playQueuesIdRelationshipsChangeEventTopicGetWithRequestBuilder(id: id, include: include)
+		}
+	}
+
+
+	/**
      Get current relationship (\&quot;to-one\&quot;).
      
      - returns: PlayQueuesCurrentSingleRelationshipDataDocument

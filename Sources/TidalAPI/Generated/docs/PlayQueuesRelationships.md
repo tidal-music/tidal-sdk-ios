@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**changeEventTopic** | [**PlayQueuesChangeEventTopicSingleRelationshipDataDocument**](PlayQueuesChangeEventTopicSingleRelationshipDataDocument.md) |  | [optional] 
 **current** | [**PlayQueuesCurrentSingleRelationshipDataDocument**](PlayQueuesCurrentSingleRelationshipDataDocument.md) |  | [optional] 
 **future** | [**PlayQueuesFutureMultiRelationshipDataDocument**](PlayQueuesFutureMultiRelationshipDataDocument.md) |  | [optional] 
 **owners** | [**PlayQueuesOwnersMultiRelationshipDataDocument**](PlayQueuesOwnersMultiRelationshipDataDocument.md) |  | [optional] 
