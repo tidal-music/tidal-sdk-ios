@@ -148,10 +148,10 @@ internal class DynamicPagesAPI {
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
-     - returns: DynamicPagesMultiRelationshipDataDocument
+     - returns: DynamicPagesModulesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesIdRelationshipsModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiRelationshipDataDocument {
+    internal class func dynamicPagesIdRelationshipsModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesModulesMultiRelationshipDataDocument {
         do {
             return try await dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -180,9 +180,9 @@ internal class DynamicPagesAPI {
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
-     - returns: RequestBuilder<DynamicPagesMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<DynamicPagesModulesMultiRelationshipDataDocument> 
      */
-    internal class func dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesMultiRelationshipDataDocument> {
+    internal class func dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesModulesMultiRelationshipDataDocument> {
         var localVariablePath = "/dynamicPages/{id}/relationships/modules"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -209,7 +209,7 @@ internal class DynamicPagesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<DynamicPagesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<DynamicPagesModulesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -220,10 +220,10 @@ internal class DynamicPagesAPI {
      - parameter id: (path) DynamicPages Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
-     - returns: DynamicPagesSingleRelationshipDataDocument
+     - returns: DynamicPagesSubjectSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesSingleRelationshipDataDocument {
+    internal class func dynamicPagesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesSubjectSingleRelationshipDataDocument {
         do {
             return try await dynamicPagesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -245,9 +245,9 @@ internal class DynamicPagesAPI {
      - parameter id: (path) DynamicPages Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
-     - returns: RequestBuilder<DynamicPagesSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<DynamicPagesSubjectSingleRelationshipDataDocument> 
      */
-    internal class func dynamicPagesIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesSingleRelationshipDataDocument> {
+    internal class func dynamicPagesIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesSubjectSingleRelationshipDataDocument> {
         var localVariablePath = "/dynamicPages/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -267,7 +267,7 @@ internal class DynamicPagesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<DynamicPagesSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<DynamicPagesSubjectSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

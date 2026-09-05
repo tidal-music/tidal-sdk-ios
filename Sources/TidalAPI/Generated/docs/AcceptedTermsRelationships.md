@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
-**terms** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
+**owners** | [**AcceptedTermsOwnersMultiRelationshipDataDocument**](AcceptedTermsOwnersMultiRelationshipDataDocument.md) |  | [optional] 
+**terms** | [**AcceptedTermsTermsSingleRelationshipDataDocument**](AcceptedTermsTermsSingleRelationshipDataDocument.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -124,9 +124,9 @@ public enum UserCollectionFoldersAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionFoldersMultiRelationshipDataDocument
+     - returns: UserCollectionFoldersOwnersMultiRelationshipDataDocument
      */
-	public static func userCollectionFoldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionFoldersMultiRelationshipDataDocument {
+	public static func userCollectionFoldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionFoldersOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -136,9 +136,9 @@ public enum UserCollectionFoldersAPITidal {
 	/**
      Get userCollection relationship (\&quot;to-one\&quot;).
      
-     - returns: UserCollectionFoldersSingleRelationshipDataDocument
+     - returns: UserCollectionFoldersUserCollectionSingleRelationshipDataDocument
      */
-	public static func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersSingleRelationshipDataDocument {
+	public static func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersUserCollectionSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsUserCollectionGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}

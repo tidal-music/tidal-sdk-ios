@@ -17,7 +17,7 @@ internal class PlayQueuesAPI {
      
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventTopic, current, future, owners, past (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: PlayQueuesMultiResourceDataDocument
      */
@@ -40,7 +40,7 @@ internal class PlayQueuesAPI {
        - name: Authorization_Code_PKCE
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventTopic, current, future, owners, past (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: RequestBuilder<PlayQueuesMultiResourceDataDocument> 
      */
@@ -121,7 +121,7 @@ internal class PlayQueuesAPI {
      Get single playQueue.
      
      - parameter id: (path) Play queue id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventTopic, current, future, owners, past (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: PlayQueuesSingleResourceDataDocument
      */
@@ -143,7 +143,7 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current, future, owners, past (optional)
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventTopic, current, future, owners, past (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: RequestBuilder<PlayQueuesSingleResourceDataDocument> 
      */
@@ -222,6 +222,58 @@ internal class PlayQueuesAPI {
         let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get changeEventTopic relationship (\"to-one\").
+     
+     - parameter id: (path)  
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventTopic (optional)
+     - returns: PlayQueuesChangeEventTopicSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func playQueuesIdRelationshipsChangeEventTopicGet(id: String, include: [String]? = nil) async throws -> PlayQueuesChangeEventTopicSingleRelationshipDataDocument {
+        do {
+            return try await playQueuesIdRelationshipsChangeEventTopicGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get changeEventTopic relationship (\"to-one\").
+     - GET /playQueues/{id}/relationships/changeEventTopic
+     - Retrieves changeEventTopic relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path)  
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventTopic (optional)
+     - returns: RequestBuilder<PlayQueuesChangeEventTopicSingleRelationshipDataDocument> 
+     */
+    internal class func playQueuesIdRelationshipsChangeEventTopicGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<PlayQueuesChangeEventTopicSingleRelationshipDataDocument> {
+        var localVariablePath = "/playQueues/{id}/relationships/changeEventTopic"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<PlayQueuesChangeEventTopicSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**
@@ -551,10 +603,10 @@ internal class PlayQueuesAPI {
      - parameter id: (path) Play queue id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: PlayQueuesMultiRelationshipDataDocument
+     - returns: PlayQueuesOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlayQueuesMultiRelationshipDataDocument {
+    internal class func playQueuesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlayQueuesOwnersMultiRelationshipDataDocument {
         do {
             return try await playQueuesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -573,9 +625,9 @@ internal class PlayQueuesAPI {
      - parameter id: (path) Play queue id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<PlayQueuesMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<PlayQueuesOwnersMultiRelationshipDataDocument> 
      */
-    internal class func playQueuesIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlayQueuesMultiRelationshipDataDocument> {
+    internal class func playQueuesIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlayQueuesOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/playQueues/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -595,7 +647,7 @@ internal class PlayQueuesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<PlayQueuesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PlayQueuesOwnersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

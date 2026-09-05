@@ -53,9 +53,9 @@ public enum CollaborationInvitesAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: CollaborationInvitesMultiRelationshipDataDocument
+     - returns: CollaborationInvitesOwnersMultiRelationshipDataDocument
      */
-	public static func collaborationInvitesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CollaborationInvitesMultiRelationshipDataDocument {
+	public static func collaborationInvitesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CollaborationInvitesOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			CollaborationInvitesAPI.collaborationInvitesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -65,9 +65,9 @@ public enum CollaborationInvitesAPITidal {
 	/**
      Get subject relationship (\&quot;to-one\&quot;).
      
-     - returns: CollaborationInvitesSingleRelationshipDataDocument
+     - returns: CollaborationInvitesSubjectSingleRelationshipDataDocument
      */
-	public static func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleRelationshipDataDocument {
+	public static func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSubjectSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			CollaborationInvitesAPI.collaborationInvitesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}

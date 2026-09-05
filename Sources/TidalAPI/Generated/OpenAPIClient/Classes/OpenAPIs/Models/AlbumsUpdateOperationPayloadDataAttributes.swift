@@ -22,11 +22,14 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case ep = "EP"
         case single = "SINGLE"
     }
+    public static let barcodeIdRule = StringRule(minLength: 12, maxLength: 13, pattern: "/^[0-9]+$/")
     public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     public static let versionRule = StringRule(minLength: nil, maxLength: 255, pattern: nil)
     /** Access type */
     public var accessType: AccessType?
     public var albumType: AlbumType?
+    /** A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13) with a valid GS1 check digit. It can only be set while the album has no barcode of its own: the barcode TIDAL assigns at the album's first sale is permanent. Omit the field, and TIDAL assigns one then. */
+    public var barcodeId: String?
     public var copyright: Copyright?
     /** Explicit content */
     public var explicit: Bool?
@@ -40,6 +43,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public init(
         accessType: AccessType? = nil,
         albumType: AlbumType? = nil,
+        barcodeId: String? = nil,
         copyright: Copyright? = nil,
         explicit: Bool? = nil,
         explicitLyrics: Bool? = nil,
@@ -49,6 +53,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
     ) {
         self.accessType = accessType
         self.albumType = albumType
+        self.barcodeId = barcodeId
         self.copyright = copyright
         self.explicit = explicit
         self.explicitLyrics = explicitLyrics
@@ -60,6 +65,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case accessType
         case albumType
+        case barcodeId
         case copyright
         case explicit
         case explicitLyrics
@@ -74,6 +80,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(accessType, forKey: .accessType)
         try container.encodeIfPresent(albumType, forKey: .albumType)
+        try container.encodeIfPresent(barcodeId, forKey: .barcodeId)
         try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encodeIfPresent(explicit, forKey: .explicit)
         try container.encodeIfPresent(explicitLyrics, forKey: .explicitLyrics)

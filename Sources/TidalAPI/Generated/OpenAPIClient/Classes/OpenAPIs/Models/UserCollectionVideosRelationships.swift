@@ -13,11 +13,11 @@ import AnyCodable
 public struct UserCollectionVideosRelationships: Codable, Hashable {
 
     public var items: UserCollectionVideosItemsMultiRelationshipDataDocument?
-    public var owners: MultiRelationshipDataDocument?
+    public var owners: UserCollectionVideosOwnersMultiRelationshipDataDocument?
 
     public init(
         items: UserCollectionVideosItemsMultiRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil
+        owners: UserCollectionVideosOwnersMultiRelationshipDataDocument? = nil
     ) {
         self.items = items
         self.owners = owners

@@ -23,7 +23,7 @@ Retrieves multiple terms by available filters, or without if applicable.
 import OpenAPIClient
 
 let filterTermsType = ["filterTermsType_example"] // [String] | One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. `DEVELOPER`)
-let filterCountryCode = ["inner_example"] // [String] | Filter by countryCode (optional)
+let filterCountryCode = ["inner_example"] // [String] | Selects the country-specific terms variant when it has an effective version; otherwise falls back to the worldwide (WW) variant. Combine with `filter[isLatestVersion]=true` to return the currently acceptable terms. (e.g. `US`) (optional)
 let filterIsLatestVersion = ["inner_example"] // [String] | Filter by isLatestVersion (optional)
 
 // Get multiple terms.
@@ -44,7 +44,7 @@ TermsAPI.termsGet(filterTermsType: filterTermsType, filterCountryCode: filterCou
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterTermsType** | [**[String]**](String.md) | One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. &#x60;DEVELOPER&#x60;) | 
- **filterCountryCode** | [**[String]**](String.md) | Filter by countryCode | [optional] 
+ **filterCountryCode** | [**[String]**](String.md) | Selects the country-specific terms variant when it has an effective version; otherwise falls back to the worldwide (WW) variant. Combine with &#x60;filter[isLatestVersion]&#x3D;true&#x60; to return the currently acceptable terms. (e.g. &#x60;US&#x60;) | [optional] 
  **filterIsLatestVersion** | [**[String]**](String.md) | Filter by isLatestVersion | [optional] 
 
 ### Return type

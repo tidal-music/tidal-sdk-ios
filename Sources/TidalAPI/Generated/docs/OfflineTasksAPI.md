@@ -178,7 +178,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdRelationshipsCollectionGet**
 ```swift
-    open class func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksCollectionSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get collection relationship (\"to-one\").
@@ -217,7 +217,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**OfflineTasksSingleRelationshipDataDocument**](OfflineTasksSingleRelationshipDataDocument.md)
+[**OfflineTasksCollectionSingleRelationshipDataDocument**](OfflineTasksCollectionSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -232,7 +232,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdRelationshipsItemGet**
 ```swift
-    open class func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksItemSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get item relationship (\"to-one\").
@@ -271,7 +271,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**OfflineTasksSingleRelationshipDataDocument**](OfflineTasksSingleRelationshipDataDocument.md)
+[**OfflineTasksItemSingleRelationshipDataDocument**](OfflineTasksItemSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -286,7 +286,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdRelationshipsOwnersGet**
 ```swift
-    open class func offlineTasksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: OfflineTasksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: OfflineTasksOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -325,7 +325,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**OfflineTasksMultiRelationshipDataDocument**](OfflineTasksMultiRelationshipDataDocument.md)
+[**OfflineTasksOwnersMultiRelationshipDataDocument**](OfflineTasksOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

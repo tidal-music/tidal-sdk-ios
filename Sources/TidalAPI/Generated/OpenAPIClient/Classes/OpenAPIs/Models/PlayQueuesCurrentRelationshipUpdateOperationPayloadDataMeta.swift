@@ -13,15 +13,23 @@ import AnyCodable
 public struct PlayQueuesCurrentRelationshipUpdateOperationPayloadDataMeta: Codable, Hashable {
 
     public var itemId: String
+    public var position: String?
+    public var updatedByInstallationId: String?
 
     public init(
-        itemId: String
+        itemId: String,
+        position: String? = nil,
+        updatedByInstallationId: String? = nil
     ) {
         self.itemId = itemId
+        self.position = position
+        self.updatedByInstallationId = updatedByInstallationId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case itemId
+        case position
+        case updatedByInstallationId
     }
 
     // Encodable protocol methods
@@ -29,5 +37,7 @@ public struct PlayQueuesCurrentRelationshipUpdateOperationPayloadDataMeta: Codab
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(itemId, forKey: .itemId)
+        try container.encodeIfPresent(position, forKey: .position)
+        try container.encodeIfPresent(updatedByInstallationId, forKey: .updatedByInstallationId)
     }
 }

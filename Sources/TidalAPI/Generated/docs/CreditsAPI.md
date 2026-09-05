@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **creditsIdRelationshipsArtistGet**
 ```swift
-    open class func creditsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CreditsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func creditsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CreditsArtistSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artist relationship (\"to-one\").
@@ -104,7 +104,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CreditsSingleRelationshipDataDocument**](CreditsSingleRelationshipDataDocument.md)
+[**CreditsArtistSingleRelationshipDataDocument**](CreditsArtistSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -119,7 +119,7 @@ Name | Type | Description  | Notes
 
 # **creditsIdRelationshipsCategoryGet**
 ```swift
-    open class func creditsIdRelationshipsCategoryGet(id: String, include: [String]? = nil, completion: @escaping (_ data: CreditsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func creditsIdRelationshipsCategoryGet(id: String, include: [String]? = nil, completion: @escaping (_ data: CreditsCategorySingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get category relationship (\"to-one\").
@@ -156,7 +156,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CreditsSingleRelationshipDataDocument**](CreditsSingleRelationshipDataDocument.md)
+[**CreditsCategorySingleRelationshipDataDocument**](CreditsCategorySingleRelationshipDataDocument.md)
 
 ### Authorization
 

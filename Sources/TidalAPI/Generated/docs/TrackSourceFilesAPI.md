@@ -63,7 +63,7 @@ Name | Type | Description  | Notes
 
 # **trackSourceFilesIdRelationshipsOwnersGet**
 ```swift
-    open class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TrackSourceFilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TrackSourceFilesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -102,7 +102,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TrackSourceFilesMultiRelationshipDataDocument**](TrackSourceFilesMultiRelationshipDataDocument.md)
+[**TrackSourceFilesOwnersMultiRelationshipDataDocument**](TrackSourceFilesOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

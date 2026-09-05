@@ -129,7 +129,7 @@ Name | Type | Description  | Notes
 
 # **reactionsIdRelationshipsOwnerProfilesGet**
 ```swift
-    open class func reactionsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ReactionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ReactionsOwnerProfilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get ownerProfiles relationship (\"to-many\").
@@ -168,7 +168,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ReactionsMultiRelationshipDataDocument**](ReactionsMultiRelationshipDataDocument.md)
+[**ReactionsOwnerProfilesMultiRelationshipDataDocument**](ReactionsOwnerProfilesMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -183,7 +183,7 @@ Name | Type | Description  | Notes
 
 # **reactionsIdRelationshipsOwnersGet**
 ```swift
-    open class func reactionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ReactionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ReactionsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -222,7 +222,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ReactionsMultiRelationshipDataDocument**](ReactionsMultiRelationshipDataDocument.md)
+[**ReactionsOwnersMultiRelationshipDataDocument**](ReactionsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

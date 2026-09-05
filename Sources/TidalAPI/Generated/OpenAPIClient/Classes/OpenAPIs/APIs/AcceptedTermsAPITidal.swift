@@ -46,9 +46,9 @@ public enum AcceptedTermsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: AcceptedTermsMultiRelationshipDataDocument
+     - returns: AcceptedTermsOwnersMultiRelationshipDataDocument
      */
-	public static func acceptedTermsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AcceptedTermsMultiRelationshipDataDocument {
+	public static func acceptedTermsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AcceptedTermsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			AcceptedTermsAPI.acceptedTermsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -58,9 +58,9 @@ public enum AcceptedTermsAPITidal {
 	/**
      Get terms relationship (\&quot;to-one\&quot;).
      
-     - returns: AcceptedTermsSingleRelationshipDataDocument
+     - returns: AcceptedTermsTermsSingleRelationshipDataDocument
      */
-	public static func acceptedTermsIdRelationshipsTermsGet(id: String, include: [String]? = nil) async throws -> AcceptedTermsSingleRelationshipDataDocument {
+	public static func acceptedTermsIdRelationshipsTermsGet(id: String, include: [String]? = nil) async throws -> AcceptedTermsTermsSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			AcceptedTermsAPI.acceptedTermsIdRelationshipsTermsGetWithRequestBuilder(id: id, include: include)
 		}

@@ -29,9 +29,9 @@ public enum ProviderOwnersAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: ProviderOwnersMultiRelationshipDataDocument
+     - returns: ProviderOwnersOwnersMultiRelationshipDataDocument
      */
-	public static func providerOwnersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ProviderOwnersMultiRelationshipDataDocument {
+	public static func providerOwnersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ProviderOwnersOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ProviderOwnersAPI.providerOwnersIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -41,9 +41,9 @@ public enum ProviderOwnersAPITidal {
 	/**
      Get provider relationship (\&quot;to-one\&quot;).
      
-     - returns: ProviderOwnersSingleRelationshipDataDocument
+     - returns: ProviderOwnersProviderSingleRelationshipDataDocument
      */
-	public static func providerOwnersIdRelationshipsProviderGet(id: String, include: [String]? = nil) async throws -> ProviderOwnersSingleRelationshipDataDocument {
+	public static func providerOwnersIdRelationshipsProviderGet(id: String, include: [String]? = nil) async throws -> ProviderOwnersProviderSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ProviderOwnersAPI.providerOwnersIdRelationshipsProviderGetWithRequestBuilder(id: id, include: include)
 		}

@@ -126,10 +126,10 @@ internal class ContentClaimsAPI {
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimedResource (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource (optional)
-     - returns: ContentClaimsSingleRelationshipDataDocument
+     - returns: ContentClaimsClaimedResourceSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
+    internal class func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsClaimedResourceSingleRelationshipDataDocument {
         do {
             return try await contentClaimsIdRelationshipsClaimedResourceGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -148,9 +148,9 @@ internal class ContentClaimsAPI {
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimedResource (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource (optional)
-     - returns: RequestBuilder<ContentClaimsSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<ContentClaimsClaimedResourceSingleRelationshipDataDocument> 
      */
-    internal class func contentClaimsIdRelationshipsClaimedResourceGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ContentClaimsSingleRelationshipDataDocument> {
+    internal class func contentClaimsIdRelationshipsClaimedResourceGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ContentClaimsClaimedResourceSingleRelationshipDataDocument> {
         var localVariablePath = "/contentClaims/{id}/relationships/claimedResource"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -170,7 +170,7 @@ internal class ContentClaimsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ContentClaimsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ContentClaimsClaimedResourceSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -181,10 +181,10 @@ internal class ContentClaimsAPI {
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimingArtist (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimingArtist.albums (optional)
-     - returns: ContentClaimsSingleRelationshipDataDocument
+     - returns: ContentClaimsClaimingArtistSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
+    internal class func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsClaimingArtistSingleRelationshipDataDocument {
         do {
             return try await contentClaimsIdRelationshipsClaimingArtistGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -203,9 +203,9 @@ internal class ContentClaimsAPI {
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimingArtist (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimingArtist.albums (optional)
-     - returns: RequestBuilder<ContentClaimsSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<ContentClaimsClaimingArtistSingleRelationshipDataDocument> 
      */
-    internal class func contentClaimsIdRelationshipsClaimingArtistGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ContentClaimsSingleRelationshipDataDocument> {
+    internal class func contentClaimsIdRelationshipsClaimingArtistGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ContentClaimsClaimingArtistSingleRelationshipDataDocument> {
         var localVariablePath = "/contentClaims/{id}/relationships/claimingArtist"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -225,7 +225,7 @@ internal class ContentClaimsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ContentClaimsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ContentClaimsClaimingArtistSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -236,10 +236,10 @@ internal class ContentClaimsAPI {
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: ContentClaimsMultiRelationshipDataDocument
+     - returns: ContentClaimsOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func contentClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ContentClaimsMultiRelationshipDataDocument {
+    internal class func contentClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ContentClaimsOwnersMultiRelationshipDataDocument {
         do {
             return try await contentClaimsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -258,9 +258,9 @@ internal class ContentClaimsAPI {
      - parameter id: (path) Content claim id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<ContentClaimsMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<ContentClaimsOwnersMultiRelationshipDataDocument> 
      */
-    internal class func contentClaimsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ContentClaimsMultiRelationshipDataDocument> {
+    internal class func contentClaimsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ContentClaimsOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/contentClaims/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -280,7 +280,7 @@ internal class ContentClaimsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ContentClaimsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ContentClaimsOwnersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

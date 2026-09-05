@@ -79,7 +79,7 @@ Name | Type | Description  | Notes
 
 # **dynamicPagesIdRelationshipsModulesGet**
 ```swift
-    open class func dynamicPagesIdRelationshipsModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicPagesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicPagesIdRelationshipsModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicPagesModulesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get modules relationship (\"to-many\").
@@ -132,7 +132,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**DynamicPagesMultiRelationshipDataDocument**](DynamicPagesMultiRelationshipDataDocument.md)
+[**DynamicPagesModulesMultiRelationshipDataDocument**](DynamicPagesModulesMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -147,7 +147,7 @@ Name | Type | Description  | Notes
 
 # **dynamicPagesIdRelationshipsSubjectGet**
 ```swift
-    open class func dynamicPagesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicPagesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicPagesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicPagesSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -186,7 +186,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**DynamicPagesSingleRelationshipDataDocument**](DynamicPagesSingleRelationshipDataDocument.md)
+[**DynamicPagesSubjectSingleRelationshipDataDocument**](DynamicPagesSubjectSingleRelationshipDataDocument.md)
 
 ### Authorization
 

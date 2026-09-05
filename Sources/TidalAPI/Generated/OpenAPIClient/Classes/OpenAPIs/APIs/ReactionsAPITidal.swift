@@ -81,9 +81,9 @@ public enum ReactionsAPITidal {
 	/**
      Get ownerProfiles relationship (\&quot;to-many\&quot;).
      
-     - returns: ReactionsMultiRelationshipDataDocument
+     - returns: ReactionsOwnerProfilesMultiRelationshipDataDocument
      */
-	public static func reactionsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ReactionsMultiRelationshipDataDocument {
+	public static func reactionsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ReactionsOwnerProfilesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ReactionsAPI.reactionsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -93,9 +93,9 @@ public enum ReactionsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: ReactionsMultiRelationshipDataDocument
+     - returns: ReactionsOwnersMultiRelationshipDataDocument
      */
-	public static func reactionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ReactionsMultiRelationshipDataDocument {
+	public static func reactionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ReactionsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ReactionsAPI.reactionsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

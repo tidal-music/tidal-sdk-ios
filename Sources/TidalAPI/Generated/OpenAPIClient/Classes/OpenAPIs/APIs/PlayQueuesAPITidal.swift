@@ -63,6 +63,18 @@ public enum PlayQueuesAPITidal {
 
 
 	/**
+     Get changeEventTopic relationship (\&quot;to-one\&quot;).
+     
+     - returns: PlayQueuesChangeEventTopicSingleRelationshipDataDocument
+     */
+	public static func playQueuesIdRelationshipsChangeEventTopicGet(id: String, include: [String]? = nil) async throws -> PlayQueuesChangeEventTopicSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlayQueuesAPI.playQueuesIdRelationshipsChangeEventTopicGetWithRequestBuilder(id: id, include: include)
+		}
+	}
+
+
+	/**
      Get current relationship (\&quot;to-one\&quot;).
      
      - returns: PlayQueuesCurrentSingleRelationshipDataDocument
@@ -137,9 +149,9 @@ public enum PlayQueuesAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: PlayQueuesMultiRelationshipDataDocument
+     - returns: PlayQueuesOwnersMultiRelationshipDataDocument
      */
-	public static func playQueuesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlayQueuesMultiRelationshipDataDocument {
+	public static func playQueuesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlayQueuesOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			PlayQueuesAPI.playQueuesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

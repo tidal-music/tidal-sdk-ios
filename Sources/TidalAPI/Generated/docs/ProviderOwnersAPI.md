@@ -63,7 +63,7 @@ Name | Type | Description  | Notes
 
 # **providerOwnersIdRelationshipsOwnersGet**
 ```swift
-    open class func providerOwnersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ProviderOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func providerOwnersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ProviderOwnersOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -102,7 +102,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ProviderOwnersMultiRelationshipDataDocument**](ProviderOwnersMultiRelationshipDataDocument.md)
+[**ProviderOwnersOwnersMultiRelationshipDataDocument**](ProviderOwnersOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **providerOwnersIdRelationshipsProviderGet**
 ```swift
-    open class func providerOwnersIdRelationshipsProviderGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ProviderOwnersSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func providerOwnersIdRelationshipsProviderGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ProviderOwnersProviderSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get provider relationship (\"to-one\").
@@ -154,7 +154,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ProviderOwnersSingleRelationshipDataDocument**](ProviderOwnersSingleRelationshipDataDocument.md)
+[**ProviderOwnersProviderSingleRelationshipDataDocument**](ProviderOwnersProviderSingleRelationshipDataDocument.md)
 
 ### Authorization
 

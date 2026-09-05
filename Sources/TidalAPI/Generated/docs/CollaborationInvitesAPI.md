@@ -174,7 +174,7 @@ Name | Type | Description  | Notes
 
 # **collaborationInvitesIdRelationshipsOwnersGet**
 ```swift
-    open class func collaborationInvitesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: CollaborationInvitesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func collaborationInvitesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: CollaborationInvitesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -213,7 +213,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CollaborationInvitesMultiRelationshipDataDocument**](CollaborationInvitesMultiRelationshipDataDocument.md)
+[**CollaborationInvitesOwnersMultiRelationshipDataDocument**](CollaborationInvitesOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -228,7 +228,7 @@ Name | Type | Description  | Notes
 
 # **collaborationInvitesIdRelationshipsSubjectGet**
 ```swift
-    open class func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -267,7 +267,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CollaborationInvitesSingleRelationshipDataDocument**](CollaborationInvitesSingleRelationshipDataDocument.md)
+[**CollaborationInvitesSubjectSingleRelationshipDataDocument**](CollaborationInvitesSubjectSingleRelationshipDataDocument.md)
 
 ### Authorization
 

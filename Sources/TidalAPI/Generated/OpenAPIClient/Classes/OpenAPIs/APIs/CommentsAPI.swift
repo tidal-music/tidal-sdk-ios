@@ -255,10 +255,10 @@ internal class CommentsAPI {
      - parameter id: (path) Comment Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: CommentsMultiRelationshipDataDocument
+     - returns: CommentsOwnerProfilesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsMultiRelationshipDataDocument {
+    internal class func commentsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsOwnerProfilesMultiRelationshipDataDocument {
         do {
             return try await commentsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -277,9 +277,9 @@ internal class CommentsAPI {
      - parameter id: (path) Comment Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<CommentsMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<CommentsOwnerProfilesMultiRelationshipDataDocument> 
      */
-    internal class func commentsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<CommentsMultiRelationshipDataDocument> {
+    internal class func commentsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<CommentsOwnerProfilesMultiRelationshipDataDocument> {
         var localVariablePath = "/comments/{id}/relationships/ownerProfiles"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -299,7 +299,7 @@ internal class CommentsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CommentsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CommentsOwnerProfilesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -310,10 +310,10 @@ internal class CommentsAPI {
      - parameter id: (path) Comment Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: CommentsMultiRelationshipDataDocument
+     - returns: CommentsOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsMultiRelationshipDataDocument {
+    internal class func commentsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsOwnersMultiRelationshipDataDocument {
         do {
             return try await commentsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -332,9 +332,9 @@ internal class CommentsAPI {
      - parameter id: (path) Comment Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<CommentsMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<CommentsOwnersMultiRelationshipDataDocument> 
      */
-    internal class func commentsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<CommentsMultiRelationshipDataDocument> {
+    internal class func commentsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<CommentsOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/comments/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -354,7 +354,7 @@ internal class CommentsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CommentsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CommentsOwnersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -364,10 +364,10 @@ internal class CommentsAPI {
      
      - parameter id: (path) Comment Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: parentComment (optional)
-     - returns: CommentsSingleRelationshipDataDocument
+     - returns: CommentsParentCommentSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil) async throws -> CommentsSingleRelationshipDataDocument {
+    internal class func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil) async throws -> CommentsParentCommentSingleRelationshipDataDocument {
         do {
             return try await commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: id, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -385,9 +385,9 @@ internal class CommentsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Comment Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: parentComment (optional)
-     - returns: RequestBuilder<CommentsSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<CommentsParentCommentSingleRelationshipDataDocument> 
      */
-    internal class func commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CommentsSingleRelationshipDataDocument> {
+    internal class func commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CommentsParentCommentSingleRelationshipDataDocument> {
         var localVariablePath = "/comments/{id}/relationships/parentComment"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -406,7 +406,7 @@ internal class CommentsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CommentsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CommentsParentCommentSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
