@@ -13,6 +13,59 @@ import AnyCodable
 internal class PlaylistGenerationsAPI {
 
     /**
+     Get multiple playlistGenerations.
+     
+     - parameter filterPlaylistId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items (optional)
+     - returns: PlaylistGenerationsMultiResourceDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func playlistGenerationsGet(filterPlaylistId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsMultiResourceDataDocument {
+        do {
+            return try await playlistGenerationsGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, include: include, replaceMedia: replaceMedia).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get multiple playlistGenerations.
+     - GET /playlistGenerations
+     - Retrieves multiple playlistGenerations by available filters, or without if applicable.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter filterPlaylistId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) 
+     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items (optional)
+     - returns: RequestBuilder<PlaylistGenerationsMultiResourceDataDocument> 
+     */
+    internal class func playlistGenerationsGetWithRequestBuilder(filterPlaylistId: [String], include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationsMultiResourceDataDocument> {
+        let localVariablePath = "/playlistGenerations"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "filter[playlist.id]": (wrappedValue: filterPlaylistId.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<PlaylistGenerationsMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get single playlistGeneration.
      
      - parameter id: (path) Playlist generation id 

@@ -15,6 +15,18 @@ public enum PlaylistGenerationsAPITidal {
 
 
 	/**
+     Get multiple playlistGenerations.
+     
+     - returns: PlaylistGenerationsMultiResourceDataDocument
+     */
+	public static func playlistGenerationsGet(filterPlaylistId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistGenerationsAPI.playlistGenerationsGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
      Get single playlistGeneration.
      
      - returns: PlaylistGenerationsSingleResourceDataDocument
