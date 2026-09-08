@@ -1,4 +1,3 @@
-import Auth
 import AVFoundation
 import Foundation
 
@@ -23,7 +22,6 @@ protocol PlayerLoader: AnyObject {
 		with configuration: Configuration,
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider,
-		credentialsProvider: CredentialsProvider,
 		avQueuePlayerWrapper: AVQueuePlayerWrapper,
 		crossfadingPlayerWrapper: CrossfadingPlayerWrapper,
 		externalPlayers: [GenericMediaPlayer.Type]

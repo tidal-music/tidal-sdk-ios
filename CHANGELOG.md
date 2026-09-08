@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Breaking:** renamed `ProductType.UC(url:)` to `ProductType.LOCAL(url:)`, and its `rawValue` from `"UC"` to `"LOCAL"`. The case is now documented as file-URL only. (Player)
+
+### Removed
+- Removed the remote half of the former UC path: the `UCMediaPlayer` protocol, both `loadUC` implementations and the `loadUCFailed` log case. A local file now loads through the same `AVURLAsset` path as a video, which sets `AVURLAssetPreferPreciseDurationAndTimingKey` for file URLs. (Player)
+- Removed `credentialsProvider` from `PlayerLoader` and `InternalPlayerLoader`; the deleted auth-token fetch was its only user. (Player)
+
 ## [0.12.6] - 2026-08-24
 
 ### Changed

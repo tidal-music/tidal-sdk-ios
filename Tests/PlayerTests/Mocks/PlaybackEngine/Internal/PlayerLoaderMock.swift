@@ -1,4 +1,3 @@
-import Auth
 import AVFoundation
 @testable import Player
 
@@ -17,7 +16,6 @@ final class PlayerLoaderMock: PlayerLoader {
 		with configuration: Configuration,
 		and fairplayLicenseFetcher: FairPlayLicenseFetcher,
 		featureFlagProvider: FeatureFlagProvider = .mock,
-		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
 		avQueuePlayerWrapper: AVQueuePlayerWrapper = AVQueuePlayerWrapper(
 			cachePath: URL(fileURLWithPath: NSTemporaryDirectory()),
 			featureFlagProvider: .mock

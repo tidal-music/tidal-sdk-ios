@@ -1,4 +1,3 @@
-import Auth
 import Foundation
 @testable import Player
 import Testing
@@ -25,7 +24,6 @@ final class InternalPlayerLoaderTests {
 			with: Configuration.mock(),
 			and: fairPlayLicenseFetcher,
 			featureFlagProvider: FeatureFlagProvider.mock,
-			credentialsProvider: CredentialsProviderMock(),
 			avQueuePlayerWrapper: AVQueuePlayerWrapper(cachePath: cachePath, featureFlagProvider: .mock),
 			crossfadingPlayerWrapper: CrossfadingPlayerWrapper(cachePath: cachePath, featureFlagProvider: .mock),
 			externalPlayers: [PlayerMock.self]

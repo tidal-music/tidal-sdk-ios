@@ -394,7 +394,7 @@ extension Offliner: OfflineItemProvider {
 		switch productType {
 		case .TRACK: mediaType = .tracks
 		case .VIDEO: mediaType = .videos
-		case .UC: return nil
+		case .LOCAL: return nil
 		}
 
 		do {

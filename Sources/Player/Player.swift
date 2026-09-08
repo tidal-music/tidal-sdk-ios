@@ -446,7 +446,6 @@ private extension Player {
 			with: configuration,
 			and: fairplayLicenseFetcher,
 			featureFlagProvider: featureFlagProvider,
-			credentialsProvider: credentialsProvider,
 			avQueuePlayerWrapper: avQueuePlayerWrapper,
 			crossfadingPlayerWrapper: crossfadingPlayerWrapper,
 			externalPlayers: externalPlayersSupplier?() ?? []
