@@ -127,10 +127,6 @@ enum PlayerLoggable: TidalLoggable {
 	case playWithoutQueuedItems
 	case itemChangedWithoutQueuedItems
 
-	// MARK: InternalPlayerLoader
-
-	case loadUCFailed(error: Error)
-
 	// MARK: PlayerEngine
 
 	case loadPlayerItemFailed(error: Error)
@@ -359,10 +355,6 @@ extension PlayerLoggable {
 		case .itemChangedWithoutQueuedItems:
 			"AVQueuePlayerWrapper-itemChangedWithoutQueuedItems"
 
-		// InternalPlayerLoader
-		case .loadUCFailed:
-			"InternalPlayerLoader-loadUCFailed"
-
 		// PlayerEngine
 		case .loadPlayerItemFailed:
 			"PlayerEngine-loadPlayerItemFailed"
@@ -502,7 +494,6 @@ extension PlayerLoggable {
 		     let .failedToCalculateSizeForHLSDownload(error),
 		     let .failedToCalculateSizeForProgressiveDownload(error),
 		     let .readPlaybackMetadataFailed(error),
-		     let .loadUCFailed(error),
 		     let .loadPlayerItemFailed(error):
 			metadata[Logger.Metadata.errorKey] = "\(String(describing: error))"
 		case let .backoffHandleResponseFailed(error, retryStrategy):
@@ -625,7 +616,6 @@ extension PlayerLoggable {
 		     .failedToCalculateSizeForHLSDownload,
 		     .failedToCalculateSizeForProgressiveDownload,
 		     .readPlaybackMetadataFailed,
-		     .loadUCFailed,
 		     .loadPlayerItemFailed,
 		     .alreadyInitialized:
 			.error

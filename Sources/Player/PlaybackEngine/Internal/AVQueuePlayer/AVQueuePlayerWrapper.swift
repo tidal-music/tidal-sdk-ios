@@ -91,7 +91,7 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 			return true
 		}
 
-		if case let .UC(url) = productType, url.isFileURL {
+		if case let .LOCAL(url) = productType, url.isFileURL {
 			return true
 		}
 
@@ -248,42 +248,6 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 	func addMonitoringDelegate(monitoringDelegate: PlayerMonitoringDelegate) {
 		queue.dispatch {
 			self.delegates.add(delegate: monitoringDelegate)
-		}
-	}
-}
-
-// MARK: UCMediaPlayer
-
-extension AVQueuePlayerWrapper: UCMediaPlayer {
-	func loadUC(
-		_ url: URL,
-		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
-		headers: [String: String]
-	) async -> Asset {
-		await withCheckedContinuation { continuation in
-			queue.dispatch {
-				var options: [String: Any] = [
-					"AVURLAssetHTTPHeaderFieldsKey": headers,
-				]
-
-				if !url.isFileURL {
-					if #available(iOS 17.0, macOS 14.0, *) {
-						options[AVURLAssetOverrideMIMETypeKey] = "application/vnd.apple.mpegurl"
-					}
-				}
-
-				let urlAsset = AVURLAsset(url: url, options: options)
-
-				let asset = self.load(
-					urlAsset,
-					loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
-					and: nil,
-					AVPlayerAsset.self,
-					player: self
-				)
-
-				continuation.resume(returning: asset)
-			}
 		}
 	}
 }

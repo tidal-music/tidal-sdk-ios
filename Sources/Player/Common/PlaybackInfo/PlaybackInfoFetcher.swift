@@ -46,11 +46,10 @@ final class PlaybackInfoFetcher {
 				playbackMode: playbackMode,
 				streamingSessionId: streamingSessionId
 			)
-		case let .UC(url):
-			await getUCPlaybackInfo(
+		case let .LOCAL(url):
+			getLocalPlaybackInfo(
 				trackId: mediaProduct.productId,
 				trackURL: url,
-				playbackMode: playbackMode,
 				streamingSessionId: streamingSessionId
 			)
 		}
@@ -271,14 +270,18 @@ private extension PlaybackInfoFetcher {
 		}
 	}
 
-	func getUCPlaybackInfo(
+	/// Synthesizes playback info for a file already on the device.
+	///
+	/// Nothing is fetched: the backend has no product to describe yet, which is the whole reason the
+	/// caller is playing off disk. The audio fields below are therefore placeholders rather than
+	/// measurements of the file.
+	func getLocalPlaybackInfo(
 		trackId: String,
 		trackURL: URL,
-		playbackMode: PlaybackMode,
 		streamingSessionId: String
-	) async -> PlaybackInfo {
+	) -> PlaybackInfo {
 		PlaybackInfo(
-			productType: .UC(url: trackURL),
+			productType: .LOCAL(url: trackURL),
 			productId: trackId,
 			streamType: .ON_DEMAND,
 			assetPresentation: .FULL,
@@ -301,7 +304,7 @@ private extension PlaybackInfoFetcher {
 			offlineRevalidateAt: nil,
 			offlineValidUntil: nil,
 			isAdaptivePlaybackEnabled: false,
-			previewReason: nil // User content doesn't use previewReason
+			previewReason: nil // A file on disk is never a preview
 		)
 	}
 

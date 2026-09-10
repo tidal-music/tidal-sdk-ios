@@ -58,7 +58,7 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 		if productType == .VIDEO {
 			return false
 		}
-		if case .UC = productType {
+		if case .LOCAL = productType {
 			return false
 		}
 		return currentPlayer.canPlay(
