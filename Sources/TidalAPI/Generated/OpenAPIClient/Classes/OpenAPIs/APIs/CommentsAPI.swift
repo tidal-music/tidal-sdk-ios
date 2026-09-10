@@ -18,6 +18,7 @@ internal class CommentsAPI {
     public enum FilterSubjectType_commentsGet: String, CaseIterable {
         case albums = "albums"
         case tracks = "tracks"
+        case tracksourcefiles = "trackSourceFiles"
     }
 
     /**

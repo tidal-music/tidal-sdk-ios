@@ -24,6 +24,7 @@ public enum ReactionsAPITidal {
 		case videos = "videos"
 		case playlists = "playlists"
 		case comments = "comments"
+		case tracksourcefiles = "trackSourceFiles"
 
 		func toReactionsAPIEnum() -> ReactionsAPI.FilterSubjectType_reactionsGet {
 			switch self {
@@ -33,6 +34,7 @@ public enum ReactionsAPITidal {
 			case .videos: return .videos
 			case .playlists: return .playlists
 			case .comments: return .comments
+			case .tracksourcefiles: return .tracksourcefiles
 			}
 		}
 	}

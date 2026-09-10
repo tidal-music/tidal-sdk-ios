@@ -20,11 +20,13 @@ public enum CommentsAPITidal {
 	public enum FilterSubjectType_commentsGet: String, CaseIterable {
 		case albums = "albums"
 		case tracks = "tracks"
+		case tracksourcefiles = "trackSourceFiles"
 
 		func toCommentsAPIEnum() -> CommentsAPI.FilterSubjectType_commentsGet {
 			switch self {
 			case .albums: return .albums
 			case .tracks: return .tracks
+			case .tracksourcefiles: return .tracksourcefiles
 			}
 		}
 	}
