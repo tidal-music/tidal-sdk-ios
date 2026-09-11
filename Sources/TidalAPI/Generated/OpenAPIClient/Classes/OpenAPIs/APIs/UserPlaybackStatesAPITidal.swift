@@ -99,13 +99,13 @@ public enum UserPlaybackStatesAPITidal {
 
 
 	/**
-     Get changeEventTopic relationship (\&quot;to-one\&quot;).
+     Get changeEventStream relationship (\&quot;to-one\&quot;).
      
-     - returns: UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument
+     - returns: UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument
      */
-	public static func userPlaybackStatesIdRelationshipsChangeEventTopicGet(id: String, include: [String]? = nil) async throws -> UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument {
+	public static func userPlaybackStatesIdRelationshipsChangeEventStreamGet(id: String, include: [String]? = nil) async throws -> UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsChangeEventTopicGetWithRequestBuilder(id: id, include: include)
+			UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsChangeEventStreamGetWithRequestBuilder(id: id, include: include)
 		}
 	}
 

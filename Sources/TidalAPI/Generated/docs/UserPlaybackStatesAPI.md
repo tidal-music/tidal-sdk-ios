@@ -11,7 +11,7 @@ Method | HTTP request | Description
 [**userPlaybackStatesIdRelationshipsAvailablePlayersDelete**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsavailableplayersdelete) | **DELETE** /userPlaybackStates/{id}/relationships/availablePlayers | Delete from availablePlayers relationship (\&quot;to-many\&quot;).
 [**userPlaybackStatesIdRelationshipsAvailablePlayersGet**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsavailableplayersget) | **GET** /userPlaybackStates/{id}/relationships/availablePlayers | Get availablePlayers relationship (\&quot;to-many\&quot;).
 [**userPlaybackStatesIdRelationshipsAvailablePlayersPost**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsavailableplayerspost) | **POST** /userPlaybackStates/{id}/relationships/availablePlayers | Add to availablePlayers relationship (\&quot;to-many\&quot;).
-[**userPlaybackStatesIdRelationshipsChangeEventTopicGet**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipschangeeventtopicget) | **GET** /userPlaybackStates/{id}/relationships/changeEventTopic | Get changeEventTopic relationship (\&quot;to-one\&quot;).
+[**userPlaybackStatesIdRelationshipsChangeEventStreamGet**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipschangeeventstreamget) | **GET** /userPlaybackStates/{id}/relationships/changeEventStream | Get changeEventStream relationship (\&quot;to-one\&quot;).
 [**userPlaybackStatesIdRelationshipsPlayQueueGet**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsplayqueueget) | **GET** /userPlaybackStates/{id}/relationships/playQueue | Get playQueue relationship (\&quot;to-one\&quot;).
 [**userPlaybackStatesIdRelationshipsPlayQueuePatch**](UserPlaybackStatesAPI.md#userplaybackstatesidrelationshipsplayqueuepatch) | **PATCH** /userPlaybackStates/{id}/relationships/playQueue | Update playQueue relationship (\&quot;to-one\&quot;).
 
@@ -31,7 +31,7 @@ Retrieves single userPlaybackState by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, changeEventTopic, playQueue (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, changeEventStream, playQueue (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: activePlayer.offlineInventory (optional)
 
 // Get single userPlaybackState.
@@ -52,7 +52,7 @@ UserPlaybackStatesAPI.userPlaybackStatesIdGet(id: id, include: include, replaceM
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, changeEventTopic, playQueue | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, changeEventStream, playQueue | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory | [optional] 
 
 ### Return type
@@ -396,14 +396,14 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **userPlaybackStatesIdRelationshipsChangeEventTopicGet**
+# **userPlaybackStatesIdRelationshipsChangeEventStreamGet**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsChangeEventTopicGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsChangeEventStreamGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
-Get changeEventTopic relationship (\"to-one\").
+Get changeEventStream relationship (\"to-one\").
 
-Retrieves changeEventTopic relationship.
+Retrieves changeEventStream relationship.
 
 ### Example
 ```swift
@@ -411,10 +411,10 @@ Retrieves changeEventTopic relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | 
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: changeEventTopic (optional)
+let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: changeEventStream (optional)
 
-// Get changeEventTopic relationship (\"to-one\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsChangeEventTopicGet(id: id, include: include) { (response, error) in
+// Get changeEventStream relationship (\"to-one\").
+UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsChangeEventStreamGet(id: id, include: include) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -431,11 +431,11 @@ UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsChangeEventTopicGet(id: i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** |  | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: changeEventTopic | [optional] 
+ **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: changeEventStream | [optional] 
 
 ### Return type
 
-[**UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument**](UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument.md)
+[**UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument**](UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument.md)
 
 ### Authorization
 

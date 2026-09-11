@@ -14,25 +14,25 @@ public struct UserPlaybackStatesRelationships: Codable, Hashable {
 
     public var activePlayer: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument?
     public var availablePlayers: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument?
-    public var changeEventTopic: UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument?
+    public var changeEventStream: UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument?
     public var playQueue: UserPlaybackStatesPlayQueueSingleRelationshipDataDocument?
 
     public init(
         activePlayer: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument? = nil,
         availablePlayers: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument? = nil,
-        changeEventTopic: UserPlaybackStatesChangeEventTopicSingleRelationshipDataDocument? = nil,
+        changeEventStream: UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument? = nil,
         playQueue: UserPlaybackStatesPlayQueueSingleRelationshipDataDocument? = nil
     ) {
         self.activePlayer = activePlayer
         self.availablePlayers = availablePlayers
-        self.changeEventTopic = changeEventTopic
+        self.changeEventStream = changeEventStream
         self.playQueue = playQueue
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case activePlayer
         case availablePlayers
-        case changeEventTopic
+        case changeEventStream
         case playQueue
     }
 
@@ -42,7 +42,7 @@ public struct UserPlaybackStatesRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(activePlayer, forKey: .activePlayer)
         try container.encodeIfPresent(availablePlayers, forKey: .availablePlayers)
-        try container.encodeIfPresent(changeEventTopic, forKey: .changeEventTopic)
+        try container.encodeIfPresent(changeEventStream, forKey: .changeEventStream)
         try container.encodeIfPresent(playQueue, forKey: .playQueue)
     }
 }

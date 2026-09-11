@@ -63,13 +63,13 @@ public enum PlayQueuesAPITidal {
 
 
 	/**
-     Get changeEventTopic relationship (\&quot;to-one\&quot;).
+     Get changeEventStream relationship (\&quot;to-one\&quot;).
      
-     - returns: PlayQueuesChangeEventTopicSingleRelationshipDataDocument
+     - returns: PlayQueuesChangeEventStreamSingleRelationshipDataDocument
      */
-	public static func playQueuesIdRelationshipsChangeEventTopicGet(id: String, include: [String]? = nil) async throws -> PlayQueuesChangeEventTopicSingleRelationshipDataDocument {
+	public static func playQueuesIdRelationshipsChangeEventStreamGet(id: String, include: [String]? = nil) async throws -> PlayQueuesChangeEventStreamSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesIdRelationshipsChangeEventTopicGetWithRequestBuilder(id: id, include: include)
+			PlayQueuesAPI.playQueuesIdRelationshipsChangeEventStreamGetWithRequestBuilder(id: id, include: include)
 		}
 	}
 

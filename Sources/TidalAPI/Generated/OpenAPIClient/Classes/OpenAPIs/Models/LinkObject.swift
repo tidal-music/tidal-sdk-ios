@@ -13,10 +13,10 @@ import AnyCodable
 /** A JSON:API link object */
 public struct LinkObject: Codable, Hashable {
 
-    public var href: String?
+    public var href: String
 
     public init(
-        href: String? = nil
+        href: String
     ) {
         self.href = href
     }
@@ -29,6 +29,6 @@ public struct LinkObject: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(href, forKey: .href)
+        try container.encode(href, forKey: .href)
     }
 }
