@@ -122,7 +122,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsIdRelationshipsClaimedResourceGet**
 ```swift
-    open class func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsClaimedResourceSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get claimedResource relationship (\"to-one\").
@@ -161,7 +161,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ContentClaimsSingleRelationshipDataDocument**](ContentClaimsSingleRelationshipDataDocument.md)
+[**ContentClaimsClaimedResourceSingleRelationshipDataDocument**](ContentClaimsClaimedResourceSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -176,7 +176,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsIdRelationshipsClaimingArtistGet**
 ```swift
-    open class func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsClaimingArtistSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get claimingArtist relationship (\"to-one\").
@@ -215,7 +215,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ContentClaimsSingleRelationshipDataDocument**](ContentClaimsSingleRelationshipDataDocument.md)
+[**ContentClaimsClaimingArtistSingleRelationshipDataDocument**](ContentClaimsClaimingArtistSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -230,7 +230,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsIdRelationshipsOwnersGet**
 ```swift
-    open class func contentClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ContentClaimsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func contentClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ContentClaimsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -269,7 +269,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ContentClaimsMultiRelationshipDataDocument**](ContentClaimsMultiRelationshipDataDocument.md)
+[**ContentClaimsOwnersMultiRelationshipDataDocument**](ContentClaimsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

@@ -222,7 +222,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let tracksUpdateOperationPayload = TracksUpdateOperation_Payload(data: TracksUpdateOperation_Payload_Data(attributes: TracksUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TracksUpdateOperation_Payload_Data_Relationships(genres: TracksUpdateOperation_Payload_Data_Relationships_Genres(data: [TracksUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TracksUpdateOperationPayload |  (optional)
+let tracksUpdateOperationPayload = TracksUpdateOperation_Payload(data: TracksUpdateOperation_Payload_Data(attributes: TracksUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, isrc: "isrc_example", key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TracksUpdateOperation_Payload_Data_Relationships(genres: TracksUpdateOperation_Payload_Data_Relationships_Genres(data: [TracksUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TracksUpdateOperationPayload |  (optional)
 
 // Update single track.
 TracksAPI.tracksIdPatch(id: id, idempotencyKey: idempotencyKey, tracksUpdateOperationPayload: tracksUpdateOperationPayload) { (response, error) in
@@ -262,7 +262,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsAlbumsGet**
 ```swift
-    open class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksAlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -307,7 +307,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+[**TracksAlbumsMultiRelationshipDataDocument**](TracksAlbumsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -376,7 +376,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsArtistsGet**
 ```swift
-    open class func tracksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -421,7 +421,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+[**TracksArtistsMultiRelationshipDataDocument**](TracksArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -436,7 +436,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsCreditsGet**
 ```swift
-    open class func tracksIdRelationshipsCreditsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsCreditsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksCreditsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get credits relationship (\"to-many\").
@@ -479,7 +479,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+[**TracksCreditsMultiRelationshipDataDocument**](TracksCreditsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -494,7 +494,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsDownloadGet**
 ```swift
-    open class func tracksIdRelationshipsDownloadGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsDownloadGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksDownloadSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get download relationship (\"to-one\").
@@ -533,7 +533,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
+[**TracksDownloadSingleRelationshipDataDocument**](TracksDownloadSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -548,7 +548,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsGenresGet**
 ```swift
-    open class func tracksIdRelationshipsGenresGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsGenresGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksGenresMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get genres relationship (\"to-many\").
@@ -591,7 +591,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+[**TracksGenresMultiRelationshipDataDocument**](TracksGenresMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -606,7 +606,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsLyricsGet**
 ```swift
-    open class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksLyricsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get lyrics relationship (\"to-many\").
@@ -649,7 +649,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+[**TracksLyricsMultiRelationshipDataDocument**](TracksLyricsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -664,7 +664,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsMetadataStatusGet**
 ```swift
-    open class func tracksIdRelationshipsMetadataStatusGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsMetadataStatusGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMetadataStatusSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get metadataStatus relationship (\"to-one\").
@@ -703,7 +703,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
+[**TracksMetadataStatusSingleRelationshipDataDocument**](TracksMetadataStatusSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -718,7 +718,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsOwnersGet**
 ```swift
-    open class func tracksIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -761,7 +761,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+[**TracksOwnersMultiRelationshipDataDocument**](TracksOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -776,7 +776,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsPriceConfigGet**
 ```swift
-    open class func tracksIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksPriceConfigSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get priceConfig relationship (\"to-one\").
@@ -817,7 +817,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
+[**TracksPriceConfigSingleRelationshipDataDocument**](TracksPriceConfigSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -832,7 +832,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsProvidersGet**
 ```swift
-    open class func tracksIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksProvidersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get providers relationship (\"to-many\").
@@ -875,7 +875,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+[**TracksProvidersMultiRelationshipDataDocument**](TracksProvidersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -890,7 +890,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsRadioGet**
 ```swift
-    open class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksRadioMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get radio relationship (\"to-many\").
@@ -933,7 +933,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+[**TracksRadioMultiRelationshipDataDocument**](TracksRadioMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -948,7 +948,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsReplacementGet**
 ```swift
-    open class func tracksIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksReplacementSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get replacement relationship (\"to-one\").
@@ -991,7 +991,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
+[**TracksReplacementSingleRelationshipDataDocument**](TracksReplacementSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -1006,7 +1006,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSharesGet**
 ```swift
-    open class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSharesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get shares relationship (\"to-many\").
@@ -1049,7 +1049,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+[**TracksSharesMultiRelationshipDataDocument**](TracksSharesMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -1064,7 +1064,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSimilarTracksGet**
 ```swift
-    open class func tracksIdRelationshipsSimilarTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsSimilarTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSimilarTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarTracks relationship (\"to-many\").
@@ -1109,7 +1109,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+[**TracksSimilarTracksMultiRelationshipDataDocument**](TracksSimilarTracksMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -1124,7 +1124,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSourceFileGet**
 ```swift
-    open class func tracksIdRelationshipsSourceFileGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsSourceFileGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSourceFileSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get sourceFile relationship (\"to-one\").
@@ -1163,7 +1163,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
+[**TracksSourceFileSingleRelationshipDataDocument**](TracksSourceFileSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -1178,7 +1178,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSuggestedTracksGet**
 ```swift
-    open class func tracksIdRelationshipsSuggestedTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsSuggestedTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSuggestedTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get suggestedTracks relationship (\"to-many\").
@@ -1223,7 +1223,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksMultiRelationshipDataDocument**](TracksMultiRelationshipDataDocument.md)
+[**TracksSuggestedTracksMultiRelationshipDataDocument**](TracksSuggestedTracksMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -1238,7 +1238,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsTrackStatisticsGet**
 ```swift
-    open class func tracksIdRelationshipsTrackStatisticsGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsTrackStatisticsGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksTrackStatisticsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get trackStatistics relationship (\"to-one\").
@@ -1277,7 +1277,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
+[**TracksTrackStatisticsSingleRelationshipDataDocument**](TracksTrackStatisticsSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -1292,7 +1292,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsUsageRulesGet**
 ```swift
-    open class func tracksIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func tracksIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksUsageRulesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get usageRules relationship (\"to-one\").
@@ -1333,7 +1333,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TracksSingleRelationshipDataDocument**](TracksSingleRelationshipDataDocument.md)
+[**TracksUsageRulesSingleRelationshipDataDocument**](TracksUsageRulesSingleRelationshipDataDocument.md)
 
 ### Authorization
 

@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **artists** | [**UserRecommendationBlocksArtistsMultiRelationshipDataDocument**](UserRecommendationBlocksArtistsMultiRelationshipDataDocument.md) |  | [optional] 
-**owners** | [**MultiRelationshipDataDocument**](MultiRelationshipDataDocument.md) |  | [optional] 
+**owners** | [**UserRecommendationBlocksOwnersMultiRelationshipDataDocument**](UserRecommendationBlocksOwnersMultiRelationshipDataDocument.md) |  | [optional] 
 **tracks** | [**UserRecommendationBlocksTracksMultiRelationshipDataDocument**](UserRecommendationBlocksTracksMultiRelationshipDataDocument.md) |  | [optional] 
 **videos** | [**UserRecommendationBlocksVideosMultiRelationshipDataDocument**](UserRecommendationBlocksVideosMultiRelationshipDataDocument.md) |  | [optional] 
 

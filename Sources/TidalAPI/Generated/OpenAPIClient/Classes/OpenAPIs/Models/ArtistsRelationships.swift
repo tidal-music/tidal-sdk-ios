@@ -13,30 +13,30 @@ import AnyCodable
 public struct ArtistsRelationships: Codable, Hashable {
 
     public var albums: ArtistsAlbumsMultiRelationshipDataDocument?
-    public var biography: SingleRelationshipDataDocument?
-    public var claimStatus: SingleRelationshipDataDocument?
+    public var biography: ArtistsBiographySingleRelationshipDataDocument?
+    public var claimStatus: ArtistsClaimStatusSingleRelationshipDataDocument?
     public var followers: ArtistsFollowersMultiRelationshipDataDocument?
     public var following: ArtistsFollowingMultiRelationshipDataDocument?
-    public var owners: MultiRelationshipDataDocument?
-    public var profileArt: MultiRelationshipDataDocument?
-    public var radio: MultiRelationshipDataDocument?
-    public var roles: MultiRelationshipDataDocument?
-    public var similarArtists: MultiRelationshipDataDocument?
+    public var owners: ArtistsOwnersMultiRelationshipDataDocument?
+    public var profileArt: ArtistsProfileArtMultiRelationshipDataDocument?
+    public var radio: ArtistsRadioMultiRelationshipDataDocument?
+    public var roles: ArtistsRolesMultiRelationshipDataDocument?
+    public var similarArtists: ArtistsSimilarArtistsMultiRelationshipDataDocument?
     public var trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument?
     public var tracks: ArtistsTracksMultiRelationshipDataDocument?
     public var videos: ArtistsVideosMultiRelationshipDataDocument?
 
     public init(
         albums: ArtistsAlbumsMultiRelationshipDataDocument? = nil,
-        biography: SingleRelationshipDataDocument? = nil,
-        claimStatus: SingleRelationshipDataDocument? = nil,
+        biography: ArtistsBiographySingleRelationshipDataDocument? = nil,
+        claimStatus: ArtistsClaimStatusSingleRelationshipDataDocument? = nil,
         followers: ArtistsFollowersMultiRelationshipDataDocument? = nil,
         following: ArtistsFollowingMultiRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil,
-        profileArt: MultiRelationshipDataDocument? = nil,
-        radio: MultiRelationshipDataDocument? = nil,
-        roles: MultiRelationshipDataDocument? = nil,
-        similarArtists: MultiRelationshipDataDocument? = nil,
+        owners: ArtistsOwnersMultiRelationshipDataDocument? = nil,
+        profileArt: ArtistsProfileArtMultiRelationshipDataDocument? = nil,
+        radio: ArtistsRadioMultiRelationshipDataDocument? = nil,
+        roles: ArtistsRolesMultiRelationshipDataDocument? = nil,
+        similarArtists: ArtistsSimilarArtistsMultiRelationshipDataDocument? = nil,
         trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument? = nil,
         tracks: ArtistsTracksMultiRelationshipDataDocument? = nil,
         videos: ArtistsVideosMultiRelationshipDataDocument? = nil

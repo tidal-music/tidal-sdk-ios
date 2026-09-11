@@ -92,9 +92,9 @@ public enum UserCollectionVideosAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionVideosMultiRelationshipDataDocument
+     - returns: UserCollectionVideosOwnersMultiRelationshipDataDocument
      */
-	public static func userCollectionVideosIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionVideosMultiRelationshipDataDocument {
+	public static func userCollectionVideosIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionVideosOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

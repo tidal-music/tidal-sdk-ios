@@ -29,9 +29,9 @@ public enum TemporaryUserTokensAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: TemporaryUserTokensMultiRelationshipDataDocument
+     - returns: TemporaryUserTokensOwnersMultiRelationshipDataDocument
      */
-	public static func temporaryUserTokensIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TemporaryUserTokensMultiRelationshipDataDocument {
+	public static func temporaryUserTokensIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TemporaryUserTokensOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			TemporaryUserTokensAPI.temporaryUserTokensIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

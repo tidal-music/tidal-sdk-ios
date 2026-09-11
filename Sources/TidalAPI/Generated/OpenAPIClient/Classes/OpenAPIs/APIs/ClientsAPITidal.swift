@@ -65,9 +65,9 @@ public enum ClientsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: ClientsMultiRelationshipDataDocument
+     - returns: ClientsOwnersMultiRelationshipDataDocument
      */
-	public static func clientsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ClientsMultiRelationshipDataDocument {
+	public static func clientsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ClientsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ClientsAPI.clientsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

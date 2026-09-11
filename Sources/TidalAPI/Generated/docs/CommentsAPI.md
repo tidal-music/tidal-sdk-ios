@@ -234,7 +234,7 @@ Name | Type | Description  | Notes
 
 # **commentsIdRelationshipsOwnerProfilesGet**
 ```swift
-    open class func commentsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: CommentsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func commentsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: CommentsOwnerProfilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get ownerProfiles relationship (\"to-many\").
@@ -273,7 +273,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CommentsMultiRelationshipDataDocument**](CommentsMultiRelationshipDataDocument.md)
+[**CommentsOwnerProfilesMultiRelationshipDataDocument**](CommentsOwnerProfilesMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -288,7 +288,7 @@ Name | Type | Description  | Notes
 
 # **commentsIdRelationshipsOwnersGet**
 ```swift
-    open class func commentsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: CommentsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func commentsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: CommentsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -327,7 +327,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CommentsMultiRelationshipDataDocument**](CommentsMultiRelationshipDataDocument.md)
+[**CommentsOwnersMultiRelationshipDataDocument**](CommentsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -342,7 +342,7 @@ Name | Type | Description  | Notes
 
 # **commentsIdRelationshipsParentCommentGet**
 ```swift
-    open class func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil, completion: @escaping (_ data: CommentsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil, completion: @escaping (_ data: CommentsParentCommentSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get parentComment relationship (\"to-one\").
@@ -379,7 +379,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CommentsSingleRelationshipDataDocument**](CommentsSingleRelationshipDataDocument.md)
+[**CommentsParentCommentSingleRelationshipDataDocument**](CommentsParentCommentSingleRelationshipDataDocument.md)
 
 ### Authorization
 

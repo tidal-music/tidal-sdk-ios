@@ -41,9 +41,9 @@ public enum SubscriptionPriceChangeDecisionsAPITidal {
 	/**
      Get priceChange relationship (\&quot;to-one\&quot;).
      
-     - returns: SubscriptionPriceChangeDecisionsSingleRelationshipDataDocument
+     - returns: SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument
      */
-	public static func subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet(id: String, include: [String]? = nil) async throws -> SubscriptionPriceChangeDecisionsSingleRelationshipDataDocument {
+	public static func subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet(id: String, include: [String]? = nil) async throws -> SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGetWithRequestBuilder(id: id, include: include)
 		}

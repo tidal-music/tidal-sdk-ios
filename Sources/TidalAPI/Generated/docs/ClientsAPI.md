@@ -224,7 +224,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdRelationshipsOwnersGet**
 ```swift
-    open class func clientsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ClientsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func clientsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ClientsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -263,7 +263,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ClientsMultiRelationshipDataDocument**](ClientsMultiRelationshipDataDocument.md)
+[**ClientsOwnersMultiRelationshipDataDocument**](ClientsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

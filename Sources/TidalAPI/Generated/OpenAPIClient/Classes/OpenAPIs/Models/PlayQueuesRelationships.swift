@@ -12,17 +12,20 @@ import AnyCodable
 
 public struct PlayQueuesRelationships: Codable, Hashable {
 
+    public var changeEventStream: PlayQueuesChangeEventStreamSingleRelationshipDataDocument?
     public var current: PlayQueuesCurrentSingleRelationshipDataDocument?
     public var future: PlayQueuesFutureMultiRelationshipDataDocument?
-    public var owners: MultiRelationshipDataDocument?
+    public var owners: PlayQueuesOwnersMultiRelationshipDataDocument?
     public var past: PlayQueuesPastMultiRelationshipDataDocument?
 
     public init(
+        changeEventStream: PlayQueuesChangeEventStreamSingleRelationshipDataDocument? = nil,
         current: PlayQueuesCurrentSingleRelationshipDataDocument? = nil,
         future: PlayQueuesFutureMultiRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil,
+        owners: PlayQueuesOwnersMultiRelationshipDataDocument? = nil,
         past: PlayQueuesPastMultiRelationshipDataDocument? = nil
     ) {
+        self.changeEventStream = changeEventStream
         self.current = current
         self.future = future
         self.owners = owners
@@ -30,6 +33,7 @@ public struct PlayQueuesRelationships: Codable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case changeEventStream
         case current
         case future
         case owners
@@ -40,6 +44,7 @@ public struct PlayQueuesRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(changeEventStream, forKey: .changeEventStream)
         try container.encodeIfPresent(current, forKey: .current)
         try container.encodeIfPresent(future, forKey: .future)
         try container.encodeIfPresent(owners, forKey: .owners)

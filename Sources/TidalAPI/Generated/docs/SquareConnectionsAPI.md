@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsIdRelationshipsSelectedSiteGet**
 ```swift
-    open class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil, completion: @escaping (_ data: SquareConnectionsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil, completion: @escaping (_ data: SquareConnectionsSelectedSiteSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get selectedSite relationship (\"to-one\").
@@ -102,7 +102,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SquareConnectionsSingleRelationshipDataDocument**](SquareConnectionsSingleRelationshipDataDocument.md)
+[**SquareConnectionsSelectedSiteSingleRelationshipDataDocument**](SquareConnectionsSelectedSiteSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -171,7 +171,7 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsIdRelationshipsSitesGet**
 ```swift
-    open class func squareConnectionsIdRelationshipsSitesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SquareConnectionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func squareConnectionsIdRelationshipsSitesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SquareConnectionsSitesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get sites relationship (\"to-many\").
@@ -210,7 +210,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SquareConnectionsMultiRelationshipDataDocument**](SquareConnectionsMultiRelationshipDataDocument.md)
+[**SquareConnectionsSitesMultiRelationshipDataDocument**](SquareConnectionsSitesMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -225,7 +225,7 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsPost**
 ```swift
-    open class func squareConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: SquareConnectionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func squareConnectionsPost(idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: SquareConnectionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single squareConnection.
@@ -237,12 +237,11 @@ Creates a new squareConnection.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let squareConnectionsCreateOperationPayload = SquareConnectionsCreateOperation_Payload(data: SquareConnectionsCreateOperation_Payload_Data(type: "type_example"), meta: SquareConnectionsCreateOperation_Payload_Meta(platform: "platform_example", redirectUrl: "redirectUrl_example")) // SquareConnectionsCreateOperationPayload |  (optional)
 
 // Create single squareConnection.
-SquareConnectionsAPI.squareConnectionsPost(countryCode: countryCode, idempotencyKey: idempotencyKey, squareConnectionsCreateOperationPayload: squareConnectionsCreateOperationPayload) { (response, error) in
+SquareConnectionsAPI.squareConnectionsPost(idempotencyKey: idempotencyKey, squareConnectionsCreateOperationPayload: squareConnectionsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -258,7 +257,6 @@ SquareConnectionsAPI.squareConnectionsPost(countryCode: countryCode, idempotency
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **squareConnectionsCreateOperationPayload** | [**SquareConnectionsCreateOperationPayload**](SquareConnectionsCreateOperationPayload.md) |  | [optional] 
 

@@ -144,7 +144,7 @@ Name | Type | Description  | Notes
 
 # **dynamicModulesIdRelationshipsItemsGet**
 ```swift
-    open class func dynamicModulesIdRelationshipsItemsGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicModulesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicModulesIdRelationshipsItemsGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicModulesItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -197,7 +197,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**DynamicModulesMultiRelationshipDataDocument**](DynamicModulesMultiRelationshipDataDocument.md)
+[**DynamicModulesItemsMultiRelationshipDataDocument**](DynamicModulesItemsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -212,7 +212,7 @@ Name | Type | Description  | Notes
 
 # **dynamicModulesIdRelationshipsSeedItemGet**
 ```swift
-    open class func dynamicModulesIdRelationshipsSeedItemGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsSeedItemGet, systemType: SystemType_dynamicModulesIdRelationshipsSeedItemGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicModulesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicModulesIdRelationshipsSeedItemGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsSeedItemGet, systemType: SystemType_dynamicModulesIdRelationshipsSeedItemGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicModulesSeedItemSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get seedItem relationship (\"to-one\").
@@ -263,7 +263,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**DynamicModulesSingleRelationshipDataDocument**](DynamicModulesSingleRelationshipDataDocument.md)
+[**DynamicModulesSeedItemSingleRelationshipDataDocument**](DynamicModulesSeedItemSingleRelationshipDataDocument.md)
 
 ### Authorization
 

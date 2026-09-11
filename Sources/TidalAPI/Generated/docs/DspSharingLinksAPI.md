@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **dspSharingLinksIdRelationshipsSubjectGet**
 ```swift
-    open class func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DspSharingLinksSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DspSharingLinksSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -105,7 +105,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**DspSharingLinksSingleRelationshipDataDocument**](DspSharingLinksSingleRelationshipDataDocument.md)
+[**DspSharingLinksSubjectSingleRelationshipDataDocument**](DspSharingLinksSubjectSingleRelationshipDataDocument.md)
 
 ### Authorization
 

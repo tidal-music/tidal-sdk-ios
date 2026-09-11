@@ -404,10 +404,10 @@ internal class UserCollectionFoldersAPI {
      - parameter id: (path) Folder Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: UserCollectionFoldersMultiRelationshipDataDocument
+     - returns: UserCollectionFoldersOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionFoldersMultiRelationshipDataDocument {
+    internal class func userCollectionFoldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionFoldersOwnersMultiRelationshipDataDocument {
         do {
             return try await userCollectionFoldersIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -426,9 +426,9 @@ internal class UserCollectionFoldersAPI {
      - parameter id: (path) Folder Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<UserCollectionFoldersMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<UserCollectionFoldersOwnersMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionFoldersIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserCollectionFoldersMultiRelationshipDataDocument> {
+    internal class func userCollectionFoldersIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserCollectionFoldersOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollectionFolders/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -448,7 +448,7 @@ internal class UserCollectionFoldersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionFoldersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionFoldersOwnersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -459,10 +459,10 @@ internal class UserCollectionFoldersAPI {
      - parameter id: (path) Folder Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: userCollection (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: userCollection.items.items (optional)
-     - returns: UserCollectionFoldersSingleRelationshipDataDocument
+     - returns: UserCollectionFoldersUserCollectionSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersSingleRelationshipDataDocument {
+    internal class func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersUserCollectionSingleRelationshipDataDocument {
         do {
             return try await userCollectionFoldersIdRelationshipsUserCollectionGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -481,9 +481,9 @@ internal class UserCollectionFoldersAPI {
      - parameter id: (path) Folder Id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: userCollection (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: userCollection.items.items (optional)
-     - returns: RequestBuilder<UserCollectionFoldersSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<UserCollectionFoldersUserCollectionSingleRelationshipDataDocument> 
      */
-    internal class func userCollectionFoldersIdRelationshipsUserCollectionGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionFoldersSingleRelationshipDataDocument> {
+    internal class func userCollectionFoldersIdRelationshipsUserCollectionGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionFoldersUserCollectionSingleRelationshipDataDocument> {
         var localVariablePath = "/userCollectionFolders/{id}/relationships/userCollection"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -503,7 +503,7 @@ internal class UserCollectionFoldersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionFoldersSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionFoldersUserCollectionSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

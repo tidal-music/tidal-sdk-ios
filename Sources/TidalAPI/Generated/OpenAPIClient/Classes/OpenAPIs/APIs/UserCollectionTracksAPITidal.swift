@@ -96,9 +96,9 @@ public enum UserCollectionTracksAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionTracksMultiRelationshipDataDocument
+     - returns: UserCollectionTracksOwnersMultiRelationshipDataDocument
      */
-	public static func userCollectionTracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionTracksMultiRelationshipDataDocument {
+	public static func userCollectionTracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionTracksOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

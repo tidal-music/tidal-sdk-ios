@@ -12,11 +12,11 @@ import AnyCodable
 
 public struct PurchasesRelationships: Codable, Hashable {
 
-    public var owners: MultiRelationshipDataDocument?
+    public var owners: PurchasesOwnersMultiRelationshipDataDocument?
     public var subject: PurchasesSubjectSingleRelationshipDataDocument?
 
     public init(
-        owners: MultiRelationshipDataDocument? = nil,
+        owners: PurchasesOwnersMultiRelationshipDataDocument? = nil,
         subject: PurchasesSubjectSingleRelationshipDataDocument? = nil
     ) {
         self.owners = owners

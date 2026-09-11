@@ -13,10 +13,10 @@ import AnyCodable
 public struct UserCollectionFoldersUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public static let nameRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
-    public var name: String?
+    public var name: String
 
     public init(
-        name: String? = nil
+        name: String
     ) {
         self.name = name
     }
@@ -29,6 +29,6 @@ public struct UserCollectionFoldersUpdateOperationPayloadDataAttributes: Codable
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(name, forKey: .name)
+        try container.encode(name, forKey: .name)
     }
 }

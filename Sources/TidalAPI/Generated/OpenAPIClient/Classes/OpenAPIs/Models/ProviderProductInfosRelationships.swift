@@ -12,11 +12,11 @@ import AnyCodable
 
 public struct ProviderProductInfosRelationships: Codable, Hashable {
 
-    public var provider: SingleRelationshipDataDocument?
+    public var provider: ProviderProductInfosProviderSingleRelationshipDataDocument?
     public var subject: ProviderProductInfosSubjectSingleRelationshipDataDocument?
 
     public init(
-        provider: SingleRelationshipDataDocument? = nil,
+        provider: ProviderProductInfosProviderSingleRelationshipDataDocument? = nil,
         subject: ProviderProductInfosSubjectSingleRelationshipDataDocument? = nil
     ) {
         self.provider = provider

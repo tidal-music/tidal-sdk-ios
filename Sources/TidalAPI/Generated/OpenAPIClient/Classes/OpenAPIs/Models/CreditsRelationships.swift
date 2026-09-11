@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct CreditsRelationships: Codable, Hashable {
 
-    public var artist: SingleRelationshipDataDocument?
-    public var category: SingleRelationshipDataDocument?
+    public var artist: CreditsArtistSingleRelationshipDataDocument?
+    public var category: CreditsCategorySingleRelationshipDataDocument?
 
     public init(
-        artist: SingleRelationshipDataDocument? = nil,
-        category: SingleRelationshipDataDocument? = nil
+        artist: CreditsArtistSingleRelationshipDataDocument? = nil,
+        category: CreditsCategorySingleRelationshipDataDocument? = nil
     ) {
         self.artist = artist
         self.category = category

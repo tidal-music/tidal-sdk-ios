@@ -41,9 +41,9 @@ public enum ContentClaimsAPITidal {
 	/**
      Get claimedResource relationship (\&quot;to-one\&quot;).
      
-     - returns: ContentClaimsSingleRelationshipDataDocument
+     - returns: ContentClaimsClaimedResourceSingleRelationshipDataDocument
      */
-	public static func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
+	public static func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsClaimedResourceSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ContentClaimsAPI.contentClaimsIdRelationshipsClaimedResourceGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
@@ -53,9 +53,9 @@ public enum ContentClaimsAPITidal {
 	/**
      Get claimingArtist relationship (\&quot;to-one\&quot;).
      
-     - returns: ContentClaimsSingleRelationshipDataDocument
+     - returns: ContentClaimsClaimingArtistSingleRelationshipDataDocument
      */
-	public static func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleRelationshipDataDocument {
+	public static func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsClaimingArtistSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ContentClaimsAPI.contentClaimsIdRelationshipsClaimingArtistGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
@@ -65,9 +65,9 @@ public enum ContentClaimsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: ContentClaimsMultiRelationshipDataDocument
+     - returns: ContentClaimsOwnersMultiRelationshipDataDocument
      */
-	public static func contentClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ContentClaimsMultiRelationshipDataDocument {
+	public static func contentClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ContentClaimsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ContentClaimsAPI.contentClaimsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

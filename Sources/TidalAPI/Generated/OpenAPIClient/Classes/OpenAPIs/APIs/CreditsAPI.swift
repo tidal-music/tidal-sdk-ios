@@ -76,10 +76,10 @@ internal class CreditsAPI {
      - parameter id: (path) Credit id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artist (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artist.albums (optional)
-     - returns: CreditsSingleRelationshipDataDocument
+     - returns: CreditsArtistSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func creditsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CreditsSingleRelationshipDataDocument {
+    internal class func creditsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CreditsArtistSingleRelationshipDataDocument {
         do {
             return try await creditsIdRelationshipsArtistGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -101,9 +101,9 @@ internal class CreditsAPI {
      - parameter id: (path) Credit id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artist (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artist.albums (optional)
-     - returns: RequestBuilder<CreditsSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<CreditsArtistSingleRelationshipDataDocument> 
      */
-    internal class func creditsIdRelationshipsArtistGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CreditsSingleRelationshipDataDocument> {
+    internal class func creditsIdRelationshipsArtistGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CreditsArtistSingleRelationshipDataDocument> {
         var localVariablePath = "/credits/{id}/relationships/artist"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -123,7 +123,7 @@ internal class CreditsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreditsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreditsArtistSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -133,10 +133,10 @@ internal class CreditsAPI {
      
      - parameter id: (path) Credit id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: category (optional)
-     - returns: CreditsSingleRelationshipDataDocument
+     - returns: CreditsCategorySingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func creditsIdRelationshipsCategoryGet(id: String, include: [String]? = nil) async throws -> CreditsSingleRelationshipDataDocument {
+    internal class func creditsIdRelationshipsCategoryGet(id: String, include: [String]? = nil) async throws -> CreditsCategorySingleRelationshipDataDocument {
         do {
             return try await creditsIdRelationshipsCategoryGetWithRequestBuilder(id: id, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -157,9 +157,9 @@ internal class CreditsAPI {
        - name: Client_Credentials
      - parameter id: (path) Credit id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: category (optional)
-     - returns: RequestBuilder<CreditsSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<CreditsCategorySingleRelationshipDataDocument> 
      */
-    internal class func creditsIdRelationshipsCategoryGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CreditsSingleRelationshipDataDocument> {
+    internal class func creditsIdRelationshipsCategoryGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CreditsCategorySingleRelationshipDataDocument> {
         var localVariablePath = "/credits/{id}/relationships/category"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -178,7 +178,7 @@ internal class CreditsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CreditsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreditsCategorySingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

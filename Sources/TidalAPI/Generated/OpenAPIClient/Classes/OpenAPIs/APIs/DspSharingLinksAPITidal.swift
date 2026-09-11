@@ -46,9 +46,9 @@ public enum DspSharingLinksAPITidal {
 	/**
      Get subject relationship (\&quot;to-one\&quot;).
      
-     - returns: DspSharingLinksSingleRelationshipDataDocument
+     - returns: DspSharingLinksSubjectSingleRelationshipDataDocument
      */
-	public static func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksSingleRelationshipDataDocument {
+	public static func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksSubjectSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			DspSharingLinksAPI.dspSharingLinksIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}

@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct UserDiscoveryMixesRelationships: Codable, Hashable {
 
-    public var items: MultiRelationshipDataDocument?
+    public var items: UserDiscoveryMixesItemsMultiRelationshipDataDocument?
 
     public init(
-        items: MultiRelationshipDataDocument? = nil
+        items: UserDiscoveryMixesItemsMultiRelationshipDataDocument? = nil
     ) {
         self.items = items
     }

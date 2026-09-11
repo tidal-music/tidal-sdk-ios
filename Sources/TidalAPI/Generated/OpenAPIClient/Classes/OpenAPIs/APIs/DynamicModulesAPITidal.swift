@@ -173,9 +173,9 @@ public enum DynamicModulesAPITidal {
 	/**
      Get items relationship (\&quot;to-many\&quot;).
      
-     - returns: DynamicModulesMultiRelationshipDataDocument
+     - returns: DynamicModulesItemsMultiRelationshipDataDocument
      */
-	public static func dynamicModulesIdRelationshipsItemsGet(id: String, deviceType: DynamicModulesAPITidal.DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: DynamicModulesAPITidal.SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesMultiRelationshipDataDocument {
+	public static func dynamicModulesIdRelationshipsItemsGet(id: String, deviceType: DynamicModulesAPITidal.DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: DynamicModulesAPITidal.SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			DynamicModulesAPI.dynamicModulesIdRelationshipsItemsGetWithRequestBuilder(id: id, deviceType: deviceType.toDynamicModulesAPIEnum(), systemType: systemType.toDynamicModulesAPIEnum(), clientVersion: clientVersion, refreshSeed: refreshSeed, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include, replaceMedia: replaceMedia)
 		}
@@ -229,9 +229,9 @@ public enum DynamicModulesAPITidal {
 	/**
      Get seedItem relationship (\&quot;to-one\&quot;).
      
-     - returns: DynamicModulesSingleRelationshipDataDocument
+     - returns: DynamicModulesSeedItemSingleRelationshipDataDocument
      */
-	public static func dynamicModulesIdRelationshipsSeedItemGet(id: String, deviceType: DynamicModulesAPITidal.DeviceType_dynamicModulesIdRelationshipsSeedItemGet, systemType: DynamicModulesAPITidal.SystemType_dynamicModulesIdRelationshipsSeedItemGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesSingleRelationshipDataDocument {
+	public static func dynamicModulesIdRelationshipsSeedItemGet(id: String, deviceType: DynamicModulesAPITidal.DeviceType_dynamicModulesIdRelationshipsSeedItemGet, systemType: DynamicModulesAPITidal.SystemType_dynamicModulesIdRelationshipsSeedItemGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesSeedItemSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			DynamicModulesAPI.dynamicModulesIdRelationshipsSeedItemGetWithRequestBuilder(id: id, deviceType: deviceType.toDynamicModulesAPIEnum(), systemType: systemType.toDynamicModulesAPIEnum(), clientVersion: clientVersion, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, replaceMedia: replaceMedia)
 		}

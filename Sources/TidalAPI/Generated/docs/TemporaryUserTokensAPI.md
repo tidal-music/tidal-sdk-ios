@@ -63,7 +63,7 @@ Name | Type | Description  | Notes
 
 # **temporaryUserTokensIdRelationshipsOwnersGet**
 ```swift
-    open class func temporaryUserTokensIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TemporaryUserTokensMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func temporaryUserTokensIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TemporaryUserTokensOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -102,7 +102,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**TemporaryUserTokensMultiRelationshipDataDocument**](TemporaryUserTokensMultiRelationshipDataDocument.md)
+[**TemporaryUserTokensOwnersMultiRelationshipDataDocument**](TemporaryUserTokensOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

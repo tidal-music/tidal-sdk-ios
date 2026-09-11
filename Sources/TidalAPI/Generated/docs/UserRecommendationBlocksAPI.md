@@ -239,7 +239,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsOwnersGet**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationBlocksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationBlocksOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -278,7 +278,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserRecommendationBlocksMultiRelationshipDataDocument**](UserRecommendationBlocksMultiRelationshipDataDocument.md)
+[**UserRecommendationBlocksOwnersMultiRelationshipDataDocument**](UserRecommendationBlocksOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

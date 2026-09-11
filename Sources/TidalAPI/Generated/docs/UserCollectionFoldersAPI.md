@@ -398,7 +398,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsOwnersGet**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionFoldersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionFoldersOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -437,7 +437,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionFoldersMultiRelationshipDataDocument**](UserCollectionFoldersMultiRelationshipDataDocument.md)
+[**UserCollectionFoldersOwnersMultiRelationshipDataDocument**](UserCollectionFoldersOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -452,7 +452,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsUserCollectionGet**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersUserCollectionSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get userCollection relationship (\"to-one\").
@@ -491,7 +491,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionFoldersSingleRelationshipDataDocument**](UserCollectionFoldersSingleRelationshipDataDocument.md)
+[**UserCollectionFoldersUserCollectionSingleRelationshipDataDocument**](UserCollectionFoldersUserCollectionSingleRelationshipDataDocument.md)
 
 ### Authorization
 

@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct TemporaryUserTokensRelationships: Codable, Hashable {
 
-    public var owners: MultiRelationshipDataDocument?
+    public var owners: TemporaryUserTokensOwnersMultiRelationshipDataDocument?
 
     public init(
-        owners: MultiRelationshipDataDocument? = nil
+        owners: TemporaryUserTokensOwnersMultiRelationshipDataDocument? = nil
     ) {
         self.owners = owners
     }

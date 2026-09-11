@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 
 # **userSubscriptionPriceChangesIdRelationshipsDecisionGet**
 ```swift
-    open class func userSubscriptionPriceChangesIdRelationshipsDecisionGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserSubscriptionPriceChangesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userSubscriptionPriceChangesIdRelationshipsDecisionGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get decision relationship (\"to-one\").
@@ -99,7 +99,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserSubscriptionPriceChangesSingleRelationshipDataDocument**](UserSubscriptionPriceChangesSingleRelationshipDataDocument.md)
+[**UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument**](UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument.md)
 
 ### Authorization
 

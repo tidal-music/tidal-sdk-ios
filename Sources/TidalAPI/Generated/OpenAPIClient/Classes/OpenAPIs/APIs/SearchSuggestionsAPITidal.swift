@@ -59,9 +59,9 @@ public enum SearchSuggestionsAPITidal {
 	/**
      Get directHits relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchSuggestionsMultiRelationshipDataDocument
+     - returns: SearchSuggestionsDirectHitsMultiRelationshipDataDocument
      */
-	public static func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiRelationshipDataDocument {
+	public static func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsDirectHitsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
@@ -86,9 +86,9 @@ public enum SearchSuggestionsAPITidal {
 	/**
      Get history relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchSuggestionsMultiRelationshipDataDocument
+     - returns: SearchSuggestionsHistoryMultiRelationshipDataDocument
      */
-	public static func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsMultiRelationshipDataDocument {
+	public static func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsHistoryMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsHistoryGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}

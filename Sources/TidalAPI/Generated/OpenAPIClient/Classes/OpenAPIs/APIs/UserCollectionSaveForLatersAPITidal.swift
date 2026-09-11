@@ -65,9 +65,9 @@ public enum UserCollectionSaveForLatersAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: UserCollectionSaveForLatersMultiRelationshipDataDocument
+     - returns: UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument
      */
-	public static func userCollectionSaveForLatersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionSaveForLatersMultiRelationshipDataDocument {
+	public static func userCollectionSaveForLatersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

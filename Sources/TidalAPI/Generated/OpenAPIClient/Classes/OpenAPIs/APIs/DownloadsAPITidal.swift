@@ -41,9 +41,9 @@ public enum DownloadsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: DownloadsMultiRelationshipDataDocument
+     - returns: DownloadsOwnersMultiRelationshipDataDocument
      */
-	public static func downloadsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> DownloadsMultiRelationshipDataDocument {
+	public static func downloadsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> DownloadsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			DownloadsAPI.downloadsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

@@ -297,7 +297,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOwnersGet**
 ```swift
-    open class func installationsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: InstallationsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: InstallationsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -336,7 +336,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**InstallationsMultiRelationshipDataDocument**](InstallationsMultiRelationshipDataDocument.md)
+[**InstallationsOwnersMultiRelationshipDataDocument**](InstallationsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

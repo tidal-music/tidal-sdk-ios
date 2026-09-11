@@ -29,9 +29,9 @@ public enum ProviderProductInfosAPITidal {
 	/**
      Get provider relationship (\&quot;to-one\&quot;).
      
-     - returns: ProviderProductInfosSingleRelationshipDataDocument
+     - returns: ProviderProductInfosProviderSingleRelationshipDataDocument
      */
-	public static func providerProductInfosIdRelationshipsProviderGet(id: String, include: [String]? = nil) async throws -> ProviderProductInfosSingleRelationshipDataDocument {
+	public static func providerProductInfosIdRelationshipsProviderGet(id: String, include: [String]? = nil) async throws -> ProviderProductInfosProviderSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ProviderProductInfosAPI.providerProductInfosIdRelationshipsProviderGetWithRequestBuilder(id: id, include: include)
 		}
@@ -41,9 +41,9 @@ public enum ProviderProductInfosAPITidal {
 	/**
      Get subject relationship (\&quot;to-one\&quot;).
      
-     - returns: ProviderProductInfosSingleRelationshipDataDocument
+     - returns: ProviderProductInfosSubjectSingleRelationshipDataDocument
      */
-	public static func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosSingleRelationshipDataDocument {
+	public static func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosSubjectSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ProviderProductInfosAPI.providerProductInfosIdRelationshipsSubjectGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
 		}

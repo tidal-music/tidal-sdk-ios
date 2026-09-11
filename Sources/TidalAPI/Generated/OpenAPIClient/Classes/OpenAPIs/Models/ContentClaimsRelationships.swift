@@ -13,13 +13,13 @@ import AnyCodable
 public struct ContentClaimsRelationships: Codable, Hashable {
 
     public var claimedResource: ContentClaimsClaimedResourceSingleRelationshipDataDocument?
-    public var claimingArtist: SingleRelationshipDataDocument?
-    public var owners: MultiRelationshipDataDocument?
+    public var claimingArtist: ContentClaimsClaimingArtistSingleRelationshipDataDocument?
+    public var owners: ContentClaimsOwnersMultiRelationshipDataDocument?
 
     public init(
         claimedResource: ContentClaimsClaimedResourceSingleRelationshipDataDocument? = nil,
-        claimingArtist: SingleRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil
+        claimingArtist: ContentClaimsClaimingArtistSingleRelationshipDataDocument? = nil,
+        owners: ContentClaimsOwnersMultiRelationshipDataDocument? = nil
     ) {
         self.claimedResource = claimedResource
         self.claimingArtist = claimingArtist

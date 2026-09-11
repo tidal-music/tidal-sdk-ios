@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct CommentsRelationships: Codable, Hashable {
 
-    public var ownerProfiles: MultiRelationshipDataDocument?
-    public var owners: MultiRelationshipDataDocument?
-    public var parentComment: SingleRelationshipDataDocument?
+    public var ownerProfiles: CommentsOwnerProfilesMultiRelationshipDataDocument?
+    public var owners: CommentsOwnersMultiRelationshipDataDocument?
+    public var parentComment: CommentsParentCommentSingleRelationshipDataDocument?
 
     public init(
-        ownerProfiles: MultiRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil,
-        parentComment: SingleRelationshipDataDocument? = nil
+        ownerProfiles: CommentsOwnerProfilesMultiRelationshipDataDocument? = nil,
+        owners: CommentsOwnersMultiRelationshipDataDocument? = nil,
+        parentComment: CommentsParentCommentSingleRelationshipDataDocument? = nil
     ) {
         self.ownerProfiles = ownerProfiles
         self.owners = owners
