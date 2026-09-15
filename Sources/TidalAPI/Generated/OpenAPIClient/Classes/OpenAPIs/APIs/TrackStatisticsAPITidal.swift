@@ -31,9 +31,9 @@ public enum TrackStatisticsAPITidal {
      
      - returns: TrackStatisticsOwnersMultiRelationshipDataDocument
      */
-	public static func trackStatisticsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackStatisticsOwnersMultiRelationshipDataDocument {
+	public static func trackStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackStatisticsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			TrackStatisticsAPI.trackStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			TrackStatisticsAPI.trackStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 }

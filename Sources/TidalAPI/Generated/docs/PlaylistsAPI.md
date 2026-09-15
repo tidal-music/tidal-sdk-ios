@@ -306,7 +306,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCollaboratorProfilesGet**
 ```swift
-    open class func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get collaboratorProfiles relationship (\"to-many\").
@@ -319,12 +319,11 @@ Retrieves collaboratorProfiles relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get collaboratorProfiles relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -341,7 +340,6 @@ PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGet(id: id, countryCode
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -416,7 +414,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCollaboratorsGet**
 ```swift
-    open class func playlistsIdRelationshipsCollaboratorsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsCollaboratorsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCollaboratorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsCollaboratorsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get collaborators relationship (\"to-many\").
@@ -429,12 +427,11 @@ Retrieves collaborators relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collaborators (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get collaborators relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -451,7 +448,6 @@ PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGet(id: id, countryCode: count
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collaborators | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -806,7 +802,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsOwnerProfilesGet**
 ```swift
-    open class func playlistsIdRelationshipsOwnerProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsOwnerProfilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsOwnerProfilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get ownerProfiles relationship (\"to-many\").
@@ -819,12 +815,11 @@ Retrieves ownerProfiles relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get ownerProfiles relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -841,7 +836,6 @@ PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGet(id: id, countryCode: count
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -862,7 +856,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsOwnersGet**
 ```swift
-    open class func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -875,12 +869,11 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsOwnersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -897,7 +890,6 @@ PlaylistsAPI.playlistsIdRelationshipsOwnersGet(id: id, countryCode: countryCode,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 

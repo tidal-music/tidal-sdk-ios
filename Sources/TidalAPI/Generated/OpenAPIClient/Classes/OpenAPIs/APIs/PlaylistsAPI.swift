@@ -313,15 +313,14 @@ internal class PlaylistsAPI {
      Get collaboratorProfiles relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsCollaboratorProfilesMultiRelationshipDataDocument {
+    internal class func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsCollaboratorProfilesMultiRelationshipDataDocument {
         do {
-            return try await playlistsIdRelationshipsCollaboratorProfilesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+            return try await playlistsIdRelationshipsCollaboratorProfilesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -339,12 +338,11 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PlaylistsCollaboratorProfilesMultiRelationshipDataDocument> 
      */
-    internal class func playlistsIdRelationshipsCollaboratorProfilesGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsCollaboratorProfilesMultiRelationshipDataDocument> {
+    internal class func playlistsIdRelationshipsCollaboratorProfilesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsCollaboratorProfilesMultiRelationshipDataDocument> {
         var localVariablePath = "/playlists/{id}/relationships/collaboratorProfiles"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -354,7 +352,6 @@ internal class PlaylistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
@@ -426,15 +423,14 @@ internal class PlaylistsAPI {
      Get collaborators relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaborators (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PlaylistsCollaboratorsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsCollaboratorsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsCollaboratorsMultiRelationshipDataDocument {
+    internal class func playlistsIdRelationshipsCollaboratorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsCollaboratorsMultiRelationshipDataDocument {
         do {
-            return try await playlistsIdRelationshipsCollaboratorsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+            return try await playlistsIdRelationshipsCollaboratorsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -452,12 +448,11 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaborators (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PlaylistsCollaboratorsMultiRelationshipDataDocument> 
      */
-    internal class func playlistsIdRelationshipsCollaboratorsGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsCollaboratorsMultiRelationshipDataDocument> {
+    internal class func playlistsIdRelationshipsCollaboratorsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsCollaboratorsMultiRelationshipDataDocument> {
         var localVariablePath = "/playlists/{id}/relationships/collaborators"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -467,7 +462,6 @@ internal class PlaylistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
@@ -844,15 +838,14 @@ internal class PlaylistsAPI {
      Get ownerProfiles relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PlaylistsOwnerProfilesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsOwnerProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsOwnerProfilesMultiRelationshipDataDocument {
+    internal class func playlistsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsOwnerProfilesMultiRelationshipDataDocument {
         do {
-            return try await playlistsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+            return try await playlistsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -870,12 +863,11 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PlaylistsOwnerProfilesMultiRelationshipDataDocument> 
      */
-    internal class func playlistsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsOwnerProfilesMultiRelationshipDataDocument> {
+    internal class func playlistsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsOwnerProfilesMultiRelationshipDataDocument> {
         var localVariablePath = "/playlists/{id}/relationships/ownerProfiles"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -885,7 +877,6 @@ internal class PlaylistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
@@ -905,15 +896,14 @@ internal class PlaylistsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PlaylistsOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsOwnersMultiRelationshipDataDocument {
+    internal class func playlistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsOwnersMultiRelationshipDataDocument {
         do {
-            return try await playlistsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor).execute().body
+            return try await playlistsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -931,12 +921,11 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
-     - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PlaylistsOwnersMultiRelationshipDataDocument> 
      */
-    internal class func playlistsIdRelationshipsOwnersGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsOwnersMultiRelationshipDataDocument> {
+    internal class func playlistsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<PlaylistsOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/playlists/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -946,7 +935,6 @@ internal class PlaylistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])

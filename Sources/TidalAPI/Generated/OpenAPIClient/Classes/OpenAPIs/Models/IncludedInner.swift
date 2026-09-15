@@ -32,6 +32,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case dspSharingLinksResourceObject(DspSharingLinksResourceObject)
     case dynamicModulesResourceObject(DynamicModulesResourceObject)
     case dynamicPagesResourceObject(DynamicPagesResourceObject)
+    case folderItemsResourceObject(FolderItemsResourceObject)
+    case foldersResourceObject(FoldersResourceObject)
     case genresResourceObject(GenresResourceObject)
     case installationsResourceObject(InstallationsResourceObject)
     case lyricsResourceObject(LyricsResourceObject)
@@ -131,6 +133,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .dynamicModulesResourceObject(let value):
             try container.encode(value)
         case .dynamicPagesResourceObject(let value):
+            try container.encode(value)
+        case .folderItemsResourceObject(let value):
+            try container.encode(value)
+        case .foldersResourceObject(let value):
             try container.encode(value)
         case .genresResourceObject(let value):
             try container.encode(value)
@@ -315,6 +321,12 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "dynamicPages":
             let value = try DynamicPagesResourceObject(from: decoder)
             self = .dynamicPagesResourceObject(value)
+        case "folderItems":
+            let value = try FolderItemsResourceObject(from: decoder)
+            self = .folderItemsResourceObject(value)
+        case "folders":
+            let value = try FoldersResourceObject(from: decoder)
+            self = .foldersResourceObject(value)
         case "genres":
             let value = try GenresResourceObject(from: decoder)
             self = .genresResourceObject(value)
@@ -508,6 +520,8 @@ extension IncludedInner: Identifiable {
         case .dspSharingLinksResourceObject(let value): return value.id
         case .dynamicModulesResourceObject(let value): return value.id
         case .dynamicPagesResourceObject(let value): return value.id
+        case .folderItemsResourceObject(let value): return value.id
+        case .foldersResourceObject(let value): return value.id
         case .genresResourceObject(let value): return value.id
         case .installationsResourceObject(let value): return value.id
         case .lyricsResourceObject(let value): return value.id

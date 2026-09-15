@@ -31,9 +31,9 @@ public enum AlbumStatisticsAPITidal {
      
      - returns: AlbumStatisticsOwnersMultiRelationshipDataDocument
      */
-	public static func albumStatisticsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumStatisticsOwnersMultiRelationshipDataDocument {
+	public static func albumStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumStatisticsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumStatisticsAPI.albumStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			AlbumStatisticsAPI.albumStatisticsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 }
