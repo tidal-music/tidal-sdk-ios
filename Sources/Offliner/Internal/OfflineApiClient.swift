@@ -438,23 +438,23 @@ private final class IncludedItemsMap {
 				guard let includedItem = get(type: track.type, id: track.id),
 					  let rels = track.relationships else { continue }
 				let album = rels.albums?.data?.first.map { (type: $0.type, id: $0.id) }
-				wireRelationships(for: includedItem, album: album, artists: rels.artists, coverArt: nil)
+				wireRelationships(for: includedItem, album: album, artists: rels.artists?.data, coverArt: nil)
 
 			case .videosResourceObject(let video):
 				guard let includedItem = get(type: video.type, id: video.id),
 					  let rels = video.relationships else { continue }
 				let album = rels.albums?.data?.first.map { (type: $0.type, id: $0.id) }
-				wireRelationships(for: includedItem, album: album, artists: rels.artists, coverArt: rels.thumbnailArt)
+				wireRelationships(for: includedItem, album: album, artists: rels.artists?.data, coverArt: rels.thumbnailArt?.data)
 
 			case .albumsResourceObject(let album):
 				guard let includedItem = get(type: album.type, id: album.id),
 					  let rels = album.relationships else { continue }
-				wireRelationships(for: includedItem, album: nil, artists: rels.artists, coverArt: rels.coverArt)
+				wireRelationships(for: includedItem, album: nil, artists: rels.artists?.data, coverArt: rels.coverArt?.data)
 
 			case .playlistsResourceObject(let playlist):
 				guard let includedItem = get(type: playlist.type, id: playlist.id),
 					  let rels = playlist.relationships else { continue }
-				wireRelationships(for: includedItem, album: nil, artists: nil, coverArt: rels.coverArt)
+				wireRelationships(for: includedItem, album: nil, artists: nil, coverArt: rels.coverArt?.data)
 
 			default:
 				break
@@ -473,20 +473,20 @@ private final class IncludedItemsMap {
 	private func wireRelationships(
 		for item: IncludedItem,
 		album: (type: String, id: String)?,
-		artists: MultiRelationshipDataDocument?,
-		coverArt: MultiRelationshipDataDocument?
+		artists: [ResourceIdentifier]?,
+		coverArt: [ResourceIdentifier]?
 	) {
 		if let album {
 			item.album = get(type: album.type, id: album.id)
 		}
 
-		if let artistsData = artists?.data, !artistsData.isEmpty {
-			item.artists = artistsData.compactMap { artistData in
+		if let artists, !artists.isEmpty {
+			item.artists = artists.compactMap { artistData in
 				get(type: artistData.type, id: artistData.id)
 			}
 		}
 
-		if let coverArtData = coverArt?.data?.first {
+		if let coverArtData = coverArt?.first {
 			item.coverArt = get(type: coverArtData.type, id: coverArtData.id)
 		}
 	}
