@@ -54,7 +54,7 @@ final class TidalAPIResponseErrorManager: BaseErrorManager, ErrorManager {
 		// Legacy ErrorResponse handling for backward compatibility
 		if let errorResponse = error as? ErrorResponse,
 		   case let .error(statusCode, _, _, _) = errorResponse,
-		   statusCode >= 400 && statusCode < 500 && statusCode != 429
+		   statusCode >= 400, statusCode < 500, statusCode != 429
 		{
 			return .NONE
 		}

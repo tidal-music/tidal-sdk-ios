@@ -1,6 +1,8 @@
 import Foundation
 import TidalAPI
 
+// MARK: - StoreUserCollectionTracksHandler
+
 final class StoreUserCollectionTracksHandler {
 	private let offlineStore: OfflineStore
 
@@ -13,6 +15,8 @@ final class StoreUserCollectionTracksHandler {
 	}
 }
 
+// MARK: - InternalUserCollectionTracksTask
+
 private final class InternalUserCollectionTracksTask: InternalTask {
 	let id: String
 
@@ -20,7 +24,7 @@ private final class InternalUserCollectionTracksTask: InternalTask {
 	private let offlineStore: OfflineStore
 
 	init(task: StoreUserCollectionTracksTask, offlineStore: OfflineStore) {
-		self.id = task.id
+		id = task.id
 		self.task = task
 		self.offlineStore = offlineStore
 	}
