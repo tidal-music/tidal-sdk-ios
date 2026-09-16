@@ -21,7 +21,7 @@ public actor Download {
 
 	private let continuation: AsyncStream<Event>.Continuation
 
-	internal init(
+	init(
 		title: String,
 		artists: [String],
 		imageURL: URL?,
@@ -33,11 +33,11 @@ public actor Download {
 		self.relatedCollection = relatedCollection
 
 		let (stream, continuation) = AsyncStream<Event>.makeStream()
-		self.events = stream
+		events = stream
 		self.continuation = continuation
 	}
 
-	internal func updateState(_ newState: State) {
+	func updateState(_ newState: State) {
 		continuation.yield(.state(newState))
 
 		if newState == .completed || newState == .failed {
@@ -45,7 +45,7 @@ public actor Download {
 		}
 	}
 
-	internal func updateProgress(_ newProgress: Double) {
+	func updateProgress(_ newProgress: Double) {
 		continuation.yield(.progress(newProgress))
 	}
 }
