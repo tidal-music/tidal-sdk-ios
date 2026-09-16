@@ -11,135 +11,181 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		let id: String
 	}
 
-	private(set) var tasks: [OfflineTask] = []
-	private(set) var addedItems: [RecordedItem] = []
-	private(set) var removedItems: [RecordedItem] = []
-	private(set) var completedTaskIds: [String] = []
-	var taskIdCounter = 0
+	// TaskRunner calls the backend concurrently. Keep recordings and task mutations atomic;
+	// Array.removeAll racing another completion can otherwise trap with an out-of-range index.
+	private let lock = NSLock()
+	private struct State {
+		var tasks: [OfflineTask] = []
+		var addedItems: [RecordedItem] = []
+		var removedItems: [RecordedItem] = []
+		var completedTaskIds: [String] = []
+		var taskIdCounter: Int = 0
+		var pendingCollectionsPages: [(collections: [OfflineCollection], cursor: String?)] = []
+		var pendingCollection: OfflineCollection?
+		var pendingCollectionResponses: [OfflineCollection?]?
+		var getOfflineCollectionError: Error?
+		var getOfflineCollectionCallCount: Int = 0
+	}
 
-	var pendingCollectionsPages: [(collections: [OfflineCollection], cursor: String?)] = []
-	var pendingCollection: OfflineCollection?
-	var pendingCollectionResponses: [OfflineCollection?]?
-	var getOfflineCollectionError: Error?
-	private(set) var getOfflineCollectionCallCount = 0
+	private var storage = State()
+
+	var tasks: [OfflineTask] { lock.withLock { storage.tasks } }
+
+	var addedItems: [RecordedItem] { lock.withLock { storage.addedItems } }
+
+	var removedItems: [RecordedItem] { lock.withLock { storage.removedItems } }
+
+	var completedTaskIds: [String] { lock.withLock { storage.completedTaskIds } }
+
+	var pendingCollectionsPages: [(collections: [OfflineCollection], cursor: String?)] {
+		get { lock.withLock { storage.pendingCollectionsPages } }
+		set { lock.withLock { storage.pendingCollectionsPages = newValue } }
+	}
+
+	var pendingCollection: OfflineCollection? {
+		get { lock.withLock { storage.pendingCollection } }
+		set { lock.withLock { storage.pendingCollection = newValue } }
+	}
+
+	var pendingCollectionResponses: [OfflineCollection?]? {
+		get { lock.withLock { storage.pendingCollectionResponses } }
+		set { lock.withLock { storage.pendingCollectionResponses = newValue } }
+	}
+
+	var getOfflineCollectionError: Error? {
+		get { lock.withLock { storage.getOfflineCollectionError } }
+		set { lock.withLock { storage.getOfflineCollectionError = newValue } }
+	}
+
+	var getOfflineCollectionCallCount: Int { lock.withLock { storage.getOfflineCollectionCallCount } }
 
 	func enqueueTasks(_ newTasks: [OfflineTask]) {
-		tasks.append(contentsOf: newTasks)
+		lock.withLock {
+			storage.tasks.append(contentsOf: newTasks)
+		}
 	}
 
 	func addItem(type: ResourceType, id: String) async throws {
-		addedItems.append(RecordedItem(type: type, id: id))
-		let taskId = "task-\(taskIdCounter)"
-		let position = taskIdCounter + 1
-		taskIdCounter += 1
+		lock.withLock {
+			storage.addedItems.append(RecordedItem(type: type, id: id))
+			let taskId = "task-\(storage.taskIdCounter)"
+			let position = storage.taskIdCounter + 1
+			storage.taskIdCounter += 1
 
-		switch type {
-		case .track:
-			let task = StoreTrackTask(
-				id: taskId,
-				track: TracksResourceObject(id: id, type: "tracks"),
-				artists: [],
-				artwork: nil,
-				collectionResourceType: "albums",
-				collectionResourceId: "stub-album",
-				volume: 1,
-				position: position
-			)
-			tasks.append(.storeTrack(task))
+			switch type {
+			case .track:
+				let task = StoreTrackTask(
+					id: taskId,
+					track: TracksResourceObject(id: id, type: "tracks"),
+					artists: [],
+					artwork: nil,
+					collectionResourceType: "albums",
+					collectionResourceId: "stub-album",
+					volume: 1,
+					position: position
+				)
+				storage.tasks.append(.storeTrack(task))
 
-		case .video:
-			let task = StoreVideoTask(
-				id: taskId,
-				video: VideosResourceObject(id: id, type: "videos"),
-				artists: [],
-				artwork: nil,
-				collectionResourceType: "albums",
-				collectionResourceId: "stub-album",
-				volume: 1,
-				position: position
-			)
-			tasks.append(.storeVideo(task))
+			case .video:
+				let task = StoreVideoTask(
+					id: taskId,
+					video: VideosResourceObject(id: id, type: "videos"),
+					artists: [],
+					artwork: nil,
+					collectionResourceType: "albums",
+					collectionResourceId: "stub-album",
+					volume: 1,
+					position: position
+				)
+				storage.tasks.append(.storeVideo(task))
 
-		case .album:
-			let task = StoreAlbumTask(
-				id: taskId,
-				album: AlbumsResourceObject(id: id, type: "albums"),
-				artists: [],
-				artwork: nil
-			)
-			tasks.append(.storeAlbum(task))
+			case .album:
+				let task = StoreAlbumTask(
+					id: taskId,
+					album: AlbumsResourceObject(id: id, type: "albums"),
+					artists: [],
+					artwork: nil
+				)
+				storage.tasks.append(.storeAlbum(task))
 
-		case .playlist:
-			let task = StorePlaylistTask(
-				id: taskId,
-				playlist: PlaylistsResourceObject(id: id, type: "playlists"),
-				artwork: nil
-			)
-			tasks.append(.storePlaylist(task))
+			case .playlist:
+				let task = StorePlaylistTask(
+					id: taskId,
+					playlist: PlaylistsResourceObject(id: id, type: "playlists"),
+					artwork: nil
+				)
+				storage.tasks.append(.storePlaylist(task))
 
-		case .userCollectionTracks:
-			let task = StoreUserCollectionTracksTask(
-				id: taskId,
-				resourceId: id
-			)
-			tasks.append(.storeUserCollectionTracks(task))
+			case .userCollectionTracks:
+				let task = StoreUserCollectionTracksTask(
+					id: taskId,
+					resourceId: id
+				)
+				storage.tasks.append(.storeUserCollectionTracks(task))
+			}
 		}
 	}
 
 	func removeItem(type: ResourceType, id: String) async throws {
-		removedItems.append(RecordedItem(type: type, id: id))
+		lock.withLock {
+			storage.removedItems.append(RecordedItem(type: type, id: id))
 
-		let taskId = "task-\(taskIdCounter)"
-		taskIdCounter += 1
+			let taskId = "task-\(storage.taskIdCounter)"
+			storage.taskIdCounter += 1
 
-		switch type {
-		case .track:
-			tasks.append(.removeItem(RemoveItemTask(
-				id: taskId,
-				resourceType: "tracks",
-				resourceId: id,
-				collectionResourceType: "albums",
-				collectionResourceId: "stub-album"
-			)))
-		case .video:
-			tasks.append(.removeItem(RemoveItemTask(
-				id: taskId,
-				resourceType: "videos",
-				resourceId: id,
-				collectionResourceType: "albums",
-				collectionResourceId: "stub-album"
-			)))
-		case .album:
-			tasks.append(.removeCollection(RemoveCollectionTask(
-				id: taskId,
-				resourceType: "albums",
-				resourceId: id
-			)))
-		case .playlist:
-			tasks.append(.removeCollection(RemoveCollectionTask(
-				id: taskId,
-				resourceType: "playlists",
-				resourceId: id
-			)))
-		case .userCollectionTracks:
-			tasks.append(.removeCollection(RemoveCollectionTask(
-				id: taskId,
-				resourceType: "userCollectionTracks",
-				resourceId: id
-			)))
+			switch type {
+			case .track:
+				storage.tasks.append(.removeItem(RemoveItemTask(
+					id: taskId,
+					resourceType: "tracks",
+					resourceId: id,
+					collectionResourceType: "albums",
+					collectionResourceId: "stub-album"
+				)))
+			case .video:
+				storage.tasks.append(.removeItem(RemoveItemTask(
+					id: taskId,
+					resourceType: "videos",
+					resourceId: id,
+					collectionResourceType: "albums",
+					collectionResourceId: "stub-album"
+				)))
+			case .album:
+				storage.tasks.append(.removeCollection(RemoveCollectionTask(
+					id: taskId,
+					resourceType: "albums",
+					resourceId: id
+				)))
+			case .playlist:
+				storage.tasks.append(.removeCollection(RemoveCollectionTask(
+					id: taskId,
+					resourceType: "playlists",
+					resourceId: id
+				)))
+			case .userCollectionTracks:
+				storage.tasks.append(.removeCollection(RemoveCollectionTask(
+					id: taskId,
+					resourceType: "userCollectionTracks",
+					resourceId: id
+				)))
+			}
 		}
 	}
 
 	func getTasks(cursor: String?) async throws -> (tasks: [OfflineTask], cursor: String?) {
-		(tasks, nil)
+		lock.withLock {
+			(storage.tasks, nil)
+		}
 	}
 
 	func updateTask(taskId: String, state: Download.State) async throws {
-		if state == .completed {
-			completedTaskIds.append(taskId)
-		}
-		if state == .completed || state == .failed {
-			tasks.removeAll { $0.id == taskId }
+		lock.withLock {
+			if state == .completed {
+				storage.completedTaskIds.append(taskId)
+			}
+			if state == .completed || state == .failed {
+				storage.tasks.removeAll { $0.id == taskId }
+			}
 		}
 	}
 
@@ -153,57 +199,64 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		type: OfflineCollectionType,
 		cursor: String?
 	) async throws -> (collections: [OfflineCollection], cursor: String?) {
-		guard !pendingCollectionsPages.isEmpty else { return ([], nil) }
-		return pendingCollectionsPages.removeFirst()
+		lock.withLock {
+			guard !storage.pendingCollectionsPages.isEmpty else {
+				return ([], nil)
+			}
+			return storage.pendingCollectionsPages.removeFirst()
+		}
 	}
 
 	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
-		getOfflineCollectionCallCount += 1
-		if let getOfflineCollectionError {
-			throw getOfflineCollectionError
+		try lock.withLock {
+			storage.getOfflineCollectionCallCount += 1
+			if let error = storage.getOfflineCollectionError {
+				throw error
+			}
+			if var responses = storage.pendingCollectionResponses, !responses.isEmpty {
+				let response = responses.removeFirst()
+				storage.pendingCollectionResponses = responses
+				return response
+			}
+			if let collection = storage.pendingCollection {
+				return collection
+			}
+			return derivedPendingCollection(type: type, id: id)
 		}
-		if var responses = pendingCollectionResponses, !responses.isEmpty {
-			let response = responses.removeFirst()
-			pendingCollectionResponses = responses
-			return response
-		}
-		if let pendingCollection {
-			return pendingCollection
-		}
-		return derivedPendingCollection(type: type, id: id)
 	}
 
 	private func derivedPendingCollection(type: OfflineCollectionType, id: String) -> OfflineCollection? {
-		guard hasPendingStoreTasks(type: type, id: id) else { return nil }
+		guard hasPendingStoreTasks(type: type, id: id) else {
+			return nil
+		}
 
-		let catalogMetadata: OfflineCollection.Metadata
-		switch type {
+		let catalogMetadata: OfflineCollection.Metadata = switch type {
 		case .albums:
-			catalogMetadata = .album(.mock(id: id))
+			.album(.mock(id: id))
 		case .playlists:
-			catalogMetadata = .playlist(.mock(id: id))
+			.playlist(.mock(id: id))
 		case .userCollectionTracks:
-			catalogMetadata = .userCollectionTracks(id: id)
+			.userCollectionTracks(id: id)
 		}
 
 		return .mock(catalogMetadata: catalogMetadata, artworkURL: nil, state: .pending)
 	}
 
 	private func hasPendingStoreTasks(type: OfflineCollectionType, id: String) -> Bool {
-		tasks.contains { offlineTask in
+		storage.tasks.contains { offlineTask in
 			switch offlineTask {
-			case .storeTrack(let task):
-				return task.collectionResourceType == type.rawValue && task.collectionResourceId == id
-			case .storeVideo(let task):
-				return task.collectionResourceType == type.rawValue && task.collectionResourceId == id
-			case .storeAlbum(let task):
-				return type == .albums && task.album.id == id
-			case .storePlaylist(let task):
-				return type == .playlists && task.playlist.id == id
+			case let .storeTrack(task):
+				task.collectionResourceType == type.rawValue && task.collectionResourceId == id
+			case let .storeVideo(task):
+				task.collectionResourceType == type.rawValue && task.collectionResourceId == id
+			case let .storeAlbum(task):
+				type == .albums && task.album.id == id
+			case let .storePlaylist(task):
+				type == .playlists && task.playlist.id == id
 			case .storeUserCollectionTracks:
-				return type == .userCollectionTracks
+				type == .userCollectionTracks
 			case .removeItem, .removeCollection:
-				return false
+				false
 			}
 		}
 	}
