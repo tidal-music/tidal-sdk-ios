@@ -3,6 +3,24 @@ import GRDB
 import XCTest
 
 final class MediaItemDownloadTests: OfflinerTestCase {
+	func testConcurrentCompletionsKeepBackendTaskStateConsistent() async throws {
+		let backend = StubOfflineApiClient()
+		let count = 128
+		for index in 0 ..< count {
+			try await backend.addItem(type: .track, id: "track-\(index)")
+		}
+		let taskIds = backend.tasks.map(\.id)
+		try await withThrowingTaskGroup(of: Void.self) { group in
+			for id in taskIds {
+				group.addTask { try await backend.updateTask(taskId: id, state: .completed) }
+			}
+			try await group.waitForAll()
+		}
+		XCTAssertTrue(backend.tasks.isEmpty)
+		XCTAssertEqual(backend.completedTaskIds.count, count)
+		XCTAssertEqual(Set(backend.completedTaskIds), Set(taskIds))
+	}
+
 	// MARK: - Track Download Tests
 
 	func testDownloadTrackCreatesDownload() async throws {
