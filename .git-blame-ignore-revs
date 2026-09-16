@@ -1,1 +1,4 @@
 # Add commits which should be ignored
+
+# TM-2038: SwiftFormat Sources and Tests with the pinned formatter
+5e5babf082e6429fd5a2f489939747d60158908c
