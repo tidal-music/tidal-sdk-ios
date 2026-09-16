@@ -100,23 +100,11 @@ public enum PlaylistsAPITidal {
 	/**
      Get collaboratorProfiles relationship (\&quot;to-many\&quot;).
      
-     - returns: PlaylistsMultiRelationshipDataDocument
+     - returns: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsCollaboratorProfilesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
-		}
-	}
-
-
-	/**
-     Add to collaboratorProfiles relationship (\&quot;to-many\&quot;).
-     
-     - returns: MutationResponseDocument
-     */
-	public static func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
-		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipAddOperationPayload: playlistsCollaboratorProfilesRelationshipAddOperationPayload)
+			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -124,11 +112,11 @@ public enum PlaylistsAPITidal {
 	/**
      Get collaborators relationship (\&quot;to-many\&quot;).
      
-     - returns: PlaylistsMultiRelationshipDataDocument
+     - returns: PlaylistsCollaboratorsMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsCollaboratorsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsCollaboratorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsCollaboratorsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -136,9 +124,9 @@ public enum PlaylistsAPITidal {
 	/**
      Get coverArt relationship (\&quot;to-many\&quot;).
      
-     - returns: PlaylistsMultiRelationshipDataDocument
+     - returns: PlaylistsCoverArtMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsCoverArtMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
 		}
@@ -243,11 +231,11 @@ public enum PlaylistsAPITidal {
 	/**
      Get ownerProfiles relationship (\&quot;to-many\&quot;).
      
-     - returns: PlaylistsMultiRelationshipDataDocument
+     - returns: PlaylistsOwnerProfilesMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsOwnerProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsOwnerProfilesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -255,11 +243,11 @@ public enum PlaylistsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: PlaylistsMultiRelationshipDataDocument
+     - returns: PlaylistsOwnersMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsOwnersGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+			PlaylistsAPI.playlistsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 

@@ -13,13 +13,13 @@ import AnyCodable
 public struct UserRecommendationBlocksRelationships: Codable, Hashable {
 
     public var artists: UserRecommendationBlocksArtistsMultiRelationshipDataDocument?
-    public var owners: MultiRelationshipDataDocument?
+    public var owners: UserRecommendationBlocksOwnersMultiRelationshipDataDocument?
     public var tracks: UserRecommendationBlocksTracksMultiRelationshipDataDocument?
     public var videos: UserRecommendationBlocksVideosMultiRelationshipDataDocument?
 
     public init(
         artists: UserRecommendationBlocksArtistsMultiRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil,
+        owners: UserRecommendationBlocksOwnersMultiRelationshipDataDocument? = nil,
         tracks: UserRecommendationBlocksTracksMultiRelationshipDataDocument? = nil,
         videos: UserRecommendationBlocksVideosMultiRelationshipDataDocument? = nil
     ) {

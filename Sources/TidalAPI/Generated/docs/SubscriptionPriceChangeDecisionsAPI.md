@@ -118,7 +118,7 @@ Name | Type | Description  | Notes
 
 # **subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet**
 ```swift
-    open class func subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet(id: String, include: [String]? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet(id: String, include: [String]? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get priceChange relationship (\"to-one\").
@@ -155,7 +155,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SubscriptionPriceChangeDecisionsSingleRelationshipDataDocument**](SubscriptionPriceChangeDecisionsSingleRelationshipDataDocument.md)
+[**SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument**](SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument.md)
 
 ### Authorization
 

@@ -10,7 +10,6 @@ Method | HTTP request | Description
 [**playlistsIdPatch**](PlaylistsAPI.md#playlistsidpatch) | **PATCH** /playlists/{id} | Update single playlist.
 [**playlistsIdRelationshipsCollaboratorProfilesDelete**](PlaylistsAPI.md#playlistsidrelationshipscollaboratorprofilesdelete) | **DELETE** /playlists/{id}/relationships/collaboratorProfiles | Delete from collaboratorProfiles relationship (\&quot;to-many\&quot;).
 [**playlistsIdRelationshipsCollaboratorProfilesGet**](PlaylistsAPI.md#playlistsidrelationshipscollaboratorprofilesget) | **GET** /playlists/{id}/relationships/collaboratorProfiles | Get collaboratorProfiles relationship (\&quot;to-many\&quot;).
-[**playlistsIdRelationshipsCollaboratorProfilesPost**](PlaylistsAPI.md#playlistsidrelationshipscollaboratorprofilespost) | **POST** /playlists/{id}/relationships/collaboratorProfiles | Add to collaboratorProfiles relationship (\&quot;to-many\&quot;).
 [**playlistsIdRelationshipsCollaboratorsGet**](PlaylistsAPI.md#playlistsidrelationshipscollaboratorsget) | **GET** /playlists/{id}/relationships/collaborators | Get collaborators relationship (\&quot;to-many\&quot;).
 [**playlistsIdRelationshipsCoverArtGet**](PlaylistsAPI.md#playlistsidrelationshipscoverartget) | **GET** /playlists/{id}/relationships/coverArt | Get coverArt relationship (\&quot;to-many\&quot;).
 [**playlistsIdRelationshipsCoverArtPatch**](PlaylistsAPI.md#playlistsidrelationshipscoverartpatch) | **PATCH** /playlists/{id}/relationships/coverArt | Update coverArt relationship (\&quot;to-many\&quot;).
@@ -306,7 +305,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCollaboratorProfilesGet**
 ```swift
-    open class func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get collaboratorProfiles relationship (\"to-many\").
@@ -319,12 +318,11 @@ Retrieves collaboratorProfiles relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get collaboratorProfiles relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -341,13 +339,12 @@ PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGet(id: id, countryCode
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 
-[**PlaylistsMultiRelationshipDataDocument**](PlaylistsMultiRelationshipDataDocument.md)
+[**PlaylistsCollaboratorProfilesMultiRelationshipDataDocument**](PlaylistsCollaboratorProfilesMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -360,63 +357,9 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **playlistsIdRelationshipsCollaboratorProfilesPost**
-```swift
-    open class func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
-```
-
-Add to collaboratorProfiles relationship (\"to-many\").
-
-Adds item(s) to collaboratorProfiles relationship.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | Playlist id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let playlistsCollaboratorProfilesRelationshipAddOperationPayload = PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload(data: [PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // PlaylistsCollaboratorProfilesRelationshipAddOperationPayload |  (optional)
-
-// Add to collaboratorProfiles relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesPost(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipAddOperationPayload: playlistsCollaboratorProfilesRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | Playlist id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
- **playlistsCollaboratorProfilesRelationshipAddOperationPayload** | [**PlaylistsCollaboratorProfilesRelationshipAddOperationPayload**](PlaylistsCollaboratorProfilesRelationshipAddOperationPayload.md) |  | [optional] 
-
-### Return type
-
-[**MutationResponseDocument**](MutationResponseDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: application/vnd.api+json
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **playlistsIdRelationshipsCollaboratorsGet**
 ```swift
-    open class func playlistsIdRelationshipsCollaboratorsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCollaboratorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsCollaboratorsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get collaborators relationship (\"to-many\").
@@ -429,12 +372,11 @@ Retrieves collaborators relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collaborators (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get collaborators relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -451,13 +393,12 @@ PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGet(id: id, countryCode: count
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collaborators | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 
-[**PlaylistsMultiRelationshipDataDocument**](PlaylistsMultiRelationshipDataDocument.md)
+[**PlaylistsCollaboratorsMultiRelationshipDataDocument**](PlaylistsCollaboratorsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -472,7 +413,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCoverArtGet**
 ```swift
-    open class func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsCoverArtMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get coverArt relationship (\"to-many\").
@@ -513,7 +454,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlaylistsMultiRelationshipDataDocument**](PlaylistsMultiRelationshipDataDocument.md)
+[**PlaylistsCoverArtMultiRelationshipDataDocument**](PlaylistsCoverArtMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -766,7 +707,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let playlistsItemsRelationshipAddOperationPayload = PlaylistsItemsRelationshipAddOperation_Payload(data: [PlaylistsItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")], meta: PlaylistsItemsRelationshipAddOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipAddOperationPayload |  (optional)
+let playlistsItemsRelationshipAddOperationPayload = PlaylistsItemsRelationshipAddOperation_Payload(data: [PlaylistsItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")], meta: PlaylistsItemsRelationshipAddOperation_Payload_Meta(onDuplicates: "onDuplicates_example", positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
 PlaylistsAPI.playlistsIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload) { (response, error) in
@@ -806,7 +747,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsOwnerProfilesGet**
 ```swift
-    open class func playlistsIdRelationshipsOwnerProfilesGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsOwnerProfilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get ownerProfiles relationship (\"to-many\").
@@ -819,12 +760,11 @@ Retrieves ownerProfiles relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get ownerProfiles relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -841,13 +781,12 @@ PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGet(id: id, countryCode: count
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 
-[**PlaylistsMultiRelationshipDataDocument**](PlaylistsMultiRelationshipDataDocument.md)
+[**PlaylistsOwnerProfilesMultiRelationshipDataDocument**](PlaylistsOwnerProfilesMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -862,7 +801,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsOwnersGet**
 ```swift
-    open class func playlistsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -875,12 +814,11 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsOwnersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+PlaylistsAPI.playlistsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -897,13 +835,12 @@ PlaylistsAPI.playlistsIdRelationshipsOwnersGet(id: id, countryCode: countryCode,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 
-[**PlaylistsMultiRelationshipDataDocument**](PlaylistsMultiRelationshipDataDocument.md)
+[**PlaylistsOwnersMultiRelationshipDataDocument**](PlaylistsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

@@ -12,21 +12,21 @@ import AnyCodable
 
 public struct PlaylistsRelationships: Codable, Hashable {
 
-    public var collaboratorProfiles: MultiRelationshipDataDocument?
-    public var collaborators: MultiRelationshipDataDocument?
-    public var coverArt: MultiRelationshipDataDocument?
+    public var collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument?
+    public var collaborators: PlaylistsCollaboratorsMultiRelationshipDataDocument?
+    public var coverArt: PlaylistsCoverArtMultiRelationshipDataDocument?
     public var items: PlaylistsItemsMultiRelationshipDataDocument?
-    public var ownerProfiles: MultiRelationshipDataDocument?
-    public var owners: MultiRelationshipDataDocument?
+    public var ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipDataDocument?
+    public var owners: PlaylistsOwnersMultiRelationshipDataDocument?
     public var suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument?
 
     public init(
-        collaboratorProfiles: MultiRelationshipDataDocument? = nil,
-        collaborators: MultiRelationshipDataDocument? = nil,
-        coverArt: MultiRelationshipDataDocument? = nil,
+        collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument? = nil,
+        collaborators: PlaylistsCollaboratorsMultiRelationshipDataDocument? = nil,
+        coverArt: PlaylistsCoverArtMultiRelationshipDataDocument? = nil,
         items: PlaylistsItemsMultiRelationshipDataDocument? = nil,
-        ownerProfiles: MultiRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil,
+        ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipDataDocument? = nil,
+        owners: PlaylistsOwnersMultiRelationshipDataDocument? = nil,
         suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument? = nil
     ) {
         self.collaboratorProfiles = collaboratorProfiles

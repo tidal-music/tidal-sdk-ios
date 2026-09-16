@@ -68,10 +68,10 @@ internal class ProviderOwnersAPI {
      - parameter id: (path) Provider owner id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: ProviderOwnersMultiRelationshipDataDocument
+     - returns: ProviderOwnersOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providerOwnersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ProviderOwnersMultiRelationshipDataDocument {
+    internal class func providerOwnersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ProviderOwnersOwnersMultiRelationshipDataDocument {
         do {
             return try await providerOwnersIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -90,9 +90,9 @@ internal class ProviderOwnersAPI {
      - parameter id: (path) Provider owner id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<ProviderOwnersMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<ProviderOwnersOwnersMultiRelationshipDataDocument> 
      */
-    internal class func providerOwnersIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ProviderOwnersMultiRelationshipDataDocument> {
+    internal class func providerOwnersIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ProviderOwnersOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/providerOwners/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -112,7 +112,7 @@ internal class ProviderOwnersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ProviderOwnersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ProviderOwnersOwnersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -122,10 +122,10 @@ internal class ProviderOwnersAPI {
      
      - parameter id: (path) Provider owner id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider (optional)
-     - returns: ProviderOwnersSingleRelationshipDataDocument
+     - returns: ProviderOwnersProviderSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providerOwnersIdRelationshipsProviderGet(id: String, include: [String]? = nil) async throws -> ProviderOwnersSingleRelationshipDataDocument {
+    internal class func providerOwnersIdRelationshipsProviderGet(id: String, include: [String]? = nil) async throws -> ProviderOwnersProviderSingleRelationshipDataDocument {
         do {
             return try await providerOwnersIdRelationshipsProviderGetWithRequestBuilder(id: id, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -143,9 +143,9 @@ internal class ProviderOwnersAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Provider owner id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider (optional)
-     - returns: RequestBuilder<ProviderOwnersSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<ProviderOwnersProviderSingleRelationshipDataDocument> 
      */
-    internal class func providerOwnersIdRelationshipsProviderGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<ProviderOwnersSingleRelationshipDataDocument> {
+    internal class func providerOwnersIdRelationshipsProviderGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<ProviderOwnersProviderSingleRelationshipDataDocument> {
         var localVariablePath = "/providerOwners/{id}/relationships/provider"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -164,7 +164,7 @@ internal class ProviderOwnersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<ProviderOwnersSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<ProviderOwnersProviderSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

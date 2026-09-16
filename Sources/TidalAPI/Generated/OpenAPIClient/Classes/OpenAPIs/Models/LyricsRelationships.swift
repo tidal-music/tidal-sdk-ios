@@ -12,11 +12,11 @@ import AnyCodable
 
 public struct LyricsRelationships: Codable, Hashable {
 
-    public var owners: MultiRelationshipDataDocument?
+    public var owners: LyricsOwnersMultiRelationshipDataDocument?
     public var track: LyricsTrackSingleRelationshipDataDocument?
 
     public init(
-        owners: MultiRelationshipDataDocument? = nil,
+        owners: LyricsOwnersMultiRelationshipDataDocument? = nil,
         track: LyricsTrackSingleRelationshipDataDocument? = nil
     ) {
         self.owners = owners

@@ -71,7 +71,7 @@ Name | Type | Description  | Notes
 
 # **providerProductInfosIdRelationshipsProviderGet**
 ```swift
-    open class func providerProductInfosIdRelationshipsProviderGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ProviderProductInfosSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func providerProductInfosIdRelationshipsProviderGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ProviderProductInfosProviderSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get provider relationship (\"to-one\").
@@ -108,7 +108,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ProviderProductInfosSingleRelationshipDataDocument**](ProviderProductInfosSingleRelationshipDataDocument.md)
+[**ProviderProductInfosProviderSingleRelationshipDataDocument**](ProviderProductInfosProviderSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -123,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **providerProductInfosIdRelationshipsSubjectGet**
 ```swift
-    open class func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ProviderProductInfosSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ProviderProductInfosSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -164,7 +164,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ProviderProductInfosSingleRelationshipDataDocument**](ProviderProductInfosSingleRelationshipDataDocument.md)
+[**ProviderProductInfosSubjectSingleRelationshipDataDocument**](ProviderProductInfosSubjectSingleRelationshipDataDocument.md)
 
 ### Authorization
 

@@ -13,13 +13,13 @@ import AnyCodable
 public struct UserCollectionFoldersRelationships: Codable, Hashable {
 
     public var items: UserCollectionFoldersItemsMultiRelationshipDataDocument?
-    public var owners: MultiRelationshipDataDocument?
-    public var userCollection: SingleRelationshipDataDocument?
+    public var owners: UserCollectionFoldersOwnersMultiRelationshipDataDocument?
+    public var userCollection: UserCollectionFoldersUserCollectionSingleRelationshipDataDocument?
 
     public init(
         items: UserCollectionFoldersItemsMultiRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil,
-        userCollection: SingleRelationshipDataDocument? = nil
+        owners: UserCollectionFoldersOwnersMultiRelationshipDataDocument? = nil,
+        userCollection: UserCollectionFoldersUserCollectionSingleRelationshipDataDocument? = nil
     ) {
         self.items = items
         self.owners = owners

@@ -79,7 +79,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsAlbumsGet**
 ```swift
-    open class func searchResultsIdRelationshipsAlbumsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsAlbumsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsAlbumsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsAlbumsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsAlbumsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsAlbumsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsAlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -130,7 +130,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchResultsMultiRelationshipDataDocument**](SearchResultsMultiRelationshipDataDocument.md)
+[**SearchResultsAlbumsMultiRelationshipDataDocument**](SearchResultsAlbumsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -145,7 +145,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsArtistsGet**
 ```swift
-    open class func searchResultsIdRelationshipsArtistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsArtistsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsArtistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsArtistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsArtistsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsArtistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -196,7 +196,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchResultsMultiRelationshipDataDocument**](SearchResultsMultiRelationshipDataDocument.md)
+[**SearchResultsArtistsMultiRelationshipDataDocument**](SearchResultsArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -211,7 +211,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsPlaylistsGet**
 ```swift
-    open class func searchResultsIdRelationshipsPlaylistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsPlaylistsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsPlaylistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsPlaylistsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsPlaylistsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsPlaylistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsPlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get playlists relationship (\"to-many\").
@@ -262,7 +262,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchResultsMultiRelationshipDataDocument**](SearchResultsMultiRelationshipDataDocument.md)
+[**SearchResultsPlaylistsMultiRelationshipDataDocument**](SearchResultsPlaylistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -277,7 +277,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsTopHitsGet**
 ```swift
-    open class func searchResultsIdRelationshipsTopHitsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTopHitsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsTopHitsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsTopHitsGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTopHitsGet? = nil, systemType: SystemType_searchResultsIdRelationshipsTopHitsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsTopHitsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get topHits relationship (\"to-many\").
@@ -328,7 +328,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchResultsMultiRelationshipDataDocument**](SearchResultsMultiRelationshipDataDocument.md)
+[**SearchResultsTopHitsMultiRelationshipDataDocument**](SearchResultsTopHitsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -343,7 +343,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsTracksGet**
 ```swift
-    open class func searchResultsIdRelationshipsTracksGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTracksGet? = nil, systemType: SystemType_searchResultsIdRelationshipsTracksGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsTracksGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTracksGet? = nil, systemType: SystemType_searchResultsIdRelationshipsTracksGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get tracks relationship (\"to-many\").
@@ -394,7 +394,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchResultsMultiRelationshipDataDocument**](SearchResultsMultiRelationshipDataDocument.md)
+[**SearchResultsTracksMultiRelationshipDataDocument**](SearchResultsTracksMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -409,7 +409,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsVideosGet**
 ```swift
-    open class func searchResultsIdRelationshipsVideosGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsVideosGet? = nil, systemType: SystemType_searchResultsIdRelationshipsVideosGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsVideosGet(id: String, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsVideosGet? = nil, systemType: SystemType_searchResultsIdRelationshipsVideosGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get videos relationship (\"to-many\").
@@ -460,7 +460,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SearchResultsMultiRelationshipDataDocument**](SearchResultsMultiRelationshipDataDocument.md)
+[**SearchResultsVideosMultiRelationshipDataDocument**](SearchResultsVideosMultiRelationshipDataDocument.md)
 
 ### Authorization
 

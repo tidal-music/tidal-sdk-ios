@@ -16,25 +16,37 @@ public struct PlayQueuesCurrentResourceIdentifierMeta: Codable, Hashable {
     public var batchId: UUID
     public var itemId: String
     public var legacySource: LegacySource?
+    public var position: String?
+    public var positionUpdatedAt: Date?
     public var replacement: ReplacementProvenance?
+    public var updatedByInstallationId: String?
 
     public init(
         batchId: UUID,
         itemId: String,
         legacySource: LegacySource? = nil,
-        replacement: ReplacementProvenance? = nil
+        position: String? = nil,
+        positionUpdatedAt: Date? = nil,
+        replacement: ReplacementProvenance? = nil,
+        updatedByInstallationId: String? = nil
     ) {
         self.batchId = batchId
         self.itemId = itemId
         self.legacySource = legacySource
+        self.position = position
+        self.positionUpdatedAt = positionUpdatedAt
         self.replacement = replacement
+        self.updatedByInstallationId = updatedByInstallationId
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case batchId
         case itemId
         case legacySource
+        case position
+        case positionUpdatedAt
         case replacement
+        case updatedByInstallationId
     }
 
     // Encodable protocol methods
@@ -44,6 +56,9 @@ public struct PlayQueuesCurrentResourceIdentifierMeta: Codable, Hashable {
         try container.encode(batchId, forKey: .batchId)
         try container.encode(itemId, forKey: .itemId)
         try container.encodeIfPresent(legacySource, forKey: .legacySource)
+        try container.encodeIfPresent(position, forKey: .position)
+        try container.encodeIfPresent(positionUpdatedAt, forKey: .positionUpdatedAt)
         try container.encodeIfPresent(replacement, forKey: .replacement)
+        try container.encodeIfPresent(updatedByInstallationId, forKey: .updatedByInstallationId)
     }
 }

@@ -175,10 +175,10 @@ internal class CollaborationInvitesAPI {
      - parameter id: (path) Collaboration invite id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: CollaborationInvitesMultiRelationshipDataDocument
+     - returns: CollaborationInvitesOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func collaborationInvitesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CollaborationInvitesMultiRelationshipDataDocument {
+    internal class func collaborationInvitesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CollaborationInvitesOwnersMultiRelationshipDataDocument {
         do {
             return try await collaborationInvitesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -197,9 +197,9 @@ internal class CollaborationInvitesAPI {
      - parameter id: (path) Collaboration invite id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<CollaborationInvitesMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<CollaborationInvitesOwnersMultiRelationshipDataDocument> 
      */
-    internal class func collaborationInvitesIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<CollaborationInvitesMultiRelationshipDataDocument> {
+    internal class func collaborationInvitesIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<CollaborationInvitesOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/collaborationInvites/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -219,7 +219,7 @@ internal class CollaborationInvitesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CollaborationInvitesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CollaborationInvitesOwnersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -230,10 +230,10 @@ internal class CollaborationInvitesAPI {
      - parameter id: (path) Collaboration invite id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
-     - returns: CollaborationInvitesSingleRelationshipDataDocument
+     - returns: CollaborationInvitesSubjectSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleRelationshipDataDocument {
+    internal class func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSubjectSingleRelationshipDataDocument {
         do {
             return try await collaborationInvitesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -252,9 +252,9 @@ internal class CollaborationInvitesAPI {
      - parameter id: (path) Collaboration invite id 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
-     - returns: RequestBuilder<CollaborationInvitesSingleRelationshipDataDocument> 
+     - returns: RequestBuilder<CollaborationInvitesSubjectSingleRelationshipDataDocument> 
      */
-    internal class func collaborationInvitesIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesSingleRelationshipDataDocument> {
+    internal class func collaborationInvitesIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesSubjectSingleRelationshipDataDocument> {
         var localVariablePath = "/collaborationInvites/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -274,7 +274,7 @@ internal class CollaborationInvitesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CollaborationInvitesSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CollaborationInvitesSubjectSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

@@ -15,6 +15,7 @@ public struct CommentsCreateOperationPayloadDataRelationshipsSubjectData: Codabl
     public enum ModelType: String, Codable, CaseIterable {
         case albums = "albums"
         case tracks = "tracks"
+        case tracksourcefiles = "trackSourceFiles"
     }
     public var id: String
     public var type: ModelType

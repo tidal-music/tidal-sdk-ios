@@ -41,9 +41,9 @@ public enum ArtworksAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: ArtworksMultiRelationshipDataDocument
+     - returns: ArtworksOwnersMultiRelationshipDataDocument
      */
-	public static func artworksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtworksMultiRelationshipDataDocument {
+	public static func artworksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtworksOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtworksAPI.artworksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

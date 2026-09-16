@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **description** | **String** | Playlist description | [optional] 
 **duration** | **String** | Duration of playlist (ISO 8601) | [optional] 
 **externalLinks** | [ExternalLink] |  | 
+**hasGenerations** | **Bool** | Whether the playlist has AI generations | [optional] 
 **lastModifiedAt** | **Date** | Datetime of last modification of the playlist (ISO 8601) | 
 **name** | **String** | Playlist name | 
 **numberOfFollowers** | **Int** | The amount of followers of the playlist | 

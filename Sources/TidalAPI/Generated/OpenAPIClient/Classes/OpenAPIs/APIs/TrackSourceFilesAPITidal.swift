@@ -29,9 +29,9 @@ public enum TrackSourceFilesAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: TrackSourceFilesMultiRelationshipDataDocument
+     - returns: TrackSourceFilesOwnersMultiRelationshipDataDocument
      */
-	public static func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackSourceFilesMultiRelationshipDataDocument {
+	public static func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			TrackSourceFilesAPI.trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

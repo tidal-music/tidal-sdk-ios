@@ -44,9 +44,9 @@ public enum PurchasesAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: PurchasesMultiRelationshipDataDocument
+     - returns: PurchasesOwnersMultiRelationshipDataDocument
      */
-	public static func purchasesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PurchasesMultiRelationshipDataDocument {
+	public static func purchasesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PurchasesOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			PurchasesAPI.purchasesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -56,9 +56,9 @@ public enum PurchasesAPITidal {
 	/**
      Get subject relationship (\&quot;to-one\&quot;).
      
-     - returns: PurchasesSingleRelationshipDataDocument
+     - returns: PurchasesSubjectSingleRelationshipDataDocument
      */
-	public static func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PurchasesSingleRelationshipDataDocument {
+	public static func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PurchasesSubjectSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			PurchasesAPI.purchasesIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}

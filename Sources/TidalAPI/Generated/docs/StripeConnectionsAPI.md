@@ -63,7 +63,7 @@ Name | Type | Description  | Notes
 
 # **stripeConnectionsIdRelationshipsOwnersGet**
 ```swift
-    open class func stripeConnectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: StripeConnectionsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func stripeConnectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: StripeConnectionsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -102,7 +102,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**StripeConnectionsMultiRelationshipDataDocument**](StripeConnectionsMultiRelationshipDataDocument.md)
+[**StripeConnectionsOwnersMultiRelationshipDataDocument**](StripeConnectionsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **stripeConnectionsPost**
 ```swift
-    open class func stripeConnectionsPost(countryCode: String? = nil, idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: StripeConnectionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func stripeConnectionsPost(idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: StripeConnectionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single stripeConnection.
@@ -129,12 +129,11 @@ Creates a new stripeConnection.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let stripeConnectionsCreateOperationPayload = StripeConnectionsCreateOperation_Payload(data: StripeConnectionsCreateOperation_Payload_Data(attributes: StripeConnectionsCreateOperation_Payload_Data_Attributes(integrationType: "integrationType_example", refreshUrl: "refreshUrl_example", returnUrl: "returnUrl_example"), type: "type_example"), meta: StripeConnectionsCreateOperation_Payload_Meta(integrationType: "integrationType_example", refreshUrl: "refreshUrl_example", returnUrl: "returnUrl_example")) // StripeConnectionsCreateOperationPayload |  (optional)
 
 // Create single stripeConnection.
-StripeConnectionsAPI.stripeConnectionsPost(countryCode: countryCode, idempotencyKey: idempotencyKey, stripeConnectionsCreateOperationPayload: stripeConnectionsCreateOperationPayload) { (response, error) in
+StripeConnectionsAPI.stripeConnectionsPost(idempotencyKey: idempotencyKey, stripeConnectionsCreateOperationPayload: stripeConnectionsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -150,7 +149,6 @@ StripeConnectionsAPI.stripeConnectionsPost(countryCode: countryCode, idempotency
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **stripeConnectionsCreateOperationPayload** | [**StripeConnectionsCreateOperationPayload**](StripeConnectionsCreateOperationPayload.md) |  | [optional] 
 

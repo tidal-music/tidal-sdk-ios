@@ -69,7 +69,7 @@ Name | Type | Description  | Notes
 
 # **purchasesIdRelationshipsOwnersGet**
 ```swift
-    open class func purchasesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PurchasesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func purchasesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PurchasesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -108,7 +108,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PurchasesMultiRelationshipDataDocument**](PurchasesMultiRelationshipDataDocument.md)
+[**PurchasesOwnersMultiRelationshipDataDocument**](PurchasesOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -123,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **purchasesIdRelationshipsSubjectGet**
 ```swift
-    open class func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PurchasesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PurchasesSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -162,7 +162,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PurchasesSingleRelationshipDataDocument**](PurchasesSingleRelationshipDataDocument.md)
+[**PurchasesSubjectSingleRelationshipDataDocument**](PurchasesSubjectSingleRelationshipDataDocument.md)
 
 ### Authorization
 

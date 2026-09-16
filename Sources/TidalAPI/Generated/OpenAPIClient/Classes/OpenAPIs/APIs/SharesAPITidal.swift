@@ -41,9 +41,9 @@ public enum SharesAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: SharesMultiRelationshipDataDocument
+     - returns: SharesOwnersMultiRelationshipDataDocument
      */
-	public static func sharesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SharesMultiRelationshipDataDocument {
+	public static func sharesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SharesOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SharesAPI.sharesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -53,9 +53,9 @@ public enum SharesAPITidal {
 	/**
      Get sharedResources relationship (\&quot;to-many\&quot;).
      
-     - returns: SharesMultiRelationshipDataDocument
+     - returns: SharesSharedResourcesMultiRelationshipDataDocument
      */
-	public static func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiRelationshipDataDocument {
+	public static func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesSharedResourcesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SharesAPI.sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}

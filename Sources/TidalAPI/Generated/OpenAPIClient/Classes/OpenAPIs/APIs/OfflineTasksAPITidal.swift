@@ -53,9 +53,9 @@ public enum OfflineTasksAPITidal {
 	/**
      Get collection relationship (\&quot;to-one\&quot;).
      
-     - returns: OfflineTasksSingleRelationshipDataDocument
+     - returns: OfflineTasksCollectionSingleRelationshipDataDocument
      */
-	public static func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
+	public static func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksCollectionSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			OfflineTasksAPI.offlineTasksIdRelationshipsCollectionGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
@@ -65,9 +65,9 @@ public enum OfflineTasksAPITidal {
 	/**
      Get item relationship (\&quot;to-one\&quot;).
      
-     - returns: OfflineTasksSingleRelationshipDataDocument
+     - returns: OfflineTasksItemSingleRelationshipDataDocument
      */
-	public static func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksSingleRelationshipDataDocument {
+	public static func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksItemSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			OfflineTasksAPI.offlineTasksIdRelationshipsItemGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
@@ -77,9 +77,9 @@ public enum OfflineTasksAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: OfflineTasksMultiRelationshipDataDocument
+     - returns: OfflineTasksOwnersMultiRelationshipDataDocument
      */
-	public static func offlineTasksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> OfflineTasksMultiRelationshipDataDocument {
+	public static func offlineTasksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> OfflineTasksOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			OfflineTasksAPI.offlineTasksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

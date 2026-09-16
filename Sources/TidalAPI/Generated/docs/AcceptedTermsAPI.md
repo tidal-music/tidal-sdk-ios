@@ -68,7 +68,7 @@ Name | Type | Description  | Notes
 
 # **acceptedTermsIdRelationshipsOwnersGet**
 ```swift
-    open class func acceptedTermsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AcceptedTermsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func acceptedTermsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AcceptedTermsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -107,7 +107,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AcceptedTermsMultiRelationshipDataDocument**](AcceptedTermsMultiRelationshipDataDocument.md)
+[**AcceptedTermsOwnersMultiRelationshipDataDocument**](AcceptedTermsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -122,7 +122,7 @@ Name | Type | Description  | Notes
 
 # **acceptedTermsIdRelationshipsTermsGet**
 ```swift
-    open class func acceptedTermsIdRelationshipsTermsGet(id: String, include: [String]? = nil, completion: @escaping (_ data: AcceptedTermsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func acceptedTermsIdRelationshipsTermsGet(id: String, include: [String]? = nil, completion: @escaping (_ data: AcceptedTermsTermsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get terms relationship (\"to-one\").
@@ -159,7 +159,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AcceptedTermsSingleRelationshipDataDocument**](AcceptedTermsSingleRelationshipDataDocument.md)
+[**AcceptedTermsTermsSingleRelationshipDataDocument**](AcceptedTermsTermsSingleRelationshipDataDocument.md)
 
 ### Authorization
 

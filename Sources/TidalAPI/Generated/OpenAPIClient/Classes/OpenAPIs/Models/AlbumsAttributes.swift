@@ -44,7 +44,7 @@ public struct AlbumsAttributes: Codable, Hashable {
     /** Available usage for this album. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
     @available(*, deprecated, message: "This property is deprecated.")
     public var availability: [Availability]?
-    public var barcodeId: String
+    public var barcodeId: String?
     public var copyright: Copyright?
     /** Datetime of album creation (ISO 8601) */
     public var createdAt: Date?
@@ -76,7 +76,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         ai: Bool? = nil,
         albumType: AlbumType,
         availability: [Availability]? = nil,
-        barcodeId: String,
+        barcodeId: String?,
         copyright: Copyright? = nil,
         createdAt: Date? = nil,
         duration: String,

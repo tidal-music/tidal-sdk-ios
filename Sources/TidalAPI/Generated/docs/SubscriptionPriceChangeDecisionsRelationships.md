@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**priceChange** | [**SingleRelationshipDataDocument**](SingleRelationshipDataDocument.md) |  | [optional] 
+**priceChange** | [**SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument**](SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

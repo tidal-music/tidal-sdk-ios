@@ -177,7 +177,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdPatch**
 ```swift
-    open class func artistClaimsIdPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsIdPatch(id: String, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single artistClaim.
@@ -190,12 +190,11 @@ Updates existing artistClaim.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: "id_example", type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example", redirectUri: "redirectUri_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
 
 // Update single artistClaim.
-ArtistClaimsAPI.artistClaimsIdPatch(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdPatch(id: id, idempotencyKey: idempotencyKey, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -212,7 +211,6 @@ ArtistClaimsAPI.artistClaimsIdPatch(id: id, countryCode: countryCode, idempotenc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistClaimsUpdateOperationPayload** | [**ArtistClaimsUpdateOperationPayload**](ArtistClaimsUpdateOperationPayload.md) |  | [optional] 
 
@@ -233,7 +231,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsAcceptedArtistsGet**
 ```swift
-    open class func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get acceptedArtists relationship (\"to-many\").
@@ -274,7 +272,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistClaimsMultiRelationshipDataDocument**](ArtistClaimsMultiRelationshipDataDocument.md)
+[**ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument**](ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -289,7 +287,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsAcceptedArtistsPatch**
 ```swift
-    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update acceptedArtists relationship (\"to-many\").
@@ -302,12 +300,11 @@ Updates acceptedArtists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload = ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload(data: [ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload |  (optional)
 
 // Update acceptedArtists relationship (\"to-many\").
-ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, idempotencyKey: idempotencyKey, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -324,7 +321,6 @@ ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, countryC
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload** | [**ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload**](ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
@@ -345,7 +341,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsOwnersGet**
 ```swift
-    open class func artistClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistClaimsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -384,7 +380,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistClaimsMultiRelationshipDataDocument**](ArtistClaimsMultiRelationshipDataDocument.md)
+[**ArtistClaimsOwnersMultiRelationshipDataDocument**](ArtistClaimsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -399,7 +395,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsRecommendedArtistsGet**
 ```swift
-    open class func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get recommendedArtists relationship (\"to-many\").
@@ -440,7 +436,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ArtistClaimsMultiRelationshipDataDocument**](ArtistClaimsMultiRelationshipDataDocument.md)
+[**ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument**](ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -455,7 +451,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsPost**
 ```swift
-    open class func artistClaimsPost(countryCode: String? = nil, idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistClaimsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimsPost(idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistClaimsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artistClaim.
@@ -467,12 +463,11 @@ Creates a new artistClaim.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 let artistClaimsCreateOperationPayload = ArtistClaimsCreateOperation_Payload(data: ArtistClaimsCreateOperation_Payload_Data(attributes: ArtistClaimsCreateOperation_Payload_Data_Attributes(artistId: "artistId_example", provider: "provider_example"), type: "type_example"), meta: ArtistClaimsCreateOperation_Payload_Meta(nonce: "nonce_example", redirectUrl: "redirectUrl_example")) // ArtistClaimsCreateOperationPayload |  (optional)
 
 // Create single artistClaim.
-ArtistClaimsAPI.artistClaimsPost(countryCode: countryCode, idempotencyKey: idempotencyKey, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload) { (response, error) in
+ArtistClaimsAPI.artistClaimsPost(idempotencyKey: idempotencyKey, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -488,7 +483,6 @@ ArtistClaimsAPI.artistClaimsPost(countryCode: countryCode, idempotencyKey: idemp
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
  **artistClaimsCreateOperationPayload** | [**ArtistClaimsCreateOperationPayload**](ArtistClaimsCreateOperationPayload.md) |  | [optional] 
 

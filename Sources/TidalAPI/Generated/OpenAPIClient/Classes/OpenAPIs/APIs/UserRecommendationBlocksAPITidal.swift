@@ -65,9 +65,9 @@ public enum UserRecommendationBlocksAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: UserRecommendationBlocksMultiRelationshipDataDocument
+     - returns: UserRecommendationBlocksOwnersMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationBlocksMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationBlocksOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}

@@ -218,7 +218,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let albumsUpdateOperationPayload = AlbumsUpdateOperation_Payload(data: AlbumsUpdateOperation_Payload_Data(attributes: AlbumsUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", albumType: "albumType_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumsUpdateOperation_Payload_Data_Relationships(genres: AlbumsUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumsUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsUpdateOperationPayload |  (optional)
+let albumsUpdateOperationPayload = AlbumsUpdateOperation_Payload(data: AlbumsUpdateOperation_Payload_Data(attributes: AlbumsUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", albumType: "albumType_example", barcodeId: "barcodeId_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumsUpdateOperation_Payload_Data_Relationships(genres: AlbumsUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumsUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsUpdateOperationPayload |  (optional)
 
 // Update single album.
 AlbumsAPI.albumsIdPatch(id: id, idempotencyKey: idempotencyKey, albumsUpdateOperationPayload: albumsUpdateOperationPayload) { (response, error) in
@@ -258,7 +258,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsAlbumStatisticsGet**
 ```swift
-    open class func albumsIdRelationshipsAlbumStatisticsGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsAlbumStatisticsGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsAlbumStatisticsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albumStatistics relationship (\"to-one\").
@@ -297,7 +297,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsSingleRelationshipDataDocument**](AlbumsSingleRelationshipDataDocument.md)
+[**AlbumsAlbumStatisticsSingleRelationshipDataDocument**](AlbumsAlbumStatisticsSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -312,7 +312,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsArtistsGet**
 ```swift
-    open class func albumsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -357,7 +357,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
+[**AlbumsArtistsMultiRelationshipDataDocument**](AlbumsArtistsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -372,7 +372,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsCoverArtGet**
 ```swift
-    open class func albumsIdRelationshipsCoverArtGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsCoverArtGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsCoverArtMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get coverArt relationship (\"to-many\").
@@ -415,7 +415,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
+[**AlbumsCoverArtMultiRelationshipDataDocument**](AlbumsCoverArtMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -484,7 +484,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsGenresGet**
 ```swift
-    open class func albumsIdRelationshipsGenresGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsGenresGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsGenresMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get genres relationship (\"to-many\").
@@ -527,7 +527,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
+[**AlbumsGenresMultiRelationshipDataDocument**](AlbumsGenresMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -656,7 +656,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsOwnersGet**
 ```swift
-    open class func albumsIdRelationshipsOwnersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -669,13 +669,12 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
 
 // Get owners relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsOwnersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
+AlbumsAPI.albumsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -692,14 +691,13 @@ AlbumsAPI.albumsIdRelationshipsOwnersGet(id: id, countryCode: countryCode, inclu
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
- **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
 
 ### Return type
 
-[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
+[**AlbumsOwnersMultiRelationshipDataDocument**](AlbumsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -714,7 +712,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsPriceConfigGet**
 ```swift
-    open class func albumsIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsPriceConfigSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get priceConfig relationship (\"to-one\").
@@ -755,7 +753,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsSingleRelationshipDataDocument**](AlbumsSingleRelationshipDataDocument.md)
+[**AlbumsPriceConfigSingleRelationshipDataDocument**](AlbumsPriceConfigSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -770,7 +768,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsProvidersGet**
 ```swift
-    open class func albumsIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsProvidersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get providers relationship (\"to-many\").
@@ -813,7 +811,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
+[**AlbumsProvidersMultiRelationshipDataDocument**](AlbumsProvidersMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -828,7 +826,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsReplacementGet**
 ```swift
-    open class func albumsIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsReplacementSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get replacement relationship (\"to-one\").
@@ -871,7 +869,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsSingleRelationshipDataDocument**](AlbumsSingleRelationshipDataDocument.md)
+[**AlbumsReplacementSingleRelationshipDataDocument**](AlbumsReplacementSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -886,7 +884,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsSharesGet**
 ```swift
-    open class func albumsIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSharesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get shares relationship (\"to-many\").
@@ -929,7 +927,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
+[**AlbumsSharesMultiRelationshipDataDocument**](AlbumsSharesMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -944,7 +942,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsSimilarAlbumsGet**
 ```swift
-    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSimilarAlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarAlbums relationship (\"to-many\").
@@ -989,7 +987,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsMultiRelationshipDataDocument**](AlbumsMultiRelationshipDataDocument.md)
+[**AlbumsSimilarAlbumsMultiRelationshipDataDocument**](AlbumsSimilarAlbumsMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -1060,7 +1058,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsUsageRulesGet**
 ```swift
-    open class func albumsIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsUsageRulesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get usageRules relationship (\"to-one\").
@@ -1101,7 +1099,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AlbumsSingleRelationshipDataDocument**](AlbumsSingleRelationshipDataDocument.md)
+[**AlbumsUsageRulesSingleRelationshipDataDocument**](AlbumsUsageRulesSingleRelationshipDataDocument.md)
 
 ### Authorization
 

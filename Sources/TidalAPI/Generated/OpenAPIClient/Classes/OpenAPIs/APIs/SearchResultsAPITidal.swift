@@ -147,9 +147,9 @@ public enum SearchResultsAPITidal {
 	/**
      Get albums relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchResultsMultiRelationshipDataDocument
+     - returns: SearchResultsAlbumsMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsAlbumsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsAlbumsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsAlbumsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsAlbumsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsAlbumsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsAlbumsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsAlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
 		}
@@ -218,9 +218,9 @@ public enum SearchResultsAPITidal {
 	/**
      Get artists relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchResultsMultiRelationshipDataDocument
+     - returns: SearchResultsArtistsMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsArtistsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsArtistsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsArtistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsArtistsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsArtistsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsArtistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
 		}
@@ -289,9 +289,9 @@ public enum SearchResultsAPITidal {
 	/**
      Get playlists relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchResultsMultiRelationshipDataDocument
+     - returns: SearchResultsPlaylistsMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsPlaylistsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsPlaylistsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsPlaylistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsPlaylistsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsPlaylistsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsPlaylistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsPlaylistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
 		}
@@ -360,9 +360,9 @@ public enum SearchResultsAPITidal {
 	/**
      Get topHits relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchResultsMultiRelationshipDataDocument
+     - returns: SearchResultsTopHitsMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsTopHitsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsTopHitsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsTopHitsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsTopHitsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsTopHitsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsTopHitsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsTopHitsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
 		}
@@ -431,9 +431,9 @@ public enum SearchResultsAPITidal {
 	/**
      Get tracks relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchResultsMultiRelationshipDataDocument
+     - returns: SearchResultsTracksMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsTracksGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsTracksGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsTracksGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsTracksGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsTracksGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsTracksGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsTracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
 		}
@@ -502,9 +502,9 @@ public enum SearchResultsAPITidal {
 	/**
      Get videos relationship (\&quot;to-many\&quot;).
      
-     - returns: SearchResultsMultiRelationshipDataDocument
+     - returns: SearchResultsVideosMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsVideosGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsVideosGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsVideosGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsVideosGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsVideosGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsVideosGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsVideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SearchResultsAPI.searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
 		}

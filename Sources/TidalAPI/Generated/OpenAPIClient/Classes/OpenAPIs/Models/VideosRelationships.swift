@@ -13,25 +13,25 @@ import AnyCodable
 public struct VideosRelationships: Codable, Hashable {
 
     public var albums: VideosAlbumsMultiRelationshipDataDocument?
-    public var artists: MultiRelationshipDataDocument?
-    public var credits: MultiRelationshipDataDocument?
-    public var providers: MultiRelationshipDataDocument?
+    public var artists: VideosArtistsMultiRelationshipDataDocument?
+    public var credits: VideosCreditsMultiRelationshipDataDocument?
+    public var providers: VideosProvidersMultiRelationshipDataDocument?
     public var replacement: VideosReplacementSingleRelationshipDataDocument?
     public var similarVideos: VideosSimilarVideosMultiRelationshipDataDocument?
     public var suggestedVideos: VideosSuggestedVideosMultiRelationshipDataDocument?
-    public var thumbnailArt: MultiRelationshipDataDocument?
-    public var usageRules: SingleRelationshipDataDocument?
+    public var thumbnailArt: VideosThumbnailArtMultiRelationshipDataDocument?
+    public var usageRules: VideosUsageRulesSingleRelationshipDataDocument?
 
     public init(
         albums: VideosAlbumsMultiRelationshipDataDocument? = nil,
-        artists: MultiRelationshipDataDocument? = nil,
-        credits: MultiRelationshipDataDocument? = nil,
-        providers: MultiRelationshipDataDocument? = nil,
+        artists: VideosArtistsMultiRelationshipDataDocument? = nil,
+        credits: VideosCreditsMultiRelationshipDataDocument? = nil,
+        providers: VideosProvidersMultiRelationshipDataDocument? = nil,
         replacement: VideosReplacementSingleRelationshipDataDocument? = nil,
         similarVideos: VideosSimilarVideosMultiRelationshipDataDocument? = nil,
         suggestedVideos: VideosSuggestedVideosMultiRelationshipDataDocument? = nil,
-        thumbnailArt: MultiRelationshipDataDocument? = nil,
-        usageRules: SingleRelationshipDataDocument? = nil
+        thumbnailArt: VideosThumbnailArtMultiRelationshipDataDocument? = nil,
+        usageRules: VideosUsageRulesSingleRelationshipDataDocument? = nil
     ) {
         self.albums = albums
         self.artists = artists

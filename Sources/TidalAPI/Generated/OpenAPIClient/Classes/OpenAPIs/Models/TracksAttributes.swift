@@ -75,7 +75,7 @@ public struct TracksAttributes: Codable, Hashable {
     /** Track links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
     /** International Standard Recording Code (ISRC) */
-    public var isrc: String
+    public var isrc: String?
     /** Key */
     public var key: Key
     /** The scale of the key */
@@ -101,7 +101,7 @@ public struct TracksAttributes: Codable, Hashable {
         duration: String,
         explicit: Bool,
         externalLinks: [ExternalLink]? = nil,
-        isrc: String,
+        isrc: String?,
         key: Key,
         keyScale: KeyScale,
         mediaTags: [String],

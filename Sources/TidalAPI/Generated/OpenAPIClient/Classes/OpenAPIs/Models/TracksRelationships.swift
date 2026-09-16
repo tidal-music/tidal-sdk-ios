@@ -13,43 +13,43 @@ import AnyCodable
 public struct TracksRelationships: Codable, Hashable {
 
     public var albums: TracksAlbumsMultiRelationshipDataDocument?
-    public var artists: MultiRelationshipDataDocument?
-    public var credits: MultiRelationshipDataDocument?
-    public var download: SingleRelationshipDataDocument?
-    public var genres: MultiRelationshipDataDocument?
-    public var lyrics: MultiRelationshipDataDocument?
-    public var metadataStatus: SingleRelationshipDataDocument?
-    public var owners: MultiRelationshipDataDocument?
-    public var priceConfig: SingleRelationshipDataDocument?
-    public var providers: MultiRelationshipDataDocument?
-    public var radio: MultiRelationshipDataDocument?
+    public var artists: TracksArtistsMultiRelationshipDataDocument?
+    public var credits: TracksCreditsMultiRelationshipDataDocument?
+    public var download: TracksDownloadSingleRelationshipDataDocument?
+    public var genres: TracksGenresMultiRelationshipDataDocument?
+    public var lyrics: TracksLyricsMultiRelationshipDataDocument?
+    public var metadataStatus: TracksMetadataStatusSingleRelationshipDataDocument?
+    public var owners: TracksOwnersMultiRelationshipDataDocument?
+    public var priceConfig: TracksPriceConfigSingleRelationshipDataDocument?
+    public var providers: TracksProvidersMultiRelationshipDataDocument?
+    public var radio: TracksRadioMultiRelationshipDataDocument?
     public var replacement: TracksReplacementSingleRelationshipDataDocument?
-    public var shares: MultiRelationshipDataDocument?
+    public var shares: TracksSharesMultiRelationshipDataDocument?
     public var similarTracks: TracksSimilarTracksMultiRelationshipDataDocument?
-    public var sourceFile: SingleRelationshipDataDocument?
+    public var sourceFile: TracksSourceFileSingleRelationshipDataDocument?
     public var suggestedTracks: TracksSuggestedTracksMultiRelationshipDataDocument?
-    public var trackStatistics: SingleRelationshipDataDocument?
-    public var usageRules: SingleRelationshipDataDocument?
+    public var trackStatistics: TracksTrackStatisticsSingleRelationshipDataDocument?
+    public var usageRules: TracksUsageRulesSingleRelationshipDataDocument?
 
     public init(
         albums: TracksAlbumsMultiRelationshipDataDocument? = nil,
-        artists: MultiRelationshipDataDocument? = nil,
-        credits: MultiRelationshipDataDocument? = nil,
-        download: SingleRelationshipDataDocument? = nil,
-        genres: MultiRelationshipDataDocument? = nil,
-        lyrics: MultiRelationshipDataDocument? = nil,
-        metadataStatus: SingleRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil,
-        priceConfig: SingleRelationshipDataDocument? = nil,
-        providers: MultiRelationshipDataDocument? = nil,
-        radio: MultiRelationshipDataDocument? = nil,
+        artists: TracksArtistsMultiRelationshipDataDocument? = nil,
+        credits: TracksCreditsMultiRelationshipDataDocument? = nil,
+        download: TracksDownloadSingleRelationshipDataDocument? = nil,
+        genres: TracksGenresMultiRelationshipDataDocument? = nil,
+        lyrics: TracksLyricsMultiRelationshipDataDocument? = nil,
+        metadataStatus: TracksMetadataStatusSingleRelationshipDataDocument? = nil,
+        owners: TracksOwnersMultiRelationshipDataDocument? = nil,
+        priceConfig: TracksPriceConfigSingleRelationshipDataDocument? = nil,
+        providers: TracksProvidersMultiRelationshipDataDocument? = nil,
+        radio: TracksRadioMultiRelationshipDataDocument? = nil,
         replacement: TracksReplacementSingleRelationshipDataDocument? = nil,
-        shares: MultiRelationshipDataDocument? = nil,
+        shares: TracksSharesMultiRelationshipDataDocument? = nil,
         similarTracks: TracksSimilarTracksMultiRelationshipDataDocument? = nil,
-        sourceFile: SingleRelationshipDataDocument? = nil,
+        sourceFile: TracksSourceFileSingleRelationshipDataDocument? = nil,
         suggestedTracks: TracksSuggestedTracksMultiRelationshipDataDocument? = nil,
-        trackStatistics: SingleRelationshipDataDocument? = nil,
-        usageRules: SingleRelationshipDataDocument? = nil
+        trackStatistics: TracksTrackStatisticsSingleRelationshipDataDocument? = nil,
+        usageRules: TracksUsageRulesSingleRelationshipDataDocument? = nil
     ) {
         self.albums = albums
         self.artists = artists

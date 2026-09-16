@@ -235,10 +235,10 @@ internal class UserCollectionSaveForLatersAPI {
      - parameter id: (path) User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: UserCollectionSaveForLatersMultiRelationshipDataDocument
+     - returns: UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionSaveForLatersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionSaveForLatersMultiRelationshipDataDocument {
+    internal class func userCollectionSaveForLatersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument {
         do {
             return try await userCollectionSaveForLatersIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -257,9 +257,9 @@ internal class UserCollectionSaveForLatersAPI {
      - parameter id: (path) User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<UserCollectionSaveForLatersMultiRelationshipDataDocument> 
+     - returns: RequestBuilder<UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionSaveForLatersIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserCollectionSaveForLatersMultiRelationshipDataDocument> {
+    internal class func userCollectionSaveForLatersIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollectionSaveForLaters/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -279,7 +279,7 @@ internal class UserCollectionSaveForLatersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserCollectionSaveForLatersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

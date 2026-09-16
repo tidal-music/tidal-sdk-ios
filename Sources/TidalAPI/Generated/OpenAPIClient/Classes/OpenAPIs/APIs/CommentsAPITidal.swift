@@ -20,11 +20,13 @@ public enum CommentsAPITidal {
 	public enum FilterSubjectType_commentsGet: String, CaseIterable {
 		case albums = "albums"
 		case tracks = "tracks"
+		case tracksourcefiles = "trackSourceFiles"
 
 		func toCommentsAPIEnum() -> CommentsAPI.FilterSubjectType_commentsGet {
 			switch self {
 			case .albums: return .albums
 			case .tracks: return .tracks
+			case .tracksourcefiles: return .tracksourcefiles
 			}
 		}
 	}
@@ -107,9 +109,9 @@ public enum CommentsAPITidal {
 	/**
      Get ownerProfiles relationship (\&quot;to-many\&quot;).
      
-     - returns: CommentsMultiRelationshipDataDocument
+     - returns: CommentsOwnerProfilesMultiRelationshipDataDocument
      */
-	public static func commentsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsMultiRelationshipDataDocument {
+	public static func commentsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsOwnerProfilesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			CommentsAPI.commentsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -119,9 +121,9 @@ public enum CommentsAPITidal {
 	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
-     - returns: CommentsMultiRelationshipDataDocument
+     - returns: CommentsOwnersMultiRelationshipDataDocument
      */
-	public static func commentsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsMultiRelationshipDataDocument {
+	public static func commentsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			CommentsAPI.commentsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
@@ -131,9 +133,9 @@ public enum CommentsAPITidal {
 	/**
      Get parentComment relationship (\&quot;to-one\&quot;).
      
-     - returns: CommentsSingleRelationshipDataDocument
+     - returns: CommentsParentCommentSingleRelationshipDataDocument
      */
-	public static func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil) async throws -> CommentsSingleRelationshipDataDocument {
+	public static func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil) async throws -> CommentsParentCommentSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			CommentsAPI.commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: id, include: include)
 		}

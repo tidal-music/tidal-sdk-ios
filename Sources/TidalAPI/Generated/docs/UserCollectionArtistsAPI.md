@@ -237,7 +237,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionArtistsIdRelationshipsOwnersGet**
 ```swift
-    open class func userCollectionArtistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionArtistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionArtistsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -276,7 +276,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserCollectionArtistsMultiRelationshipDataDocument**](UserCollectionArtistsMultiRelationshipDataDocument.md)
+[**UserCollectionArtistsOwnersMultiRelationshipDataDocument**](UserCollectionArtistsOwnersMultiRelationshipDataDocument.md)
 
 ### Authorization
 

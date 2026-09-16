@@ -12,34 +12,34 @@ import AnyCodable
 
 public struct AlbumsRelationships: Codable, Hashable {
 
-    public var albumStatistics: SingleRelationshipDataDocument?
-    public var artists: MultiRelationshipDataDocument?
-    public var coverArt: MultiRelationshipDataDocument?
-    public var genres: MultiRelationshipDataDocument?
+    public var albumStatistics: AlbumsAlbumStatisticsSingleRelationshipDataDocument?
+    public var artists: AlbumsArtistsMultiRelationshipDataDocument?
+    public var coverArt: AlbumsCoverArtMultiRelationshipDataDocument?
+    public var genres: AlbumsGenresMultiRelationshipDataDocument?
     public var items: AlbumsItemsMultiRelationshipDataDocument?
-    public var owners: MultiRelationshipDataDocument?
-    public var priceConfig: SingleRelationshipDataDocument?
-    public var providers: MultiRelationshipDataDocument?
+    public var owners: AlbumsOwnersMultiRelationshipDataDocument?
+    public var priceConfig: AlbumsPriceConfigSingleRelationshipDataDocument?
+    public var providers: AlbumsProvidersMultiRelationshipDataDocument?
     public var replacement: AlbumsReplacementSingleRelationshipDataDocument?
-    public var shares: MultiRelationshipDataDocument?
+    public var shares: AlbumsSharesMultiRelationshipDataDocument?
     public var similarAlbums: AlbumsSimilarAlbumsMultiRelationshipDataDocument?
     public var suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument?
-    public var usageRules: SingleRelationshipDataDocument?
+    public var usageRules: AlbumsUsageRulesSingleRelationshipDataDocument?
 
     public init(
-        albumStatistics: SingleRelationshipDataDocument? = nil,
-        artists: MultiRelationshipDataDocument? = nil,
-        coverArt: MultiRelationshipDataDocument? = nil,
-        genres: MultiRelationshipDataDocument? = nil,
+        albumStatistics: AlbumsAlbumStatisticsSingleRelationshipDataDocument? = nil,
+        artists: AlbumsArtistsMultiRelationshipDataDocument? = nil,
+        coverArt: AlbumsCoverArtMultiRelationshipDataDocument? = nil,
+        genres: AlbumsGenresMultiRelationshipDataDocument? = nil,
         items: AlbumsItemsMultiRelationshipDataDocument? = nil,
-        owners: MultiRelationshipDataDocument? = nil,
-        priceConfig: SingleRelationshipDataDocument? = nil,
-        providers: MultiRelationshipDataDocument? = nil,
+        owners: AlbumsOwnersMultiRelationshipDataDocument? = nil,
+        priceConfig: AlbumsPriceConfigSingleRelationshipDataDocument? = nil,
+        providers: AlbumsProvidersMultiRelationshipDataDocument? = nil,
         replacement: AlbumsReplacementSingleRelationshipDataDocument? = nil,
-        shares: MultiRelationshipDataDocument? = nil,
+        shares: AlbumsSharesMultiRelationshipDataDocument? = nil,
         similarAlbums: AlbumsSimilarAlbumsMultiRelationshipDataDocument? = nil,
         suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument? = nil,
-        usageRules: SingleRelationshipDataDocument? = nil
+        usageRules: AlbumsUsageRulesSingleRelationshipDataDocument? = nil
     ) {
         self.albumStatistics = albumStatistics
         self.artists = artists

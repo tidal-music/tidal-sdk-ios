@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **userOfflineMixesIdRelationshipsItemsGet**
 ```swift
-    open class func userOfflineMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserOfflineMixesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userOfflineMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserOfflineMixesItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -109,7 +109,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserOfflineMixesMultiRelationshipDataDocument**](UserOfflineMixesMultiRelationshipDataDocument.md)
+[**UserOfflineMixesItemsMultiRelationshipDataDocument**](UserOfflineMixesItemsMultiRelationshipDataDocument.md)
 
 ### Authorization
 

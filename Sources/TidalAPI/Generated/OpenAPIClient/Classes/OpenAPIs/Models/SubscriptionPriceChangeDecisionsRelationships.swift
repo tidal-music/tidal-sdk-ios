@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct SubscriptionPriceChangeDecisionsRelationships: Codable, Hashable {
 
-    public var priceChange: SingleRelationshipDataDocument?
+    public var priceChange: SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument?
 
     public init(
-        priceChange: SingleRelationshipDataDocument? = nil
+        priceChange: SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument? = nil
     ) {
         self.priceChange = priceChange
     }

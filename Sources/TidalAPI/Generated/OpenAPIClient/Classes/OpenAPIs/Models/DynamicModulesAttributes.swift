@@ -19,24 +19,23 @@ public struct DynamicModulesAttributes: Codable, Hashable {
     public enum PreviewLayout: String, Codable, CaseIterable {
         case grid = "GRID"
         case list = "LIST"
-        case compact = "COMPACT"
+        case shortcut = "SHORTCUT"
         case unknown = "UNKNOWN"
     }
     public enum ViewAllLayout: String, Codable, CaseIterable {
         case grid = "GRID"
         case list = "LIST"
-        case compact = "COMPACT"
         case unknown = "UNKNOWN"
     }
     /** Semantic icons the module should show. SPOTLIGHT_INFO identifies modules whose content was selected by TIDAL's editorial team. */
     public var icons: [Icons]
-    /** Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page. viewAllLayout controls its view-all screen; when omitted, the module has no view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means detailed text-forward rows in a single column and may be a table on wide screens. COMPACT means dense rows the client may pack into multiple columns; clients should treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
+    /** Presentation family for items in a dynamic module preview. The API selects the semantic presentation intent while clients own platform-specific geometry. A layout does not prescribe scroll direction, row or column count, dimensions, spacing, breakpoints, or visible item count; clients preserve the server-provided item order. GRID means artwork-forward tiles or cards. LIST means detail-forward row cells, which clients may arrange in one or more columns. SHORTCUT means compact quick-access items, which clients may arrange as a responsive grid or rail. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
     public var previewLayout: PreviewLayout
     /** Subtitle of the module */
     public var subtitle: String?
     /** Title of the module */
     public var title: String?
-    /** Rendering layout for a dynamic module. previewLayout controls the module on a dynamic page. viewAllLayout controls its view-all screen; when omitted, the module has no view-all screen. GRID means artwork-forward tiles; the client owns scroll axis and column count. LIST means detailed text-forward rows in a single column and may be a table on wide screens. COMPACT means dense rows the client may pack into multiple columns; clients should treat it as LIST in a full view. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
+    /** Presentation family for items on a dynamic module's view-all screen. The API selects the semantic presentation intent while clients own platform-specific geometry. A layout does not prescribe scroll direction, row or column count, dimensions, spacing, or breakpoints; clients preserve the server-provided item order. When viewAllLayout is omitted, the module has no view-all screen. GRID means artwork-forward tiles or cards. LIST means detail-forward row cells, which clients may arrange in one or more columns or as a table. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
     public var viewAllLayout: ViewAllLayout?
 
     public init(
