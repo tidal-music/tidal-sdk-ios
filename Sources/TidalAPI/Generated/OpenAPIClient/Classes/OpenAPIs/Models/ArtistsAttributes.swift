@@ -18,6 +18,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         case mixed = "MIXED"
     }
     public static let handleRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let numberOfFollowersRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Is the artist enabled for contributions? */
     public var contributionsEnabled: Bool?
     /** Contributions sales pitch */
@@ -28,6 +29,8 @@ public struct ArtistsAttributes: Codable, Hashable {
     public var handle: String?
     /** Artist name */
     public var name: String
+    /** Number of users in the followers relationship */
+    public var numberOfFollowers: Int?
     /** Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created profile, MIXED: claimed profile with both label and user content. May be null during rollout/backfill. */
     public var ownerType: OwnerType?
     /** Artist popularity (0.0 - 1.0) */
@@ -41,6 +44,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         externalLinks: [ExternalLink]? = nil,
         handle: String? = nil,
         name: String,
+        numberOfFollowers: Int? = nil,
         ownerType: OwnerType? = nil,
         popularity: Double,
         spotlighted: Bool? = nil
@@ -50,6 +54,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         self.externalLinks = externalLinks
         self.handle = handle
         self.name = name
+        self.numberOfFollowers = numberOfFollowers
         self.ownerType = ownerType
         self.popularity = popularity
         self.spotlighted = spotlighted
@@ -61,6 +66,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         case externalLinks
         case handle
         case name
+        case numberOfFollowers
         case ownerType
         case popularity
         case spotlighted
@@ -75,6 +81,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
         try container.encodeIfPresent(handle, forKey: .handle)
         try container.encode(name, forKey: .name)
+        try container.encodeIfPresent(numberOfFollowers, forKey: .numberOfFollowers)
         try container.encodeIfPresent(ownerType, forKey: .ownerType)
         try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(spotlighted, forKey: .spotlighted)

@@ -10,7 +10,6 @@ Method | HTTP request | Description
 [**playlistsIdPatch**](PlaylistsAPI.md#playlistsidpatch) | **PATCH** /playlists/{id} | Update single playlist.
 [**playlistsIdRelationshipsCollaboratorProfilesDelete**](PlaylistsAPI.md#playlistsidrelationshipscollaboratorprofilesdelete) | **DELETE** /playlists/{id}/relationships/collaboratorProfiles | Delete from collaboratorProfiles relationship (\&quot;to-many\&quot;).
 [**playlistsIdRelationshipsCollaboratorProfilesGet**](PlaylistsAPI.md#playlistsidrelationshipscollaboratorprofilesget) | **GET** /playlists/{id}/relationships/collaboratorProfiles | Get collaboratorProfiles relationship (\&quot;to-many\&quot;).
-[**playlistsIdRelationshipsCollaboratorProfilesPost**](PlaylistsAPI.md#playlistsidrelationshipscollaboratorprofilespost) | **POST** /playlists/{id}/relationships/collaboratorProfiles | Add to collaboratorProfiles relationship (\&quot;to-many\&quot;).
 [**playlistsIdRelationshipsCollaboratorsGet**](PlaylistsAPI.md#playlistsidrelationshipscollaboratorsget) | **GET** /playlists/{id}/relationships/collaborators | Get collaborators relationship (\&quot;to-many\&quot;).
 [**playlistsIdRelationshipsCoverArtGet**](PlaylistsAPI.md#playlistsidrelationshipscoverartget) | **GET** /playlists/{id}/relationships/coverArt | Get coverArt relationship (\&quot;to-many\&quot;).
 [**playlistsIdRelationshipsCoverArtPatch**](PlaylistsAPI.md#playlistsidrelationshipscoverartpatch) | **PATCH** /playlists/{id}/relationships/coverArt | Update coverArt relationship (\&quot;to-many\&quot;).
@@ -354,60 +353,6 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **playlistsIdRelationshipsCollaboratorProfilesPost**
-```swift
-    open class func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
-```
-
-Add to collaboratorProfiles relationship (\"to-many\").
-
-Adds item(s) to collaboratorProfiles relationship.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | Playlist id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let playlistsCollaboratorProfilesRelationshipAddOperationPayload = PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload(data: [PlaylistsCollaboratorProfilesRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // PlaylistsCollaboratorProfilesRelationshipAddOperationPayload |  (optional)
-
-// Add to collaboratorProfiles relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesPost(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipAddOperationPayload: playlistsCollaboratorProfilesRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | Playlist id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
- **playlistsCollaboratorProfilesRelationshipAddOperationPayload** | [**PlaylistsCollaboratorProfilesRelationshipAddOperationPayload**](PlaylistsCollaboratorProfilesRelationshipAddOperationPayload.md) |  | [optional] 
-
-### Return type
-
-[**MutationResponseDocument**](MutationResponseDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: application/vnd.api+json
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -762,7 +707,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let playlistsItemsRelationshipAddOperationPayload = PlaylistsItemsRelationshipAddOperation_Payload(data: [PlaylistsItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")], meta: PlaylistsItemsRelationshipAddOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipAddOperationPayload |  (optional)
+let playlistsItemsRelationshipAddOperationPayload = PlaylistsItemsRelationshipAddOperation_Payload(data: [PlaylistsItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")], meta: PlaylistsItemsRelationshipAddOperation_Payload_Meta(onDuplicates: "onDuplicates_example", positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
 PlaylistsAPI.playlistsIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload) { (response, error) in

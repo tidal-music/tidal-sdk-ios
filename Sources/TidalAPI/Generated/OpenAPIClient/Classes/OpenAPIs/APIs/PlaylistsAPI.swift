@@ -368,58 +368,6 @@ internal class PlaylistsAPI {
     }
 
     /**
-     Add to collaboratorProfiles relationship (\"to-many\").
-     
-     - parameter id: (path) Playlist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - parameter playlistsCollaboratorProfilesRelationshipAddOperationPayload: (body)  (optional)
-     - returns: MutationResponseDocument
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
-        do {
-            return try await playlistsIdRelationshipsCollaboratorProfilesPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipAddOperationPayload: playlistsCollaboratorProfilesRelationshipAddOperationPayload).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Add to collaboratorProfiles relationship (\"to-many\").
-     - POST /playlists/{id}/relationships/collaboratorProfiles
-     - Adds item(s) to collaboratorProfiles relationship.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter id: (path) Playlist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-     - parameter playlistsCollaboratorProfilesRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<MutationResponseDocument> 
-     */
-    internal class func playlistsIdRelationshipsCollaboratorProfilesPostWithRequestBuilder(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
-        var localVariablePath = "/playlists/{id}/relationships/collaboratorProfiles"
-        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
-        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: playlistsCollaboratorProfilesRelationshipAddOperationPayload)
-
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
-            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
      Get collaborators relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 

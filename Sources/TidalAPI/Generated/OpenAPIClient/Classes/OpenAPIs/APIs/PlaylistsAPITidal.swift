@@ -110,18 +110,6 @@ public enum PlaylistsAPITidal {
 
 
 	/**
-     Add to collaboratorProfiles relationship (\&quot;to-many\&quot;).
-     
-     - returns: MutationResponseDocument
-     */
-	public static func playlistsIdRelationshipsCollaboratorProfilesPost(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipAddOperationPayload: PlaylistsCollaboratorProfilesRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
-		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipAddOperationPayload: playlistsCollaboratorProfilesRelationshipAddOperationPayload)
-		}
-	}
-
-
-	/**
      Get collaborators relationship (\&quot;to-many\&quot;).
      
      - returns: PlaylistsCollaboratorsMultiRelationshipDataDocument

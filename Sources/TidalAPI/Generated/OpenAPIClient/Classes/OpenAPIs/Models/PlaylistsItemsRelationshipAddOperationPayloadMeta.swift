@@ -12,16 +12,26 @@ import AnyCodable
 
 public struct PlaylistsItemsRelationshipAddOperationPayloadMeta: Codable, Hashable {
 
+    public enum OnDuplicates: String, Codable, CaseIterable {
+        case add = "ADD"
+        case fail = "FAIL"
+        case skip = "SKIP"
+    }
     public static let positionBeforeRule = StringRule(minLength: 1, maxLength: 36, pattern: nil)
-    public var positionBefore: String
+    /** How to handle available items already present in the playlist. Presence is evaluated against playlist state immediately before the operation; duplicate occurrences within this request do not make one another already present. ADD adds every requested occurrence. FAIL returns 409 and adds nothing when any requested resource type and id is already present. SKIP adds only absent resources and reports every omitted occurrence in response meta.skipped with reason ALREADY_PRESENT. Track and video identities with the same id are distinct. Defaults to ADD. */
+    public var onDuplicates: OnDuplicates? = .add
+    public var positionBefore: String?
 
     public init(
-        positionBefore: String
+        onDuplicates: OnDuplicates? = .add,
+        positionBefore: String? = nil
     ) {
+        self.onDuplicates = onDuplicates
         self.positionBefore = positionBefore
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case onDuplicates
         case positionBefore
     }
 
@@ -29,6 +39,7 @@ public struct PlaylistsItemsRelationshipAddOperationPayloadMeta: Codable, Hashab
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(positionBefore, forKey: .positionBefore)
+        try container.encodeIfPresent(onDuplicates, forKey: .onDuplicates)
+        try container.encodeIfPresent(positionBefore, forKey: .positionBefore)
     }
 }

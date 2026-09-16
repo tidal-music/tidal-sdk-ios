@@ -14,6 +14,7 @@ public struct PlaylistsItemsRelationshipAddOperationResponseMetaSkippedItem: Cod
 
     public enum Reason: String, Codable, CaseIterable {
         case notFound = "NOT_FOUND"
+        case alreadyPresent = "ALREADY_PRESENT"
     }
     public enum ModelType: String, Codable, CaseIterable {
         case tracks = "tracks"
@@ -21,6 +22,7 @@ public struct PlaylistsItemsRelationshipAddOperationResponseMetaSkippedItem: Cod
     }
     public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String
+    /** Why the requested occurrence was not added: NOT_FOUND means it was not available; ALREADY_PRESENT means SKIP omitted it because the playlist already contained that resource type and id. */
     public var reason: Reason
     public var type: ModelType
 
