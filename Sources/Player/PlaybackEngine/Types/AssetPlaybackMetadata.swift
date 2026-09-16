@@ -10,12 +10,12 @@ public struct AssetPlaybackMetadata: Equatable {
 
 	public init(formatString: String, sampleRate: Int? = nil, bitDepth: Int? = nil) {
 		let format = TrackManifestsAttributes.Formats(rawValue: formatString) ?? .heaacv1
-		self.audioQuality = Self.audioQuality(of: format)
-		self.audioMode = Self.audioMode(of: format)
+		audioQuality = Self.audioQuality(of: format)
+		audioMode = Self.audioMode(of: format)
 		self.sampleRate = sampleRate
 		self.bitDepth = bitDepth
 	}
-	
+
 	public init(audioQuality: AudioQuality, audioMode: AudioMode, sampleRate: Int?, bitDepth: Int?) {
 		self.audioQuality = audioQuality
 		self.audioMode = audioMode
@@ -31,30 +31,30 @@ public struct AssetPlaybackMetadata: Equatable {
 
 	public static func == (lhs: AssetPlaybackMetadata, rhs: AssetPlaybackMetadata) -> Bool {
 		lhs.audioQuality == rhs.audioQuality &&
-		lhs.audioMode == rhs.audioMode &&
-		lhs.sampleRate == rhs.sampleRate &&
-		lhs.bitDepth == rhs.bitDepth
+			lhs.audioMode == rhs.audioMode &&
+			lhs.sampleRate == rhs.sampleRate &&
+			lhs.bitDepth == rhs.bitDepth
 	}
-	
+
 	private static func audioQuality(of format: TrackManifestsAttributes.Formats) -> AudioQuality {
 		switch format {
 		case .flacHires:
-			return .HI_RES_LOSSLESS
+			.HI_RES_LOSSLESS
 		case .flac:
-			return .LOSSLESS
+			.LOSSLESS
 		case .aaclc:
-			return .HIGH
+			.HIGH
 		case .heaacv1, .eac3Joc:
-			return .LOW
+			.LOW
 		}
 	}
 
 	private static func audioMode(of format: TrackManifestsAttributes.Formats) -> AudioMode {
 		switch format {
 		case .eac3Joc:
-			return .DOLBY_ATMOS
+			.DOLBY_ATMOS
 		case .heaacv1, .aaclc, .flac, .flacHires:
-			return .STEREO
+			.STEREO
 		}
 	}
 }

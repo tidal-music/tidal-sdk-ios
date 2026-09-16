@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - FileStorage
+
 enum FileStorage {
 	static func store(_ data: Data, subdirectory: String, filename: String) throws -> URL {
 		let dir = try directory(for: subdirectory)
@@ -40,6 +42,8 @@ enum FileStorage {
 		return directory
 	}
 }
+
+// MARK: - FileStorageError
 
 enum FileStorageError: Error {
 	case noApplicationSupportDirectory

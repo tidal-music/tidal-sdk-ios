@@ -49,7 +49,9 @@ final class BackendFailureTests: OfflinerTestCase {
 		for await download in downloads {
 			let events = download.events
 			await assertEventually(events) { event in
-				if case .state(.completed) = event { return true }
+				if case .state(.completed) = event {
+					return true
+				}
 				return false
 			}
 			break

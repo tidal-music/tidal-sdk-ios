@@ -2,6 +2,8 @@ import AVFoundation
 import Foundation
 import TidalAPI
 
+// MARK: - StoreTrackHandler
+
 final class StoreTrackHandler {
 	private let offlineStore: OfflineStore
 	private let artworkDownloader: ArtworkDownloaderProtocol
@@ -48,6 +50,8 @@ final class StoreTrackHandler {
 	}
 }
 
+// MARK: - InternalTrackTask
+
 private final class InternalTrackTask: InternalTask {
 	let id: String
 	let download: Download?
@@ -68,7 +72,7 @@ private final class InternalTrackTask: InternalTask {
 		manifestFetcher: TrackManifestFetcherProtocol,
 		licenseDownloader: LicenseDownloader
 	) {
-		self.id = task.id
+		id = task.id
 		self.task = task
 		self.download = download
 		self.offlineStore = offlineStore
@@ -104,7 +108,9 @@ private final class InternalTrackTask: InternalTask {
 				licenseDownloadResult: licenseResult,
 				title: "\(task.artists.compactMap { $0.attributes?.name }.joined(separator: ",")) - \(task.track.attributes?.title ?? "")",
 				onProgress: { [weak self] progress in
-					guard let download = self?.download else { return }
+					guard let download = self?.download else {
+						return
+					}
 					await download.updateProgress(progress)
 				}
 			)
