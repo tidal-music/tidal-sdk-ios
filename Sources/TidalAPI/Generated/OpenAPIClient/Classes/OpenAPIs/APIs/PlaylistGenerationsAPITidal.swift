@@ -39,6 +39,18 @@ public enum PlaylistGenerationsAPITidal {
 
 
 	/**
+     Get baseGeneration relationship (\&quot;to-one\&quot;).
+     
+     - returns: PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument
+     */
+	public static func playlistGenerationsIdRelationshipsBaseGenerationGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsBaseGenerationGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
      Get playlist relationship (\&quot;to-one\&quot;).
      
      - returns: PlaylistGenerationsPlaylistSingleRelationshipDataDocument
@@ -46,6 +58,54 @@ public enum PlaylistGenerationsAPITidal {
 	public static func playlistGenerationsIdRelationshipsPlaylistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsPlaylistSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsPlaylistGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Delete from trackPreferences relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func playlistGenerationsIdRelationshipsTrackPreferencesDelete(id: String, idempotencyKey: String? = nil, playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload: PlaylistGenerationsTrackPreferencesRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload: playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload)
+		}
+	}
+
+
+	/**
+     Get trackPreferences relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument
+     */
+	public static func playlistGenerationsIdRelationshipsTrackPreferencesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Update trackPreferences relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistGenerationsTrackPreferencesUpdateMultiRelationshipDataDocument
+     */
+	public static func playlistGenerationsIdRelationshipsTrackPreferencesPatch(id: String, idempotencyKey: String? = nil, playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload: PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayload? = nil) async throws -> PlaylistGenerationsTrackPreferencesUpdateMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload: playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Add to trackPreferences relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocument
+     */
+	public static func playlistGenerationsIdRelationshipsTrackPreferencesPost(id: String, idempotencyKey: String? = nil, playlistGenerationsTrackPreferencesRelationshipAddOperationPayload: PlaylistGenerationsTrackPreferencesRelationshipAddOperationPayload? = nil) async throws -> PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistGenerationsTrackPreferencesRelationshipAddOperationPayload: playlistGenerationsTrackPreferencesRelationshipAddOperationPayload)
 		}
 	}
 
