@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.7] - 2026-09-16
+
+### Changed
+- Generated API code (TidalAPI)
+
+### Fixed
+- Adapt relationship wiring to the regenerated TidalAPI relationship types so the module compiles again (Offliner)
+
 ## [0.12.6] - 2026-08-24
 
 ### Changed
