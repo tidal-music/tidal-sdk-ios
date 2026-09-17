@@ -1,0 +1,11 @@
+# PlaylistGenerationsTrackPreferencesRelationshipRemoveOperationPayload
+
+## Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**data** | [PlaylistGenerationsTrackPreferencesRelationshipRemoveOperationPayloadData] |  | 
+**meta** | [**PlaylistGenerationsTrackPreferencesRelationshipPayloadMeta**](PlaylistGenerationsTrackPreferencesRelationshipPayloadMeta.md) |  | 
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

@@ -12,15 +12,19 @@ import AnyCodable
 
 public struct PlaylistGenerationsCreateOperationPayloadDataRelationships: Codable, Hashable {
 
+    public var baseGeneration: PlaylistGenerationsCreateOperationPayloadDataRelationshipsBaseGeneration?
     public var playlist: PlaylistGenerationsCreateOperationPayloadDataRelationshipsPlaylist
 
     public init(
+        baseGeneration: PlaylistGenerationsCreateOperationPayloadDataRelationshipsBaseGeneration? = nil,
         playlist: PlaylistGenerationsCreateOperationPayloadDataRelationshipsPlaylist
     ) {
+        self.baseGeneration = baseGeneration
         self.playlist = playlist
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case baseGeneration
         case playlist
     }
 
@@ -28,6 +32,7 @@ public struct PlaylistGenerationsCreateOperationPayloadDataRelationships: Codabl
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(baseGeneration, forKey: .baseGeneration)
         try container.encode(playlist, forKey: .playlist)
     }
 }
