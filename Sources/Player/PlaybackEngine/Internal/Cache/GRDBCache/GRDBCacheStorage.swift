@@ -67,6 +67,15 @@ extension GRDBCacheStorage: CacheStorage {
 		return entities.map { $0.cacheEntry }
 	}
 
+	func getAllOrderedByLastAccessed() throws -> [CacheEntry] {
+		let entities = try dbQueue.read { db in
+			try CacheEntryGRDBEntity
+				.order(CacheEntryGRDBEntity.Columns.lastAccessedAt.asc)
+				.fetchAll(db)
+		}
+		return entities.map { $0.cacheEntry }
+	}
+
 	// MARK: - Calculate Total Size
 
 	func totalSize() throws -> Int {
@@ -140,9 +149,9 @@ private extension GRDBCacheStorage {
 			// Use IF NOT EXISTS to make it idempotent (safe to call multiple times).
 			let indexName = "idx_cacheEntry_lastAccessedAt"
 			try db.execute(sql: """
-				CREATE INDEX IF NOT EXISTS \(indexName)
-				ON \(CacheEntryGRDBEntity.databaseTableName)(lastAccessedAt)
-				""")
+			CREATE INDEX IF NOT EXISTS \(indexName)
+			ON \(CacheEntryGRDBEntity.databaseTableName)(lastAccessedAt)
+			""")
 		}
 	}
 }

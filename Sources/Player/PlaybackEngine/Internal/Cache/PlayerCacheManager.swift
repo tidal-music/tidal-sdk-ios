@@ -3,7 +3,7 @@ import Foundation
 import GRDB
 import Logging
 
-// MARK: - Protocols
+// MARK: - PlayerCacheManagerDelegate
 
 public protocol PlayerCacheManagerDelegate: AnyObject {
 	func playerCacheManager(
@@ -13,6 +13,8 @@ public protocol PlayerCacheManagerDelegate: AnyObject {
 		for cacheKey: String
 	)
 }
+
+// MARK: - PlayerCacheManaging
 
 public protocol PlayerCacheManaging: AnyObject {
 	var delegate: PlayerCacheManagerDelegate? { get set }
@@ -28,7 +30,7 @@ public protocol PlayerCacheManaging: AnyObject {
 	func reset()
 }
 
-// MARK: - Result
+// MARK: - PlayerCacheResult
 
 public struct PlayerCacheResult {
 	public let urlAsset: AVURLAsset
@@ -45,9 +47,8 @@ public struct PlayerCacheResult {
 /// Thread-safe cache manager for coordinating media asset downloads.
 ///
 /// All public methods are thread-safe and can be called from any thread.
-/// The manager uses a serial OperationQueue to ensure all cache operations
-/// execute sequentially, matching the concurrency pattern used throughout
-/// the Player SDK (see PlayerEngine for a similar implementation).
+/// The manager uses a serial dispatch queue to ensure all cache operations
+/// execute in submission order.
 ///
 /// - Important: Async methods like ``recordPlayback(for:)`` and ``clearCache()``
 ///   dispatch work to the queue and return immediately. Sync methods like
@@ -67,20 +68,15 @@ public struct PlayerCacheResult {
 final class PlayerCacheManager: PlayerCacheManaging {
 	public weak var delegate: PlayerCacheManagerDelegate?
 
-	private let assetFactory: AVURLAssetFactory
+	private let assetFactory: any AssetFactoring
 	private let cacheStorage: any CacheStorage
 	private let storageDirectory: URL
 	private let fileManager: FileManagerClient
- 	private let timeProvider: () -> UInt64
- 	private var maxCacheSizeInBytes: Int?
+	private let timeProvider: () -> UInt64
+	private let logHandler: (CacheLoggable) -> Void
+	private var maxCacheSizeInBytes: Int?
 
-	/// Logger for cache operations. Uses PlayerWorld.logger if available.
-	private var logger: TidalLogger?
-
-	/// Serial OperationQueue for thread-safe access to cache operations.
-	/// Matches the concurrency pattern used in PlayerEngine and other
-	/// core Player components.
-	private let queue = OperationQueue()
+	private let queue = DispatchQueue(label: "com.tidal.player.cache", qos: .utility)
 
 	private enum Constants {
 		static let cacheDatabaseFilename = "player-cache.sqlite"
@@ -89,21 +85,16 @@ final class PlayerCacheManager: PlayerCacheManaging {
 	init(
 		storageDirectory: URL? = nil,
 		cacheStorage: (any CacheStorage)? = nil,
+		assetFactory: (any AssetFactoring)? = nil,
 		fileManager: FileManagerClient = .live,
 		timeProvider: @escaping () -> UInt64 = { PlayerWorld.timeProvider.timestamp() },
-		maxCacheSizeInBytes: Int? = nil
+		maxCacheSizeInBytes: Int? = nil,
+		logHandler: @escaping (CacheLoggable) -> Void = { PlayerWorld.logger?.log(loggable: $0) }
 	) {
 		self.fileManager = fileManager
 		self.timeProvider = timeProvider
- 		self.maxCacheSizeInBytes = maxCacheSizeInBytes
-
-		// Initialize logger from PlayerWorld if available
-		self.logger = PlayerWorld.logger
-
-		// Configure serial queue (matches PlayerEngine pattern)
-		queue.maxConcurrentOperationCount = 1
-		queue.qualityOfService = .utility
-		queue.name = "com.tidal.player.cache"
+		self.maxCacheSizeInBytes = maxCacheSizeInBytes
+		self.logHandler = logHandler
 
 		let resolvedDirectory = storageDirectory ?? fileManager.cachesDirectory()
 		PlayerCacheManager.ensureDirectoryExists(at: resolvedDirectory, fileManager: fileManager)
@@ -111,7 +102,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 
 		let assetCache = AssetCache(storageDirectory: resolvedDirectory)
 
-		assetFactory = AVURLAssetFactory(assetCache: assetCache)
+		self.assetFactory = assetFactory ?? AVURLAssetFactory(assetCache: assetCache)
 		self.cacheStorage = cacheStorage ?? PlayerCacheManager.makeCacheStorage(
 			at: resolvedDirectory,
 			fileManager: fileManager
@@ -121,7 +112,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 	}
 
 	public func prepareCache(isEnabled: Bool) {
-		queue.addOperation { [weak self] in
+		queue.async { [weak self] in
 			self?._prepareCache(isEnabled: isEnabled)
 		}
 	}
@@ -133,13 +124,9 @@ final class PlayerCacheManager: PlayerCacheManaging {
 	}
 
 	public func resolveAsset(for url: URL, cacheKey: String?) -> PlayerCacheResult {
-		var result: PlayerCacheResult?
-		let operation = BlockOperation { [weak self] in
-			result = self?._resolveAsset(for: url, cacheKey: cacheKey)
+		queue.sync {
+			_resolveAsset(for: url, cacheKey: cacheKey)
 		}
-		queue.addOperation(operation)
-		operation.waitUntilFinished()
-		return result ?? PlayerCacheResult(urlAsset: AVURLAsset(url: url), cacheState: nil)
 	}
 
 	private func _resolveAsset(for url: URL, cacheKey: String?) -> PlayerCacheResult {
@@ -188,7 +175,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 	}
 
 	public func startCachingIfNeeded(_ urlAsset: AVURLAsset, cacheState: AssetCacheState?) {
-		queue.addOperation { [weak self] in
+		queue.async { [weak self] in
 			self?._startCachingIfNeeded(urlAsset, cacheState: cacheState)
 		}
 	}
@@ -209,13 +196,13 @@ final class PlayerCacheManager: PlayerCacheManaging {
 	}
 
 	public func cancelDownload(for cacheKey: String) {
-		queue.addOperation { [weak self] in
+		queue.async { [weak self] in
 			self?.assetFactory.cancel(with: cacheKey)
 		}
 	}
 
 	public func recordPlayback(for cacheKey: String) {
-		queue.addOperation { [weak self] in
+		queue.async { [weak self] in
 			self?._recordPlayback(for: cacheKey)
 		}
 	}
@@ -228,18 +215,14 @@ final class PlayerCacheManager: PlayerCacheManaging {
 			entry.lastAccessedAt = _currentDate()
 			try cacheStorage.update(entry)
 		} catch {
-			logger?.log(loggable: CacheLoggable.recordPlaybackFailed(cacheKey: cacheKey, error: error))
+			logHandler(.recordPlaybackFailed(cacheKey: cacheKey, error: error))
 		}
 	}
 
 	public func currentCacheSizeInBytes() -> Int {
-		var result = 0
-		let operation = BlockOperation { [weak self] in
-			result = self?._currentCacheSizeInBytes() ?? 0
+		queue.sync {
+			_currentCacheSizeInBytes()
 		}
-		queue.addOperation(operation)
-		operation.waitUntilFinished()
-		return result
 	}
 
 	private func _currentCacheSizeInBytes() -> Int {
@@ -251,7 +234,7 @@ final class PlayerCacheManager: PlayerCacheManaging {
 	}
 
 	public func clearCache() {
-		queue.addOperation { [weak self] in
+		queue.async { [weak self] in
 			self?._clearCacheAtomically()
 		}
 	}
@@ -269,18 +252,18 @@ final class PlayerCacheManager: PlayerCacheManaging {
 				do {
 					try _removePhysicalFileIfNeeded(at: entry.url)
 				} catch {
-					logger?.log(loggable: CacheLoggable.deleteCacheFileFailed(fileName: entry.url.lastPathComponent, error: error))
+					logHandler(.deleteCacheFileFailed(fileName: entry.url.lastPathComponent, error: error))
 					// Continue clearing other entries even if file deletion fails
 				}
 				try cacheStorage.delete(key: entry.key)
 			}
 		} catch {
-			logger?.log(loggable: CacheLoggable.clearCacheFailed(error: error))
+			logHandler(.clearCacheFailed(error: error))
 		}
 	}
 
 	public func updateMaxCacheSize(_ sizeInBytes: Int?) {
-		queue.addOperation { [weak self] in
+		queue.async { [weak self] in
 			self?._updateMaxCacheSize(sizeInBytes)
 		}
 	}
@@ -291,17 +274,17 @@ final class PlayerCacheManager: PlayerCacheManaging {
 	}
 
 	public func reset() {
-		queue.addOperation { [weak self] in
+		queue.async { [weak self] in
 			self?.assetFactory.reset()
 		}
 	}
 }
 
-// MARK: - AssetFactoryDelegate
+// MARK: AssetFactoryDelegate
 
 extension PlayerCacheManager: AssetFactoryDelegate {
 	func assetFinishedDownloading(_ urlAsset: AVURLAsset, to location: URL, for cacheKey: String) {
-		queue.addOperation { [weak self] in
+		queue.async { [weak self] in
 			self?._persistCacheEntryIfNeeded(for: cacheKey, at: location)
 			self?.delegate?.playerCacheManager(
 				self!,
@@ -358,7 +341,7 @@ private extension PlayerCacheManager {
 				try cacheStorage.save(entry)
 			}
 		} catch {
-			logger?.log(loggable: CacheLoggable.persistCacheEntryFailed(cacheKey: cacheKey, error: error))
+			logHandler(.persistCacheEntryFailed(cacheKey: cacheKey, error: error))
 		}
 
 		_pruneCacheIfNeeded()
@@ -377,7 +360,7 @@ private extension PlayerCacheManager {
 					partialResult + (_calculateSize(of: fileURL) ?? 0)
 				}
 			} catch {
-				logger?.log(loggable: CacheLoggable.calculateSizeFailed(url: url, error: error))
+				logHandler(.calculateSizeFailed(url: url, error: error))
 				return nil
 			}
 		}
@@ -386,13 +369,16 @@ private extension PlayerCacheManager {
 			let attributes = try fileManager.attributesOfItem(url.path)
 			return (attributes[.size] as? NSNumber)?.intValue ?? 0
 		} catch {
-			logger?.log(loggable: CacheLoggable.calculateSizeFailed(url: url, error: error))
+			logHandler(.calculateSizeFailed(url: url, error: error))
 			return nil
 		}
 	}
 
 	func _removePhysicalFileIfNeeded(at url: URL) throws {
-		guard url.path.hasPrefix(storageDirectory.path) else {
+		guard
+			url.path.hasPrefix(storageDirectory.path),
+			fileManager.fileExists(atPath: url.path, isDirectory: nil)
+		else {
 			return
 		}
 		try fileManager.removeItem(at: url)
@@ -404,12 +390,14 @@ private extension PlayerCacheManager {
 		}
 
 		do {
-			let entries = try cacheStorage.getAll().sorted(by: { $0.lastAccessedAt < $1.lastAccessedAt })
+			let entries = try cacheStorage.getAllOrderedByLastAccessed()
 			var currentSize = entries.reduce(0) { $0 + $1.size }
 
-			guard currentSize > maxCacheSizeInBytes else { return }
+			guard currentSize > maxCacheSizeInBytes else {
+				return
+			}
 
-			logger?.log(loggable: CacheLoggable.pruningStarted(currentSize: currentSize, targetSize: maxCacheSizeInBytes))
+			logHandler(.pruningStarted(currentSize: currentSize, targetSize: maxCacheSizeInBytes))
 
 			var entriesRemoved = 0
 			var index = 0
@@ -423,9 +411,9 @@ private extension PlayerCacheManager {
 				index += 1
 			}
 
-			logger?.log(loggable: CacheLoggable.pruningCompleted(newSize: currentSize, entriesRemoved: entriesRemoved))
+			logHandler(.pruningCompleted(newSize: currentSize, entriesRemoved: entriesRemoved))
 		} catch {
-			logger?.log(loggable: CacheLoggable.pruneFailed(error: error))
+			logHandler(.pruneFailed(error: error))
 		}
 	}
 

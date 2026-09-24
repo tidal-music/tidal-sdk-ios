@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - CacheStorage
+
 protocol CacheStorage {
 	// MARK: - Save CacheEntry
 
@@ -21,6 +23,8 @@ protocol CacheStorage {
 
 	func getAll() throws -> [CacheEntry]
 
+	func getAllOrderedByLastAccessed() throws -> [CacheEntry]
+
 	// MARK: - Calculate Total Size
 
 	func totalSize() throws -> Int
@@ -28,4 +32,10 @@ protocol CacheStorage {
 	// MARK: - Prune to a Maximum Size
 
 	func pruneToSize(_ maxSize: Int) throws
+}
+
+extension CacheStorage {
+	func getAllOrderedByLastAccessed() throws -> [CacheEntry] {
+		try getAll().sorted { $0.lastAccessedAt < $1.lastAccessedAt }
+	}
 }
