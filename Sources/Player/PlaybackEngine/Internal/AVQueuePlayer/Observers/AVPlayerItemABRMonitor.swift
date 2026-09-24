@@ -1,7 +1,9 @@
+import AudioToolbox
 import AVFoundation
 import CoreMedia
 import Foundation
-import AudioToolbox
+
+// MARK: - AVPlayerItemABRMonitor
 
 /// AVPlayerItemABRMonitor detects audio quality changes via bitrate analysis from HLS access logs.
 ///
@@ -83,7 +85,8 @@ final class AVPlayerItemABRMonitor {
 	private func detectQualityFromAccessLog() {
 		guard let item = playerItem,
 		      let accessLog = item.accessLog(),
-		      let event = accessLog.events.last else {
+		      let event = accessLog.events.last
+		else {
 			return
 		}
 
@@ -150,7 +153,9 @@ final class AVPlayerItemABRMonitor {
 				return qualityForAAC(audioObjectType: aot)
 			}
 			// If no AOT available but frma confirms it's AAC, default to HIGH
-			if frma == "mp4a" { return .HIGH }
+			if frma == "mp4a" {
+				return .HIGH
+			}
 			return .HIGH
 		}
 
@@ -205,23 +210,23 @@ final class AVPlayerItemABRMonitor {
 		switch audioObjectType {
 		case 2:
 			// AAC-LC
-			return .HIGH
+			.HIGH
 		case 5, 29:
 			// HE-AAC and HE-AAC v2
-			return .LOW
+			.LOW
 		default:
 			// Unknown AOT, default to HIGH for safety
-			return .HIGH
+			.HIGH
 		}
 	}
 
 	private static func qualityFromBitrate(_ bitrate: Double) -> AudioQuality {
-		if bitrate < 200000 {
-			return .LOW
-		} else if bitrate < 400000 {
-			return .HIGH
+		if bitrate < 200_000 {
+			.LOW
+		} else if bitrate < 400_000 {
+			.HIGH
 		} else {
-			return .LOSSLESS
+			.LOSSLESS
 		}
 	}
 
@@ -282,9 +287,12 @@ final class AVPlayerItemABRMonitor {
 		// Fallback 1: magic cookie (often contains ES/DecoderSpecificInfo)
 		var cookieSize = 0
 		if let ptr = CMAudioFormatDescriptionGetMagicCookie(formatDesc, sizeOut: &cookieSize),
-		   cookieSize > 0 {
+		   cookieSize > 0
+		{
 			let cookie = Data(bytes: ptr, count: cookieSize)
-			if let aot = extractAOTFromDescriptorBlob(cookie) { return aot }
+			if let aot = extractAOTFromDescriptorBlob(cookie) {
+				return aot
+			}
 		}
 
 		// Fallback 2: look in SampleDescriptionExtensionAtoms → esds
@@ -299,7 +307,8 @@ final class AVPlayerItemABRMonitor {
 				}
 				if let sinf = atoms["sinf"] as? Data,
 				   let esds = findBox(type: "esds", in: sinf),
-				   let aot = extractAOTFromDescriptorBlob(esds) {
+				   let aot = extractAOTFromDescriptorBlob(esds)
+				{
 					return aot
 				}
 			}
@@ -309,18 +318,20 @@ final class AVPlayerItemABRMonitor {
 		// VerbatimISOSampleEntry is a complete audio sample entry (e.g., "enca")
 		// Skip the 28-byte audio sample entry header to access child boxes (esds, sinf)
 		if let sampleEntry = exts["VerbatimISOSampleEntry"] as? Data, sampleEntry.count > 28 {
-			let childBoxData = sampleEntry.subdata(in: 28..<sampleEntry.count)
+			let childBoxData = sampleEntry.subdata(in: 28 ..< sampleEntry.count)
 
 			// First look for direct esds
 			if let esds = findBox(type: "esds", in: childBoxData),
-			   let aot = extractAOTFromDescriptorBlob(esds) {
+			   let aot = extractAOTFromDescriptorBlob(esds)
+			{
 				return aot
 			}
 
 			// Then look for esds nested inside sinf
 			if let sinf = findBox(type: "sinf", in: childBoxData),
 			   let esds = findBox(type: "esds", in: sinf),
-			   let aot = extractAOTFromDescriptorBlob(esds) {
+			   let aot = extractAOTFromDescriptorBlob(esds)
+			{
 				return aot
 			}
 		}
@@ -333,7 +344,7 @@ final class AVPlayerItemABRMonitor {
 		var aot = (ascData[0] >> 3) & 0x1F
 
 		// Handle escape sequence: if AOT == 31, read next 6 bits
-		if aot == 31 && ascData.count >= 2 {
+		if aot == 31, ascData.count >= 2 {
 			let lowBits = UInt8((ascData[1] >> 2) & 0x3F)
 			aot = 32 + lowBits
 		}
@@ -348,7 +359,9 @@ final class AVPlayerItemABRMonitor {
 		// esds format: [4 bytes size][4 bytes "esds"][1 byte version][3 bytes flags][ES_Descriptor structure]
 		// We need to find the DecoderConfigDescriptor (tag 0x04) which contains the ASC
 
-		if esdsData.count < 12 { return nil }
+		if esdsData.count < 12 {
+			return nil
+		}
 
 		// Start after esds header (size + tag + version/flags = 12 bytes minimum)
 		var offset = 8 // Skip size and "esds" tag
@@ -360,21 +373,23 @@ final class AVPlayerItemABRMonitor {
 			// Parse variable-length size field (MPEG-style)
 			var size: Int = 0
 			var sizeLength = 0
-			while sizeLength < 4 && offset < esdsData.count {
+			while sizeLength < 4, offset < esdsData.count {
 				let byte = esdsData[offset]
 				offset += 1
 				sizeLength += 1
 				size = (size << 7) | Int(byte & 0x7F)
-				if (byte & 0x80) == 0 { break }
+				if (byte & 0x80) == 0 {
+					break
+				}
 			}
 
 			// Found DecoderConfigDescriptor (0x04)
-			if tag == 0x04 && size >= 13 && offset + 13 <= esdsData.count {
+			if tag == 0x04, size >= 13, offset + 13 <= esdsData.count {
 				// Skip objectTypeIndicator (1) + streamType+upstream (1) + bufferSizeDB (3)
 				offset += 5
 				// Now we should be at the start of AudioSpecificConfig
 				if offset < esdsData.count {
-					return parseAudioObjectTypeFromASC(esdsData.subdata(in: offset..<esdsData.count))
+					return parseAudioObjectTypeFromASC(esdsData.subdata(in: offset ..< esdsData.count))
 				}
 			}
 
@@ -386,9 +401,11 @@ final class AVPlayerItemABRMonitor {
 
 	/// Safely reads a big-endian UInt32 from any byte offset in Data
 	private static func readBigEndianUInt32(from data: Data, at offset: Int) -> UInt32? {
-		guard offset + 4 <= data.count else { return nil }
+		guard offset + 4 <= data.count else {
+			return nil
+		}
 		var result: UInt32 = 0
-		for i in 0..<4 {
+		for i in 0 ..< 4 {
 			result = (result << 8) | UInt32(data[offset + i])
 		}
 		return result
@@ -398,7 +415,7 @@ final class AVPlayerItemABRMonitor {
 	private static func extractAudioObjectTypeFromSinf(_ sinfData: Data) -> UInt8? {
 		// sinf contains nested atoms including potentially frma and esds
 		// Look for esds within sinf structure
-		let esdsTag: UInt32 = 0x65736473 // "esds"
+		let esdsTag: UInt32 = 0x6573_6473 // "esds"
 
 		var offset = 8 // Skip sinf header
 
@@ -412,7 +429,7 @@ final class AVPlayerItemABRMonitor {
 			if tag == esdsTag {
 				// Found esds atom, extract just the data portion
 				if offset + 12 <= sinfData.count {
-					let atomData = sinfData.subdata(in: offset..<sinfData.count)
+					let atomData = sinfData.subdata(in: offset ..< sinfData.count)
 					return extractAudioObjectTypeFromEsds(atomData)
 				}
 			}
@@ -440,7 +457,7 @@ final class AVPlayerItemABRMonitor {
 				UInt8((n >> 24) & 0xFF),
 				UInt8((n >> 16) & 0xFF),
 				UInt8((n >> 8) & 0xFF),
-				UInt8(n & 0xFF)
+				UInt8(n & 0xFF),
 			]
 			let sDirect = String(bytes: directBytes, encoding: .ascii)?.trimmingCharacters(in: .whitespaces)
 
@@ -450,24 +467,32 @@ final class AVPlayerItemABRMonitor {
 				UInt8((swapped >> 24) & 0xFF),
 				UInt8((swapped >> 16) & 0xFF),
 				UInt8((swapped >> 8) & 0xFF),
-				UInt8(swapped & 0xFF)
+				UInt8(swapped & 0xFF),
 			]
 			let sSwapped = String(bytes: swappedBytes, encoding: .ascii)?.trimmingCharacters(in: .whitespaces)
 
 			// prefer common real codecs if one matches
 			let known = Set(["mp4a", "fLaC", "alac"])
-			if let s = sDirect, known.contains(s) { return s }
-			if let s = sSwapped, known.contains(s) { return s }
+			if let s = sDirect, known.contains(s) {
+				return s
+			}
+			if let s = sSwapped, known.contains(s) {
+				return s
+			}
 
 			// else, return any non-empty result (direct first)
-			if let s = sDirect, !s.isEmpty { return s }
-			if let s = sSwapped, !s.isEmpty { return s }
+			if let s = sDirect, !s.isEmpty {
+				return s
+			}
+			if let s = sSwapped, !s.isEmpty {
+				return s
+			}
 		}
 
 		// Try to get the sample description extension atoms
 		let possibleKeys = [
 			kCMFormatDescriptionExtension_SampleDescriptionExtensionAtoms as String,
-			"SampleDescriptionExtensionAtoms"
+			"SampleDescriptionExtensionAtoms",
 		]
 
 		for key in possibleKeys {
@@ -483,7 +508,7 @@ final class AVPlayerItemABRMonitor {
 					// frma is at offset 8 with structure: [4 bytes size][4 bytes "frma"][4 bytes fourCC]
 					if sinfData.count >= 20 { // Minimum size for sinf with frma
 						// Look for "frma" tag (0x66726d61) in the data
-						let frmaTag: UInt32 = 0x66726d61
+						let frmaTag: UInt32 = 0x6672_6D61
 						var offset = 0
 						while offset + 8 <= sinfData.count {
 							// Safely read tag as individual bytes to avoid alignment issues
@@ -510,7 +535,9 @@ final class AVPlayerItemABRMonitor {
 
 	/// Decodes fourCC from frma data
 	private static func decodeFrmaFromData(_ data: Data) -> String? {
-		guard data.count >= 4 else { return nil }
+		guard data.count >= 4 else {
+			return nil
+		}
 		let fourcc = data.withUnsafeBytes { $0.load(as: UInt32.self).bigEndian }
 		return decodeFourCC(fourcc)
 	}
@@ -597,7 +624,7 @@ final class AVPlayerItemABRMonitor {
 				let protectedFormats: [String: String] = [
 					"qflc": "Protected FLAC",
 					"qach": "Protected AAC",
-					"qaac": "Protected AAC"
+					"qaac": "Protected AAC",
 				]
 				if let annotation = protectedFormats[fourCC] {
 					return "\(fourCC) (\(annotation))"
@@ -614,7 +641,7 @@ final class AVPlayerItemABRMonitor {
 			UInt8((formatID >> 24) & 0xFF),
 			UInt8((formatID >> 16) & 0xFF),
 			UInt8((formatID >> 8) & 0xFF),
-			UInt8(formatID & 0xFF)
+			UInt8(formatID & 0xFF),
 		]
 
 		// Check if all bytes are printable ASCII characters (32-126)
@@ -635,33 +662,39 @@ final class AVPlayerItemABRMonitor {
 
 	private static func extractBitDepth(bitsPerChannel: Int, formatFlags: AudioFormatFlags, formatID: AudioFormatID) -> Int {
 		// If ASBD reports a valid value, trust it (works for FLAC/PCM when available)
-		if bitsPerChannel > 0 { return bitsPerChannel }
+		if bitsPerChannel > 0 {
+			return bitsPerChannel
+		}
 
 		// For Linear PCM, infer from flags (rarely needed if ASBD is populated)
 		if formatID == kAudioFormatLinearPCM {
 			let bytesPerSample = formatFlags >> 16
 			let bpc = Int(bytesPerSample) * 8
-			if bpc > 0 && bpc <= 32 { return bpc }
+			if bpc > 0, bpc <= 32 {
+				return bpc
+			}
 		}
 
 		// Compressed formats often leave this 0; default to 16
 		return 16
 	}
 
-	// MP4 box scanner (size[4] + type[4] + payload)
+	/// MP4 box scanner (size[4] + type[4] + payload)
 	private static func findBox(type: String, in data: Data) -> Data? {
 		var i = 0
 		while i + 8 <= data.count {
-			let size = Int(UInt32(bigEndian: data[i..<(i+4)].withUnsafeBytes { $0.load(as: UInt32.self) }))
-			let typ  = String(bytes: data[(i+4)..<(i+8)], encoding: .ascii) ?? ""
-			let end  = (size > 0 ? i + size : data.count)
-			if typ == type, i + 8 <= end { return data[(i+8)..<end] }
+			let size = Int(UInt32(bigEndian: data[i ..< (i + 4)].withUnsafeBytes { $0.load(as: UInt32.self) }))
+			let typ = String(bytes: data[(i + 4) ..< (i + 8)], encoding: .ascii) ?? ""
+			let end = (size > 0 ? i + size : data.count)
+			if typ == type, i + 8 <= end {
+				return data[(i + 8) ..< end]
+			}
 			i = (size > 0 ? end : data.count)
 		}
 		return nil
 	}
 
-	// Parse MPEG-4 descriptors and return AOT from DecoderSpecificInfo (tag 0x05)
+	/// Parse MPEG-4 descriptors and return AOT from DecoderSpecificInfo (tag 0x05)
 	private static func extractAOTFromDescriptorBlob(_ blob: Data) -> UInt8? {
 		var i = 0
 		func readVarLen() -> Int? {
@@ -669,16 +702,22 @@ final class AVPlayerItemABRMonitor {
 			while i < blob.count {
 				let b = Int(blob[i]); i += 1; count += 1
 				len = (len << 7) | (b & 0x7F)
-				if (b & 0x80) == 0 { return len }
-				if count == 4 { return nil }
+				if (b & 0x80) == 0 {
+					return len
+				}
+				if count == 4 {
+					return nil
+				}
 			}
 			return nil
 		}
 		while i < blob.count {
 			let tag = Int(blob[i]); i += 1
-			guard let len = readVarLen(), i + len <= blob.count else { return nil }
+			guard let len = readVarLen(), i + len <= blob.count else {
+				return nil
+			}
 			if tag == 0x05 { // DecoderSpecificInfo → ASC
-				let asc = blob[i..<(i+len)]
+				let asc = blob[i ..< (i + len)]
 				return parseAudioObjectTypeFromASC(asc)
 			}
 			i += len
@@ -695,7 +734,7 @@ private struct AudioFormatMetadata: Equatable {
 	let audioFormatFlags: AudioFormatFlags
 	let bitDepth: Int
 	let sampleRate: Int
-	let audioObjectType: UInt8?  // 2=LC, 5=HE, 29=HEv2
-	let frmaCodec: String?       // 'mp4a', 'fLaC', 'alac', ...
-	let mediaSubType: String?    // 'mp4a', 'enca', etc.
+	let audioObjectType: UInt8? // 2=LC, 5=HE, 29=HEv2
+	let frmaCodec: String? // 'mp4a', 'fLaC', 'alac', ...
+	let mediaSubType: String? // 'mp4a', 'enca', etc.
 }

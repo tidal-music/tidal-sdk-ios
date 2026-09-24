@@ -55,5 +55,4 @@ extension PlaybackInfo {
 			previewReason: previewReason
 		)
 	}
-
 }

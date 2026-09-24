@@ -32,5 +32,4 @@ extension Metadata {
 			previewReason: previewReason
 		)
 	}
-
 }
