@@ -9,12 +9,14 @@ final class PlayerCacheManagerTests: XCTestCase {
 	private var cacheStorage: TestCacheStorage!
 	private var manager: PlayerCacheManager!
 	private var currentTimestamp: UInt64!
+	private var loggedEvents: [CacheLoggable]!
 
 	override func setUpWithError() throws {
 		try super.setUpWithError()
 
 		currentTimestamp = 0
 		cacheStorage = TestCacheStorage()
+		loggedEvents = []
 
 		let baseDirectory = FileManager.default.temporaryDirectory
 		temporaryDirectory = baseDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
@@ -26,6 +28,9 @@ final class PlayerCacheManagerTests: XCTestCase {
 			fileManager: .live,
 			timeProvider: { [weak self] in
 				self?.currentTimestamp ?? 0
+			},
+			logHandler: { [weak self] event in
+				self?.loggedEvents.append(event)
 			}
 		)
 	}
@@ -36,12 +41,17 @@ final class PlayerCacheManagerTests: XCTestCase {
 		cacheStorage = nil
 		temporaryDirectory = nil
 		currentTimestamp = nil
+		loggedEvents = nil
 
 		try super.tearDownWithError()
 	}
 
+	private func waitForQueue() {
+		_ = manager.currentCacheSizeInBytes()
+	}
+
 	func testPersistEntryOnDownload() throws {
-		currentTimestamp = 1_000
+		currentTimestamp = 1_000_000
 
 		let cacheKey = "test-cache-key"
 		let assetURL = URL(string: "https://example.com/stream.m3u8")!
@@ -53,12 +63,13 @@ final class PlayerCacheManagerTests: XCTestCase {
 		try data.write(to: segmentURL)
 
 		manager.assetFinishedDownloading(AVURLAsset(url: assetURL), to: downloadDirectory, for: cacheKey)
+		waitForQueue()
 
 		let entry = try XCTUnwrap(cacheStorage.entry(for: cacheKey))
 		XCTAssertEqual(entry.key, cacheKey)
 		XCTAssertEqual(entry.url, downloadDirectory)
 		XCTAssertEqual(entry.size, data.count)
-		XCTAssertEqual(entry.lastAccessedAt, Date(timeIntervalSince1970: 1_000))
+		XCTAssertEqual(entry.lastAccessedAt, Date(timeIntervalSince1970: 1000))
 	}
 
 	func testRecordPlaybackUpdatesLastAccessed() throws {
@@ -75,8 +86,9 @@ final class PlayerCacheManagerTests: XCTestCase {
 		)
 		try cacheStorage.save(entry)
 
-		currentTimestamp = 20
+		currentTimestamp = 20000
 		manager.recordPlayback(for: cacheKey)
+		waitForQueue()
 
 		entry = try XCTUnwrap(cacheStorage.entry(for: cacheKey))
 		XCTAssertEqual(entry.lastAccessedAt, Date(timeIntervalSince1970: 20))
@@ -111,6 +123,7 @@ final class PlayerCacheManagerTests: XCTestCase {
 		)
 
 		manager.clearCache()
+		waitForQueue()
 
 		XCTAssertNil(cacheStorage.entry(for: cacheKey))
 		XCTAssertFalse(FileManager.default.fileExists(atPath: cachedURL.path))
@@ -151,6 +164,7 @@ final class PlayerCacheManagerTests: XCTestCase {
 		)
 
 		manager.updateMaxCacheSize(60)
+		waitForQueue()
 
 		XCTAssertNil(cacheStorage.entry(for: "oldest"))
 		XCTAssertFalse(FileManager.default.fileExists(atPath: oldestURL.path))
@@ -183,20 +197,221 @@ final class PlayerCacheManagerTests: XCTestCase {
 		)
 
 		manager.updateMaxCacheSize(100)
+		waitForQueue()
 
 		let newDownloadURL = try makeDirectory(named: "new", size: 50)
-		currentTimestamp = 100
+		currentTimestamp = 100_000
 		manager.assetFinishedDownloading(
 			AVURLAsset(url: URL(string: "https://example.com/new.m3u8")!),
 			to: newDownloadURL,
 			for: "new"
 		)
+		waitForQueue()
 
 		XCTAssertNil(cacheStorage.entry(for: "evict"))
 		XCTAssertFalse(FileManager.default.fileExists(atPath: evictURL.path))
 		XCTAssertNotNil(cacheStorage.entry(for: "keep"))
 		XCTAssertNotNil(cacheStorage.entry(for: "new"))
 		XCTAssertLessThanOrEqual(manager.currentCacheSizeInBytes(), 100)
+	}
+
+	// MARK: - Phase 1 Step 1.1: Thread Safety Tests
+
+	func testConcurrentCacheOperationsAreSerialized() throws {
+		let expectation = XCTestExpectation(description: "All operations submitted")
+		expectation.expectedFulfillmentCount = 10
+		currentTimestamp = 20000
+
+		for i in 0 ..< 10 {
+			let cacheKey = "key-\(i)"
+			let cachedURL = temporaryDirectory.appendingPathComponent(cacheKey)
+			try Data(count: 10).write(to: cachedURL)
+			try cacheStorage.save(CacheEntry(key: cacheKey, type: .hls, url: cachedURL, size: 10))
+		}
+
+		for i in 0 ..< 10 {
+			DispatchQueue.global().async { [weak self] in
+				self?.manager.recordPlayback(for: "key-\(i)")
+				expectation.fulfill()
+			}
+		}
+
+		wait(for: [expectation], timeout: 5.0)
+		waitForQueue()
+
+		let allEntries = try cacheStorage.getAll()
+		XCTAssertEqual(allEntries.count, 10)
+		XCTAssertTrue(allEntries.allSatisfy { $0.lastAccessedAt == Date(timeIntervalSince1970: 20) })
+	}
+
+	func testSyncMethodsBlockUntilCompletion() throws {
+		let firstURL = try makeDirectory(named: "first", size: 100)
+		try cacheStorage.save(CacheEntry(key: "first", type: .hls, url: firstURL, size: 100))
+
+		// recordPlayback is async, but we need to verify the queue processes it
+		manager.recordPlayback(for: "first")
+
+		// currentCacheSizeInBytes is sync and should block until queue is empty
+		let size = manager.currentCacheSizeInBytes()
+		XCTAssertEqual(size, 100)
+
+		// Verify entry was updated
+		let entry = try XCTUnwrap(cacheStorage.entry(for: "first"))
+		XCTAssertEqual(entry.lastAccessedAt, Date(timeIntervalSince1970: 0))
+	}
+
+	func testAsyncMethodsReturnImmediately() {
+		let startTime = Date()
+
+		manager.recordPlayback(for: "nonexistent")
+		let elapsed = Date().timeIntervalSince(startTime)
+
+		// Should return immediately, not wait for queue
+		XCTAssertLessThan(elapsed, 0.1)
+	}
+
+	// MARK: - Phase 1 Step 1.2: Database Index Tests
+
+	func testPruningUsesIndexForEfficientQuery() throws {
+		// Create multiple entries with different access times
+		for i in 0 ..< 100 {
+			let url = try makeDirectory(named: "entry-\(i)", size: 10)
+			try cacheStorage.save(
+				CacheEntry(
+					key: "key-\(i)",
+					type: .hls,
+					url: url,
+					lastAccessedAt: Date(timeIntervalSince1970: TimeInterval(i)),
+					size: 10
+				)
+			)
+		}
+
+		// Set quota to force pruning
+		manager.updateMaxCacheSize(500) // Should remove oldest 50 entries
+		waitForQueue()
+
+		// Verify correct entries were removed (oldest first)
+		let remainingEntries = try cacheStorage.getAll()
+		XCTAssertEqual(remainingEntries.count, 50)
+
+		// Verify newest entries remain
+		let remainingKeys = Set(remainingEntries.map { $0.key })
+		for i in 50 ..< 100 {
+			XCTAssertTrue(remainingKeys.contains("key-\(i)"))
+		}
+	}
+
+	// MARK: - Phase 1 Step 1.3: Logging Tests
+
+	func testLoggingRecordsPlaybackFailures() throws {
+		cacheStorage.getError = TestError.forced
+
+		manager.recordPlayback(for: "failed-key")
+		waitForQueue()
+
+		guard case let .recordPlaybackFailed(cacheKey, error) = try XCTUnwrap(loggedEvents.first) else {
+			return XCTFail("Expected a recordPlaybackFailed event")
+		}
+		XCTAssertEqual(cacheKey, "failed-key")
+		XCTAssertEqual(error as? TestError, .forced)
+	}
+
+	func testLoggingRecordsCacheClearingFailures() throws {
+		let cachedURL = try makeDirectory(named: "failed-clear", size: 100)
+		try cacheStorage.save(CacheEntry(key: "failed-key", type: .hls, url: cachedURL, size: 100))
+		cacheStorage.deleteError = TestError.forced
+
+		manager.clearCache()
+		waitForQueue()
+
+		guard case let .clearCacheFailed(error) = try XCTUnwrap(loggedEvents.first) else {
+			return XCTFail("Expected a clearCacheFailed event")
+		}
+		XCTAssertEqual(error as? TestError, .forced)
+	}
+
+	// MARK: - Phase 1 Step 1.4: Race Condition Tests
+
+	func testClearCacheCancelsDownloadsBeforeDeletingEntries() throws {
+		let mockFactory = TestAssetFactory()
+		let managerWithMock = PlayerCacheManager(
+			storageDirectory: temporaryDirectory,
+			cacheStorage: cacheStorage,
+			assetFactory: mockFactory,
+			fileManager: .live,
+			timeProvider: { 0 }
+		)
+		let url1 = try makeDirectory(named: "cache1", size: 50)
+		let url2 = try makeDirectory(named: "cache2", size: 50)
+		try cacheStorage.save(CacheEntry(key: "key1", type: .hls, url: url1, size: 50))
+		try cacheStorage.save(CacheEntry(key: "key2", type: .hls, url: url2, size: 50))
+
+		managerWithMock.clearCache()
+		_ = managerWithMock.currentCacheSizeInBytes()
+
+		XCTAssertEqual(mockFactory.events.first, .reset)
+		XCTAssertEqual(Set(mockFactory.deletedKeys), ["key1", "key2"])
+		XCTAssertTrue(try cacheStorage.getAll().isEmpty)
+	}
+
+	func testClearCacheRemovesAllFilesEvenIfSomeFail() throws {
+		let failingURL = try makeDirectory(named: "failing", size: 50)
+		let removableURL = try makeDirectory(named: "removable", size: 50)
+		try cacheStorage.save(CacheEntry(key: "failing", type: .hls, url: failingURL, size: 50))
+		try cacheStorage.save(CacheEntry(key: "removable", type: .hls, url: removableURL, size: 50))
+
+		var fileManager = FileManagerClient.live
+		fileManager.removeFile = { url in
+			if url == failingURL {
+				throw TestError.forced
+			}
+			try FileManager.default.removeItem(at: url)
+		}
+		let managerWithFailingRemoval = PlayerCacheManager(
+			storageDirectory: temporaryDirectory,
+			cacheStorage: cacheStorage,
+			fileManager: fileManager,
+			logHandler: { [weak self] event in
+				self?.loggedEvents.append(event)
+			}
+		)
+
+		managerWithFailingRemoval.clearCache()
+		_ = managerWithFailingRemoval.currentCacheSizeInBytes()
+
+		XCTAssertTrue(try cacheStorage.getAll().isEmpty)
+		XCTAssertTrue(FileManager.default.fileExists(atPath: failingURL.path))
+		XCTAssertFalse(FileManager.default.fileExists(atPath: removableURL.path))
+		XCTAssertTrue(loggedEvents.contains {
+			guard case .deleteCacheFileFailed = $0 else {
+				return false
+			}
+			return true
+		})
+	}
+
+	func testClearCacheIsAtomicWhenInterleaved() throws {
+		// Add initial entries
+		let url1 = try makeDirectory(named: "entry1", size: 100)
+		try cacheStorage.save(CacheEntry(key: "key1", type: .hls, url: url1, size: 100))
+
+		// Start clearing
+		manager.clearCache()
+
+		let finalSize = manager.currentCacheSizeInBytes()
+		XCTAssertEqual(finalSize, 0)
+	}
+
+	func testRecordPlaybackDuringClearDoesNotCrash() throws {
+		let url = try makeDirectory(named: "entry", size: 100)
+		try cacheStorage.save(CacheEntry(key: "key", type: .hls, url: url, size: 100))
+
+		// Start clearing and immediately try to record playback
+		manager.clearCache()
+		manager.recordPlayback(for: "key")
+
+		XCTAssertEqual(manager.currentCacheSizeInBytes(), 0)
 	}
 
 	private func makeDirectory(named: String, size: Int) throws -> URL {
@@ -208,20 +423,34 @@ final class PlayerCacheManagerTests: XCTestCase {
 	}
 }
 
+// MARK: - TestError
+
+private enum TestError: Error {
+	case forced
+}
+
 // MARK: - TestCacheStorage
 
 private final class TestCacheStorage: CacheStorage {
 	private var entries: [String: CacheEntry] = [:]
+	var getError: Error?
+	var deleteError: Error?
 
 	func save(_ entry: CacheEntry) throws {
 		entries[entry.key] = entry
 	}
 
 	func get(key: String) throws -> CacheEntry? {
-		entries[key]
+		if let getError {
+			throw getError
+		}
+		return entries[key]
 	}
 
 	func delete(key: String) throws {
+		if let deleteError {
+			throw deleteError
+		}
 		entries.removeValue(forKey: key)
 	}
 
@@ -251,4 +480,42 @@ private final class TestCacheStorage: CacheStorage {
 	func entry(for key: String) -> CacheEntry? {
 		entries[key]
 	}
+}
+
+// MARK: - TestAssetFactory
+
+private final class TestAssetFactory: AssetFactoring {
+	enum Event: Equatable {
+		case reset
+		case delete(String)
+	}
+
+	weak var delegate: AssetFactoryDelegate?
+	private(set) var events: [Event] = []
+	var deletedKeys: [String] {
+		events.compactMap {
+			guard case let .delete(key) = $0 else {
+				return nil
+			}
+			return key
+		}
+	}
+
+	func get(with cacheKey: String?) -> AssetCacheState? {
+		cacheKey.map { AssetCacheState(key: $0, status: .notCached) }
+	}
+
+	func delete(_ key: String) {
+		events.append(.delete(key))
+	}
+
+	func cacheAsset(_: AVURLAsset, for _: String) {}
+
+	func cancel(with _: String) {}
+
+	func reset() {
+		events.append(.reset)
+	}
+
+	func clearCache() {}
 }

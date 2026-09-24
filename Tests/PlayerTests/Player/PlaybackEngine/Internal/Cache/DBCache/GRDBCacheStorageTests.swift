@@ -106,6 +106,23 @@ final class GRDBCacheStorageTests: XCTestCase {
 		}
 	}
 
+	func testGetAllOrderedByLastAccessedUsesIndex() throws {
+		try cacheStorage.save(Constants.cacheEntry1)
+		try cacheStorage.save(Constants.cacheEntry2)
+		try cacheStorage.save(Constants.cacheEntry3)
+
+		let entries = try cacheStorage.getAllOrderedByLastAccessed()
+		XCTAssertEqual(entries, [Constants.cacheEntry3, Constants.cacheEntry2, Constants.cacheEntry1])
+
+		let queryPlan: [String] = try dbQueue.read { db in
+			try Row.fetchAll(
+				db,
+				sql: "EXPLAIN QUERY PLAN SELECT * FROM cacheEntries ORDER BY lastAccessedAt ASC"
+			).compactMap { $0["detail"] }
+		}
+		XCTAssertTrue(queryPlan.contains { $0.contains("idx_cacheEntry_lastAccessedAt") })
+	}
+
 	func testCalculateTotalSize() throws {
 		do {
 			try cacheStorage.save(Constants.cacheEntry1)

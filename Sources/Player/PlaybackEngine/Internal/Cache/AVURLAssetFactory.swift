@@ -7,9 +7,22 @@ protocol AssetFactoryDelegate: AnyObject {
 	func assetFinishedDownloading(_ urlAsset: AVURLAsset, to location: URL, for cacheKey: String)
 }
 
+// MARK: - AssetFactoring
+
+protocol AssetFactoring: AnyObject {
+	var delegate: AssetFactoryDelegate? { get set }
+
+	func get(with cacheKey: String?) -> AssetCacheState?
+	func delete(_ cacheKey: String)
+	func cacheAsset(_ urlAsset: AVURLAsset, for cacheKey: String)
+	func cancel(with cacheKey: String)
+	func reset()
+	func clearCache()
+}
+
 // MARK: - AVURLAssetFactory
 
-final class AVURLAssetFactory: NSObject {
+final class AVURLAssetFactory: NSObject, AssetFactoring {
 	private static let TTL: Int = 24 * 60 * 60
 
 	private let assetCache: AssetCache
