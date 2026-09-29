@@ -1,0 +1,16 @@
+# AlbumsCreateOperationPayloadDataAttributes
+
+## Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**albumType** | **String** |  | [optional] 
+**copyright** | [**Copyright**](Copyright.md) |  | [optional] 
+**explicit** | **Bool** | Explicit content | [optional] 
+**explicitLyrics** | **Bool** | Explicit content. Deprecated: use &#39;explicit&#39; instead. This field will be removed in a future version. | [optional] 
+**releaseDate** | **Date** |  | [optional] 
+**title** | **String** |  | 
+**version** | **String** |  | [optional] 
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+
