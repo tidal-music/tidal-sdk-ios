@@ -81,9 +81,9 @@ public enum UserCollectionPlaylistsAPITidal {
      
      - returns: UserCollectionPlaylistsItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: UserCollectionPlaylistsAPITidal.CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, pageCursor: String? = nil, sort: [UserCollectionPlaylistsAPITidal.Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
+	public static func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: UserCollectionPlaylistsAPITidal.CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, pageCursor: String? = nil, sort: [UserCollectionPlaylistsAPITidal.Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGetWithRequestBuilder(id: id, collectionView: collectionView?.toUserCollectionPlaylistsAPIEnum(), pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionPlaylistsAPIEnum() }, include: include, replaceMedia: replaceMedia)
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGetWithRequestBuilder(id: id, collectionView: collectionView?.toUserCollectionPlaylistsAPIEnum(), pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionPlaylistsAPIEnum() }, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
 		}
 	}
 

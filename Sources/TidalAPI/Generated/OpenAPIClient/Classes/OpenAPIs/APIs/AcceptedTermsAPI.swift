@@ -19,13 +19,14 @@ internal class AcceptedTermsAPI {
         case developer = "DEVELOPER"
         case uploadMarketplace = "UPLOAD_MARKETPLACE"
         case merchGuidelines = "MERCH_GUIDELINES"
+        case tidalConnectDeveloper = "TIDAL_CONNECT_DEVELOPER"
     }
 
     /**
      Get multiple acceptedTerms.
      
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. &#x60;DEVELOPER&#x60;) 
+     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, terms (optional)
      - parameter filterTermsIsLatestVersion: (query) Filter by terms.isLatestVersion (optional)
      - returns: AcceptedTermsMultiResourceDataDocument
@@ -48,7 +49,7 @@ internal class AcceptedTermsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. &#x60;DEVELOPER&#x60;) 
+     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, terms (optional)
      - parameter filterTermsIsLatestVersion: (query) Filter by terms.isLatestVersion (optional)
      - returns: RequestBuilder<AcceptedTermsMultiResourceDataDocument> 

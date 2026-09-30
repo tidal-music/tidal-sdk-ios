@@ -13,15 +13,6 @@ import AnyCodable
 internal class CommentsAPI {
 
     /**
-     * enum for parameter filterSubjectType
-     */
-    public enum FilterSubjectType_commentsGet: String, CaseIterable {
-        case albums = "albums"
-        case tracks = "tracks"
-        case tracksourcefiles = "trackSourceFiles"
-    }
-
-    /**
      * enum for parameter sort
      */
     public enum Sort_commentsGet: String, CaseIterable {
@@ -36,21 +27,31 @@ internal class CommentsAPI {
     }
 
     /**
+     * enum for parameter filterSubjectType
+     */
+    public enum FilterSubjectType_commentsGet: String, CaseIterable {
+        case albums = "albums"
+        case tracks = "tracks"
+        case tracksourcefiles = "trackSourceFiles"
+    }
+
+    /**
      Get multiple comments.
      
-     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) 
-     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: author, owners, parentComment (optional)
      - parameter filterParentCommentId: (query) Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
+     - parameter filterSubject: (query) The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
+     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: CommentsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsGet(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_commentsGet], pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, replaceMedia: String? = nil) async throws -> CommentsMultiResourceDataDocument {
+    internal class func commentsGet(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, replaceMedia: String? = nil) async throws -> CommentsMultiResourceDataDocument {
         do {
-            return try await commentsGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, sort: sort, include: include, filterParentCommentId: filterParentCommentId, replaceMedia: replaceMedia).execute().body
+            return try await commentsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort, include: include, filterParentCommentId: filterParentCommentId, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -64,28 +65,30 @@ internal class CommentsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) 
-     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: author, owners, parentComment (optional)
      - parameter filterParentCommentId: (query) Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
+     - parameter filterSubject: (query) The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
+     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: RequestBuilder<CommentsMultiResourceDataDocument> 
      */
-    internal class func commentsGetWithRequestBuilder(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_commentsGet], pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CommentsMultiResourceDataDocument> {
+    internal class func commentsGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CommentsMultiResourceDataDocument> {
         let localVariablePath = "/comments"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[subject.id]": (wrappedValue: filterSubjectId.encodeToJSON(), isExplode: true),
-            "filter[subject.type]": (wrappedValue: filterSubjectType.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[parentComment.id]": (wrappedValue: filterParentCommentId?.encodeToJSON(), isExplode: true),
+            "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
+            "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
+            "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 

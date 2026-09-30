@@ -24,16 +24,17 @@ internal class DspSharingLinksAPI {
     /**
      Get multiple dspSharingLinks.
      
-     - parameter filterSubjectId: (query) The id of the subject resource 
-     - parameter filterSubjectType: (query) The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter filterSubject: (query) The subject whose DSP sharing links to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. The id of the subject resource (optional)
+     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. The type of the subject resource (e.g. &#x60;tracks&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: DspSharingLinksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dspSharingLinksGet(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_dspSharingLinksGet], include: [String]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
+    internal class func dspSharingLinksGet(include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
         do {
-            return try await dspSharingLinksGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, include: include, replaceMedia: replaceMedia).execute().body
+            return try await dspSharingLinksGetWithRequestBuilder(include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -50,22 +51,24 @@ internal class DspSharingLinksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter filterSubjectId: (query) The id of the subject resource 
-     - parameter filterSubjectType: (query) The type of the subject resource (e.g., albums, tracks, artists) (e.g. &#x60;tracks&#x60;) 
      - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter filterSubject: (query) The subject whose DSP sharing links to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. The id of the subject resource (optional)
+     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. The type of the subject resource (e.g. &#x60;tracks&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<DspSharingLinksMultiResourceDataDocument> 
      */
-    internal class func dspSharingLinksGetWithRequestBuilder(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_dspSharingLinksGet], include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DspSharingLinksMultiResourceDataDocument> {
+    internal class func dspSharingLinksGetWithRequestBuilder(include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DspSharingLinksMultiResourceDataDocument> {
         let localVariablePath = "/dspSharingLinks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[subject.id]": (wrappedValue: filterSubjectId.encodeToJSON(), isExplode: true),
-            "filter[subject.type]": (wrappedValue: filterSubjectType.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
+            "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
+            "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 

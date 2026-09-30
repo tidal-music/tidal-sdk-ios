@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 # **commentsGet**
 ```swift
-    open class func commentsGet(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_commentsGet], pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CommentsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func commentsGet(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CommentsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple comments.
@@ -28,16 +28,17 @@ Retrieves multiple comments by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterSubjectId = ["inner_example"] // [String] | Filter by subject resource ID (e.g. `12345`)
-let filterSubjectType = ["filterSubjectType_example"] // [String] | Filter by subject resource type (e.g. `albums`)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: author, owners, parentComment (optional)
 let filterParentCommentId = ["inner_example"] // [String] | Filter by parent comment ID to get replies (e.g. `550e8400-e29b-41d4-a716-446655440000`) (optional)
+let filterSubject = "filterSubject_example" // String | The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+let filterSubjectId = ["inner_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. `12345`) (optional)
+let filterSubjectType = ["filterSubjectType_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource type (e.g. `albums`) (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
 
 // Get multiple comments.
-CommentsAPI.commentsGet(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, sort: sort, include: include, filterParentCommentId: filterParentCommentId, replaceMedia: replaceMedia) { (response, error) in
+CommentsAPI.commentsGet(pageCursor: pageCursor, sort: sort, include: include, filterParentCommentId: filterParentCommentId, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -53,12 +54,13 @@ CommentsAPI.commentsGet(filterSubjectId: filterSubjectId, filterSubjectType: fil
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterSubjectId** | [**[String]**](String.md) | Filter by subject resource ID (e.g. &#x60;12345&#x60;) | 
- **filterSubjectType** | [**[String]**](String.md) | Filter by subject resource type (e.g. &#x60;albums&#x60;) | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: author, owners, parentComment | [optional] 
  **filterParentCommentId** | [**[String]**](String.md) | Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) | [optional] 
+ **filterSubject** | **String** | The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. | [optional] 
+ **filterSubjectId** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) | [optional] 
+ **filterSubjectType** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums | [optional] 
 
 ### Return type

@@ -16,6 +16,7 @@ public struct UsersAttributes: Codable, Hashable {
         case thirdParty = "THIRD_PARTY"
         case thirdPartyProd = "THIRD_PARTY_PROD"
         case partner = "PARTNER"
+        case partnerTidalConnect = "PARTNER_TIDAL_CONNECT"
         case _internal = "INTERNAL"
     }
     /** ISO 3166-1 alpha-2 country code */

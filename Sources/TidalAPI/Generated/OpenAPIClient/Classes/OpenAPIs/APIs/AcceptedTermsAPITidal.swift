@@ -21,12 +21,14 @@ public enum AcceptedTermsAPITidal {
 		case developer = "DEVELOPER"
 		case uploadMarketplace = "UPLOAD_MARKETPLACE"
 		case merchGuidelines = "MERCH_GUIDELINES"
+		case tidalConnectDeveloper = "TIDAL_CONNECT_DEVELOPER"
 
 		func toAcceptedTermsAPIEnum() -> AcceptedTermsAPI.FilterTermsTermsType_acceptedTermsGet {
 			switch self {
 			case .developer: return .developer
 			case .uploadMarketplace: return .uploadMarketplace
 			case .merchGuidelines: return .merchGuidelines
+			case .tidalConnectDeveloper: return .tidalConnectDeveloper
 			}
 		}
 	}

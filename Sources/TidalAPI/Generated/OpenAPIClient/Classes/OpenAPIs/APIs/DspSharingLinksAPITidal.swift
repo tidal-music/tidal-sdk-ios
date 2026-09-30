@@ -36,9 +36,9 @@ public enum DspSharingLinksAPITidal {
      
      - returns: DspSharingLinksMultiResourceDataDocument
      */
-	public static func dspSharingLinksGet(filterSubjectId: [String], filterSubjectType: [DspSharingLinksAPITidal.FilterSubjectType_dspSharingLinksGet], include: [String]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
+	public static func dspSharingLinksGet(include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [DspSharingLinksAPITidal.FilterSubjectType_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			DspSharingLinksAPI.dspSharingLinksGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType.compactMap { $0.toDspSharingLinksAPIEnum() }, include: include, replaceMedia: replaceMedia)
+			DspSharingLinksAPI.dspSharingLinksGetWithRequestBuilder(include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toDspSharingLinksAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

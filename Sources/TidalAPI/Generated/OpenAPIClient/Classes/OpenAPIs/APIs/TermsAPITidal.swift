@@ -21,12 +21,14 @@ public enum TermsAPITidal {
 		case developer = "DEVELOPER"
 		case uploadMarketplace = "UPLOAD_MARKETPLACE"
 		case merchGuidelines = "MERCH_GUIDELINES"
+		case tidalConnectDeveloper = "TIDAL_CONNECT_DEVELOPER"
 
 		func toTermsAPIEnum() -> TermsAPI.FilterTermsType_termsGet {
 			switch self {
 			case .developer: return .developer
 			case .uploadMarketplace: return .uploadMarketplace
 			case .merchGuidelines: return .merchGuidelines
+			case .tidalConnectDeveloper: return .tidalConnectDeveloper
 			}
 		}
 	}
