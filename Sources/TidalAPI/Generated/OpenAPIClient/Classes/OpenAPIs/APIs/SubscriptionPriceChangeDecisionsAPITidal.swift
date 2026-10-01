@@ -15,13 +15,26 @@ public enum SubscriptionPriceChangeDecisionsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_subscriptionPriceChangeDecisionsGet: String, CaseIterable {
+		case pricechange = "priceChange"
+
+		func toSubscriptionPriceChangeDecisionsAPIEnum() -> SubscriptionPriceChangeDecisionsAPI.IncludeLinkage_subscriptionPriceChangeDecisionsGet {
+			switch self {
+			case .pricechange: return .pricechange
+			}
+		}
+	}
+
+	/**
      Get multiple subscriptionPriceChangeDecisions.
      
      - returns: SubscriptionPriceChangeDecisionsMultiResourceDataDocument
      */
-	public static func subscriptionPriceChangeDecisionsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> SubscriptionPriceChangeDecisionsMultiResourceDataDocument {
+	public static func subscriptionPriceChangeDecisionsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [SubscriptionPriceChangeDecisionsAPITidal.IncludeLinkage_subscriptionPriceChangeDecisionsGet]? = nil) async throws -> SubscriptionPriceChangeDecisionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
+			SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSubscriptionPriceChangeDecisionsAPIEnum() })
 		}
 	}
 

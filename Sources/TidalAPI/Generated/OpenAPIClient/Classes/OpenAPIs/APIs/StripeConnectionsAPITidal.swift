@@ -15,13 +15,26 @@ public enum StripeConnectionsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_stripeConnectionsGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toStripeConnectionsAPIEnum() -> StripeConnectionsAPI.IncludeLinkage_stripeConnectionsGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get multiple stripeConnections.
      
      - returns: StripeConnectionsMultiResourceDataDocument
      */
-	public static func stripeConnectionsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> StripeConnectionsMultiResourceDataDocument {
+	public static func stripeConnectionsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [StripeConnectionsAPITidal.IncludeLinkage_stripeConnectionsGet]? = nil) async throws -> StripeConnectionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			StripeConnectionsAPI.stripeConnectionsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
+			StripeConnectionsAPI.stripeConnectionsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toStripeConnectionsAPIEnum() })
 		}
 	}
 

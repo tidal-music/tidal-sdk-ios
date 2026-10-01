@@ -59,13 +59,28 @@ public enum DynamicModulesAPITidal {
 	}
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_dynamicModulesGet: String, CaseIterable {
+		case items = "items"
+		case seeditem = "seedItem"
+
+		func toDynamicModulesAPIEnum() -> DynamicModulesAPI.IncludeLinkage_dynamicModulesGet {
+			switch self {
+			case .items: return .items
+			case .seeditem: return .seeditem
+			}
+		}
+	}
+
+	/**
      Get multiple dynamicModules.
      
      - returns: DynamicModulesMultiResourceDataDocument
      */
-	public static func dynamicModulesGet(deviceType: DynamicModulesAPITidal.DeviceType_dynamicModulesGet, systemType: DynamicModulesAPITidal.SystemType_dynamicModulesGet, clientVersion: String, filterId: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesMultiResourceDataDocument {
+	public static func dynamicModulesGet(deviceType: DynamicModulesAPITidal.DeviceType_dynamicModulesGet, systemType: DynamicModulesAPITidal.SystemType_dynamicModulesGet, clientVersion: String, filterId: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, includeLinkage: [DynamicModulesAPITidal.IncludeLinkage_dynamicModulesGet]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			DynamicModulesAPI.dynamicModulesGetWithRequestBuilder(deviceType: deviceType.toDynamicModulesAPIEnum(), systemType: systemType.toDynamicModulesAPIEnum(), clientVersion: clientVersion, filterId: filterId, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, replaceMedia: replaceMedia)
+			DynamicModulesAPI.dynamicModulesGetWithRequestBuilder(deviceType: deviceType.toDynamicModulesAPIEnum(), systemType: systemType.toDynamicModulesAPIEnum(), clientVersion: clientVersion, filterId: filterId, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toDynamicModulesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -115,13 +130,28 @@ public enum DynamicModulesAPITidal {
 	}
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_dynamicModulesIdGet: String, CaseIterable {
+		case items = "items"
+		case seeditem = "seedItem"
+
+		func toDynamicModulesAPIEnum() -> DynamicModulesAPI.IncludeLinkage_dynamicModulesIdGet {
+			switch self {
+			case .items: return .items
+			case .seeditem: return .seeditem
+			}
+		}
+	}
+
+	/**
      Get single dynamicModule.
      
      - returns: DynamicModulesSingleResourceDataDocument
      */
-	public static func dynamicModulesIdGet(id: String, deviceType: DynamicModulesAPITidal.DeviceType_dynamicModulesIdGet, systemType: DynamicModulesAPITidal.SystemType_dynamicModulesIdGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesSingleResourceDataDocument {
+	public static func dynamicModulesIdGet(id: String, deviceType: DynamicModulesAPITidal.DeviceType_dynamicModulesIdGet, systemType: DynamicModulesAPITidal.SystemType_dynamicModulesIdGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, includeLinkage: [DynamicModulesAPITidal.IncludeLinkage_dynamicModulesIdGet]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			DynamicModulesAPI.dynamicModulesIdGetWithRequestBuilder(id: id, deviceType: deviceType.toDynamicModulesAPIEnum(), systemType: systemType.toDynamicModulesAPIEnum(), clientVersion: clientVersion, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, replaceMedia: replaceMedia)
+			DynamicModulesAPI.dynamicModulesIdGetWithRequestBuilder(id: id, deviceType: deviceType.toDynamicModulesAPIEnum(), systemType: systemType.toDynamicModulesAPIEnum(), clientVersion: clientVersion, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toDynamicModulesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

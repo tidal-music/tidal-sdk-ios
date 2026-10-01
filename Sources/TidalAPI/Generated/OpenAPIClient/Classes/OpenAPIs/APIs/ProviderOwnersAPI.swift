@@ -13,16 +13,25 @@ import AnyCodable
 internal class ProviderOwnersAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_providerOwnersGet: String, CaseIterable {
+        case owners = "owners"
+        case provider = "provider"
+    }
+
+    /**
      Get multiple providerOwners.
      
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, provider (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, provider (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: ProviderOwnersMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func providerOwnersGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ProviderOwnersMultiResourceDataDocument {
+    internal class func providerOwnersGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_providerOwnersGet]? = nil) async throws -> ProviderOwnersMultiResourceDataDocument {
         do {
-            return try await providerOwnersGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include).execute().body
+            return try await providerOwnersGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -37,10 +46,11 @@ internal class ProviderOwnersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, provider (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, provider (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<ProviderOwnersMultiResourceDataDocument> 
      */
-    internal class func providerOwnersGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil) -> RequestBuilder<ProviderOwnersMultiResourceDataDocument> {
+    internal class func providerOwnersGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_providerOwnersGet]? = nil) -> RequestBuilder<ProviderOwnersMultiResourceDataDocument> {
         let localVariablePath = "/providerOwners"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -49,6 +59,7 @@ internal class ProviderOwnersAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -66,7 +77,7 @@ internal class ProviderOwnersAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Provider owner id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: ProviderOwnersOwnersMultiRelationshipDataDocument
      */
@@ -88,7 +99,7 @@ internal class ProviderOwnersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Provider owner id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<ProviderOwnersOwnersMultiRelationshipDataDocument> 
      */
@@ -121,7 +132,7 @@ internal class ProviderOwnersAPI {
      Get provider relationship (\"to-one\").
      
      - parameter id: (path) Provider owner id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider (optional)
+     - parameter include: (query) Include related resources. Available relationships: provider (optional)
      - returns: ProviderOwnersProviderSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -142,7 +153,7 @@ internal class ProviderOwnersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Provider owner id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: provider (optional)
+     - parameter include: (query) Include related resources. Available relationships: provider (optional)
      - returns: RequestBuilder<ProviderOwnersProviderSingleRelationshipDataDocument> 
      */
     internal class func providerOwnersIdRelationshipsProviderGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<ProviderOwnersProviderSingleRelationshipDataDocument> {

@@ -13,18 +13,26 @@ import AnyCodable
 internal class UserDiscoveryMixesAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_userDiscoveryMixesIdGet: String, CaseIterable {
+        case items = "items"
+    }
+
+    /**
      Get single userDiscoveryMixe.
      
      - parameter id: (path) User discovery mixes id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: UserDiscoveryMixesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userDiscoveryMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesSingleResourceDataDocument {
+    internal class func userDiscoveryMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userDiscoveryMixesIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesSingleResourceDataDocument {
         do {
-            return try await userDiscoveryMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
+            return try await userDiscoveryMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -40,11 +48,12 @@ internal class UserDiscoveryMixesAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) User discovery mixes id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: RequestBuilder<UserDiscoveryMixesSingleResourceDataDocument> 
      */
-    internal class func userDiscoveryMixesIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserDiscoveryMixesSingleResourceDataDocument> {
+    internal class func userDiscoveryMixesIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userDiscoveryMixesIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserDiscoveryMixesSingleResourceDataDocument> {
         var localVariablePath = "/userDiscoveryMixes/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -56,6 +65,7 @@ internal class UserDiscoveryMixesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -76,7 +86,7 @@ internal class UserDiscoveryMixesAPI {
      - parameter id: (path) User discovery mixes id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: UserDiscoveryMixesItemsMultiRelationshipDataDocument
      */
@@ -100,7 +110,7 @@ internal class UserDiscoveryMixesAPI {
      - parameter id: (path) User discovery mixes id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: RequestBuilder<UserDiscoveryMixesItemsMultiRelationshipDataDocument> 
      */

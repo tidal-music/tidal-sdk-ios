@@ -13,19 +13,35 @@ import AnyCodable
 internal class VideosAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_videosGet: String, CaseIterable {
+        case albums = "albums"
+        case artists = "artists"
+        case credits = "credits"
+        case providers = "providers"
+        case replacement = "replacement"
+        case similarvideos = "similarVideos"
+        case suggestedvideos = "suggestedVideos"
+        case thumbnailart = "thumbnailArt"
+        case usagerules = "usageRules"
+    }
+
+    /**
      Get multiple videos.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
      - parameter filterId: (query) List of video IDs (e.g. &#x60;75623239&#x60;) (optional)
      - parameter filterIsrc: (query) List of ISRCs (e.g. &#x60;QMJMT1701237&#x60;) (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: VideosMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func videosGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosMultiResourceDataDocument {
+    internal class func videosGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, includeLinkage: [IncludeLinkage_videosGet]? = nil, replaceMedia: String? = nil) async throws -> VideosMultiResourceDataDocument {
         do {
-            return try await videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, replaceMedia: replaceMedia).execute().body
+            return try await videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -43,13 +59,14 @@ internal class VideosAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
      - parameter filterId: (query) List of video IDs (e.g. &#x60;75623239&#x60;) (optional)
      - parameter filterIsrc: (query) List of ISRCs (e.g. &#x60;QMJMT1701237&#x60;) (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<VideosMultiResourceDataDocument> 
      */
-    internal class func videosGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<VideosMultiResourceDataDocument> {
+    internal class func videosGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, includeLinkage: [IncludeLinkage_videosGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<VideosMultiResourceDataDocument> {
         let localVariablePath = "/videos"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -60,6 +77,7 @@ internal class VideosAPI {
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
             "filter[isrc]": (wrappedValue: filterIsrc?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -75,18 +93,34 @@ internal class VideosAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_videosIdGet: String, CaseIterable {
+        case albums = "albums"
+        case artists = "artists"
+        case credits = "credits"
+        case providers = "providers"
+        case replacement = "replacement"
+        case similarvideos = "similarVideos"
+        case suggestedvideos = "suggestedVideos"
+        case thumbnailart = "thumbnailArt"
+        case usagerules = "usageRules"
+    }
+
+    /**
      Get single video.
      
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: VideosSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func videosIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosSingleResourceDataDocument {
+    internal class func videosIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_videosIdGet]? = nil, replaceMedia: String? = nil) async throws -> VideosSingleResourceDataDocument {
         do {
-            return try await videosIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia).execute().body
+            return try await videosIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -105,11 +139,12 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<VideosSingleResourceDataDocument> 
      */
-    internal class func videosIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<VideosSingleResourceDataDocument> {
+    internal class func videosIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_videosIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<VideosSingleResourceDataDocument> {
         var localVariablePath = "/videos/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -121,6 +156,7 @@ internal class VideosAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -141,7 +177,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: VideosAlbumsMultiRelationshipDataDocument
      */
@@ -168,7 +204,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<VideosAlbumsMultiRelationshipDataDocument> 
      */
@@ -205,7 +241,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter include: (query) Include related resources. Available relationships: artists (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - returns: VideosArtistsMultiRelationshipDataDocument
      */
@@ -232,7 +268,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter include: (query) Include related resources. Available relationships: artists (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - returns: RequestBuilder<VideosArtistsMultiRelationshipDataDocument> 
      */
@@ -268,7 +304,7 @@ internal class VideosAPI {
      
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: credits (optional)
+     - parameter include: (query) Include related resources. Available relationships: credits (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
      - returns: VideosCreditsMultiRelationshipDataDocument
      */
@@ -294,7 +330,7 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: credits (optional)
+     - parameter include: (query) Include related resources. Available relationships: credits (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
      - returns: RequestBuilder<VideosCreditsMultiRelationshipDataDocument> 
      */
@@ -330,7 +366,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: providers (optional)
+     - parameter include: (query) Include related resources. Available relationships: providers (optional)
      - returns: VideosProvidersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -356,7 +392,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: providers (optional)
+     - parameter include: (query) Include related resources. Available relationships: providers (optional)
      - returns: RequestBuilder<VideosProvidersMultiRelationshipDataDocument> 
      */
     internal class func videosIdRelationshipsProvidersGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<VideosProvidersMultiRelationshipDataDocument> {
@@ -390,7 +426,7 @@ internal class VideosAPI {
      
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: replacement (optional)
+     - parameter include: (query) Include related resources. Available relationships: replacement (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: replacement (optional)
      - returns: VideosReplacementSingleRelationshipDataDocument
      */
@@ -416,7 +452,7 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: replacement (optional)
+     - parameter include: (query) Include related resources. Available relationships: replacement (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: replacement (optional)
      - returns: RequestBuilder<VideosReplacementSingleRelationshipDataDocument> 
      */
@@ -452,7 +488,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarVideos (optional)
+     - parameter include: (query) Include related resources. Available relationships: similarVideos (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarVideos (optional)
      - returns: VideosSimilarVideosMultiRelationshipDataDocument
      */
@@ -479,7 +515,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarVideos (optional)
+     - parameter include: (query) Include related resources. Available relationships: similarVideos (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarVideos (optional)
      - returns: RequestBuilder<VideosSimilarVideosMultiRelationshipDataDocument> 
      */
@@ -516,7 +552,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: suggestedVideos (optional)
+     - parameter include: (query) Include related resources. Available relationships: suggestedVideos (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: suggestedVideos (optional)
      - returns: VideosSuggestedVideosMultiRelationshipDataDocument
      */
@@ -543,7 +579,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: suggestedVideos (optional)
+     - parameter include: (query) Include related resources. Available relationships: suggestedVideos (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: suggestedVideos (optional)
      - returns: RequestBuilder<VideosSuggestedVideosMultiRelationshipDataDocument> 
      */
@@ -580,7 +616,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: thumbnailArt (optional)
+     - parameter include: (query) Include related resources. Available relationships: thumbnailArt (optional)
      - returns: VideosThumbnailArtMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -606,7 +642,7 @@ internal class VideosAPI {
      - parameter id: (path) Video id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: thumbnailArt (optional)
+     - parameter include: (query) Include related resources. Available relationships: thumbnailArt (optional)
      - returns: RequestBuilder<VideosThumbnailArtMultiRelationshipDataDocument> 
      */
     internal class func videosIdRelationshipsThumbnailArtGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<VideosThumbnailArtMultiRelationshipDataDocument> {
@@ -640,7 +676,7 @@ internal class VideosAPI {
      
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: usageRules (optional)
+     - parameter include: (query) Include related resources. Available relationships: usageRules (optional)
      - returns: VideosUsageRulesSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -665,7 +701,7 @@ internal class VideosAPI {
        - name: Client_Credentials
      - parameter id: (path) Video id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: usageRules (optional)
+     - parameter include: (query) Include related resources. Available relationships: usageRules (optional)
      - returns: RequestBuilder<VideosUsageRulesSingleRelationshipDataDocument> 
      */
     internal class func videosIdRelationshipsUsageRulesGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<VideosUsageRulesSingleRelationshipDataDocument> {

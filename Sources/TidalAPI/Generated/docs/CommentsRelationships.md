@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ownerProfiles** | [**CommentsOwnerProfilesMultiRelationshipDataDocument**](CommentsOwnerProfilesMultiRelationshipDataDocument.md) |  | [optional] 
+**author** | [**CommentsAuthorSingleRelationshipDataDocument**](CommentsAuthorSingleRelationshipDataDocument.md) |  | [optional] 
 **owners** | [**CommentsOwnersMultiRelationshipDataDocument**](CommentsOwnersMultiRelationshipDataDocument.md) |  | [optional] 
 **parentComment** | [**CommentsParentCommentSingleRelationshipDataDocument**](CommentsParentCommentSingleRelationshipDataDocument.md) |  | [optional] 
 

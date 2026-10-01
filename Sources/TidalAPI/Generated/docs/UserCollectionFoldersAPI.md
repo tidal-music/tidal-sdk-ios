@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 # **userCollectionFoldersGet**
 ```swift
-    open class func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionFoldersGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple userCollectionFolders.
@@ -31,11 +31,12 @@ Retrieves multiple userCollectionFolders by available filters, or without if app
 import OpenAPIClient
 
 let filterId = ["inner_example"] // [String] | Folder Id (e.g. `CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX`)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: items, owners, userCollection (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get multiple userCollectionFolders.
-UserCollectionFoldersAPI.userCollectionFoldersGet(filterId: filterId, include: include, replaceMedia: replaceMedia) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersGet(filterId: filterId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -52,7 +53,8 @@ UserCollectionFoldersAPI.userCollectionFoldersGet(filterId: filterId, include: i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterId** | [**[String]**](String.md) | Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: items, owners, userCollection | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 
 
 ### Return type
@@ -124,7 +126,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdGet**
 ```swift
-    open class func userCollectionFoldersIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionFoldersIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollectionFolder.
@@ -137,11 +139,12 @@ Retrieves single userCollectionFolder by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: items, owners, userCollection (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get single userCollectionFolder.
-UserCollectionFoldersAPI.userCollectionFoldersIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+UserCollectionFoldersAPI.userCollectionFoldersIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -158,7 +161,8 @@ UserCollectionFoldersAPI.userCollectionFoldersIdGet(id: id, include: include, re
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: items, owners, userCollection | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 
 
 ### Return type
@@ -301,7 +305,7 @@ import OpenAPIClient
 let id = "id_example" // String | Folder Id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get items relationship (\"to-many\").
@@ -324,7 +328,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Folder Id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 
 
 ### Return type
@@ -411,7 +415,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -432,7 +436,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsOwnersGet(id: id, i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
@@ -465,7 +469,7 @@ Retrieves userCollection relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: userCollection (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: userCollection (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: userCollection.items.items (optional)
 
 // Get userCollection relationship (\"to-one\").
@@ -486,7 +490,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsUserCollectionGet(i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: userCollection | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: userCollection | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: userCollection.items.items | [optional] 
 
 ### Return type

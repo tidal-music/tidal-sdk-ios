@@ -12,22 +12,22 @@ import AnyCodable
 
 public struct CommentsRelationships: Codable, Hashable {
 
-    public var ownerProfiles: CommentsOwnerProfilesMultiRelationshipDataDocument?
+    public var author: CommentsAuthorSingleRelationshipDataDocument?
     public var owners: CommentsOwnersMultiRelationshipDataDocument?
     public var parentComment: CommentsParentCommentSingleRelationshipDataDocument?
 
     public init(
-        ownerProfiles: CommentsOwnerProfilesMultiRelationshipDataDocument? = nil,
+        author: CommentsAuthorSingleRelationshipDataDocument? = nil,
         owners: CommentsOwnersMultiRelationshipDataDocument? = nil,
         parentComment: CommentsParentCommentSingleRelationshipDataDocument? = nil
     ) {
-        self.ownerProfiles = ownerProfiles
+        self.author = author
         self.owners = owners
         self.parentComment = parentComment
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case ownerProfiles
+        case author
         case owners
         case parentComment
     }
@@ -36,7 +36,7 @@ public struct CommentsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(ownerProfiles, forKey: .ownerProfiles)
+        try container.encodeIfPresent(author, forKey: .author)
         try container.encodeIfPresent(owners, forKey: .owners)
         try container.encodeIfPresent(parentComment, forKey: .parentComment)
     }

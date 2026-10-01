@@ -13,17 +13,26 @@ import AnyCodable
 internal class UserCollectionSaveForLatersAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_userCollectionSaveForLatersIdGet: String, CaseIterable {
+        case items = "items"
+        case owners = "owners"
+    }
+
+    /**
      Get single userCollectionSaveForLater.
      
      - parameter id: (path) User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: UserCollectionSaveForLatersSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionSaveForLatersIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersSingleResourceDataDocument {
+    internal class func userCollectionSaveForLatersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionSaveForLatersIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersSingleResourceDataDocument {
         do {
-            return try await userCollectionSaveForLatersIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await userCollectionSaveForLatersIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,11 +47,12 @@ internal class UserCollectionSaveForLatersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: RequestBuilder<UserCollectionSaveForLatersSingleResourceDataDocument> 
      */
-    internal class func userCollectionSaveForLatersIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionSaveForLatersSingleResourceDataDocument> {
+    internal class func userCollectionSaveForLatersIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionSaveForLatersIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionSaveForLatersSingleResourceDataDocument> {
         var localVariablePath = "/userCollectionSaveForLaters/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -53,6 +63,7 @@ internal class UserCollectionSaveForLatersAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -124,7 +135,7 @@ internal class UserCollectionSaveForLatersAPI {
      
      - parameter id: (path) User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument
      */
@@ -147,7 +158,7 @@ internal class UserCollectionSaveForLatersAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: RequestBuilder<UserCollectionSaveForLatersItemsMultiRelationshipDataDocument> 
      */
@@ -233,7 +244,7 @@ internal class UserCollectionSaveForLatersAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument
      */
@@ -255,7 +266,7 @@ internal class UserCollectionSaveForLatersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument> 
      */

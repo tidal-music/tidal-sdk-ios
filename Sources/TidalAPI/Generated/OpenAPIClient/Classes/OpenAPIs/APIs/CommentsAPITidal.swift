@@ -15,23 +15,6 @@ public enum CommentsAPITidal {
 
 
 	/**
-	 * enum for parameter filterSubjectType
-	 */
-	public enum FilterSubjectType_commentsGet: String, CaseIterable {
-		case albums = "albums"
-		case tracks = "tracks"
-		case tracksourcefiles = "trackSourceFiles"
-
-		func toCommentsAPIEnum() -> CommentsAPI.FilterSubjectType_commentsGet {
-			switch self {
-			case .albums: return .albums
-			case .tracks: return .tracks
-			case .tracksourcefiles: return .tracksourcefiles
-			}
-		}
-	}
-
-	/**
 	 * enum for parameter sort
 	 */
 	public enum Sort_commentsGet: String, CaseIterable {
@@ -59,13 +42,47 @@ public enum CommentsAPITidal {
 	}
 
 	/**
+	 * enum for parameter filterSubjectType
+	 */
+	public enum FilterSubjectType_commentsGet: String, CaseIterable {
+		case albums = "albums"
+		case tracks = "tracks"
+		case tracksourcefiles = "trackSourceFiles"
+
+		func toCommentsAPIEnum() -> CommentsAPI.FilterSubjectType_commentsGet {
+			switch self {
+			case .albums: return .albums
+			case .tracks: return .tracks
+			case .tracksourcefiles: return .tracksourcefiles
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_commentsGet: String, CaseIterable {
+		case author = "author"
+		case owners = "owners"
+		case parentcomment = "parentComment"
+
+		func toCommentsAPIEnum() -> CommentsAPI.IncludeLinkage_commentsGet {
+			switch self {
+			case .author: return .author
+			case .owners: return .owners
+			case .parentcomment: return .parentcomment
+			}
+		}
+	}
+
+	/**
      Get multiple comments.
      
      - returns: CommentsMultiResourceDataDocument
      */
-	public static func commentsGet(filterSubjectId: [String], filterSubjectType: [CommentsAPITidal.FilterSubjectType_commentsGet], pageCursor: String? = nil, sort: [CommentsAPITidal.Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil) async throws -> CommentsMultiResourceDataDocument {
+	public static func commentsGet(pageCursor: String? = nil, sort: [CommentsAPITidal.Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [CommentsAPITidal.FilterSubjectType_commentsGet]? = nil, includeLinkage: [CommentsAPITidal.IncludeLinkage_commentsGet]? = nil, replaceMedia: String? = nil) async throws -> CommentsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			CommentsAPI.commentsGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType.compactMap { $0.toCommentsAPIEnum() }, pageCursor: pageCursor, sort: sort?.compactMap { $0.toCommentsAPIEnum() }, include: include, filterParentCommentId: filterParentCommentId)
+			CommentsAPI.commentsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toCommentsAPIEnum() }, include: include, filterParentCommentId: filterParentCommentId, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toCommentsAPIEnum() }, includeLinkage: includeLinkage?.compactMap { $0.toCommentsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -83,13 +100,30 @@ public enum CommentsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_commentsIdGet: String, CaseIterable {
+		case author = "author"
+		case owners = "owners"
+		case parentcomment = "parentComment"
+
+		func toCommentsAPIEnum() -> CommentsAPI.IncludeLinkage_commentsIdGet {
+			switch self {
+			case .author: return .author
+			case .owners: return .owners
+			case .parentcomment: return .parentcomment
+			}
+		}
+	}
+
+	/**
      Get single comment.
      
      - returns: CommentsSingleResourceDataDocument
      */
-	public static func commentsIdGet(id: String, include: [String]? = nil) async throws -> CommentsSingleResourceDataDocument {
+	public static func commentsIdGet(id: String, include: [String]? = nil, includeLinkage: [CommentsAPITidal.IncludeLinkage_commentsIdGet]? = nil, replaceMedia: String? = nil) async throws -> CommentsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			CommentsAPI.commentsIdGetWithRequestBuilder(id: id, include: include)
+			CommentsAPI.commentsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toCommentsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -107,13 +141,13 @@ public enum CommentsAPITidal {
 
 
 	/**
-     Get ownerProfiles relationship (\&quot;to-many\&quot;).
+     Get author relationship (\&quot;to-one\&quot;).
      
-     - returns: CommentsOwnerProfilesMultiRelationshipDataDocument
+     - returns: CommentsAuthorSingleRelationshipDataDocument
      */
-	public static func commentsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsOwnerProfilesMultiRelationshipDataDocument {
+	public static func commentsIdRelationshipsAuthorGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CommentsAuthorSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			CommentsAPI.commentsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+			CommentsAPI.commentsIdRelationshipsAuthorGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -135,9 +169,9 @@ public enum CommentsAPITidal {
      
      - returns: CommentsParentCommentSingleRelationshipDataDocument
      */
-	public static func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil) async throws -> CommentsParentCommentSingleRelationshipDataDocument {
+	public static func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CommentsParentCommentSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			CommentsAPI.commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: id, include: include)
+			CommentsAPI.commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

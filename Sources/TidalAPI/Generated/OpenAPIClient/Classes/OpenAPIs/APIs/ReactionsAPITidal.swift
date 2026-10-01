@@ -15,6 +15,23 @@ public enum ReactionsAPITidal {
 
 
 	/**
+	 * enum for parameter stats
+	 */
+	public enum Stats_reactionsGet: String, CaseIterable {
+		case all = "ALL"
+		case countsByType = "COUNTS_BY_TYPE"
+		case totalCount = "TOTAL_COUNT"
+
+		func toReactionsAPIEnum() -> ReactionsAPI.Stats_reactionsGet {
+			switch self {
+			case .all: return .all
+			case .countsByType: return .countsByType
+			case .totalCount: return .totalCount
+			}
+		}
+	}
+
+	/**
 	 * enum for parameter filterSubjectType
 	 */
 	public enum FilterSubjectType_reactionsGet: String, CaseIterable {
@@ -40,18 +57,18 @@ public enum ReactionsAPITidal {
 	}
 
 	/**
-	 * enum for parameter stats
+	 * enum for parameter includeLinkage
 	 */
-	public enum Stats_reactionsGet: String, CaseIterable {
-		case all = "ALL"
-		case countsByType = "COUNTS_BY_TYPE"
-		case totalCount = "TOTAL_COUNT"
+	public enum IncludeLinkage_reactionsGet: String, CaseIterable {
+		case author = "author"
+		case ownerprofiles = "ownerProfiles"
+		case owners = "owners"
 
-		func toReactionsAPIEnum() -> ReactionsAPI.Stats_reactionsGet {
+		func toReactionsAPIEnum() -> ReactionsAPI.IncludeLinkage_reactionsGet {
 			switch self {
-			case .all: return .all
-			case .countsByType: return .countsByType
-			case .totalCount: return .totalCount
+			case .author: return .author
+			case .ownerprofiles: return .ownerprofiles
+			case .owners: return .owners
 			}
 		}
 	}
@@ -61,9 +78,9 @@ public enum ReactionsAPITidal {
      
      - returns: ReactionsMultiResourceDataDocument
      */
-	public static func reactionsGet(filterSubjectId: [String], filterSubjectType: [ReactionsAPITidal.FilterSubjectType_reactionsGet], stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil) async throws -> ReactionsMultiResourceDataDocument {
+	public static func reactionsGet(stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [ReactionsAPITidal.FilterSubjectType_reactionsGet]? = nil, includeLinkage: [ReactionsAPITidal.IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil) async throws -> ReactionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ReactionsAPI.reactionsGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType.compactMap { $0.toReactionsAPIEnum() }, stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji)
+			ReactionsAPI.reactionsGetWithRequestBuilder(stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toReactionsAPIEnum() }, includeLinkage: includeLinkage?.compactMap { $0.toReactionsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -76,6 +93,18 @@ public enum ReactionsAPITidal {
 	public static func reactionsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ReactionsAPI.reactionsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
+		}
+	}
+
+
+	/**
+     Get author relationship (\&quot;to-one\&quot;).
+     
+     - returns: ReactionsAuthorSingleRelationshipDataDocument
+     */
+	public static func reactionsIdRelationshipsAuthorGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ReactionsAuthorSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			ReactionsAPI.reactionsIdRelationshipsAuthorGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

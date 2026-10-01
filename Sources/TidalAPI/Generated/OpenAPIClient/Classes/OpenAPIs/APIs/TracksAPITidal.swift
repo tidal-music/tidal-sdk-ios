@@ -34,13 +34,60 @@ public enum TracksAPITidal {
 	}
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_tracksGet: String, CaseIterable {
+		case albums = "albums"
+		case artists = "artists"
+		case credits = "credits"
+		case download = "download"
+		case genres = "genres"
+		case lyrics = "lyrics"
+		case metadatastatus = "metadataStatus"
+		case owners = "owners"
+		case priceconfig = "priceConfig"
+		case providers = "providers"
+		case radio = "radio"
+		case replacement = "replacement"
+		case shares = "shares"
+		case similartracks = "similarTracks"
+		case sourcefile = "sourceFile"
+		case suggestedtracks = "suggestedTracks"
+		case trackstatistics = "trackStatistics"
+		case usagerules = "usageRules"
+
+		func toTracksAPIEnum() -> TracksAPI.IncludeLinkage_tracksGet {
+			switch self {
+			case .albums: return .albums
+			case .artists: return .artists
+			case .credits: return .credits
+			case .download: return .download
+			case .genres: return .genres
+			case .lyrics: return .lyrics
+			case .metadatastatus: return .metadatastatus
+			case .owners: return .owners
+			case .priceconfig: return .priceconfig
+			case .providers: return .providers
+			case .radio: return .radio
+			case .replacement: return .replacement
+			case .shares: return .shares
+			case .similartracks: return .similartracks
+			case .sourcefile: return .sourcefile
+			case .suggestedtracks: return .suggestedtracks
+			case .trackstatistics: return .trackstatistics
+			case .usagerules: return .usagerules
+			}
+		}
+	}
+
+	/**
      Get multiple tracks.
      
      - returns: TracksMultiResourceDataDocument
      */
-	public static func tracksGet(pageCursor: String? = nil, sort: [TracksAPITidal.Sort_tracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiResourceDataDocument {
+	public static func tracksGet(pageCursor: String? = nil, sort: [TracksAPITidal.Sort_tracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [TracksAPITidal.IncludeLinkage_tracksGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toTracksAPIEnum() }, countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia, shareCode: shareCode)
+			TracksAPI.tracksGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toTracksAPIEnum() }, countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toTracksAPIEnum() }, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
@@ -58,13 +105,60 @@ public enum TracksAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_tracksIdGet: String, CaseIterable {
+		case albums = "albums"
+		case artists = "artists"
+		case credits = "credits"
+		case download = "download"
+		case genres = "genres"
+		case lyrics = "lyrics"
+		case metadatastatus = "metadataStatus"
+		case owners = "owners"
+		case priceconfig = "priceConfig"
+		case providers = "providers"
+		case radio = "radio"
+		case replacement = "replacement"
+		case shares = "shares"
+		case similartracks = "similarTracks"
+		case sourcefile = "sourceFile"
+		case suggestedtracks = "suggestedTracks"
+		case trackstatistics = "trackStatistics"
+		case usagerules = "usageRules"
+
+		func toTracksAPIEnum() -> TracksAPI.IncludeLinkage_tracksIdGet {
+			switch self {
+			case .albums: return .albums
+			case .artists: return .artists
+			case .credits: return .credits
+			case .download: return .download
+			case .genres: return .genres
+			case .lyrics: return .lyrics
+			case .metadatastatus: return .metadatastatus
+			case .owners: return .owners
+			case .priceconfig: return .priceconfig
+			case .providers: return .providers
+			case .radio: return .radio
+			case .replacement: return .replacement
+			case .shares: return .shares
+			case .similartracks: return .similartracks
+			case .sourcefile: return .sourcefile
+			case .suggestedtracks: return .suggestedtracks
+			case .trackstatistics: return .trackstatistics
+			case .usagerules: return .usagerules
+			}
+		}
+	}
+
+	/**
      Get single track.
      
      - returns: TracksSingleResourceDataDocument
      */
-	public static func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSingleResourceDataDocument {
+	public static func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [TracksAPITidal.IncludeLinkage_tracksIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+			TracksAPI.tracksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toTracksAPIEnum() }, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 

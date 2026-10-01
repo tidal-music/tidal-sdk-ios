@@ -13,17 +13,25 @@ import AnyCodable
 internal class ArtworksAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_artworksGet: String, CaseIterable {
+        case owners = "owners"
+    }
+
+    /**
      Get multiple artworks.
      
      - parameter filterId: (query) Artwork id (e.g. &#x60;a468bee88def&#x60;) 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: ArtworksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artworksGet(filterId: [String], countryCode: String? = nil, include: [String]? = nil) async throws -> ArtworksMultiResourceDataDocument {
+    internal class func artworksGet(filterId: [String], countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artworksGet]? = nil) async throws -> ArtworksMultiResourceDataDocument {
         do {
-            return try await artworksGetWithRequestBuilder(filterId: filterId, countryCode: countryCode, include: include).execute().body
+            return try await artworksGetWithRequestBuilder(filterId: filterId, countryCode: countryCode, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -42,10 +50,11 @@ internal class ArtworksAPI {
        - name: Client_Credentials
      - parameter filterId: (query) Artwork id (e.g. &#x60;a468bee88def&#x60;) 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<ArtworksMultiResourceDataDocument> 
      */
-    internal class func artworksGetWithRequestBuilder(filterId: [String], countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtworksMultiResourceDataDocument> {
+    internal class func artworksGetWithRequestBuilder(filterId: [String], countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artworksGet]? = nil) -> RequestBuilder<ArtworksMultiResourceDataDocument> {
         let localVariablePath = "/artworks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -55,6 +64,7 @@ internal class ArtworksAPI {
             "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -69,17 +79,25 @@ internal class ArtworksAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_artworksIdGet: String, CaseIterable {
+        case owners = "owners"
+    }
+
+    /**
      Get single artwork.
      
      - parameter id: (path) Artwork id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: ArtworksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artworksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ArtworksSingleResourceDataDocument {
+    internal class func artworksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artworksIdGet]? = nil) async throws -> ArtworksSingleResourceDataDocument {
         do {
-            return try await artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
+            return try await artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -98,10 +116,11 @@ internal class ArtworksAPI {
        - name: Client_Credentials
      - parameter id: (path) Artwork id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<ArtworksSingleResourceDataDocument> 
      */
-    internal class func artworksIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtworksSingleResourceDataDocument> {
+    internal class func artworksIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artworksIdGet]? = nil) -> RequestBuilder<ArtworksSingleResourceDataDocument> {
         var localVariablePath = "/artworks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -113,6 +132,7 @@ internal class ArtworksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -130,7 +150,7 @@ internal class ArtworksAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Artwork id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: ArtworksOwnersMultiRelationshipDataDocument
      */
@@ -155,7 +175,7 @@ internal class ArtworksAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Artwork id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<ArtworksOwnersMultiRelationshipDataDocument> 
      */

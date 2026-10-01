@@ -13,18 +13,30 @@ import AnyCodable
 internal class PlayQueuesAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_playQueuesGet: String, CaseIterable {
+        case changeeventstream = "changeEventStream"
+        case current = "current"
+        case future = "future"
+        case owners = "owners"
+        case past = "past"
+    }
+
+    /**
      Get multiple playQueues.
      
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventStream, current, future, owners, past (optional)
+     - parameter include: (query) Include related resources. Available relationships: changeEventStream, current, future, owners, past (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: PlayQueuesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
+    internal class func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesGet]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
         do {
-            return try await playQueuesGetWithRequestBuilder(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
+            return try await playQueuesGetWithRequestBuilder(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -40,11 +52,12 @@ internal class PlayQueuesAPI {
        - name: Authorization_Code_PKCE
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventStream, current, future, owners, past (optional)
+     - parameter include: (query) Include related resources. Available relationships: changeEventStream, current, future, owners, past (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: RequestBuilder<PlayQueuesMultiResourceDataDocument> 
      */
-    internal class func playQueuesGetWithRequestBuilder(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlayQueuesMultiResourceDataDocument> {
+    internal class func playQueuesGetWithRequestBuilder(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlayQueuesMultiResourceDataDocument> {
         let localVariablePath = "/playQueues"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -54,6 +67,7 @@ internal class PlayQueuesAPI {
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -118,17 +132,29 @@ internal class PlayQueuesAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_playQueuesIdGet: String, CaseIterable {
+        case changeeventstream = "changeEventStream"
+        case current = "current"
+        case future = "future"
+        case owners = "owners"
+        case past = "past"
+    }
+
+    /**
      Get single playQueue.
      
      - parameter id: (path) Play queue id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventStream, current, future, owners, past (optional)
+     - parameter include: (query) Include related resources. Available relationships: changeEventStream, current, future, owners, past (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: PlayQueuesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
+    internal class func playQueuesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesIdGet]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
         do {
-            return try await playQueuesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await playQueuesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -143,11 +169,12 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventStream, current, future, owners, past (optional)
+     - parameter include: (query) Include related resources. Available relationships: changeEventStream, current, future, owners, past (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: RequestBuilder<PlayQueuesSingleResourceDataDocument> 
      */
-    internal class func playQueuesIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlayQueuesSingleResourceDataDocument> {
+    internal class func playQueuesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlayQueuesSingleResourceDataDocument> {
         var localVariablePath = "/playQueues/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -158,6 +185,7 @@ internal class PlayQueuesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -228,7 +256,7 @@ internal class PlayQueuesAPI {
      Get changeEventStream relationship (\"to-one\").
      
      - parameter id: (path)  
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventStream (optional)
+     - parameter include: (query) Include related resources. Available relationships: changeEventStream (optional)
      - returns: PlayQueuesChangeEventStreamSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -249,7 +277,7 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path)  
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventStream (optional)
+     - parameter include: (query) Include related resources. Available relationships: changeEventStream (optional)
      - returns: RequestBuilder<PlayQueuesChangeEventStreamSingleRelationshipDataDocument> 
      */
     internal class func playQueuesIdRelationshipsChangeEventStreamGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<PlayQueuesChangeEventStreamSingleRelationshipDataDocument> {
@@ -280,7 +308,7 @@ internal class PlayQueuesAPI {
      Get current relationship (\"to-one\").
      
      - parameter id: (path) Play queue id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current (optional)
+     - parameter include: (query) Include related resources. Available relationships: current (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: PlayQueuesCurrentSingleRelationshipDataDocument
      */
@@ -302,7 +330,7 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: current (optional)
+     - parameter include: (query) Include related resources. Available relationships: current (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: RequestBuilder<PlayQueuesCurrentSingleRelationshipDataDocument> 
      */
@@ -440,7 +468,7 @@ internal class PlayQueuesAPI {
      
      - parameter id: (path) Play queue id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: future (optional)
+     - parameter include: (query) Include related resources. Available relationships: future (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: future (optional)
      - returns: PlayQueuesFutureMultiRelationshipDataDocument
      */
@@ -463,7 +491,7 @@ internal class PlayQueuesAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: future (optional)
+     - parameter include: (query) Include related resources. Available relationships: future (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: future (optional)
      - returns: RequestBuilder<PlayQueuesFutureMultiRelationshipDataDocument> 
      */
@@ -601,7 +629,7 @@ internal class PlayQueuesAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Play queue id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PlayQueuesOwnersMultiRelationshipDataDocument
      */
@@ -623,7 +651,7 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PlayQueuesOwnersMultiRelationshipDataDocument> 
      */
@@ -657,7 +685,7 @@ internal class PlayQueuesAPI {
      
      - parameter id: (path) Play queue id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: past (optional)
+     - parameter include: (query) Include related resources. Available relationships: past (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: past (optional)
      - returns: PlayQueuesPastMultiRelationshipDataDocument
      */
@@ -680,7 +708,7 @@ internal class PlayQueuesAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: past (optional)
+     - parameter include: (query) Include related resources. Available relationships: past (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: past (optional)
      - returns: RequestBuilder<PlayQueuesPastMultiRelationshipDataDocument> 
      */

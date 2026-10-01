@@ -38,13 +38,40 @@ public enum PlaylistsAPITidal {
 	}
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_playlistsGet: String, CaseIterable {
+		case collaboratorprofiles = "collaboratorProfiles"
+		case collaborators = "collaborators"
+		case coverart = "coverArt"
+		case curators = "curators"
+		case items = "items"
+		case ownerprofiles = "ownerProfiles"
+		case owners = "owners"
+		case suggestedcoverarts = "suggestedCoverArts"
+
+		func toPlaylistsAPIEnum() -> PlaylistsAPI.IncludeLinkage_playlistsGet {
+			switch self {
+			case .collaboratorprofiles: return .collaboratorprofiles
+			case .collaborators: return .collaborators
+			case .coverart: return .coverart
+			case .curators: return .curators
+			case .items: return .items
+			case .ownerprofiles: return .ownerprofiles
+			case .owners: return .owners
+			case .suggestedcoverarts: return .suggestedcoverarts
+			}
+		}
+	}
+
+	/**
      Get multiple playlists.
      
      - returns: PlaylistsMultiResourceDataDocument
      */
-	public static func playlistsGet(pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsMultiResourceDataDocument {
+	public static func playlistsGet(pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [PlaylistsAPITidal.IncludeLinkage_playlistsGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include, filterCollaboratorsId: filterCollaboratorsId, filterId: filterId, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia)
+			PlaylistsAPI.playlistsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include, filterCollaboratorsId: filterCollaboratorsId, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toPlaylistsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -62,13 +89,40 @@ public enum PlaylistsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_playlistsIdGet: String, CaseIterable {
+		case collaboratorprofiles = "collaboratorProfiles"
+		case collaborators = "collaborators"
+		case coverart = "coverArt"
+		case curators = "curators"
+		case items = "items"
+		case ownerprofiles = "ownerProfiles"
+		case owners = "owners"
+		case suggestedcoverarts = "suggestedCoverArts"
+
+		func toPlaylistsAPIEnum() -> PlaylistsAPI.IncludeLinkage_playlistsIdGet {
+			switch self {
+			case .collaboratorprofiles: return .collaboratorprofiles
+			case .collaborators: return .collaborators
+			case .coverart: return .coverart
+			case .curators: return .curators
+			case .items: return .items
+			case .ownerprofiles: return .ownerprofiles
+			case .owners: return .owners
+			case .suggestedcoverarts: return .suggestedcoverarts
+			}
+		}
+	}
+
+	/**
      Get single playlist.
      
      - returns: PlaylistsSingleResourceDataDocument
      */
-	public static func playlistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsSingleResourceDataDocument {
+	public static func playlistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [PlaylistsAPITidal.IncludeLinkage_playlistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+			PlaylistsAPI.playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPlaylistsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -141,6 +195,18 @@ public enum PlaylistsAPITidal {
 	public static func playlistsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			PlaylistsAPI.playlistsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playlistsCoverArtRelationshipUpdateOperationPayload: playlistsCoverArtRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Get curators relationship (\&quot;to-many\&quot;).
+     
+     - returns: PlaylistsCuratorsMultiRelationshipDataDocument
+     */
+	public static func playlistsIdRelationshipsCuratorsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsCuratorsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			PlaylistsAPI.playlistsIdRelationshipsCuratorsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

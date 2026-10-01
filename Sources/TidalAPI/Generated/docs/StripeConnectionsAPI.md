@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **stripeConnectionsGet**
 ```swift
-    open class func stripeConnectionsGet(filterOwnersId: [String], include: [String]? = nil, completion: @escaping (_ data: StripeConnectionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func stripeConnectionsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_stripeConnectionsGet]? = nil, completion: @escaping (_ data: StripeConnectionsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple stripeConnections.
@@ -24,10 +24,11 @@ Retrieves multiple stripeConnections by available filters, or without if applica
 import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple stripeConnections.
-StripeConnectionsAPI.stripeConnectionsGet(filterOwnersId: filterOwnersId, include: include) { (response, error) in
+StripeConnectionsAPI.stripeConnectionsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -44,7 +45,8 @@ StripeConnectionsAPI.stripeConnectionsGet(filterOwnersId: filterOwnersId, includ
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -76,7 +78,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Stripe connection id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -97,7 +99,7 @@ StripeConnectionsAPI.stripeConnectionsIdRelationshipsOwnersGet(id: id, include: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Stripe connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

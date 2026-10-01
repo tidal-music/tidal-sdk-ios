@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **contentClaimsGet**
 ```swift
-    open class func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_contentClaimsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple contentClaims.
@@ -27,11 +27,12 @@ Retrieves multiple contentClaims by available filters, or without if applicable.
 import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: claimedResource, claimingArtist, owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimedResource (optional)
 
 // Get multiple contentClaims.
-ContentClaimsAPI.contentClaimsGet(filterOwnersId: filterOwnersId, include: include, replaceMedia: replaceMedia) { (response, error) in
+ContentClaimsAPI.contentClaimsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -48,7 +49,8 @@ ContentClaimsAPI.contentClaimsGet(filterOwnersId: filterOwnersId, include: inclu
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: claimedResource, claimingArtist, owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource | [optional] 
 
 ### Return type
@@ -68,7 +70,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsIdGet**
 ```swift
-    open class func contentClaimsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func contentClaimsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_contentClaimsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single contentClaim.
@@ -81,11 +83,12 @@ Retrieves single contentClaim by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Content claim id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: claimedResource, claimingArtist, owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimedResource (optional)
 
 // Get single contentClaim.
-ContentClaimsAPI.contentClaimsIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+ContentClaimsAPI.contentClaimsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -102,7 +105,8 @@ ContentClaimsAPI.contentClaimsIdGet(id: id, include: include, replaceMedia: repl
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Content claim id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: claimedResource, claimingArtist, owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: claimedResource, claimingArtist, owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource | [optional] 
 
 ### Return type
@@ -135,7 +139,7 @@ Retrieves claimedResource relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Content claim id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: claimedResource (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: claimedResource (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimedResource (optional)
 
 // Get claimedResource relationship (\"to-one\").
@@ -156,7 +160,7 @@ ContentClaimsAPI.contentClaimsIdRelationshipsClaimedResourceGet(id: id, include:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Content claim id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: claimedResource | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: claimedResource | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimedResource | [optional] 
 
 ### Return type
@@ -189,7 +193,7 @@ Retrieves claimingArtist relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Content claim id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: claimingArtist (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: claimingArtist (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimingArtist.albums (optional)
 
 // Get claimingArtist relationship (\"to-one\").
@@ -210,7 +214,7 @@ ContentClaimsAPI.contentClaimsIdRelationshipsClaimingArtistGet(id: id, include: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Content claim id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: claimingArtist | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: claimingArtist | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: claimingArtist.albums | [optional] 
 
 ### Return type
@@ -243,7 +247,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Content claim id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -264,7 +268,7 @@ ContentClaimsAPI.contentClaimsIdRelationshipsOwnersGet(id: id, include: include,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Content claim id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

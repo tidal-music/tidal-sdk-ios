@@ -15,13 +15,26 @@ public enum TrackSourceFilesAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_trackSourceFilesIdGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toTrackSourceFilesAPIEnum() -> TrackSourceFilesAPI.IncludeLinkage_trackSourceFilesIdGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get single trackSourceFile.
      
      - returns: TrackSourceFilesSingleResourceDataDocument
      */
-	public static func trackSourceFilesIdGet(id: String, include: [String]? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
+	public static func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [TrackSourceFilesAPITidal.IncludeLinkage_trackSourceFilesIdGet]? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TrackSourceFilesAPI.trackSourceFilesIdGetWithRequestBuilder(id: id, include: include)
+			TrackSourceFilesAPI.trackSourceFilesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toTrackSourceFilesAPIEnum() })
 		}
 	}
 

@@ -15,13 +15,28 @@ public enum UserCollectionTracksAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_userCollectionTracksIdGet: String, CaseIterable {
+		case items = "items"
+		case owners = "owners"
+
+		func toUserCollectionTracksAPIEnum() -> UserCollectionTracksAPI.IncludeLinkage_userCollectionTracksIdGet {
+			switch self {
+			case .items: return .items
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get single userCollectionTrack.
      
      - returns: UserCollectionTracksSingleResourceDataDocument
      */
-	public static func userCollectionTracksIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionTracksSingleResourceDataDocument {
+	public static func userCollectionTracksIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserCollectionTracksAPITidal.IncludeLinkage_userCollectionTracksIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionTracksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
+			UserCollectionTracksAPI.userCollectionTracksIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionTracksAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -74,9 +89,9 @@ public enum UserCollectionTracksAPITidal {
      
      - returns: UserCollectionTracksItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionTracksIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionTracksAPITidal.Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
+	public static func userCollectionTracksIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionTracksAPITidal.Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionTracksAPIEnum() }, locale: locale, include: include, replaceMedia: replaceMedia)
+			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionTracksAPIEnum() }, locale: locale, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
 		}
 	}
 

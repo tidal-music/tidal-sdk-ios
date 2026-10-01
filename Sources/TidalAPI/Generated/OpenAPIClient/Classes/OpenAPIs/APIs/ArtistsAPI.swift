@@ -13,20 +13,40 @@ import AnyCodable
 internal class ArtistsAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_artistsGet: String, CaseIterable {
+        case albums = "albums"
+        case biography = "biography"
+        case claimstatus = "claimStatus"
+        case followers = "followers"
+        case following = "following"
+        case owners = "owners"
+        case profileart = "profileArt"
+        case radio = "radio"
+        case roles = "roles"
+        case similarartists = "similarArtists"
+        case trackproviders = "trackProviders"
+        case tracks = "tracks"
+        case videos = "videos"
+    }
+
+    /**
      Get multiple artists.
      
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - parameter filterHandle: (query) Artist handle (e.g. &#x60;jayz&#x60;) (optional)
      - parameter filterId: (query) List of artist IDs (e.g. &#x60;1566&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: ArtistsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsMultiResourceDataDocument {
+    internal class func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_artistsGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistsMultiResourceDataDocument {
         do {
-            return try await artistsGetWithRequestBuilder(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia).execute().body
+            return try await artistsGetWithRequestBuilder(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -44,14 +64,15 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
      - parameter filterHandle: (query) Artist handle (e.g. &#x60;jayz&#x60;) (optional)
      - parameter filterId: (query) List of artist IDs (e.g. &#x60;1566&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<ArtistsMultiResourceDataDocument> 
      */
-    internal class func artistsGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ArtistsMultiResourceDataDocument> {
+    internal class func artistsGetWithRequestBuilder(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_artistsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ArtistsMultiResourceDataDocument> {
         let localVariablePath = "/artists"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -63,6 +84,7 @@ internal class ArtistsAPI {
             "filter[handle]": (wrappedValue: filterHandle?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
             "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -78,18 +100,38 @@ internal class ArtistsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_artistsIdGet: String, CaseIterable {
+        case albums = "albums"
+        case biography = "biography"
+        case claimstatus = "claimStatus"
+        case followers = "followers"
+        case following = "following"
+        case owners = "owners"
+        case profileart = "profileArt"
+        case radio = "radio"
+        case roles = "roles"
+        case similarartists = "similarArtists"
+        case trackproviders = "trackProviders"
+        case tracks = "tracks"
+        case videos = "videos"
+    }
+
+    /**
      Get single artist.
      
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: ArtistsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsSingleResourceDataDocument {
+    internal class func artistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistsSingleResourceDataDocument {
         do {
-            return try await artistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia).execute().body
+            return try await artistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -108,11 +150,12 @@ internal class ArtistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<ArtistsSingleResourceDataDocument> 
      */
-    internal class func artistsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ArtistsSingleResourceDataDocument> {
+    internal class func artistsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ArtistsSingleResourceDataDocument> {
         var localVariablePath = "/artists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -124,6 +167,7 @@ internal class ArtistsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -196,7 +240,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: ArtistsAlbumsMultiRelationshipDataDocument
      */
@@ -223,7 +267,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<ArtistsAlbumsMultiRelationshipDataDocument> 
      */
@@ -259,7 +303,7 @@ internal class ArtistsAPI {
      
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: biography (optional)
+     - parameter include: (query) Include related resources. Available relationships: biography (optional)
      - returns: ArtistsBiographySingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -284,7 +328,7 @@ internal class ArtistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: biography (optional)
+     - parameter include: (query) Include related resources. Available relationships: biography (optional)
      - returns: RequestBuilder<ArtistsBiographySingleRelationshipDataDocument> 
      */
     internal class func artistsIdRelationshipsBiographyGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsBiographySingleRelationshipDataDocument> {
@@ -316,7 +360,7 @@ internal class ArtistsAPI {
      Get claimStatus relationship (\"to-one\").
      
      - parameter id: (path) Artist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimStatus (optional)
+     - parameter include: (query) Include related resources. Available relationships: claimStatus (optional)
      - returns: ArtistsClaimStatusSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -337,7 +381,7 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: claimStatus (optional)
+     - parameter include: (query) Include related resources. Available relationships: claimStatus (optional)
      - returns: RequestBuilder<ArtistsClaimStatusSingleRelationshipDataDocument> 
      */
     internal class func artistsIdRelationshipsClaimStatusGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<ArtistsClaimStatusSingleRelationshipDataDocument> {
@@ -370,7 +414,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: followers (optional)
+     - parameter include: (query) Include related resources. Available relationships: followers (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: followers.albums (optional)
      - returns: ArtistsFollowersMultiRelationshipDataDocument
      */
@@ -394,7 +438,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: followers (optional)
+     - parameter include: (query) Include related resources. Available relationships: followers (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: followers.albums (optional)
      - returns: RequestBuilder<ArtistsFollowersMultiRelationshipDataDocument> 
      */
@@ -483,7 +527,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: following (optional)
+     - parameter include: (query) Include related resources. Available relationships: following (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: following.albums (optional)
      - returns: ArtistsFollowingMultiRelationshipDataDocument
      */
@@ -507,7 +551,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: following (optional)
+     - parameter include: (query) Include related resources. Available relationships: following (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: following.albums (optional)
      - returns: RequestBuilder<ArtistsFollowingMultiRelationshipDataDocument> 
      */
@@ -594,7 +638,7 @@ internal class ArtistsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: ArtistsOwnersMultiRelationshipDataDocument
      */
@@ -619,7 +663,7 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Artist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<ArtistsOwnersMultiRelationshipDataDocument> 
      */
@@ -653,7 +697,7 @@ internal class ArtistsAPI {
      
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: profileArt (optional)
+     - parameter include: (query) Include related resources. Available relationships: profileArt (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: ArtistsProfileArtMultiRelationshipDataDocument
      */
@@ -679,7 +723,7 @@ internal class ArtistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Artist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: profileArt (optional)
+     - parameter include: (query) Include related resources. Available relationships: profileArt (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<ArtistsProfileArtMultiRelationshipDataDocument> 
      */
@@ -767,7 +811,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: radio (optional)
+     - parameter include: (query) Include related resources. Available relationships: radio (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: radio.items (optional)
      - returns: ArtistsRadioMultiRelationshipDataDocument
      */
@@ -794,7 +838,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: radio (optional)
+     - parameter include: (query) Include related resources. Available relationships: radio (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: radio.items (optional)
      - returns: RequestBuilder<ArtistsRadioMultiRelationshipDataDocument> 
      */
@@ -829,7 +873,7 @@ internal class ArtistsAPI {
      Get roles relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: roles (optional)
+     - parameter include: (query) Include related resources. Available relationships: roles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: ArtistsRolesMultiRelationshipDataDocument
      */
@@ -854,7 +898,7 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Artist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: roles (optional)
+     - parameter include: (query) Include related resources. Available relationships: roles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<ArtistsRolesMultiRelationshipDataDocument> 
      */
@@ -889,7 +933,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarArtists (optional)
+     - parameter include: (query) Include related resources. Available relationships: similarArtists (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarArtists.albums (optional)
      - returns: ArtistsSimilarArtistsMultiRelationshipDataDocument
      */
@@ -916,7 +960,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: similarArtists (optional)
+     - parameter include: (query) Include related resources. Available relationships: similarArtists (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarArtists.albums (optional)
      - returns: RequestBuilder<ArtistsSimilarArtistsMultiRelationshipDataDocument> 
      */
@@ -952,7 +996,7 @@ internal class ArtistsAPI {
      
      - parameter id: (path) Artist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: trackProviders (optional)
+     - parameter include: (query) Include related resources. Available relationships: trackProviders (optional)
      - returns: ArtistsTrackProvidersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -977,7 +1021,7 @@ internal class ArtistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Artist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: trackProviders (optional)
+     - parameter include: (query) Include related resources. Available relationships: trackProviders (optional)
      - returns: RequestBuilder<ArtistsTrackProvidersMultiRelationshipDataDocument> 
      */
     internal class func artistsIdRelationshipsTrackProvidersGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistsTrackProvidersMultiRelationshipDataDocument> {
@@ -1020,7 +1064,7 @@ internal class ArtistsAPI {
      - parameter collapseBy: (query) Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints while collapsing by ID always returns all available items. 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter include: (query) Include related resources. Available relationships: tracks (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks (optional)
      - returns: ArtistsTracksMultiRelationshipDataDocument
      */
@@ -1048,7 +1092,7 @@ internal class ArtistsAPI {
      - parameter collapseBy: (query) Collapse by options for getting artist tracks. Available options: FINGERPRINT, ID. FINGERPRINT option might collapse similar tracks based entry fingerprints while collapsing by ID always returns all available items. 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter include: (query) Include related resources. Available relationships: tracks (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks (optional)
      - returns: RequestBuilder<ArtistsTracksMultiRelationshipDataDocument> 
      */
@@ -1086,7 +1130,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter include: (query) Include related resources. Available relationships: videos (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos (optional)
      - returns: ArtistsVideosMultiRelationshipDataDocument
      */
@@ -1113,7 +1157,7 @@ internal class ArtistsAPI {
      - parameter id: (path) Artist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter include: (query) Include related resources. Available relationships: videos (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos (optional)
      - returns: RequestBuilder<ArtistsVideosMultiRelationshipDataDocument> 
      */

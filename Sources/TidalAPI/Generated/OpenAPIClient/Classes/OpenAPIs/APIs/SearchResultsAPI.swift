@@ -44,6 +44,18 @@ internal class SearchResultsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_searchResultsGet: String, CaseIterable {
+        case albums = "albums"
+        case artists = "artists"
+        case playlists = "playlists"
+        case tophits = "topHits"
+        case tracks = "tracks"
+        case videos = "videos"
+    }
+
+    /**
      Get search results by query.
      
      - parameter filterQuery: (query) Search query (e.g. &#x60;hello&#x60;) 
@@ -52,14 +64,15 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums, artists, playlists, topHits, tracks, videos (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: SearchResultsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchResultsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsGet? = nil, systemType: SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiResourceDataDocument {
+    internal class func searchResultsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsGet? = nil, systemType: SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_searchResultsGet]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiResourceDataDocument {
         do {
-            return try await searchResultsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia).execute().body
+            return try await searchResultsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -82,11 +95,12 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums, artists, playlists, topHits, tracks, videos (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<SearchResultsMultiResourceDataDocument> 
      */
-    internal class func searchResultsGetWithRequestBuilder(filterQuery: String, explicitFilter: ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsGet? = nil, systemType: SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchResultsMultiResourceDataDocument> {
+    internal class func searchResultsGetWithRequestBuilder(filterQuery: String, explicitFilter: ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsGet? = nil, systemType: SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_searchResultsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchResultsMultiResourceDataDocument> {
         let localVariablePath = "/searchResults"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -100,6 +114,7 @@ internal class SearchResultsAPI {
             "systemType": (wrappedValue: systemType?.encodeToJSON(), isExplode: true),
             "clientVersion": (wrappedValue: clientVersion?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -155,7 +170,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: SearchResultsAlbumsMultiRelationshipDataDocument
      */
@@ -186,7 +201,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: albums (optional)
+     - parameter include: (query) Include related resources. Available relationships: albums (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
      - returns: RequestBuilder<SearchResultsAlbumsMultiRelationshipDataDocument> 
      */
@@ -262,7 +277,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter include: (query) Include related resources. Available relationships: artists (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists (optional)
      - returns: SearchResultsArtistsMultiRelationshipDataDocument
      */
@@ -293,7 +308,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artists (optional)
+     - parameter include: (query) Include related resources. Available relationships: artists (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists (optional)
      - returns: RequestBuilder<SearchResultsArtistsMultiRelationshipDataDocument> 
      */
@@ -369,7 +384,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
+     - parameter include: (query) Include related resources. Available relationships: playlists (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlists (optional)
      - returns: SearchResultsPlaylistsMultiRelationshipDataDocument
      */
@@ -400,7 +415,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlists (optional)
+     - parameter include: (query) Include related resources. Available relationships: playlists (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlists (optional)
      - returns: RequestBuilder<SearchResultsPlaylistsMultiRelationshipDataDocument> 
      */
@@ -476,7 +491,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
+     - parameter include: (query) Include related resources. Available relationships: topHits (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: topHits (optional)
      - returns: SearchResultsTopHitsMultiRelationshipDataDocument
      */
@@ -507,7 +522,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: topHits (optional)
+     - parameter include: (query) Include related resources. Available relationships: topHits (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: topHits (optional)
      - returns: RequestBuilder<SearchResultsTopHitsMultiRelationshipDataDocument> 
      */
@@ -583,7 +598,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter include: (query) Include related resources. Available relationships: tracks (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks (optional)
      - returns: SearchResultsTracksMultiRelationshipDataDocument
      */
@@ -614,7 +629,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+     - parameter include: (query) Include related resources. Available relationships: tracks (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks (optional)
      - returns: RequestBuilder<SearchResultsTracksMultiRelationshipDataDocument> 
      */
@@ -690,7 +705,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter include: (query) Include related resources. Available relationships: videos (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos (optional)
      - returns: SearchResultsVideosMultiRelationshipDataDocument
      */
@@ -721,7 +736,7 @@ internal class SearchResultsAPI {
      - parameter deviceType: (query) The type of device making the request (optional)
      - parameter systemType: (query) The system type of the device making the request (optional)
      - parameter clientVersion: (query) Client version number (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: videos (optional)
+     - parameter include: (query) Include related resources. Available relationships: videos (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos (optional)
      - returns: RequestBuilder<SearchResultsVideosMultiRelationshipDataDocument> 
      */

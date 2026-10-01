@@ -15,25 +15,59 @@ public enum ContentClaimsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_contentClaimsGet: String, CaseIterable {
+		case claimedresource = "claimedResource"
+		case claimingartist = "claimingArtist"
+		case owners = "owners"
+
+		func toContentClaimsAPIEnum() -> ContentClaimsAPI.IncludeLinkage_contentClaimsGet {
+			switch self {
+			case .claimedresource: return .claimedresource
+			case .claimingartist: return .claimingartist
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get multiple contentClaims.
      
      - returns: ContentClaimsMultiResourceDataDocument
      */
-	public static func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsMultiResourceDataDocument {
+	public static func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [ContentClaimsAPITidal.IncludeLinkage_contentClaimsGet]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ContentClaimsAPI.contentClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, replaceMedia: replaceMedia)
+			ContentClaimsAPI.contentClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toContentClaimsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
+
+	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_contentClaimsIdGet: String, CaseIterable {
+		case claimedresource = "claimedResource"
+		case claimingartist = "claimingArtist"
+		case owners = "owners"
+
+		func toContentClaimsAPIEnum() -> ContentClaimsAPI.IncludeLinkage_contentClaimsIdGet {
+			switch self {
+			case .claimedresource: return .claimedresource
+			case .claimingartist: return .claimingartist
+			case .owners: return .owners
+			}
+		}
+	}
 
 	/**
      Get single contentClaim.
      
      - returns: ContentClaimsSingleResourceDataDocument
      */
-	public static func contentClaimsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleResourceDataDocument {
+	public static func contentClaimsIdGet(id: String, include: [String]? = nil, includeLinkage: [ContentClaimsAPITidal.IncludeLinkage_contentClaimsIdGet]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ContentClaimsAPI.contentClaimsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			ContentClaimsAPI.contentClaimsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toContentClaimsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

@@ -36,6 +36,14 @@ internal class DynamicPagesAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_dynamicPagesGet: String, CaseIterable {
+        case modules = "modules"
+        case subject = "subject"
+    }
+
+    /**
      Get multiple dynamicPages.
      
      - parameter deviceType: (query) The type of device making the request 
@@ -45,15 +53,17 @@ internal class DynamicPagesAPI {
      - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules, subject (optional)
-     - parameter filterSubjectId: (query) The subject resource ID. Required except for HOME_FREE, where it must be omitted. (e.g. &#x60;67890&#x60;) (optional)
+     - parameter include: (query) Include related resources. Available relationships: modules, subject (optional)
+     - parameter filterSubject: (query) The page subject. Its type must match pageType. Required unless subject.id is supplied; both must be omitted for HOME_FREE. Do not combine with subject.id. (optional)
+     - parameter filterSubjectId: (query) Deprecated alternative to filter[subject]. Omit when subject is supplied or pageType is HOME_FREE. (e.g. &#x60;67890&#x60;) (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: DynamicPagesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubjectId: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
+    internal class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
         do {
-            return try await dynamicPagesGetWithRequestBuilder(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterPageType: filterPageType, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, filterSubjectId: filterSubjectId, replaceMedia: replaceMedia).execute().body
+            return try await dynamicPagesGetWithRequestBuilder(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterPageType: filterPageType, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -77,12 +87,14 @@ internal class DynamicPagesAPI {
      - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules, subject (optional)
-     - parameter filterSubjectId: (query) The subject resource ID. Required except for HOME_FREE, where it must be omitted. (e.g. &#x60;67890&#x60;) (optional)
+     - parameter include: (query) Include related resources. Available relationships: modules, subject (optional)
+     - parameter filterSubject: (query) The page subject. Its type must match pageType. Required unless subject.id is supplied; both must be omitted for HOME_FREE. Do not combine with subject.id. (optional)
+     - parameter filterSubjectId: (query) Deprecated alternative to filter[subject]. Omit when subject is supplied or pageType is HOME_FREE. (e.g. &#x60;67890&#x60;) (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: RequestBuilder<DynamicPagesMultiResourceDataDocument> 
      */
-    internal class func dynamicPagesGetWithRequestBuilder(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubjectId: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
+    internal class func dynamicPagesGetWithRequestBuilder(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
         let localVariablePath = "/dynamicPages"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -97,7 +109,9 @@ internal class DynamicPagesAPI {
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
             "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -146,7 +160,7 @@ internal class DynamicPagesAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules (optional)
+     - parameter include: (query) Include related resources. Available relationships: modules (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: DynamicPagesModulesMultiRelationshipDataDocument
      */
@@ -178,7 +192,7 @@ internal class DynamicPagesAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: modules (optional)
+     - parameter include: (query) Include related resources. Available relationships: modules (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: RequestBuilder<DynamicPagesModulesMultiRelationshipDataDocument> 
      */
@@ -218,7 +232,7 @@ internal class DynamicPagesAPI {
      Get subject relationship (\"to-one\").
      
      - parameter id: (path) DynamicPages Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: DynamicPagesSubjectSingleRelationshipDataDocument
      */
@@ -243,7 +257,7 @@ internal class DynamicPagesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) DynamicPages Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<DynamicPagesSubjectSingleRelationshipDataDocument> 
      */

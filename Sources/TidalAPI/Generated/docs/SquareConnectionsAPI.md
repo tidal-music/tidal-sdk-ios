@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **squareConnectionsIdGet**
 ```swift
-    open class func squareConnectionsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: SquareConnectionsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func squareConnectionsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareConnectionsIdGet]? = nil, completion: @escaping (_ data: SquareConnectionsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single squareConnection.
@@ -26,10 +26,11 @@ Retrieves single squareConnection by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Square connection id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: selectedSite, sites (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: selectedSite, sites (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single squareConnection.
-SquareConnectionsAPI.squareConnectionsIdGet(id: id, include: include) { (response, error) in
+SquareConnectionsAPI.squareConnectionsIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -46,7 +47,8 @@ SquareConnectionsAPI.squareConnectionsIdGet(id: id, include: include) { (respons
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: selectedSite, sites | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: selectedSite, sites | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -78,7 +80,7 @@ Retrieves selectedSite relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Square connection id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: selectedSite (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: selectedSite (optional)
 
 // Get selectedSite relationship (\"to-one\").
 SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSiteGet(id: id, include: include) { (response, error) in
@@ -98,7 +100,7 @@ SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSiteGet(id: id, inc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: selectedSite | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: selectedSite | [optional] 
 
 ### Return type
 
@@ -184,7 +186,7 @@ Retrieves sites relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Square connection id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: sites (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: sites (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get sites relationship (\"to-many\").
@@ -205,7 +207,7 @@ SquareConnectionsAPI.squareConnectionsIdRelationshipsSitesGet(id: id, include: i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: sites | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: sites | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

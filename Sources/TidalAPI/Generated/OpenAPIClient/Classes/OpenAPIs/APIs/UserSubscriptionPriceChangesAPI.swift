@@ -13,16 +13,24 @@ import AnyCodable
 internal class UserSubscriptionPriceChangesAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_userSubscriptionPriceChangesGet: String, CaseIterable {
+        case decision = "decision"
+    }
+
+    /**
      Get multiple userSubscriptionPriceChanges.
      
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: decision (optional)
+     - parameter include: (query) Include related resources. Available relationships: decision (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: UserSubscriptionPriceChangesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userSubscriptionPriceChangesGet(filterOwnersId: [String], include: [String]? = nil) async throws -> UserSubscriptionPriceChangesMultiResourceDataDocument {
+    internal class func userSubscriptionPriceChangesGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_userSubscriptionPriceChangesGet]? = nil) async throws -> UserSubscriptionPriceChangesMultiResourceDataDocument {
         do {
-            return try await userSubscriptionPriceChangesGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include).execute().body
+            return try await userSubscriptionPriceChangesGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -37,10 +45,11 @@ internal class UserSubscriptionPriceChangesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: decision (optional)
+     - parameter include: (query) Include related resources. Available relationships: decision (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<UserSubscriptionPriceChangesMultiResourceDataDocument> 
      */
-    internal class func userSubscriptionPriceChangesGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil) -> RequestBuilder<UserSubscriptionPriceChangesMultiResourceDataDocument> {
+    internal class func userSubscriptionPriceChangesGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_userSubscriptionPriceChangesGet]? = nil) -> RequestBuilder<UserSubscriptionPriceChangesMultiResourceDataDocument> {
         let localVariablePath = "/userSubscriptionPriceChanges"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -49,6 +58,7 @@ internal class UserSubscriptionPriceChangesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -66,7 +76,7 @@ internal class UserSubscriptionPriceChangesAPI {
      Get decision relationship (\"to-one\").
      
      - parameter id: (path) Price change id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: decision (optional)
+     - parameter include: (query) Include related resources. Available relationships: decision (optional)
      - returns: UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -87,7 +97,7 @@ internal class UserSubscriptionPriceChangesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Price change id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: decision (optional)
+     - parameter include: (query) Include related resources. Available relationships: decision (optional)
      - returns: RequestBuilder<UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument> 
      */
     internal class func userSubscriptionPriceChangesIdRelationshipsDecisionGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument> {

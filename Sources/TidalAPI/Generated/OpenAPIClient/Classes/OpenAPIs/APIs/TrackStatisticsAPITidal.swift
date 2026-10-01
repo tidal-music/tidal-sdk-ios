@@ -15,13 +15,26 @@ public enum TrackStatisticsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_trackStatisticsIdGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toTrackStatisticsAPIEnum() -> TrackStatisticsAPI.IncludeLinkage_trackStatisticsIdGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get single trackStatistic.
      
      - returns: TrackStatisticsSingleResourceDataDocument
      */
-	public static func trackStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> TrackStatisticsSingleResourceDataDocument {
+	public static func trackStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [TrackStatisticsAPITidal.IncludeLinkage_trackStatisticsIdGet]? = nil) async throws -> TrackStatisticsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TrackStatisticsAPI.trackStatisticsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+			TrackStatisticsAPI.trackStatisticsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toTrackStatisticsAPIEnum() })
 		}
 	}
 

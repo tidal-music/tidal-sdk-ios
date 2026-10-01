@@ -15,13 +15,28 @@ public enum CollaborationInvitesAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_collaborationInvitesGet: String, CaseIterable {
+		case owners = "owners"
+		case subject = "subject"
+
+		func toCollaborationInvitesAPIEnum() -> CollaborationInvitesAPI.IncludeLinkage_collaborationInvitesGet {
+			switch self {
+			case .owners: return .owners
+			case .subject: return .subject
+			}
+		}
+	}
+
+	/**
      Get multiple collaborationInvites.
      
      - returns: CollaborationInvitesMultiResourceDataDocument
      */
-	public static func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
+	public static func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [CollaborationInvitesAPITidal.IncludeLinkage_collaborationInvitesGet]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			CollaborationInvitesAPI.collaborationInvitesGetWithRequestBuilder(filterCode: filterCode, include: include, replaceMedia: replaceMedia)
+			CollaborationInvitesAPI.collaborationInvitesGetWithRequestBuilder(filterCode: filterCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toCollaborationInvitesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -39,13 +54,28 @@ public enum CollaborationInvitesAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_collaborationInvitesIdGet: String, CaseIterable {
+		case owners = "owners"
+		case subject = "subject"
+
+		func toCollaborationInvitesAPIEnum() -> CollaborationInvitesAPI.IncludeLinkage_collaborationInvitesIdGet {
+			switch self {
+			case .owners: return .owners
+			case .subject: return .subject
+			}
+		}
+	}
+
+	/**
      Get single collaborationInvite.
      
      - returns: CollaborationInvitesSingleResourceDataDocument
      */
-	public static func collaborationInvitesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument {
+	public static func collaborationInvitesIdGet(id: String, include: [String]? = nil, includeLinkage: [CollaborationInvitesAPITidal.IncludeLinkage_collaborationInvitesIdGet]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			CollaborationInvitesAPI.collaborationInvitesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			CollaborationInvitesAPI.collaborationInvitesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toCollaborationInvitesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

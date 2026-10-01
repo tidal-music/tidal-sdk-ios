@@ -13,17 +13,28 @@ import AnyCodable
 internal class UserPlaybackStatesAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_userPlaybackStatesIdGet: String, CaseIterable {
+        case activeplayer = "activePlayer"
+        case availableplayers = "availablePlayers"
+        case changeeventstream = "changeEventStream"
+        case playqueue = "playQueue"
+    }
+
+    /**
      Get single userPlaybackState.
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, changeEventStream, playQueue (optional)
+     - parameter include: (query) Include related resources. Available relationships: activePlayer, availablePlayers, changeEventStream, playQueue (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
      - returns: UserPlaybackStatesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userPlaybackStatesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesSingleResourceDataDocument {
+    internal class func userPlaybackStatesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userPlaybackStatesIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesSingleResourceDataDocument {
         do {
-            return try await userPlaybackStatesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await userPlaybackStatesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,11 +49,12 @@ internal class UserPlaybackStatesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, changeEventStream, playQueue (optional)
+     - parameter include: (query) Include related resources. Available relationships: activePlayer, availablePlayers, changeEventStream, playQueue (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
      - returns: RequestBuilder<UserPlaybackStatesSingleResourceDataDocument> 
      */
-    internal class func userPlaybackStatesIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserPlaybackStatesSingleResourceDataDocument> {
+    internal class func userPlaybackStatesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userPlaybackStatesIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserPlaybackStatesSingleResourceDataDocument> {
         var localVariablePath = "/userPlaybackStates/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -53,6 +65,7 @@ internal class UserPlaybackStatesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -123,7 +136,7 @@ internal class UserPlaybackStatesAPI {
      Get activePlayer relationship (\"to-one\").
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer (optional)
+     - parameter include: (query) Include related resources. Available relationships: activePlayer (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
      - returns: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument
      */
@@ -145,7 +158,7 @@ internal class UserPlaybackStatesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: activePlayer (optional)
+     - parameter include: (query) Include related resources. Available relationships: activePlayer (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory (optional)
      - returns: RequestBuilder<UserPlaybackStatesActivePlayerSingleRelationshipDataDocument> 
      */
@@ -282,7 +295,7 @@ internal class UserPlaybackStatesAPI {
      Get availablePlayers relationship (\"to-many\").
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: availablePlayers (optional)
+     - parameter include: (query) Include related resources. Available relationships: availablePlayers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: availablePlayers.offlineInventory (optional)
      - returns: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument
@@ -305,7 +318,7 @@ internal class UserPlaybackStatesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: availablePlayers (optional)
+     - parameter include: (query) Include related resources. Available relationships: availablePlayers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: availablePlayers.offlineInventory (optional)
      - returns: RequestBuilder<UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument> 
@@ -392,7 +405,7 @@ internal class UserPlaybackStatesAPI {
      Get changeEventStream relationship (\"to-one\").
      
      - parameter id: (path)  
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventStream (optional)
+     - parameter include: (query) Include related resources. Available relationships: changeEventStream (optional)
      - returns: UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -413,7 +426,7 @@ internal class UserPlaybackStatesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path)  
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: changeEventStream (optional)
+     - parameter include: (query) Include related resources. Available relationships: changeEventStream (optional)
      - returns: RequestBuilder<UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument> 
      */
     internal class func userPlaybackStatesIdRelationshipsChangeEventStreamGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument> {
@@ -444,7 +457,7 @@ internal class UserPlaybackStatesAPI {
      Get playQueue relationship (\"to-one\").
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playQueue (optional)
+     - parameter include: (query) Include related resources. Available relationships: playQueue (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playQueue.current (optional)
      - returns: UserPlaybackStatesPlayQueueSingleRelationshipDataDocument
      */
@@ -466,7 +479,7 @@ internal class UserPlaybackStatesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playQueue (optional)
+     - parameter include: (query) Include related resources. Available relationships: playQueue (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playQueue.current (optional)
      - returns: RequestBuilder<UserPlaybackStatesPlayQueueSingleRelationshipDataDocument> 
      */

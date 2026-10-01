@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **acceptedTermsGet**
 ```swift
-    open class func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, completion: @escaping (_ data: AcceptedTermsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, includeLinkage: [IncludeLinkage_acceptedTermsGet]? = nil, completion: @escaping (_ data: AcceptedTermsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple acceptedTerms.
@@ -25,12 +25,13 @@ Retrieves multiple acceptedTerms by available filters, or without if applicable.
 import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
-let filterTermsTermsType = ["filterTermsTermsType_example"] // [String] | One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. `DEVELOPER`)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, terms (optional)
+let filterTermsTermsType = ["filterTermsTermsType_example"] // [String] | One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER (e.g. `DEVELOPER`)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, terms (optional)
 let filterTermsIsLatestVersion = ["inner_example"] // [String] | Filter by terms.isLatestVersion (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple acceptedTerms.
-AcceptedTermsAPI.acceptedTermsGet(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType, include: include, filterTermsIsLatestVersion: filterTermsIsLatestVersion) { (response, error) in
+AcceptedTermsAPI.acceptedTermsGet(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType, include: include, filterTermsIsLatestVersion: filterTermsIsLatestVersion, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -47,9 +48,10 @@ AcceptedTermsAPI.acceptedTermsGet(filterOwnersId: filterOwnersId, filterTermsTer
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
- **filterTermsTermsType** | [**[String]**](String.md) | One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. &#x60;DEVELOPER&#x60;) | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, terms | [optional] 
+ **filterTermsTermsType** | [**[String]**](String.md) | One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, terms | [optional] 
  **filterTermsIsLatestVersion** | [**[String]**](String.md) | Filter by terms.isLatestVersion | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -81,7 +83,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Accepted terms id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -102,7 +104,7 @@ AcceptedTermsAPI.acceptedTermsIdRelationshipsOwnersGet(id: id, include: include,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Accepted terms id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
@@ -135,7 +137,7 @@ Retrieves terms relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Accepted terms id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: terms (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: terms (optional)
 
 // Get terms relationship (\"to-one\").
 AcceptedTermsAPI.acceptedTermsIdRelationshipsTermsGet(id: id, include: include) { (response, error) in
@@ -155,7 +157,7 @@ AcceptedTermsAPI.acceptedTermsIdRelationshipsTermsGet(id: id, include: include) 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Accepted terms id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: terms | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: terms | [optional] 
 
 ### Return type
 

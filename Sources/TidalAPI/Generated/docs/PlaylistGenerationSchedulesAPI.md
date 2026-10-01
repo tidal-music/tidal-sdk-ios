@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **playlistGenerationSchedulesGet**
 ```swift
-    open class func playlistGenerationSchedulesGet(filterPlaylistId: [String], include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationSchedulesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationSchedulesGet(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationSchedulesGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationSchedulesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple playlistGenerationSchedules.
@@ -27,11 +27,12 @@ Retrieves multiple playlistGenerationSchedules by available filters, or without 
 import OpenAPIClient
 
 let filterPlaylistId = ["inner_example"] // [String] | Playlist id (e.g. `550e8400-e29b-41d4-a716-446655440000`)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: playlist (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playlist.items (optional)
 
 // Get multiple playlistGenerationSchedules.
-PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesGet(filterPlaylistId: filterPlaylistId, include: include, replaceMedia: replaceMedia) { (response, error) in
+PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesGet(filterPlaylistId: filterPlaylistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -48,7 +49,8 @@ PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesGet(filterPlaylistId: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterPlaylistId** | [**[String]**](String.md) | Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlist | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: playlist | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items | [optional] 
 
 ### Return type
@@ -120,7 +122,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationSchedulesIdGet**
 ```swift
-    open class func playlistGenerationSchedulesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationSchedulesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationSchedulesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationSchedulesIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationSchedulesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single playlistGenerationSchedule.
@@ -133,11 +135,12 @@ Retrieves single playlistGenerationSchedule by id.
 import OpenAPIClient
 
 let id = "id_example" // String | 
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: playlist (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playlist.items (optional)
 
 // Get single playlistGenerationSchedule.
-PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -154,7 +157,8 @@ PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdGet(id: id, include:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** |  | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlist | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: playlist | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items | [optional] 
 
 ### Return type
@@ -241,7 +245,7 @@ Retrieves playlist relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | 
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: playlist (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playlist.items (optional)
 
 // Get playlist relationship (\"to-one\").
@@ -262,7 +266,7 @@ PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdRelationshipsPlaylis
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** |  | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlist | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: playlist | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items | [optional] 
 
 ### Return type

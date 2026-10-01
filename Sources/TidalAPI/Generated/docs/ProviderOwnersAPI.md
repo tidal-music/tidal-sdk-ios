@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **providerOwnersGet**
 ```swift
-    open class func providerOwnersGet(filterOwnersId: [String], include: [String]? = nil, completion: @escaping (_ data: ProviderOwnersMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func providerOwnersGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_providerOwnersGet]? = nil, completion: @escaping (_ data: ProviderOwnersMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple providerOwners.
@@ -24,10 +24,11 @@ Retrieves multiple providerOwners by available filters, or without if applicable
 import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, provider (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, provider (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple providerOwners.
-ProviderOwnersAPI.providerOwnersGet(filterOwnersId: filterOwnersId, include: include) { (response, error) in
+ProviderOwnersAPI.providerOwnersGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -44,7 +45,8 @@ ProviderOwnersAPI.providerOwnersGet(filterOwnersId: filterOwnersId, include: inc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, provider | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, provider | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -76,7 +78,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Provider owner id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -97,7 +99,7 @@ ProviderOwnersAPI.providerOwnersIdRelationshipsOwnersGet(id: id, include: includ
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Provider owner id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
@@ -130,7 +132,7 @@ Retrieves provider relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Provider owner id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: provider (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: provider (optional)
 
 // Get provider relationship (\"to-one\").
 ProviderOwnersAPI.providerOwnersIdRelationshipsProviderGet(id: id, include: include) { (response, error) in
@@ -150,7 +152,7 @@ ProviderOwnersAPI.providerOwnersIdRelationshipsProviderGet(id: id, include: incl
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Provider owner id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: provider | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: provider | [optional] 
 
 ### Return type
 

@@ -13,17 +13,26 @@ import AnyCodable
 internal class CreditsAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_creditsIdGet: String, CaseIterable {
+        case artist = "artist"
+        case category = "category"
+    }
+
+    /**
      Get single credit.
      
      - parameter id: (path) Credit id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artist, category (optional)
+     - parameter include: (query) Include related resources. Available relationships: artist, category (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artist.albums (optional)
      - returns: CreditsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func creditsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CreditsSingleResourceDataDocument {
+    internal class func creditsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_creditsIdGet]? = nil, replaceMedia: String? = nil) async throws -> CreditsSingleResourceDataDocument {
         do {
-            return try await creditsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await creditsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -41,11 +50,12 @@ internal class CreditsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Credit id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artist, category (optional)
+     - parameter include: (query) Include related resources. Available relationships: artist, category (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artist.albums (optional)
      - returns: RequestBuilder<CreditsSingleResourceDataDocument> 
      */
-    internal class func creditsIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CreditsSingleResourceDataDocument> {
+    internal class func creditsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_creditsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CreditsSingleResourceDataDocument> {
         var localVariablePath = "/credits/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -56,6 +66,7 @@ internal class CreditsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -74,7 +85,7 @@ internal class CreditsAPI {
      Get artist relationship (\"to-one\").
      
      - parameter id: (path) Credit id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artist (optional)
+     - parameter include: (query) Include related resources. Available relationships: artist (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artist.albums (optional)
      - returns: CreditsArtistSingleRelationshipDataDocument
      */
@@ -99,7 +110,7 @@ internal class CreditsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Credit id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: artist (optional)
+     - parameter include: (query) Include related resources. Available relationships: artist (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artist.albums (optional)
      - returns: RequestBuilder<CreditsArtistSingleRelationshipDataDocument> 
      */
@@ -132,7 +143,7 @@ internal class CreditsAPI {
      Get category relationship (\"to-one\").
      
      - parameter id: (path) Credit id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: category (optional)
+     - parameter include: (query) Include related resources. Available relationships: category (optional)
      - returns: CreditsCategorySingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -156,7 +167,7 @@ internal class CreditsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Credit id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: category (optional)
+     - parameter include: (query) Include related resources. Available relationships: category (optional)
      - returns: RequestBuilder<CreditsCategorySingleRelationshipDataDocument> 
      */
     internal class func creditsIdRelationshipsCategoryGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CreditsCategorySingleRelationshipDataDocument> {

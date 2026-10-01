@@ -13,17 +13,25 @@ import AnyCodable
 internal class PlaylistGenerationSchedulesAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_playlistGenerationSchedulesGet: String, CaseIterable {
+        case playlist = "playlist"
+    }
+
+    /**
      Get multiple playlistGenerationSchedules.
      
      - parameter filterPlaylistId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+     - parameter include: (query) Include related resources. Available relationships: playlist (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items (optional)
      - returns: PlaylistGenerationSchedulesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistGenerationSchedulesGet(filterPlaylistId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationSchedulesMultiResourceDataDocument {
+    internal class func playlistGenerationSchedulesGet(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationSchedulesGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationSchedulesMultiResourceDataDocument {
         do {
-            return try await playlistGenerationSchedulesGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, include: include, replaceMedia: replaceMedia).execute().body
+            return try await playlistGenerationSchedulesGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,11 +46,12 @@ internal class PlaylistGenerationSchedulesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterPlaylistId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+     - parameter include: (query) Include related resources. Available relationships: playlist (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items (optional)
      - returns: RequestBuilder<PlaylistGenerationSchedulesMultiResourceDataDocument> 
      */
-    internal class func playlistGenerationSchedulesGetWithRequestBuilder(filterPlaylistId: [String], include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationSchedulesMultiResourceDataDocument> {
+    internal class func playlistGenerationSchedulesGetWithRequestBuilder(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationSchedulesGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationSchedulesMultiResourceDataDocument> {
         let localVariablePath = "/playlistGenerationSchedules"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -51,6 +60,7 @@ internal class PlaylistGenerationSchedulesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[playlist.id]": (wrappedValue: filterPlaylistId.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -115,17 +125,25 @@ internal class PlaylistGenerationSchedulesAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_playlistGenerationSchedulesIdGet: String, CaseIterable {
+        case playlist = "playlist"
+    }
+
+    /**
      Get single playlistGenerationSchedule.
      
      - parameter id: (path)  
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+     - parameter include: (query) Include related resources. Available relationships: playlist (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items (optional)
      - returns: PlaylistGenerationSchedulesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistGenerationSchedulesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationSchedulesSingleResourceDataDocument {
+    internal class func playlistGenerationSchedulesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationSchedulesIdGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationSchedulesSingleResourceDataDocument {
         do {
-            return try await playlistGenerationSchedulesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await playlistGenerationSchedulesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -140,11 +158,12 @@ internal class PlaylistGenerationSchedulesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path)  
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+     - parameter include: (query) Include related resources. Available relationships: playlist (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items (optional)
      - returns: RequestBuilder<PlaylistGenerationSchedulesSingleResourceDataDocument> 
      */
-    internal class func playlistGenerationSchedulesIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationSchedulesSingleResourceDataDocument> {
+    internal class func playlistGenerationSchedulesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationSchedulesIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationSchedulesSingleResourceDataDocument> {
         var localVariablePath = "/playlistGenerationSchedules/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -155,6 +174,7 @@ internal class PlaylistGenerationSchedulesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -225,7 +245,7 @@ internal class PlaylistGenerationSchedulesAPI {
      Get playlist relationship (\"to-one\").
      
      - parameter id: (path)  
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+     - parameter include: (query) Include related resources. Available relationships: playlist (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items (optional)
      - returns: PlaylistGenerationSchedulesPlaylistSingleRelationshipDataDocument
      */
@@ -247,7 +267,7 @@ internal class PlaylistGenerationSchedulesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path)  
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+     - parameter include: (query) Include related resources. Available relationships: playlist (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items (optional)
      - returns: RequestBuilder<PlaylistGenerationSchedulesPlaylistSingleRelationshipDataDocument> 
      */

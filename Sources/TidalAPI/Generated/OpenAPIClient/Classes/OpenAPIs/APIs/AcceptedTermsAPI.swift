@@ -19,21 +19,31 @@ internal class AcceptedTermsAPI {
         case developer = "DEVELOPER"
         case uploadMarketplace = "UPLOAD_MARKETPLACE"
         case merchGuidelines = "MERCH_GUIDELINES"
+        case tidalConnectDeveloper = "TIDAL_CONNECT_DEVELOPER"
+    }
+
+    /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_acceptedTermsGet: String, CaseIterable {
+        case owners = "owners"
+        case terms = "terms"
     }
 
     /**
      Get multiple acceptedTerms.
      
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. &#x60;DEVELOPER&#x60;) 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, terms (optional)
+     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) 
+     - parameter include: (query) Include related resources. Available relationships: owners, terms (optional)
      - parameter filterTermsIsLatestVersion: (query) Filter by terms.isLatestVersion (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: AcceptedTermsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument {
+    internal class func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, includeLinkage: [IncludeLinkage_acceptedTermsGet]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument {
         do {
-            return try await acceptedTermsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType, include: include, filterTermsIsLatestVersion: filterTermsIsLatestVersion).execute().body
+            return try await acceptedTermsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType, include: include, filterTermsIsLatestVersion: filterTermsIsLatestVersion, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -48,12 +58,13 @@ internal class AcceptedTermsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES (e.g. &#x60;DEVELOPER&#x60;) 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, terms (optional)
+     - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) 
+     - parameter include: (query) Include related resources. Available relationships: owners, terms (optional)
      - parameter filterTermsIsLatestVersion: (query) Filter by terms.isLatestVersion (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<AcceptedTermsMultiResourceDataDocument> 
      */
-    internal class func acceptedTermsGetWithRequestBuilder(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil) -> RequestBuilder<AcceptedTermsMultiResourceDataDocument> {
+    internal class func acceptedTermsGetWithRequestBuilder(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, includeLinkage: [IncludeLinkage_acceptedTermsGet]? = nil) -> RequestBuilder<AcceptedTermsMultiResourceDataDocument> {
         let localVariablePath = "/acceptedTerms"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -64,6 +75,7 @@ internal class AcceptedTermsAPI {
             "filter[terms.termsType]": (wrappedValue: filterTermsTermsType.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[terms.isLatestVersion]": (wrappedValue: filterTermsIsLatestVersion?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -81,7 +93,7 @@ internal class AcceptedTermsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Accepted terms id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: AcceptedTermsOwnersMultiRelationshipDataDocument
      */
@@ -103,7 +115,7 @@ internal class AcceptedTermsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Accepted terms id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<AcceptedTermsOwnersMultiRelationshipDataDocument> 
      */
@@ -136,7 +148,7 @@ internal class AcceptedTermsAPI {
      Get terms relationship (\"to-one\").
      
      - parameter id: (path) Accepted terms id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: terms (optional)
+     - parameter include: (query) Include related resources. Available relationships: terms (optional)
      - returns: AcceptedTermsTermsSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -157,7 +169,7 @@ internal class AcceptedTermsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Accepted terms id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: terms (optional)
+     - parameter include: (query) Include related resources. Available relationships: terms (optional)
      - returns: RequestBuilder<AcceptedTermsTermsSingleRelationshipDataDocument> 
      */
     internal class func acceptedTermsIdRelationshipsTermsGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<AcceptedTermsTermsSingleRelationshipDataDocument> {

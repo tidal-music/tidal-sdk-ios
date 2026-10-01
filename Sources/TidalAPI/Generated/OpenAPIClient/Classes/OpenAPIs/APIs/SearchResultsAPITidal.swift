@@ -74,13 +74,36 @@ public enum SearchResultsAPITidal {
 	}
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_searchResultsGet: String, CaseIterable {
+		case albums = "albums"
+		case artists = "artists"
+		case playlists = "playlists"
+		case tophits = "topHits"
+		case tracks = "tracks"
+		case videos = "videos"
+
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.IncludeLinkage_searchResultsGet {
+			switch self {
+			case .albums: return .albums
+			case .artists: return .artists
+			case .playlists: return .playlists
+			case .tophits: return .tophits
+			case .tracks: return .tracks
+			case .videos: return .videos
+			}
+		}
+	}
+
+	/**
      Get search results by query.
      
      - returns: SearchResultsMultiResourceDataDocument
      */
-	public static func searchResultsGet(filterQuery: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiResourceDataDocument {
+	public static func searchResultsGet(filterQuery: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, includeLinkage: [SearchResultsAPITidal.IncludeLinkage_searchResultsGet]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchResultsAPI.searchResultsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
+			SearchResultsAPI.searchResultsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSearchResultsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

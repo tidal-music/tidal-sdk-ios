@@ -21,19 +21,28 @@ internal class SearchSuggestionsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_searchSuggestionsGet: String, CaseIterable {
+        case directhits = "directHits"
+        case history = "history"
+    }
+
+    /**
      Get search suggestions by query.
      
      - parameter filterQuery: (query) Search query (e.g. &#x60;hello&#x60;) 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits, history (optional)
+     - parameter include: (query) Include related resources. Available relationships: directHits, history (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits (optional)
      - returns: SearchSuggestionsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func searchSuggestionsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument {
+    internal class func searchSuggestionsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_searchSuggestionsGet]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument {
         do {
-            return try await searchSuggestionsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, include: include, replaceMedia: replaceMedia).execute().body
+            return try await searchSuggestionsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -53,11 +62,12 @@ internal class SearchSuggestionsAPI {
      - parameter filterQuery: (query) Search query (e.g. &#x60;hello&#x60;) 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits, history (optional)
+     - parameter include: (query) Include related resources. Available relationships: directHits, history (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits (optional)
      - returns: RequestBuilder<SearchSuggestionsMultiResourceDataDocument> 
      */
-    internal class func searchSuggestionsGetWithRequestBuilder(filterQuery: String, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchSuggestionsMultiResourceDataDocument> {
+    internal class func searchSuggestionsGetWithRequestBuilder(filterQuery: String, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_searchSuggestionsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SearchSuggestionsMultiResourceDataDocument> {
         let localVariablePath = "/searchSuggestions"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -68,6 +78,7 @@ internal class SearchSuggestionsAPI {
             "explicitFilter": (wrappedValue: explicitFilter?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -96,7 +107,7 @@ internal class SearchSuggestionsAPI {
      - parameter id: (path) An opaque search suggestions identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
+     - parameter include: (query) Include related resources. Available relationships: directHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits (optional)
      - returns: SearchSuggestionsDirectHitsMultiRelationshipDataDocument
@@ -124,7 +135,7 @@ internal class SearchSuggestionsAPI {
      - parameter id: (path) An opaque search suggestions identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: directHits (optional)
+     - parameter include: (query) Include related resources. Available relationships: directHits (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits (optional)
      - returns: RequestBuilder<SearchSuggestionsDirectHitsMultiRelationshipDataDocument> 
@@ -171,7 +182,7 @@ internal class SearchSuggestionsAPI {
      - parameter id: (path) An opaque search suggestions identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: history (optional)
+     - parameter include: (query) Include related resources. Available relationships: history (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: SearchSuggestionsHistoryMultiRelationshipDataDocument
      */
@@ -195,7 +206,7 @@ internal class SearchSuggestionsAPI {
      - parameter id: (path) An opaque search suggestions identifier 
      - parameter explicitFilter: (query) Explicit filter. Valid values: INCLUDE or EXCLUDE (optional, default to .include)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: history (optional)
+     - parameter include: (query) Include related resources. Available relationships: history (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<SearchSuggestionsHistoryMultiRelationshipDataDocument> 
      */

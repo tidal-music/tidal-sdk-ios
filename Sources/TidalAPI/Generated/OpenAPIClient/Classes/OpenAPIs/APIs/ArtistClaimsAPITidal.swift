@@ -15,13 +15,30 @@ public enum ArtistClaimsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_artistClaimsGet: String, CaseIterable {
+		case acceptedartists = "acceptedArtists"
+		case owners = "owners"
+		case recommendedartists = "recommendedArtists"
+
+		func toArtistClaimsAPIEnum() -> ArtistClaimsAPI.IncludeLinkage_artistClaimsGet {
+			switch self {
+			case .acceptedartists: return .acceptedartists
+			case .owners: return .owners
+			case .recommendedartists: return .recommendedartists
+			}
+		}
+	}
+
+	/**
      Get multiple artistClaims.
      
      - returns: ArtistClaimsMultiResourceDataDocument
      */
-	public static func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
+	public static func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [ArtistClaimsAPITidal.IncludeLinkage_artistClaimsGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, replaceMedia: replaceMedia)
+			ArtistClaimsAPI.artistClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toArtistClaimsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -39,13 +56,30 @@ public enum ArtistClaimsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_artistClaimsIdGet: String, CaseIterable {
+		case acceptedartists = "acceptedArtists"
+		case owners = "owners"
+		case recommendedartists = "recommendedArtists"
+
+		func toArtistClaimsAPIEnum() -> ArtistClaimsAPI.IncludeLinkage_artistClaimsIdGet {
+			switch self {
+			case .acceptedartists: return .acceptedartists
+			case .owners: return .owners
+			case .recommendedartists: return .recommendedartists
+			}
+		}
+	}
+
+	/**
      Get single artistClaim.
      
      - returns: ArtistClaimsSingleResourceDataDocument
      */
-	public static func artistClaimsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
+	public static func artistClaimsIdGet(id: String, include: [String]? = nil, includeLinkage: [ArtistClaimsAPITidal.IncludeLinkage_artistClaimsIdGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistClaimsAPI.artistClaimsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			ArtistClaimsAPI.artistClaimsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toArtistClaimsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

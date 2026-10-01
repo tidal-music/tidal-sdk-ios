@@ -15,6 +15,7 @@ public struct PlaylistsAddMultiDataRelationshipWithResponse409ResponseBodyErrors
     public enum Code: String, Codable, CaseIterable {
         case duplicateItemsInPlaylist = "DUPLICATE_ITEMS_IN_PLAYLIST"
         case idempotentRequestInProgress = "IDEMPOTENT_REQUEST_IN_PROGRESS"
+        case tooManyItemsInPlaylist = "TOO_MANY_ITEMS_IN_PLAYLIST"
     }
     public var code: Code
     public var detail: String?

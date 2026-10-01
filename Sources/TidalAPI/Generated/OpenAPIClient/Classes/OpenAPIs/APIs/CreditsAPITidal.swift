@@ -15,13 +15,28 @@ public enum CreditsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_creditsIdGet: String, CaseIterable {
+		case artist = "artist"
+		case category = "category"
+
+		func toCreditsAPIEnum() -> CreditsAPI.IncludeLinkage_creditsIdGet {
+			switch self {
+			case .artist: return .artist
+			case .category: return .category
+			}
+		}
+	}
+
+	/**
      Get single credit.
      
      - returns: CreditsSingleResourceDataDocument
      */
-	public static func creditsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CreditsSingleResourceDataDocument {
+	public static func creditsIdGet(id: String, include: [String]? = nil, includeLinkage: [CreditsAPITidal.IncludeLinkage_creditsIdGet]? = nil, replaceMedia: String? = nil) async throws -> CreditsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			CreditsAPI.creditsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			CreditsAPI.creditsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toCreditsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

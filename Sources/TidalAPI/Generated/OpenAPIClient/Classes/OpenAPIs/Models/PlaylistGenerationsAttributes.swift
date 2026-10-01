@@ -18,9 +18,12 @@ public struct PlaylistGenerationsAttributes: Codable, Hashable {
         case error = "ERROR"
         case ok = "OK"
     }
+    public static let preferenceVersionRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public static let promptRule = StringRule(minLength: 1, maxLength: 1024, pattern: nil)
     /** Datetime the playlist content this generation produced was committed (ISO 8601). Unlike progress.lastModifiedAt, which any write moves, this only moves when a generation succeeds. Omitted while a generation is still running, when it failed, and for playlists generated before generation history was recorded */
     public var lastGeneratedAt: Date?
+    /** Track-preference version snapshotted by this generation */
+    public var preferenceVersion: Int
     public var progress: PlaylistGenerationProgress
     /** Prompt used to create the generation; omitted for legacy generations */
     public var prompt: String?
@@ -29,11 +32,13 @@ public struct PlaylistGenerationsAttributes: Codable, Hashable {
 
     public init(
         lastGeneratedAt: Date? = nil,
+        preferenceVersion: Int,
         progress: PlaylistGenerationProgress,
         prompt: String? = nil,
         status: Status
     ) {
         self.lastGeneratedAt = lastGeneratedAt
+        self.preferenceVersion = preferenceVersion
         self.progress = progress
         self.prompt = prompt
         self.status = status
@@ -41,6 +46,7 @@ public struct PlaylistGenerationsAttributes: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case lastGeneratedAt
+        case preferenceVersion
         case progress
         case prompt
         case status
@@ -51,6 +57,7 @@ public struct PlaylistGenerationsAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(lastGeneratedAt, forKey: .lastGeneratedAt)
+        try container.encode(preferenceVersion, forKey: .preferenceVersion)
         try container.encode(progress, forKey: .progress)
         try container.encodeIfPresent(prompt, forKey: .prompt)
         try container.encode(status, forKey: .status)

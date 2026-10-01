@@ -12,10 +12,13 @@ import AnyCodable
 
 public struct PlaylistsRelationships: Codable, Hashable {
 
+    @available(*, deprecated, message: "This property is deprecated.")
     public var collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument?
     public var collaborators: PlaylistsCollaboratorsMultiRelationshipDataDocument?
     public var coverArt: PlaylistsCoverArtMultiRelationshipDataDocument?
+    public var curators: PlaylistsCuratorsMultiRelationshipDataDocument?
     public var items: PlaylistsItemsMultiRelationshipDataDocument?
+    @available(*, deprecated, message: "This property is deprecated.")
     public var ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipDataDocument?
     public var owners: PlaylistsOwnersMultiRelationshipDataDocument?
     public var suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument?
@@ -24,6 +27,7 @@ public struct PlaylistsRelationships: Codable, Hashable {
         collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument? = nil,
         collaborators: PlaylistsCollaboratorsMultiRelationshipDataDocument? = nil,
         coverArt: PlaylistsCoverArtMultiRelationshipDataDocument? = nil,
+        curators: PlaylistsCuratorsMultiRelationshipDataDocument? = nil,
         items: PlaylistsItemsMultiRelationshipDataDocument? = nil,
         ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipDataDocument? = nil,
         owners: PlaylistsOwnersMultiRelationshipDataDocument? = nil,
@@ -32,6 +36,7 @@ public struct PlaylistsRelationships: Codable, Hashable {
         self.collaboratorProfiles = collaboratorProfiles
         self.collaborators = collaborators
         self.coverArt = coverArt
+        self.curators = curators
         self.items = items
         self.ownerProfiles = ownerProfiles
         self.owners = owners
@@ -42,6 +47,7 @@ public struct PlaylistsRelationships: Codable, Hashable {
         case collaboratorProfiles
         case collaborators
         case coverArt
+        case curators
         case items
         case ownerProfiles
         case owners
@@ -55,6 +61,7 @@ public struct PlaylistsRelationships: Codable, Hashable {
         try container.encodeIfPresent(collaboratorProfiles, forKey: .collaboratorProfiles)
         try container.encodeIfPresent(collaborators, forKey: .collaborators)
         try container.encodeIfPresent(coverArt, forKey: .coverArt)
+        try container.encodeIfPresent(curators, forKey: .curators)
         try container.encodeIfPresent(items, forKey: .items)
         try container.encodeIfPresent(ownerProfiles, forKey: .ownerProfiles)
         try container.encodeIfPresent(owners, forKey: .owners)

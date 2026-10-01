@@ -13,17 +13,27 @@ import AnyCodable
 internal class UserCollectionFoldersAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_userCollectionFoldersGet: String, CaseIterable {
+        case items = "items"
+        case owners = "owners"
+        case usercollection = "userCollection"
+    }
+
+    /**
      Get multiple userCollectionFolders.
      
      - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, owners, userCollection (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: UserCollectionFoldersMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
+    internal class func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionFoldersGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
         do {
-            return try await userCollectionFoldersGetWithRequestBuilder(filterId: filterId, include: include, replaceMedia: replaceMedia).execute().body
+            return try await userCollectionFoldersGetWithRequestBuilder(filterId: filterId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,11 +48,12 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterId: (query) Folder Id (e.g. &#x60;CBMHXUOuJZgroV2kWpeVLL1I7xdgvF6ocDEGCXov8SZq3WVhrOcOq5pjnGawKX&#x60;) 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, owners, userCollection (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: RequestBuilder<UserCollectionFoldersMultiResourceDataDocument> 
      */
-    internal class func userCollectionFoldersGetWithRequestBuilder(filterId: [String], include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionFoldersMultiResourceDataDocument> {
+    internal class func userCollectionFoldersGetWithRequestBuilder(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionFoldersGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionFoldersMultiResourceDataDocument> {
         let localVariablePath = "/userCollectionFolders"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -51,6 +62,7 @@ internal class UserCollectionFoldersAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -115,17 +127,27 @@ internal class UserCollectionFoldersAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_userCollectionFoldersIdGet: String, CaseIterable {
+        case items = "items"
+        case owners = "owners"
+        case usercollection = "userCollection"
+    }
+
+    /**
      Get single userCollectionFolder.
      
      - parameter id: (path) Folder Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, owners, userCollection (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: UserCollectionFoldersSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionFoldersIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
+    internal class func userCollectionFoldersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionFoldersIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
         do {
-            return try await userCollectionFoldersIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await userCollectionFoldersIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -140,11 +162,12 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners, userCollection (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, owners, userCollection (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> 
      */
-    internal class func userCollectionFoldersIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> {
+    internal class func userCollectionFoldersIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionFoldersIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionFoldersSingleResourceDataDocument> {
         var localVariablePath = "/userCollectionFolders/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -155,6 +178,7 @@ internal class UserCollectionFoldersAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -291,7 +315,7 @@ internal class UserCollectionFoldersAPI {
      - parameter id: (path) Folder Id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: UserCollectionFoldersItemsMultiRelationshipDataDocument
      */
@@ -315,7 +339,7 @@ internal class UserCollectionFoldersAPI {
      - parameter id: (path) Folder Id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: RequestBuilder<UserCollectionFoldersItemsMultiRelationshipDataDocument> 
      */
@@ -402,7 +426,7 @@ internal class UserCollectionFoldersAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Folder Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: UserCollectionFoldersOwnersMultiRelationshipDataDocument
      */
@@ -424,7 +448,7 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<UserCollectionFoldersOwnersMultiRelationshipDataDocument> 
      */
@@ -457,7 +481,7 @@ internal class UserCollectionFoldersAPI {
      Get userCollection relationship (\"to-one\").
      
      - parameter id: (path) Folder Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: userCollection (optional)
+     - parameter include: (query) Include related resources. Available relationships: userCollection (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: userCollection.items.items (optional)
      - returns: UserCollectionFoldersUserCollectionSingleRelationshipDataDocument
      */
@@ -479,7 +503,7 @@ internal class UserCollectionFoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: userCollection (optional)
+     - parameter include: (query) Include related resources. Available relationships: userCollection (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: userCollection.items.items (optional)
      - returns: RequestBuilder<UserCollectionFoldersUserCollectionSingleRelationshipDataDocument> 
      */

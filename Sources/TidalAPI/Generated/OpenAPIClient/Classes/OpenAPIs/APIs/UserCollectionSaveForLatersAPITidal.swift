@@ -15,13 +15,28 @@ public enum UserCollectionSaveForLatersAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_userCollectionSaveForLatersIdGet: String, CaseIterable {
+		case items = "items"
+		case owners = "owners"
+
+		func toUserCollectionSaveForLatersAPIEnum() -> UserCollectionSaveForLatersAPI.IncludeLinkage_userCollectionSaveForLatersIdGet {
+			switch self {
+			case .items: return .items
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get single userCollectionSaveForLater.
      
      - returns: UserCollectionSaveForLatersSingleResourceDataDocument
      */
-	public static func userCollectionSaveForLatersIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersSingleResourceDataDocument {
+	public static func userCollectionSaveForLatersIdGet(id: String, include: [String]? = nil, includeLinkage: [UserCollectionSaveForLatersAPITidal.IncludeLinkage_userCollectionSaveForLatersIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionSaveForLatersAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

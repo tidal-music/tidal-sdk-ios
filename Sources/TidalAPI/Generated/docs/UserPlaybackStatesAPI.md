@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 # **userPlaybackStatesIdGet**
 ```swift
-    open class func userPlaybackStatesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserPlaybackStatesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userPlaybackStatesIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserPlaybackStatesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userPlaybackState.
@@ -31,11 +31,12 @@ Retrieves single userPlaybackState by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, changeEventStream, playQueue (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: activePlayer, availablePlayers, changeEventStream, playQueue (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: activePlayer.offlineInventory (optional)
 
 // Get single userPlaybackState.
-UserPlaybackStatesAPI.userPlaybackStatesIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+UserPlaybackStatesAPI.userPlaybackStatesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -52,7 +53,8 @@ UserPlaybackStatesAPI.userPlaybackStatesIdGet(id: id, include: include, replaceM
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: activePlayer, availablePlayers, changeEventStream, playQueue | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: activePlayer, availablePlayers, changeEventStream, playQueue | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory | [optional] 
 
 ### Return type
@@ -139,7 +141,7 @@ Retrieves activePlayer relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: activePlayer (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: activePlayer (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: activePlayer.offlineInventory (optional)
 
 // Get activePlayer relationship (\"to-one\").
@@ -160,7 +162,7 @@ UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsActivePlayerGet(id: id, i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: activePlayer | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: activePlayer | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: activePlayer.offlineInventory | [optional] 
 
 ### Return type
@@ -301,7 +303,7 @@ Retrieves availablePlayers relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: availablePlayers (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: availablePlayers (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: availablePlayers.offlineInventory (optional)
 
@@ -323,7 +325,7 @@ UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersGet(id: i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: availablePlayers | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: availablePlayers | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: availablePlayers.offlineInventory | [optional] 
 
@@ -411,7 +413,7 @@ Retrieves changeEventStream relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | 
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: changeEventStream (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: changeEventStream (optional)
 
 // Get changeEventStream relationship (\"to-one\").
 UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsChangeEventStreamGet(id: id, include: include) { (response, error) in
@@ -431,7 +433,7 @@ UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsChangeEventStreamGet(id: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** |  | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: changeEventStream | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: changeEventStream | [optional] 
 
 ### Return type
 
@@ -463,7 +465,7 @@ Retrieves playQueue relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playQueue (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: playQueue (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playQueue.current (optional)
 
 // Get playQueue relationship (\"to-one\").
@@ -484,7 +486,7 @@ UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsPlayQueueGet(id: id, incl
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playQueue | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: playQueue | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playQueue.current | [optional] 
 
 ### Return type

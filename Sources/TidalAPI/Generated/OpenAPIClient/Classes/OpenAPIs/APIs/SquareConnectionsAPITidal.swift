@@ -15,13 +15,28 @@ public enum SquareConnectionsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_squareConnectionsIdGet: String, CaseIterable {
+		case selectedsite = "selectedSite"
+		case sites = "sites"
+
+		func toSquareConnectionsAPIEnum() -> SquareConnectionsAPI.IncludeLinkage_squareConnectionsIdGet {
+			switch self {
+			case .selectedsite: return .selectedsite
+			case .sites: return .sites
+			}
+		}
+	}
+
+	/**
      Get single squareConnection.
      
      - returns: SquareConnectionsSingleResourceDataDocument
      */
-	public static func squareConnectionsIdGet(id: String, include: [String]? = nil) async throws -> SquareConnectionsSingleResourceDataDocument {
+	public static func squareConnectionsIdGet(id: String, include: [String]? = nil, includeLinkage: [SquareConnectionsAPITidal.IncludeLinkage_squareConnectionsIdGet]? = nil) async throws -> SquareConnectionsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SquareConnectionsAPI.squareConnectionsIdGetWithRequestBuilder(id: id, include: include)
+			SquareConnectionsAPI.squareConnectionsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSquareConnectionsAPIEnum() })
 		}
 	}
 

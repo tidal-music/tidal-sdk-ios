@@ -30,13 +30,28 @@ public enum SearchSuggestionsAPITidal {
 	}
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_searchSuggestionsGet: String, CaseIterable {
+		case directhits = "directHits"
+		case history = "history"
+
+		func toSearchSuggestionsAPIEnum() -> SearchSuggestionsAPI.IncludeLinkage_searchSuggestionsGet {
+			switch self {
+			case .directhits: return .directhits
+			case .history: return .history
+			}
+		}
+	}
+
+	/**
      Get search suggestions by query.
      
      - returns: SearchSuggestionsMultiResourceDataDocument
      */
-	public static func searchSuggestionsGet(filterQuery: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument {
+	public static func searchSuggestionsGet(filterQuery: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [SearchSuggestionsAPITidal.IncludeLinkage_searchSuggestionsGet]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchSuggestionsAPI.searchSuggestionsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+			SearchSuggestionsAPI.searchSuggestionsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSearchSuggestionsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

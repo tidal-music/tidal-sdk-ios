@@ -16,6 +16,7 @@ public struct TermsAttributes: Codable, Hashable {
         case developer = "DEVELOPER"
         case uploadMarketplace = "UPLOAD_MARKETPLACE"
         case merchGuidelines = "MERCH_GUIDELINES"
+        case tidalConnectDeveloper = "TIDAL_CONNECT_DEVELOPER"
     }
     public var contentLink: LinkObject
     public var countryCode: String

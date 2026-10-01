@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **downloadsGet**
 ```swift
-    open class func downloadsGet(filterId: [String], include: [String]? = nil, completion: @escaping (_ data: DownloadsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func downloadsGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_downloadsGet]? = nil, completion: @escaping (_ data: DownloadsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple downloads.
@@ -24,10 +24,11 @@ Retrieves multiple downloads by available filters, or without if applicable.
 import OpenAPIClient
 
 let filterId = ["inner_example"] // [String] | Download id (e.g. `VFJBQ0tTOjEyMzQ1`)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple downloads.
-DownloadsAPI.downloadsGet(filterId: filterId, include: include) { (response, error) in
+DownloadsAPI.downloadsGet(filterId: filterId, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -44,7 +45,8 @@ DownloadsAPI.downloadsGet(filterId: filterId, include: include) { (response, err
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterId** | [**[String]**](String.md) | Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;) | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -63,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **downloadsIdGet**
 ```swift
-    open class func downloadsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: DownloadsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func downloadsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_downloadsIdGet]? = nil, completion: @escaping (_ data: DownloadsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single download.
@@ -76,10 +78,11 @@ Retrieves single download by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Download id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single download.
-DownloadsAPI.downloadsIdGet(id: id, include: include) { (response, error) in
+DownloadsAPI.downloadsIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -96,7 +99,8 @@ DownloadsAPI.downloadsIdGet(id: id, include: include) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Download id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -128,7 +132,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Download id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -149,7 +153,7 @@ DownloadsAPI.downloadsIdRelationshipsOwnersGet(id: id, include: include, pageCur
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Download id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

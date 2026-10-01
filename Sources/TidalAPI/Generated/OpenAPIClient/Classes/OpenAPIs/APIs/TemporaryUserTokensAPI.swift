@@ -13,16 +13,24 @@ import AnyCodable
 internal class TemporaryUserTokensAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_temporaryUserTokensIdGet: String, CaseIterable {
+        case owners = "owners"
+    }
+
+    /**
      Get single temporaryUserToken.
      
      - parameter id: (path) Temporary user token id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: TemporaryUserTokensSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func temporaryUserTokensIdGet(id: String, include: [String]? = nil) async throws -> TemporaryUserTokensSingleResourceDataDocument {
+    internal class func temporaryUserTokensIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_temporaryUserTokensIdGet]? = nil) async throws -> TemporaryUserTokensSingleResourceDataDocument {
         do {
-            return try await temporaryUserTokensIdGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await temporaryUserTokensIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -37,10 +45,11 @@ internal class TemporaryUserTokensAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Temporary user token id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<TemporaryUserTokensSingleResourceDataDocument> 
      */
-    internal class func temporaryUserTokensIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<TemporaryUserTokensSingleResourceDataDocument> {
+    internal class func temporaryUserTokensIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_temporaryUserTokensIdGet]? = nil) -> RequestBuilder<TemporaryUserTokensSingleResourceDataDocument> {
         var localVariablePath = "/temporaryUserTokens/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -51,6 +60,7 @@ internal class TemporaryUserTokensAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -68,7 +78,7 @@ internal class TemporaryUserTokensAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Temporary user token id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: TemporaryUserTokensOwnersMultiRelationshipDataDocument
      */
@@ -90,7 +100,7 @@ internal class TemporaryUserTokensAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Temporary user token id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<TemporaryUserTokensOwnersMultiRelationshipDataDocument> 
      */

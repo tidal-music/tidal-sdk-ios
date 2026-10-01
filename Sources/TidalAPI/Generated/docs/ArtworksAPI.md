@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **artworksGet**
 ```swift
-    open class func artworksGet(filterId: [String], countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtworksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artworksGet(filterId: [String], countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artworksGet]? = nil, completion: @escaping (_ data: ArtworksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artworks.
@@ -26,10 +26,11 @@ import OpenAPIClient
 
 let filterId = ["inner_example"] // [String] | Artwork id (e.g. `a468bee88def`)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple artworks.
-ArtworksAPI.artworksGet(filterId: filterId, countryCode: countryCode, include: include) { (response, error) in
+ArtworksAPI.artworksGet(filterId: filterId, countryCode: countryCode, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -47,7 +48,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterId** | [**[String]**](String.md) | Artwork id (e.g. &#x60;a468bee88def&#x60;) | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -66,7 +68,7 @@ Name | Type | Description  | Notes
 
 # **artworksIdGet**
 ```swift
-    open class func artworksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artworksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artworksIdGet]? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artwork.
@@ -80,10 +82,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artwork id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single artwork.
-ArtworksAPI.artworksIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
+ArtworksAPI.artworksIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -101,7 +104,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artwork id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -133,7 +137,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artwork id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -154,7 +158,7 @@ ArtworksAPI.artworksIdRelationshipsOwnersGet(id: id, include: include, pageCurso
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artwork id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

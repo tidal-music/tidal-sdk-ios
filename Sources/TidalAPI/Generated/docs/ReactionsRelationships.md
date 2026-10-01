@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**author** | [**ReactionsAuthorSingleRelationshipDataDocument**](ReactionsAuthorSingleRelationshipDataDocument.md) |  | [optional] 
 **ownerProfiles** | [**ReactionsOwnerProfilesMultiRelationshipDataDocument**](ReactionsOwnerProfilesMultiRelationshipDataDocument.md) |  | [optional] 
 **owners** | [**ReactionsOwnersMultiRelationshipDataDocument**](ReactionsOwnersMultiRelationshipDataDocument.md) |  | [optional] 
 

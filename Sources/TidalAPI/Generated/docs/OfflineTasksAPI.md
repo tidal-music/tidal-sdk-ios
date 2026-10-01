@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **offlineTasksGet**
 ```swift
-    open class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple offlineTasks.
@@ -28,11 +28,12 @@ import OpenAPIClient
 
 let filterInstallationId = ["inner_example"] // [String] | List of offline task IDs (e.g. `a468bee88def`)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: collection, item, owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: collection (optional)
 
 // Get multiple offlineTasks.
-OfflineTasksAPI.offlineTasksGet(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia) { (response, error) in
+OfflineTasksAPI.offlineTasksGet(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -50,7 +51,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterInstallationId** | [**[String]**](String.md) | List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collection, item, owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: collection, item, owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection | [optional] 
 
 ### Return type
@@ -70,7 +72,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdGet**
 ```swift
-    open class func offlineTasksIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single offlineTask.
@@ -83,11 +85,12 @@ Retrieves single offlineTask by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Offline task id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collection, item, owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: collection, item, owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: collection (optional)
 
 // Get single offlineTask.
-OfflineTasksAPI.offlineTasksIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+OfflineTasksAPI.offlineTasksIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -104,7 +107,8 @@ OfflineTasksAPI.offlineTasksIdGet(id: id, include: include, replaceMedia: replac
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Offline task id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collection, item, owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: collection, item, owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection | [optional] 
 
 ### Return type
@@ -191,7 +195,7 @@ Retrieves collection relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Offline task id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: collection (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: collection (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: collection (optional)
 
 // Get collection relationship (\"to-one\").
@@ -212,7 +216,7 @@ OfflineTasksAPI.offlineTasksIdRelationshipsCollectionGet(id: id, include: includ
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Offline task id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: collection | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: collection | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection | [optional] 
 
 ### Return type
@@ -245,7 +249,7 @@ Retrieves item relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Offline task id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: item (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: item (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: item (optional)
 
 // Get item relationship (\"to-one\").
@@ -266,7 +270,7 @@ OfflineTasksAPI.offlineTasksIdRelationshipsItemGet(id: id, include: include, rep
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Offline task id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: item | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: item | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: item | [optional] 
 
 ### Return type
@@ -299,7 +303,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Offline task id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -320,7 +324,7 @@ OfflineTasksAPI.offlineTasksIdRelationshipsOwnersGet(id: id, include: include, p
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Offline task id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

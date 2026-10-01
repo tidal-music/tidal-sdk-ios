@@ -12,16 +12,22 @@ import AnyCodable
 
 public struct PlaylistGenerationsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
+    public static let preferenceVersionRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public static let promptRule = StringRule(minLength: 1, maxLength: 512, pattern: nil)
+    /** Current track-preference version */
+    public var preferenceVersion: Int?
     public var prompt: String
 
     public init(
+        preferenceVersion: Int? = nil,
         prompt: String
     ) {
+        self.preferenceVersion = preferenceVersion
         self.prompt = prompt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case preferenceVersion
         case prompt
     }
 
@@ -29,6 +35,7 @@ public struct PlaylistGenerationsCreateOperationPayloadDataAttributes: Codable, 
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(preferenceVersion, forKey: .preferenceVersion)
         try container.encode(prompt, forKey: .prompt)
     }
 }

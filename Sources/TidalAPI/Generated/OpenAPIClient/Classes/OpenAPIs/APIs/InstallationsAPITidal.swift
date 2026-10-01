@@ -15,25 +15,55 @@ public enum InstallationsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_installationsGet: String, CaseIterable {
+		case offlineinventory = "offlineInventory"
+		case owners = "owners"
+
+		func toInstallationsAPIEnum() -> InstallationsAPI.IncludeLinkage_installationsGet {
+			switch self {
+			case .offlineinventory: return .offlineinventory
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get multiple installations.
      
      - returns: InstallationsMultiResourceDataDocument
      */
-	public static func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) async throws -> InstallationsMultiResourceDataDocument {
+	public static func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [InstallationsAPITidal.IncludeLinkage_installationsGet]? = nil, replaceMedia: String? = nil) async throws -> InstallationsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia)
+			InstallationsAPI.installationsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toInstallationsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
+
+	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_installationsIdGet: String, CaseIterable {
+		case offlineinventory = "offlineInventory"
+		case owners = "owners"
+
+		func toInstallationsAPIEnum() -> InstallationsAPI.IncludeLinkage_installationsIdGet {
+			switch self {
+			case .offlineinventory: return .offlineinventory
+			case .owners: return .owners
+			}
+		}
+	}
 
 	/**
      Get single installation.
      
      - returns: InstallationsSingleResourceDataDocument
      */
-	public static func installationsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> InstallationsSingleResourceDataDocument {
+	public static func installationsIdGet(id: String, include: [String]? = nil, includeLinkage: [InstallationsAPITidal.IncludeLinkage_installationsIdGet]? = nil, replaceMedia: String? = nil) async throws -> InstallationsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			InstallationsAPI.installationsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toInstallationsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

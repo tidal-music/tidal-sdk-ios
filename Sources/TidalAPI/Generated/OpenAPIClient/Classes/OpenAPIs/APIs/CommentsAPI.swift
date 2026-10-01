@@ -13,15 +13,6 @@ import AnyCodable
 internal class CommentsAPI {
 
     /**
-     * enum for parameter filterSubjectType
-     */
-    public enum FilterSubjectType_commentsGet: String, CaseIterable {
-        case albums = "albums"
-        case tracks = "tracks"
-        case tracksourcefiles = "trackSourceFiles"
-    }
-
-    /**
      * enum for parameter sort
      */
     public enum Sort_commentsGet: String, CaseIterable {
@@ -36,20 +27,41 @@ internal class CommentsAPI {
     }
 
     /**
+     * enum for parameter filterSubjectType
+     */
+    public enum FilterSubjectType_commentsGet: String, CaseIterable {
+        case albums = "albums"
+        case tracks = "tracks"
+        case tracksourcefiles = "trackSourceFiles"
+    }
+
+    /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_commentsGet: String, CaseIterable {
+        case author = "author"
+        case owners = "owners"
+        case parentcomment = "parentComment"
+    }
+
+    /**
      Get multiple comments.
      
-     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) 
-     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
      - parameter filterParentCommentId: (query) Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
+     - parameter filterSubject: (query) The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
+     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: CommentsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsGet(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_commentsGet], pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil) async throws -> CommentsMultiResourceDataDocument {
+    internal class func commentsGet(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, replaceMedia: String? = nil) async throws -> CommentsMultiResourceDataDocument {
         do {
-            return try await commentsGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, sort: sort, include: include, filterParentCommentId: filterParentCommentId).execute().body
+            return try await commentsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort, include: include, filterParentCommentId: filterParentCommentId, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -63,27 +75,33 @@ internal class CommentsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterSubjectId: (query) Filter by subject resource ID (e.g. &#x60;12345&#x60;) 
-     - parameter filterSubjectType: (query) Filter by subject resource type (e.g. &#x60;albums&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
      - parameter filterParentCommentId: (query) Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
+     - parameter filterSubject: (query) The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
+     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: RequestBuilder<CommentsMultiResourceDataDocument> 
      */
-    internal class func commentsGetWithRequestBuilder(filterSubjectId: [String], filterSubjectType: [FilterSubjectType_commentsGet], pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil) -> RequestBuilder<CommentsMultiResourceDataDocument> {
+    internal class func commentsGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CommentsMultiResourceDataDocument> {
         let localVariablePath = "/comments"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[subject.id]": (wrappedValue: filterSubjectId.encodeToJSON(), isExplode: true),
-            "filter[subject.type]": (wrappedValue: filterSubjectType.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[parentComment.id]": (wrappedValue: filterParentCommentId?.encodeToJSON(), isExplode: true),
+            "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
+            "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
+            "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -147,16 +165,27 @@ internal class CommentsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_commentsIdGet: String, CaseIterable {
+        case author = "author"
+        case owners = "owners"
+        case parentcomment = "parentComment"
+    }
+
+    /**
      Get single comment.
      
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: CommentsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsIdGet(id: String, include: [String]? = nil) async throws -> CommentsSingleResourceDataDocument {
+    internal class func commentsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsIdGet]? = nil, replaceMedia: String? = nil) async throws -> CommentsSingleResourceDataDocument {
         do {
-            return try await commentsIdGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await commentsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -171,10 +200,12 @@ internal class CommentsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles, owners, parentComment (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: RequestBuilder<CommentsSingleResourceDataDocument> 
      */
-    internal class func commentsIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CommentsSingleResourceDataDocument> {
+    internal class func commentsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CommentsSingleResourceDataDocument> {
         var localVariablePath = "/comments/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -185,6 +216,8 @@ internal class CommentsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -251,17 +284,17 @@ internal class CommentsAPI {
     }
 
     /**
-     Get ownerProfiles relationship (\"to-many\").
+     Get author relationship (\"to-one\").
      
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: CommentsOwnerProfilesMultiRelationshipDataDocument
+     - parameter include: (query) Include related resources. Available relationships: author (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
+     - returns: CommentsAuthorSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsOwnerProfilesMultiRelationshipDataDocument {
+    internal class func commentsIdRelationshipsAuthorGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CommentsAuthorSingleRelationshipDataDocument {
         do {
-            return try await commentsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+            return try await commentsIdRelationshipsAuthorGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -269,19 +302,19 @@ internal class CommentsAPI {
     }
 
     /**
-     Get ownerProfiles relationship (\"to-many\").
-     - GET /comments/{id}/relationships/ownerProfiles
-     - Retrieves ownerProfiles relationship.
+     Get author relationship (\"to-one\").
+     - GET /comments/{id}/relationships/author
+     - The artist who wrote the comment.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<CommentsOwnerProfilesMultiRelationshipDataDocument> 
+     - parameter include: (query) Include related resources. Available relationships: author (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
+     - returns: RequestBuilder<CommentsAuthorSingleRelationshipDataDocument> 
      */
-    internal class func commentsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<CommentsOwnerProfilesMultiRelationshipDataDocument> {
-        var localVariablePath = "/comments/{id}/relationships/ownerProfiles"
+    internal class func commentsIdRelationshipsAuthorGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CommentsAuthorSingleRelationshipDataDocument> {
+        var localVariablePath = "/comments/{id}/relationships/author"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
@@ -291,7 +324,7 @@ internal class CommentsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -300,7 +333,7 @@ internal class CommentsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CommentsOwnerProfilesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CommentsAuthorSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -309,7 +342,7 @@ internal class CommentsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: CommentsOwnersMultiRelationshipDataDocument
      */
@@ -331,7 +364,7 @@ internal class CommentsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<CommentsOwnersMultiRelationshipDataDocument> 
      */
@@ -364,13 +397,14 @@ internal class CommentsAPI {
      Get parentComment relationship (\"to-one\").
      
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: parentComment (optional)
+     - parameter include: (query) Include related resources. Available relationships: parentComment (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parentComment.author.albums (optional)
      - returns: CommentsParentCommentSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil) async throws -> CommentsParentCommentSingleRelationshipDataDocument {
+    internal class func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CommentsParentCommentSingleRelationshipDataDocument {
         do {
-            return try await commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -385,10 +419,11 @@ internal class CommentsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: parentComment (optional)
+     - parameter include: (query) Include related resources. Available relationships: parentComment (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parentComment.author.albums (optional)
      - returns: RequestBuilder<CommentsParentCommentSingleRelationshipDataDocument> 
      */
-    internal class func commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CommentsParentCommentSingleRelationshipDataDocument> {
+    internal class func commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CommentsParentCommentSingleRelationshipDataDocument> {
         var localVariablePath = "/comments/{id}/relationships/parentComment"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -399,6 +434,7 @@ internal class CommentsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

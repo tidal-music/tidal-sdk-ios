@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **subscriptionPriceChangeDecisionsGet**
 ```swift
-    open class func subscriptionPriceChangeDecisionsGet(filterOwnersId: [String], include: [String]? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func subscriptionPriceChangeDecisionsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_subscriptionPriceChangeDecisionsGet]? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple subscriptionPriceChangeDecisions.
@@ -25,10 +25,11 @@ Retrieves multiple subscriptionPriceChangeDecisions by available filters, or wit
 import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: priceChange (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: priceChange (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple subscriptionPriceChangeDecisions.
-SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsGet(filterOwnersId: filterOwnersId, include: include) { (response, error) in
+SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,7 +46,8 @@ SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsGet(filterOw
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: priceChange | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: priceChange | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -131,7 +133,7 @@ Retrieves priceChange relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Price change decision id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: priceChange (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: priceChange (optional)
 
 // Get priceChange relationship (\"to-one\").
 SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet(id: id, include: include) { (response, error) in
@@ -151,7 +153,7 @@ SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsIdRelationsh
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Price change decision id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: priceChange | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: priceChange | [optional] 
 
 ### Return type
 

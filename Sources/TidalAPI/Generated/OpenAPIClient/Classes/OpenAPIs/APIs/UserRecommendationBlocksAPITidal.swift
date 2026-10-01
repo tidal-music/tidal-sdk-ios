@@ -15,13 +15,32 @@ public enum UserRecommendationBlocksAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_userRecommendationBlocksIdGet: String, CaseIterable {
+		case artists = "artists"
+		case owners = "owners"
+		case tracks = "tracks"
+		case videos = "videos"
+
+		func toUserRecommendationBlocksAPIEnum() -> UserRecommendationBlocksAPI.IncludeLinkage_userRecommendationBlocksIdGet {
+			switch self {
+			case .artists: return .artists
+			case .owners: return .owners
+			case .tracks: return .tracks
+			case .videos: return .videos
+			}
+		}
+	}
+
+	/**
      Get single userRecommendationBlock.
      
      - returns: UserRecommendationBlocksSingleResourceDataDocument
      */
-	public static func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
+	public static func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserRecommendationBlocksAPITidal.IncludeLinkage_userRecommendationBlocksIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserRecommendationBlocksAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

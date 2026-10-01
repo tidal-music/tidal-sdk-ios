@@ -27,13 +27,28 @@ public enum LyricsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_lyricsIdGet: String, CaseIterable {
+		case owners = "owners"
+		case track = "track"
+
+		func toLyricsAPIEnum() -> LyricsAPI.IncludeLinkage_lyricsIdGet {
+			switch self {
+			case .owners: return .owners
+			case .track: return .track
+			}
+		}
+	}
+
+	/**
      Get single lyric.
      
      - returns: LyricsSingleResourceDataDocument
      */
-	public static func lyricsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> LyricsSingleResourceDataDocument {
+	public static func lyricsIdGet(id: String, include: [String]? = nil, includeLinkage: [LyricsAPITidal.IncludeLinkage_lyricsIdGet]? = nil, replaceMedia: String? = nil) async throws -> LyricsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			LyricsAPI.lyricsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			LyricsAPI.lyricsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toLyricsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

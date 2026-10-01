@@ -15,13 +15,26 @@ public enum ClientsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_clientsGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toClientsAPIEnum() -> ClientsAPI.IncludeLinkage_clientsGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get multiple clients.
      
      - returns: ClientsMultiResourceDataDocument
      */
-	public static func clientsGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ClientsMultiResourceDataDocument {
+	public static func clientsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [ClientsAPITidal.IncludeLinkage_clientsGet]? = nil) async throws -> ClientsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ClientsAPI.clientsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
+			ClientsAPI.clientsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toClientsAPIEnum() })
 		}
 	}
 
@@ -39,13 +52,26 @@ public enum ClientsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_clientsIdGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toClientsAPIEnum() -> ClientsAPI.IncludeLinkage_clientsIdGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get single client.
      
      - returns: ClientsSingleResourceDataDocument
      */
-	public static func clientsIdGet(id: String, include: [String]? = nil) async throws -> ClientsSingleResourceDataDocument {
+	public static func clientsIdGet(id: String, include: [String]? = nil, includeLinkage: [ClientsAPITidal.IncludeLinkage_clientsIdGet]? = nil) async throws -> ClientsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ClientsAPI.clientsIdGetWithRequestBuilder(id: id, include: include)
+			ClientsAPI.clientsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toClientsAPIEnum() })
 		}
 	}
 
