@@ -15,25 +15,59 @@ public enum PlaylistGenerationsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_playlistGenerationsGet: String, CaseIterable {
+		case basegeneration = "baseGeneration"
+		case playlist = "playlist"
+		case trackpreferences = "trackPreferences"
+
+		func toPlaylistGenerationsAPIEnum() -> PlaylistGenerationsAPI.IncludeLinkage_playlistGenerationsGet {
+			switch self {
+			case .basegeneration: return .basegeneration
+			case .playlist: return .playlist
+			case .trackpreferences: return .trackpreferences
+			}
+		}
+	}
+
+	/**
      Get multiple playlistGenerations.
      
      - returns: PlaylistGenerationsMultiResourceDataDocument
      */
-	public static func playlistGenerationsGet(filterPlaylistId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsMultiResourceDataDocument {
+	public static func playlistGenerationsGet(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [PlaylistGenerationsAPITidal.IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistGenerationsAPI.playlistGenerationsGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, include: include, replaceMedia: replaceMedia)
+			PlaylistGenerationsAPI.playlistGenerationsGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPlaylistGenerationsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
+
+	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_playlistGenerationsIdGet: String, CaseIterable {
+		case basegeneration = "baseGeneration"
+		case playlist = "playlist"
+		case trackpreferences = "trackPreferences"
+
+		func toPlaylistGenerationsAPIEnum() -> PlaylistGenerationsAPI.IncludeLinkage_playlistGenerationsIdGet {
+			switch self {
+			case .basegeneration: return .basegeneration
+			case .playlist: return .playlist
+			case .trackpreferences: return .trackpreferences
+			}
+		}
+	}
 
 	/**
      Get single playlistGeneration.
      
      - returns: PlaylistGenerationsSingleResourceDataDocument
      */
-	public static func playlistGenerationsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsSingleResourceDataDocument {
+	public static func playlistGenerationsIdGet(id: String, include: [String]? = nil, includeLinkage: [PlaylistGenerationsAPITidal.IncludeLinkage_playlistGenerationsIdGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistGenerationsAPI.playlistGenerationsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			PlaylistGenerationsAPI.playlistGenerationsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPlaylistGenerationsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

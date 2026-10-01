@@ -13,19 +13,28 @@ import AnyCodable
 internal class InstallationsAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_installationsGet: String, CaseIterable {
+        case offlineinventory = "offlineInventory"
+        case owners = "owners"
+    }
+
+    /**
      Get multiple installations.
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: offlineInventory, owners (optional)
      - parameter filterClientProvidedInstallationId: (query) Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterOwnersId: (query) User ID to filter by. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      - returns: InstallationsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) async throws -> InstallationsMultiResourceDataDocument {
+    internal class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_installationsGet]? = nil, replaceMedia: String? = nil) async throws -> InstallationsMultiResourceDataDocument {
         do {
-            return try await installationsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia).execute().body
+            return try await installationsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -40,13 +49,14 @@ internal class InstallationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: offlineInventory, owners (optional)
      - parameter filterClientProvidedInstallationId: (query) Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) (optional)
      - parameter filterOwnersId: (query) User ID to filter by. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      - returns: RequestBuilder<InstallationsMultiResourceDataDocument> 
      */
-    internal class func installationsGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<InstallationsMultiResourceDataDocument> {
+    internal class func installationsGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_installationsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<InstallationsMultiResourceDataDocument> {
         let localVariablePath = "/installations"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -57,6 +67,7 @@ internal class InstallationsAPI {
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[clientProvidedInstallationId]": (wrappedValue: filterClientProvidedInstallationId?.encodeToJSON(), isExplode: true),
             "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -72,17 +83,26 @@ internal class InstallationsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_installationsIdGet: String, CaseIterable {
+        case offlineinventory = "offlineInventory"
+        case owners = "owners"
+    }
+
+    /**
      Get single installation.
      
      - parameter id: (path) Installation id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: offlineInventory, owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      - returns: InstallationsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> InstallationsSingleResourceDataDocument {
+    internal class func installationsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_installationsIdGet]? = nil, replaceMedia: String? = nil) async throws -> InstallationsSingleResourceDataDocument {
         do {
-            return try await installationsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await installationsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -97,11 +117,12 @@ internal class InstallationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Installation id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: offlineInventory, owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      - returns: RequestBuilder<InstallationsSingleResourceDataDocument> 
      */
-    internal class func installationsIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<InstallationsSingleResourceDataDocument> {
+    internal class func installationsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_installationsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<InstallationsSingleResourceDataDocument> {
         var localVariablePath = "/installations/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -112,6 +133,7 @@ internal class InstallationsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -204,7 +226,7 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
+     - parameter include: (query) Include related resources. Available relationships: offlineInventory (optional)
      - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
      - parameter filterState: (query) One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
@@ -230,7 +252,7 @@ internal class InstallationsAPI {
      - parameter id: (path) Installation id 
      - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: offlineInventory (optional)
+     - parameter include: (query) Include related resources. Available relationships: offlineInventory (optional)
      - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
      - parameter filterState: (query) One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
@@ -321,7 +343,7 @@ internal class InstallationsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Installation id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: InstallationsOwnersMultiRelationshipDataDocument
      */
@@ -343,7 +365,7 @@ internal class InstallationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Installation id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<InstallationsOwnersMultiRelationshipDataDocument> 
      */

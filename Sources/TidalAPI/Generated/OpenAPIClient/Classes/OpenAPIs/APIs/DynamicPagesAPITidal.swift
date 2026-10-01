@@ -59,13 +59,28 @@ public enum DynamicPagesAPITidal {
 	}
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_dynamicPagesGet: String, CaseIterable {
+		case modules = "modules"
+		case subject = "subject"
+
+		func toDynamicPagesAPIEnum() -> DynamicPagesAPI.IncludeLinkage_dynamicPagesGet {
+			switch self {
+			case .modules: return .modules
+			case .subject: return .subject
+			}
+		}
+	}
+
+	/**
      Get multiple dynamicPages.
      
      - returns: DynamicPagesMultiResourceDataDocument
      */
-	public static func dynamicPagesGet(deviceType: DynamicPagesAPITidal.DeviceType_dynamicPagesGet, systemType: DynamicPagesAPITidal.SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
+	public static func dynamicPagesGet(deviceType: DynamicPagesAPITidal.DeviceType_dynamicPagesGet, systemType: DynamicPagesAPITidal.SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, includeLinkage: [DynamicPagesAPITidal.IncludeLinkage_dynamicPagesGet]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			DynamicPagesAPI.dynamicPagesGetWithRequestBuilder(deviceType: deviceType.toDynamicPagesAPIEnum(), systemType: systemType.toDynamicPagesAPIEnum(), clientVersion: clientVersion, filterPageType: filterPageType, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, replaceMedia: replaceMedia)
+			DynamicPagesAPI.dynamicPagesGetWithRequestBuilder(deviceType: deviceType.toDynamicPagesAPIEnum(), systemType: systemType.toDynamicPagesAPIEnum(), clientVersion: clientVersion, filterPageType: filterPageType, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, includeLinkage: includeLinkage?.compactMap { $0.toDynamicPagesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

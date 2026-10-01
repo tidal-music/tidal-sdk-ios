@@ -15,25 +15,51 @@ public enum DownloadsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_downloadsGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toDownloadsAPIEnum() -> DownloadsAPI.IncludeLinkage_downloadsGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get multiple downloads.
      
      - returns: DownloadsMultiResourceDataDocument
      */
-	public static func downloadsGet(filterId: [String], include: [String]? = nil) async throws -> DownloadsMultiResourceDataDocument {
+	public static func downloadsGet(filterId: [String], include: [String]? = nil, includeLinkage: [DownloadsAPITidal.IncludeLinkage_downloadsGet]? = nil) async throws -> DownloadsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			DownloadsAPI.downloadsGetWithRequestBuilder(filterId: filterId, include: include)
+			DownloadsAPI.downloadsGetWithRequestBuilder(filterId: filterId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toDownloadsAPIEnum() })
 		}
 	}
 
+
+	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_downloadsIdGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toDownloadsAPIEnum() -> DownloadsAPI.IncludeLinkage_downloadsIdGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
 
 	/**
      Get single download.
      
      - returns: DownloadsSingleResourceDataDocument
      */
-	public static func downloadsIdGet(id: String, include: [String]? = nil) async throws -> DownloadsSingleResourceDataDocument {
+	public static func downloadsIdGet(id: String, include: [String]? = nil, includeLinkage: [DownloadsAPITidal.IncludeLinkage_downloadsIdGet]? = nil) async throws -> DownloadsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			DownloadsAPI.downloadsIdGetWithRequestBuilder(id: id, include: include)
+			DownloadsAPI.downloadsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toDownloadsAPIEnum() })
 		}
 	}
 

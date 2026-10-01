@@ -13,16 +13,24 @@ import AnyCodable
 internal class TrackSourceFilesAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_trackSourceFilesIdGet: String, CaseIterable {
+        case owners = "owners"
+    }
+
+    /**
      Get single trackSourceFile.
      
      - parameter id: (path) Track source file id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: TrackSourceFilesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackSourceFilesIdGet(id: String, include: [String]? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
+    internal class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
         do {
-            return try await trackSourceFilesIdGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await trackSourceFilesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -37,10 +45,11 @@ internal class TrackSourceFilesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track source file id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<TrackSourceFilesSingleResourceDataDocument> 
      */
-    internal class func trackSourceFilesIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<TrackSourceFilesSingleResourceDataDocument> {
+    internal class func trackSourceFilesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil) -> RequestBuilder<TrackSourceFilesSingleResourceDataDocument> {
         var localVariablePath = "/trackSourceFiles/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -51,6 +60,7 @@ internal class TrackSourceFilesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -68,7 +78,7 @@ internal class TrackSourceFilesAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Track source file id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: TrackSourceFilesOwnersMultiRelationshipDataDocument
      */
@@ -90,7 +100,7 @@ internal class TrackSourceFilesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track source file id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<TrackSourceFilesOwnersMultiRelationshipDataDocument> 
      */

@@ -22,7 +22,7 @@ Method | HTTP request | Description
 
 # **playQueuesGet**
 ```swift
-    open class func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlayQueuesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlayQueuesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple playQueues.
@@ -36,11 +36,12 @@ import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: changeEventStream, current, future, owners, past (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: changeEventStream, current, future, owners, past (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: current (optional)
 
 // Get multiple playQueues.
-PlayQueuesAPI.playQueuesGet(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia) { (response, error) in
+PlayQueuesAPI.playQueuesGet(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -58,7 +59,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: changeEventStream, current, future, owners, past | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: changeEventStream, current, future, owners, past | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current | [optional] 
 
 ### Return type
@@ -130,7 +132,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdGet**
 ```swift
-    open class func playQueuesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlayQueuesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playQueuesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlayQueuesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single playQueue.
@@ -143,11 +145,12 @@ Retrieves single playQueue by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: changeEventStream, current, future, owners, past (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: changeEventStream, current, future, owners, past (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: current (optional)
 
 // Get single playQueue.
-PlayQueuesAPI.playQueuesIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+PlayQueuesAPI.playQueuesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -164,7 +167,8 @@ PlayQueuesAPI.playQueuesIdGet(id: id, include: include, replaceMedia: replaceMed
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: changeEventStream, current, future, owners, past | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: changeEventStream, current, future, owners, past | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current | [optional] 
 
 ### Return type
@@ -251,7 +255,7 @@ Retrieves changeEventStream relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | 
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: changeEventStream (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: changeEventStream (optional)
 
 // Get changeEventStream relationship (\"to-one\").
 PlayQueuesAPI.playQueuesIdRelationshipsChangeEventStreamGet(id: id, include: include) { (response, error) in
@@ -271,7 +275,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsChangeEventStreamGet(id: id, include: inc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** |  | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: changeEventStream | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: changeEventStream | [optional] 
 
 ### Return type
 
@@ -303,7 +307,7 @@ Retrieves current relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: current (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: current (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: current (optional)
 
 // Get current relationship (\"to-one\").
@@ -324,7 +328,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsCurrentGet(id: id, include: include, repl
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: current | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: current | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current | [optional] 
 
 ### Return type
@@ -466,7 +470,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: future (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: future (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: future (optional)
 
 // Get future relationship (\"to-many\").
@@ -488,7 +492,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: future | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: future | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: future | [optional] 
 
 ### Return type
@@ -629,7 +633,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -650,7 +654,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsOwnersGet(id: id, include: include, pageC
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
@@ -684,7 +688,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: past (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: past (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: past (optional)
 
 // Get past relationship (\"to-many\").
@@ -706,7 +710,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: past | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: past | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: past | [optional] 
 
 ### Return type

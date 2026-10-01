@@ -13,17 +13,26 @@ import AnyCodable
 internal class CollaborationInvitesAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_collaborationInvitesGet: String, CaseIterable {
+        case owners = "owners"
+        case subject = "subject"
+    }
+
+    /**
      Get multiple collaborationInvites.
      
      - parameter filterCode: (query) Invite code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, subject (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: CollaborationInvitesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
+    internal class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesGet]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
         do {
-            return try await collaborationInvitesGetWithRequestBuilder(filterCode: filterCode, include: include, replaceMedia: replaceMedia).execute().body
+            return try await collaborationInvitesGetWithRequestBuilder(filterCode: filterCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,11 +47,12 @@ internal class CollaborationInvitesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterCode: (query) Invite code 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, subject (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: RequestBuilder<CollaborationInvitesMultiResourceDataDocument> 
      */
-    internal class func collaborationInvitesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesMultiResourceDataDocument> {
+    internal class func collaborationInvitesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesMultiResourceDataDocument> {
         let localVariablePath = "/collaborationInvites"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -51,6 +61,7 @@ internal class CollaborationInvitesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[code]": (wrappedValue: filterCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -115,17 +126,26 @@ internal class CollaborationInvitesAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_collaborationInvitesIdGet: String, CaseIterable {
+        case owners = "owners"
+        case subject = "subject"
+    }
+
+    /**
      Get single collaborationInvite.
      
      - parameter id: (path) Collaboration invite id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, subject (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: CollaborationInvitesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func collaborationInvitesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument {
+    internal class func collaborationInvitesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesIdGet]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument {
         do {
-            return try await collaborationInvitesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await collaborationInvitesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -140,11 +160,12 @@ internal class CollaborationInvitesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Collaboration invite id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, subject (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: RequestBuilder<CollaborationInvitesSingleResourceDataDocument> 
      */
-    internal class func collaborationInvitesIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesSingleResourceDataDocument> {
+    internal class func collaborationInvitesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesSingleResourceDataDocument> {
         var localVariablePath = "/collaborationInvites/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -155,6 +176,7 @@ internal class CollaborationInvitesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -173,7 +195,7 @@ internal class CollaborationInvitesAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Collaboration invite id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: CollaborationInvitesOwnersMultiRelationshipDataDocument
      */
@@ -195,7 +217,7 @@ internal class CollaborationInvitesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Collaboration invite id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<CollaborationInvitesOwnersMultiRelationshipDataDocument> 
      */
@@ -228,7 +250,7 @@ internal class CollaborationInvitesAPI {
      Get subject relationship (\"to-one\").
      
      - parameter id: (path) Collaboration invite id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: CollaborationInvitesSubjectSingleRelationshipDataDocument
      */
@@ -250,7 +272,7 @@ internal class CollaborationInvitesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Collaboration invite id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: RequestBuilder<CollaborationInvitesSubjectSingleRelationshipDataDocument> 
      */

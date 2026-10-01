@@ -15,13 +15,26 @@ public enum UserDailyMixesAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_userDailyMixesIdGet: String, CaseIterable {
+		case items = "items"
+
+		func toUserDailyMixesAPIEnum() -> UserDailyMixesAPI.IncludeLinkage_userDailyMixesIdGet {
+			switch self {
+			case .items: return .items
+			}
+		}
+	}
+
+	/**
      Get single userDailyMixe.
      
      - returns: UserDailyMixesSingleResourceDataDocument
      */
-	public static func userDailyMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserDailyMixesSingleResourceDataDocument {
+	public static func userDailyMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserDailyMixesAPITidal.IncludeLinkage_userDailyMixesIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserDailyMixesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserDailyMixesAPI.userDailyMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
+			UserDailyMixesAPI.userDailyMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserDailyMixesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

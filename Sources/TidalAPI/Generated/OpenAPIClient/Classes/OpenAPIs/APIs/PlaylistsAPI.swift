@@ -25,22 +25,37 @@ internal class PlaylistsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_playlistsGet: String, CaseIterable {
+        case collaboratorprofiles = "collaboratorProfiles"
+        case collaborators = "collaborators"
+        case coverart = "coverArt"
+        case curators = "curators"
+        case items = "items"
+        case ownerprofiles = "ownerProfiles"
+        case owners = "owners"
+        case suggestedcoverarts = "suggestedCoverArts"
+    }
+
+    /**
      Get multiple playlists.
      
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts (optional)
+     - parameter include: (query) Include related resources. Available relationships: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts (optional)
      - parameter filterCollaboratorsId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - parameter filterId: (query) List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: curators.albums (optional)
      - returns: PlaylistsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsGet(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsMultiResourceDataDocument {
+    internal class func playlistsGet(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_playlistsGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsMultiResourceDataDocument {
         do {
-            return try await playlistsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterCollaboratorsId: filterCollaboratorsId, filterId: filterId, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia).execute().body
+            return try await playlistsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterCollaboratorsId: filterCollaboratorsId, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -60,14 +75,15 @@ internal class PlaylistsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts (optional)
+     - parameter include: (query) Include related resources. Available relationships: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts (optional)
      - parameter filterCollaboratorsId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - parameter filterId: (query) List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: curators.albums (optional)
      - returns: RequestBuilder<PlaylistsMultiResourceDataDocument> 
      */
-    internal class func playlistsGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistsMultiResourceDataDocument> {
+    internal class func playlistsGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_playlistsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistsMultiResourceDataDocument> {
         let localVariablePath = "/playlists"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -81,6 +97,7 @@ internal class PlaylistsAPI {
             "filter[collaborators.id]": (wrappedValue: filterCollaboratorsId?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
             "filter[owners.id]": (wrappedValue: filterOwnersId?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -145,18 +162,33 @@ internal class PlaylistsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_playlistsIdGet: String, CaseIterable {
+        case collaboratorprofiles = "collaboratorProfiles"
+        case collaborators = "collaborators"
+        case coverart = "coverArt"
+        case curators = "curators"
+        case items = "items"
+        case ownerprofiles = "ownerProfiles"
+        case owners = "owners"
+        case suggestedcoverarts = "suggestedCoverArts"
+    }
+
+    /**
      Get single playlist.
      
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts (optional)
+     - parameter include: (query) Include related resources. Available relationships: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: curators.albums (optional)
      - returns: PlaylistsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsSingleResourceDataDocument {
+    internal class func playlistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsSingleResourceDataDocument {
         do {
-            return try await playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia).execute().body
+            return try await playlistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -175,11 +207,12 @@ internal class PlaylistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts (optional)
+     - parameter include: (query) Include related resources. Available relationships: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: curators.albums (optional)
      - returns: RequestBuilder<PlaylistsSingleResourceDataDocument> 
      */
-    internal class func playlistsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistsSingleResourceDataDocument> {
+    internal class func playlistsIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistsSingleResourceDataDocument> {
         var localVariablePath = "/playlists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -191,6 +224,7 @@ internal class PlaylistsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -315,7 +349,7 @@ internal class PlaylistsAPI {
      Get collaboratorProfiles relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles (optional)
+     - parameter include: (query) Include related resources. Available relationships: collaboratorProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument
      */
@@ -341,7 +375,7 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaboratorProfiles (optional)
+     - parameter include: (query) Include related resources. Available relationships: collaboratorProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PlaylistsCollaboratorProfilesMultiRelationshipDataDocument> 
      */
@@ -375,7 +409,7 @@ internal class PlaylistsAPI {
      Get collaborators relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaborators (optional)
+     - parameter include: (query) Include related resources. Available relationships: collaborators (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PlaylistsCollaboratorsMultiRelationshipDataDocument
      */
@@ -400,7 +434,7 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: collaborators (optional)
+     - parameter include: (query) Include related resources. Available relationships: collaborators (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PlaylistsCollaboratorsMultiRelationshipDataDocument> 
      */
@@ -434,7 +468,7 @@ internal class PlaylistsAPI {
      
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt (optional)
+     - parameter include: (query) Include related resources. Available relationships: coverArt (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PlaylistsCoverArtMultiRelationshipDataDocument
      */
@@ -460,7 +494,7 @@ internal class PlaylistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: coverArt (optional)
+     - parameter include: (query) Include related resources. Available relationships: coverArt (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PlaylistsCoverArtMultiRelationshipDataDocument> 
      */
@@ -547,7 +581,7 @@ internal class PlaylistsAPI {
      
      - parameter id: (path) Playlist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: curators (optional)
+     - parameter include: (query) Include related resources. Available relationships: curators (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: curators.albums (optional)
      - returns: PlaylistsCuratorsMultiRelationshipDataDocument
      */
@@ -573,7 +607,7 @@ internal class PlaylistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: curators (optional)
+     - parameter include: (query) Include related resources. Available relationships: curators (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: curators.albums (optional)
      - returns: RequestBuilder<PlaylistsCuratorsMultiRelationshipDataDocument> 
      */
@@ -680,7 +714,7 @@ internal class PlaylistsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter filterQuery: (query) Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: PlaylistsItemsMultiRelationshipDataDocument
@@ -709,7 +743,7 @@ internal class PlaylistsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter filterQuery: (query) Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> 
@@ -851,7 +885,7 @@ internal class PlaylistsAPI {
      Get ownerProfiles relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
+     - parameter include: (query) Include related resources. Available relationships: ownerProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PlaylistsOwnerProfilesMultiRelationshipDataDocument
      */
@@ -877,7 +911,7 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
+     - parameter include: (query) Include related resources. Available relationships: ownerProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PlaylistsOwnerProfilesMultiRelationshipDataDocument> 
      */
@@ -911,7 +945,7 @@ internal class PlaylistsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PlaylistsOwnersMultiRelationshipDataDocument
      */
@@ -936,7 +970,7 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PlaylistsOwnersMultiRelationshipDataDocument> 
      */
@@ -969,7 +1003,7 @@ internal class PlaylistsAPI {
      Get suggestedCoverArts relationship (\"to-many\").
      
      - parameter id: (path) Playlist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: suggestedCoverArts (optional)
+     - parameter include: (query) Include related resources. Available relationships: suggestedCoverArts (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument
      */
@@ -991,7 +1025,7 @@ internal class PlaylistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: suggestedCoverArts (optional)
+     - parameter include: (query) Include related resources. Available relationships: suggestedCoverArts (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument> 
      */

@@ -22,19 +22,27 @@ internal class DspSharingLinksAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_dspSharingLinksGet: String, CaseIterable {
+        case subject = "subject"
+    }
+
+    /**
      Get multiple dspSharingLinks.
      
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter filterSubject: (query) The subject whose DSP sharing links to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
      - parameter filterSubjectId: (query) Deprecated: use filter[subject]. The id of the subject resource (optional)
      - parameter filterSubjectType: (query) Deprecated: use filter[subject]. The type of the subject resource (e.g. &#x60;tracks&#x60;) (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: DspSharingLinksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dspSharingLinksGet(include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
+    internal class func dspSharingLinksGet(include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, includeLinkage: [IncludeLinkage_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
         do {
-            return try await dspSharingLinksGetWithRequestBuilder(include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, replaceMedia: replaceMedia).execute().body
+            return try await dspSharingLinksGetWithRequestBuilder(include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -51,14 +59,15 @@ internal class DspSharingLinksAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter filterSubject: (query) The subject whose DSP sharing links to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
      - parameter filterSubjectId: (query) Deprecated: use filter[subject]. The id of the subject resource (optional)
      - parameter filterSubjectType: (query) Deprecated: use filter[subject]. The type of the subject resource (e.g. &#x60;tracks&#x60;) (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<DspSharingLinksMultiResourceDataDocument> 
      */
-    internal class func dspSharingLinksGetWithRequestBuilder(include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DspSharingLinksMultiResourceDataDocument> {
+    internal class func dspSharingLinksGetWithRequestBuilder(include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, includeLinkage: [IncludeLinkage_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DspSharingLinksMultiResourceDataDocument> {
         let localVariablePath = "/dspSharingLinks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -69,6 +78,7 @@ internal class DspSharingLinksAPI {
             "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
             "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
             "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -87,7 +97,7 @@ internal class DspSharingLinksAPI {
      Get subject relationship (\"to-one\").
      
      - parameter id: (path) DspSharingLinks Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: DspSharingLinksSubjectSingleRelationshipDataDocument
      */
@@ -112,7 +122,7 @@ internal class DspSharingLinksAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) DspSharingLinks Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<DspSharingLinksSubjectSingleRelationshipDataDocument> 
      */

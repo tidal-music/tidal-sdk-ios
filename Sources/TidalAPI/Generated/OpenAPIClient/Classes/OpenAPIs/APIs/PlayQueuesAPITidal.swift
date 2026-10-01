@@ -15,13 +15,34 @@ public enum PlayQueuesAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_playQueuesGet: String, CaseIterable {
+		case changeeventstream = "changeEventStream"
+		case current = "current"
+		case future = "future"
+		case owners = "owners"
+		case past = "past"
+
+		func toPlayQueuesAPIEnum() -> PlayQueuesAPI.IncludeLinkage_playQueuesGet {
+			switch self {
+			case .changeeventstream: return .changeeventstream
+			case .current: return .current
+			case .future: return .future
+			case .owners: return .owners
+			case .past: return .past
+			}
+		}
+	}
+
+	/**
      Get multiple playQueues.
      
      - returns: PlayQueuesMultiResourceDataDocument
      */
-	public static func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
+	public static func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [PlayQueuesAPITidal.IncludeLinkage_playQueuesGet]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesGetWithRequestBuilder(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			PlayQueuesAPI.playQueuesGetWithRequestBuilder(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPlayQueuesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -39,13 +60,34 @@ public enum PlayQueuesAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_playQueuesIdGet: String, CaseIterable {
+		case changeeventstream = "changeEventStream"
+		case current = "current"
+		case future = "future"
+		case owners = "owners"
+		case past = "past"
+
+		func toPlayQueuesAPIEnum() -> PlayQueuesAPI.IncludeLinkage_playQueuesIdGet {
+			switch self {
+			case .changeeventstream: return .changeeventstream
+			case .current: return .current
+			case .future: return .future
+			case .owners: return .owners
+			case .past: return .past
+			}
+		}
+	}
+
+	/**
      Get single playQueue.
      
      - returns: PlayQueuesSingleResourceDataDocument
      */
-	public static func playQueuesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
+	public static func playQueuesIdGet(id: String, include: [String]? = nil, includeLinkage: [PlayQueuesAPITidal.IncludeLinkage_playQueuesIdGet]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlayQueuesAPI.playQueuesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			PlayQueuesAPI.playQueuesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPlayQueuesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

@@ -15,13 +15,28 @@ public enum ProviderOwnersAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_providerOwnersGet: String, CaseIterable {
+		case owners = "owners"
+		case provider = "provider"
+
+		func toProviderOwnersAPIEnum() -> ProviderOwnersAPI.IncludeLinkage_providerOwnersGet {
+			switch self {
+			case .owners: return .owners
+			case .provider: return .provider
+			}
+		}
+	}
+
+	/**
      Get multiple providerOwners.
      
      - returns: ProviderOwnersMultiResourceDataDocument
      */
-	public static func providerOwnersGet(filterOwnersId: [String], include: [String]? = nil) async throws -> ProviderOwnersMultiResourceDataDocument {
+	public static func providerOwnersGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [ProviderOwnersAPITidal.IncludeLinkage_providerOwnersGet]? = nil) async throws -> ProviderOwnersMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ProviderOwnersAPI.providerOwnersGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include)
+			ProviderOwnersAPI.providerOwnersGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toProviderOwnersAPIEnum() })
 		}
 	}
 

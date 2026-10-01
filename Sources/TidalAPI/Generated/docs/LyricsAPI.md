@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdGet**
 ```swift
-    open class func lyricsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: LyricsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_lyricsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: LyricsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single lyric.
@@ -79,11 +79,12 @@ Retrieves single lyric by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Lyrics Id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, track (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: track (optional)
 
 // Get single lyric.
-LyricsAPI.lyricsIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+LyricsAPI.lyricsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -100,7 +101,8 @@ LyricsAPI.lyricsIdGet(id: id, include: include, replaceMedia: replaceMedia) { (r
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Lyrics Id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, track | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, track | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track | [optional] 
 
 ### Return type
@@ -187,7 +189,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Lyrics Id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -208,7 +210,7 @@ LyricsAPI.lyricsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: p
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Lyrics Id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
@@ -242,7 +244,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Lyrics Id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: track (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: track (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: track (optional)
 
 // Get track relationship (\"to-one\").
@@ -264,7 +266,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Lyrics Id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: track | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: track | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track | [optional] 
 
 ### Return type

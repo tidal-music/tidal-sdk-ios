@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **collaborationInvitesGet**
 ```swift
-    open class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple collaborationInvites.
@@ -27,11 +27,12 @@ Retrieves multiple collaborationInvites by available filters, or without if appl
 import OpenAPIClient
 
 let filterCode = ["inner_example"] // [String] | Invite code
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, subject (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject.items (optional)
 
 // Get multiple collaborationInvites.
-CollaborationInvitesAPI.collaborationInvitesGet(filterCode: filterCode, include: include, replaceMedia: replaceMedia) { (response, error) in
+CollaborationInvitesAPI.collaborationInvitesGet(filterCode: filterCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -48,7 +49,8 @@ CollaborationInvitesAPI.collaborationInvitesGet(filterCode: filterCode, include:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterCode** | [**[String]**](String.md) | Invite code | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, subject | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, subject | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items | [optional] 
 
 ### Return type
@@ -120,7 +122,7 @@ Name | Type | Description  | Notes
 
 # **collaborationInvitesIdGet**
 ```swift
-    open class func collaborationInvitesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func collaborationInvitesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single collaborationInvite.
@@ -133,11 +135,12 @@ Retrieves single collaborationInvite by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Collaboration invite id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, subject (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject.items (optional)
 
 // Get single collaborationInvite.
-CollaborationInvitesAPI.collaborationInvitesIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+CollaborationInvitesAPI.collaborationInvitesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -154,7 +157,8 @@ CollaborationInvitesAPI.collaborationInvitesIdGet(id: id, include: include, repl
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Collaboration invite id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, subject | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, subject | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items | [optional] 
 
 ### Return type
@@ -187,7 +191,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Collaboration invite id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -208,7 +212,7 @@ CollaborationInvitesAPI.collaborationInvitesIdRelationshipsOwnersGet(id: id, inc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Collaboration invite id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
@@ -241,7 +245,7 @@ Retrieves subject relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Collaboration invite id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: subject (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject.items (optional)
 
 // Get subject relationship (\"to-one\").
@@ -262,7 +266,7 @@ CollaborationInvitesAPI.collaborationInvitesIdRelationshipsSubjectGet(id: id, in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Collaboration invite id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: subject | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items | [optional] 
 
 ### Return type

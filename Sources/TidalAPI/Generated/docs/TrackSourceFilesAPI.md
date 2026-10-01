@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **trackSourceFilesIdGet**
 ```swift
-    open class func trackSourceFilesIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: TrackSourceFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil, completion: @escaping (_ data: TrackSourceFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single trackSourceFile.
@@ -24,10 +24,11 @@ Retrieves single trackSourceFile by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Track source file id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single trackSourceFile.
-TrackSourceFilesAPI.trackSourceFilesIdGet(id: id, include: include) { (response, error) in
+TrackSourceFilesAPI.trackSourceFilesIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -44,7 +45,8 @@ TrackSourceFilesAPI.trackSourceFilesIdGet(id: id, include: include) { (response,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track source file id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -76,7 +78,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Track source file id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -97,7 +99,7 @@ TrackSourceFilesAPI.trackSourceFilesIdRelationshipsOwnersGet(id: id, include: in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track source file id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

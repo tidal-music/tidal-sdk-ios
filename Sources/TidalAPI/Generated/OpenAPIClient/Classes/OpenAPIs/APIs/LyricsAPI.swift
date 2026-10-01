@@ -62,17 +62,26 @@ internal class LyricsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_lyricsIdGet: String, CaseIterable {
+        case owners = "owners"
+        case track = "track"
+    }
+
+    /**
      Get single lyric.
      
      - parameter id: (path) Lyrics Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, track (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track (optional)
      - returns: LyricsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func lyricsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> LyricsSingleResourceDataDocument {
+    internal class func lyricsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_lyricsIdGet]? = nil, replaceMedia: String? = nil) async throws -> LyricsSingleResourceDataDocument {
         do {
-            return try await lyricsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await lyricsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -90,11 +99,12 @@ internal class LyricsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Lyrics Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, track (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, track (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track (optional)
      - returns: RequestBuilder<LyricsSingleResourceDataDocument> 
      */
-    internal class func lyricsIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<LyricsSingleResourceDataDocument> {
+    internal class func lyricsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_lyricsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<LyricsSingleResourceDataDocument> {
         var localVariablePath = "/lyrics/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -105,6 +115,7 @@ internal class LyricsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -175,7 +186,7 @@ internal class LyricsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Lyrics Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: LyricsOwnersMultiRelationshipDataDocument
      */
@@ -200,7 +211,7 @@ internal class LyricsAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Lyrics Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<LyricsOwnersMultiRelationshipDataDocument> 
      */
@@ -234,7 +245,7 @@ internal class LyricsAPI {
      
      - parameter id: (path) Lyrics Id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: track (optional)
+     - parameter include: (query) Include related resources. Available relationships: track (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track (optional)
      - returns: LyricsTrackSingleRelationshipDataDocument
      */
@@ -260,7 +271,7 @@ internal class LyricsAPI {
        - name: Client_Credentials
      - parameter id: (path) Lyrics Id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: track (optional)
+     - parameter include: (query) Include related resources. Available relationships: track (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: track (optional)
      - returns: RequestBuilder<LyricsTrackSingleRelationshipDataDocument> 
      */

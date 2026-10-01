@@ -15,25 +15,51 @@ public enum ArtworksAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_artworksGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toArtworksAPIEnum() -> ArtworksAPI.IncludeLinkage_artworksGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get multiple artworks.
      
      - returns: ArtworksMultiResourceDataDocument
      */
-	public static func artworksGet(filterId: [String], countryCode: String? = nil, include: [String]? = nil) async throws -> ArtworksMultiResourceDataDocument {
+	public static func artworksGet(filterId: [String], countryCode: String? = nil, include: [String]? = nil, includeLinkage: [ArtworksAPITidal.IncludeLinkage_artworksGet]? = nil) async throws -> ArtworksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtworksAPI.artworksGetWithRequestBuilder(filterId: filterId, countryCode: countryCode, include: include)
+			ArtworksAPI.artworksGetWithRequestBuilder(filterId: filterId, countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toArtworksAPIEnum() })
 		}
 	}
 
+
+	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_artworksIdGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toArtworksAPIEnum() -> ArtworksAPI.IncludeLinkage_artworksIdGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
 
 	/**
      Get single artwork.
      
      - returns: ArtworksSingleResourceDataDocument
      */
-	public static func artworksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ArtworksSingleResourceDataDocument {
+	public static func artworksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [ArtworksAPITidal.IncludeLinkage_artworksIdGet]? = nil) async throws -> ArtworksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtworksAPI.artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+			ArtworksAPI.artworksIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toArtworksAPIEnum() })
 		}
 	}
 

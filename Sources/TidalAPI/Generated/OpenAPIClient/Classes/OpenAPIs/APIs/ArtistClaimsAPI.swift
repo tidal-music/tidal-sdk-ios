@@ -13,17 +13,27 @@ import AnyCodable
 internal class ArtistClaimsAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_artistClaimsGet: String, CaseIterable {
+        case acceptedartists = "acceptedArtists"
+        case owners = "owners"
+        case recommendedartists = "recommendedArtists"
+    }
+
+    /**
      Get multiple artistClaims.
      
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
+     - parameter include: (query) Include related resources. Available relationships: acceptedArtists, owners, recommendedArtists (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
      - returns: ArtistClaimsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
+    internal class func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_artistClaimsGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsMultiResourceDataDocument {
         do {
-            return try await artistClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, replaceMedia: replaceMedia).execute().body
+            return try await artistClaimsGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,11 +48,12 @@ internal class ArtistClaimsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
+     - parameter include: (query) Include related resources. Available relationships: acceptedArtists, owners, recommendedArtists (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
      - returns: RequestBuilder<ArtistClaimsMultiResourceDataDocument> 
      */
-    internal class func artistClaimsGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ArtistClaimsMultiResourceDataDocument> {
+    internal class func artistClaimsGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_artistClaimsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ArtistClaimsMultiResourceDataDocument> {
         let localVariablePath = "/artistClaims"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -51,6 +62,7 @@ internal class ArtistClaimsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -115,17 +127,27 @@ internal class ArtistClaimsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_artistClaimsIdGet: String, CaseIterable {
+        case acceptedartists = "acceptedArtists"
+        case owners = "owners"
+        case recommendedartists = "recommendedArtists"
+    }
+
+    /**
      Get single artistClaim.
      
      - parameter id: (path) Artist claim id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
+     - parameter include: (query) Include related resources. Available relationships: acceptedArtists, owners, recommendedArtists (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
      - returns: ArtistClaimsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistClaimsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
+    internal class func artistClaimsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistClaimsIdGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsSingleResourceDataDocument {
         do {
-            return try await artistClaimsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await artistClaimsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -140,11 +162,12 @@ internal class ArtistClaimsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist claim id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists, owners, recommendedArtists (optional)
+     - parameter include: (query) Include related resources. Available relationships: acceptedArtists, owners, recommendedArtists (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
      - returns: RequestBuilder<ArtistClaimsSingleResourceDataDocument> 
      */
-    internal class func artistClaimsIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ArtistClaimsSingleResourceDataDocument> {
+    internal class func artistClaimsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistClaimsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ArtistClaimsSingleResourceDataDocument> {
         var localVariablePath = "/artistClaims/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -155,6 +178,7 @@ internal class ArtistClaimsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -225,7 +249,7 @@ internal class ArtistClaimsAPI {
      Get acceptedArtists relationship (\"to-many\").
      
      - parameter id: (path) Artist claim id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists (optional)
+     - parameter include: (query) Include related resources. Available relationships: acceptedArtists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
      - returns: ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument
@@ -248,7 +272,7 @@ internal class ArtistClaimsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist claim id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: acceptedArtists (optional)
+     - parameter include: (query) Include related resources. Available relationships: acceptedArtists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
      - returns: RequestBuilder<ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument> 
@@ -335,7 +359,7 @@ internal class ArtistClaimsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Artist claim id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: ArtistClaimsOwnersMultiRelationshipDataDocument
      */
@@ -357,7 +381,7 @@ internal class ArtistClaimsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist claim id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<ArtistClaimsOwnersMultiRelationshipDataDocument> 
      */
@@ -390,7 +414,7 @@ internal class ArtistClaimsAPI {
      Get recommendedArtists relationship (\"to-many\").
      
      - parameter id: (path) Artist claim id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: recommendedArtists (optional)
+     - parameter include: (query) Include related resources. Available relationships: recommendedArtists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: recommendedArtists.albums (optional)
      - returns: ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument
@@ -413,7 +437,7 @@ internal class ArtistClaimsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist claim id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: recommendedArtists (optional)
+     - parameter include: (query) Include related resources. Available relationships: recommendedArtists (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: recommendedArtists.albums (optional)
      - returns: RequestBuilder<ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument> 

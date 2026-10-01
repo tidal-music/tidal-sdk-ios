@@ -15,13 +15,26 @@ public enum TemporaryUserTokensAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_temporaryUserTokensIdGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toTemporaryUserTokensAPIEnum() -> TemporaryUserTokensAPI.IncludeLinkage_temporaryUserTokensIdGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get single temporaryUserToken.
      
      - returns: TemporaryUserTokensSingleResourceDataDocument
      */
-	public static func temporaryUserTokensIdGet(id: String, include: [String]? = nil) async throws -> TemporaryUserTokensSingleResourceDataDocument {
+	public static func temporaryUserTokensIdGet(id: String, include: [String]? = nil, includeLinkage: [TemporaryUserTokensAPITidal.IncludeLinkage_temporaryUserTokensIdGet]? = nil) async throws -> TemporaryUserTokensSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TemporaryUserTokensAPI.temporaryUserTokensIdGetWithRequestBuilder(id: id, include: include)
+			TemporaryUserTokensAPI.temporaryUserTokensIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toTemporaryUserTokensAPIEnum() })
 		}
 	}
 

@@ -27,13 +27,28 @@ public enum FoldersAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_foldersIdGet: String, CaseIterable {
+		case children = "children"
+		case owners = "owners"
+
+		func toFoldersAPIEnum() -> FoldersAPI.IncludeLinkage_foldersIdGet {
+			switch self {
+			case .children: return .children
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get single folder.
      
      - returns: FoldersSingleResourceDataDocument
      */
-	public static func foldersIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FoldersSingleResourceDataDocument {
+	public static func foldersIdGet(id: String, include: [String]? = nil, includeLinkage: [FoldersAPITidal.IncludeLinkage_foldersIdGet]? = nil, replaceMedia: String? = nil) async throws -> FoldersSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			FoldersAPI.foldersIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			FoldersAPI.foldersIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toFoldersAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

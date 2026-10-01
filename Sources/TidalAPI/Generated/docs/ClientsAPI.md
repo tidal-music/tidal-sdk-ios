@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **clientsGet**
 ```swift
-    open class func clientsGet(filterOwnersId: [String], include: [String]? = nil, completion: @escaping (_ data: ClientsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_clientsGet]? = nil, completion: @escaping (_ data: ClientsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple clients.
@@ -27,10 +27,11 @@ Retrieves multiple clients by available filters, or without if applicable.
 import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple clients.
-ClientsAPI.clientsGet(filterOwnersId: filterOwnersId, include: include) { (response, error) in
+ClientsAPI.clientsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -47,7 +48,8 @@ ClientsAPI.clientsGet(filterOwnersId: filterOwnersId, include: include) { (respo
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -118,7 +120,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdGet**
 ```swift
-    open class func clientsIdGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ClientsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_clientsIdGet]? = nil, completion: @escaping (_ data: ClientsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single client.
@@ -131,10 +133,11 @@ Retrieves single client by id.
 import OpenAPIClient
 
 let id = "id_example" // String | OAuth client identifier
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single client.
-ClientsAPI.clientsIdGet(id: id, include: include) { (response, error) in
+ClientsAPI.clientsIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -151,7 +154,8 @@ ClientsAPI.clientsIdGet(id: id, include: include) { (response, error) in
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | OAuth client identifier | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -237,7 +241,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | OAuth client identifier
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -258,7 +262,7 @@ ClientsAPI.clientsIdRelationshipsOwnersGet(id: id, include: include, pageCursor:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | OAuth client identifier | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

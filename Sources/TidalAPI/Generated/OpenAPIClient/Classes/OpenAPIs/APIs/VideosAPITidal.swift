@@ -15,25 +15,83 @@ public enum VideosAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_videosGet: String, CaseIterable {
+		case albums = "albums"
+		case artists = "artists"
+		case credits = "credits"
+		case providers = "providers"
+		case replacement = "replacement"
+		case similarvideos = "similarVideos"
+		case suggestedvideos = "suggestedVideos"
+		case thumbnailart = "thumbnailArt"
+		case usagerules = "usageRules"
+
+		func toVideosAPIEnum() -> VideosAPI.IncludeLinkage_videosGet {
+			switch self {
+			case .albums: return .albums
+			case .artists: return .artists
+			case .credits: return .credits
+			case .providers: return .providers
+			case .replacement: return .replacement
+			case .similarvideos: return .similarvideos
+			case .suggestedvideos: return .suggestedvideos
+			case .thumbnailart: return .thumbnailart
+			case .usagerules: return .usagerules
+			}
+		}
+	}
+
+	/**
      Get multiple videos.
      
      - returns: VideosMultiResourceDataDocument
      */
-	public static func videosGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosMultiResourceDataDocument {
+	public static func videosGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, includeLinkage: [VideosAPITidal.IncludeLinkage_videosGet]? = nil, replaceMedia: String? = nil) async throws -> VideosMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			VideosAPI.videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, replaceMedia: replaceMedia)
+			VideosAPI.videosGetWithRequestBuilder(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, includeLinkage: includeLinkage?.compactMap { $0.toVideosAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
+
+	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_videosIdGet: String, CaseIterable {
+		case albums = "albums"
+		case artists = "artists"
+		case credits = "credits"
+		case providers = "providers"
+		case replacement = "replacement"
+		case similarvideos = "similarVideos"
+		case suggestedvideos = "suggestedVideos"
+		case thumbnailart = "thumbnailArt"
+		case usagerules = "usageRules"
+
+		func toVideosAPIEnum() -> VideosAPI.IncludeLinkage_videosIdGet {
+			switch self {
+			case .albums: return .albums
+			case .artists: return .artists
+			case .credits: return .credits
+			case .providers: return .providers
+			case .replacement: return .replacement
+			case .similarvideos: return .similarvideos
+			case .suggestedvideos: return .suggestedvideos
+			case .thumbnailart: return .thumbnailart
+			case .usagerules: return .usagerules
+			}
+		}
+	}
 
 	/**
      Get single video.
      
      - returns: VideosSingleResourceDataDocument
      */
-	public static func videosIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosSingleResourceDataDocument {
+	public static func videosIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [VideosAPITidal.IncludeLinkage_videosIdGet]? = nil, replaceMedia: String? = nil) async throws -> VideosSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			VideosAPI.videosIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+			VideosAPI.videosIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toVideosAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

@@ -13,17 +13,26 @@ import AnyCodable
 internal class SharesAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_sharesGet: String, CaseIterable {
+        case owners = "owners"
+        case sharedresources = "sharedResources"
+    }
+
+    /**
      Get multiple shares.
      
      - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: SharesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func sharesGet(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
+    internal class func sharesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
         do {
-            return try await sharesGetWithRequestBuilder(filterCode: filterCode, include: include, replaceMedia: replaceMedia).execute().body
+            return try await sharesGetWithRequestBuilder(filterCode: filterCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -41,11 +50,12 @@ internal class SharesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: RequestBuilder<SharesMultiResourceDataDocument> 
      */
-    internal class func sharesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesMultiResourceDataDocument> {
+    internal class func sharesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesMultiResourceDataDocument> {
         let localVariablePath = "/shares"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -54,6 +64,7 @@ internal class SharesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[code]": (wrappedValue: filterCode.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -69,17 +80,26 @@ internal class SharesAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_sharesIdGet: String, CaseIterable {
+        case owners = "owners"
+        case sharedresources = "sharedResources"
+    }
+
+    /**
      Get single share.
      
      - parameter id: (path) User share id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: SharesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func sharesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesSingleResourceDataDocument {
+    internal class func sharesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesIdGet]? = nil, replaceMedia: String? = nil) async throws -> SharesSingleResourceDataDocument {
         do {
-            return try await sharesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await sharesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -97,11 +117,12 @@ internal class SharesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) User share id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, sharedResources (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: RequestBuilder<SharesSingleResourceDataDocument> 
      */
-    internal class func sharesIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesSingleResourceDataDocument> {
+    internal class func sharesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesSingleResourceDataDocument> {
         var localVariablePath = "/shares/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -112,6 +133,7 @@ internal class SharesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -130,7 +152,7 @@ internal class SharesAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) User share id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: SharesOwnersMultiRelationshipDataDocument
      */
@@ -155,7 +177,7 @@ internal class SharesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) User share id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<SharesOwnersMultiRelationshipDataDocument> 
      */
@@ -189,7 +211,7 @@ internal class SharesAPI {
      
      - parameter id: (path) User share id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: sharedResources (optional)
+     - parameter include: (query) Include related resources. Available relationships: sharedResources (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: SharesSharedResourcesMultiRelationshipDataDocument
      */
@@ -215,7 +237,7 @@ internal class SharesAPI {
        - name: Client_Credentials
      - parameter id: (path) User share id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: sharedResources (optional)
+     - parameter include: (query) Include related resources. Available relationships: sharedResources (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: RequestBuilder<SharesSharedResourcesMultiRelationshipDataDocument> 
      */

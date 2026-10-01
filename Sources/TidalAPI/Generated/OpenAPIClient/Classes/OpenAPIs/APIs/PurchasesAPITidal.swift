@@ -30,13 +30,28 @@ public enum PurchasesAPITidal {
 	}
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_purchasesGet: String, CaseIterable {
+		case owners = "owners"
+		case subject = "subject"
+
+		func toPurchasesAPIEnum() -> PurchasesAPI.IncludeLinkage_purchasesGet {
+			switch self {
+			case .owners: return .owners
+			case .subject: return .subject
+			}
+		}
+	}
+
+	/**
      Get multiple purchases.
      
      - returns: PurchasesMultiResourceDataDocument
      */
-	public static func purchasesGet(filterOwnersId: [String], filterSubjectType: [PurchasesAPITidal.FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PurchasesMultiResourceDataDocument {
+	public static func purchasesGet(filterOwnersId: [String], filterSubjectType: [PurchasesAPITidal.FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [PurchasesAPITidal.IncludeLinkage_purchasesGet]? = nil, replaceMedia: String? = nil) async throws -> PurchasesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PurchasesAPI.purchasesGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType.compactMap { $0.toPurchasesAPIEnum() }, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			PurchasesAPI.purchasesGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType.compactMap { $0.toPurchasesAPIEnum() }, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPurchasesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

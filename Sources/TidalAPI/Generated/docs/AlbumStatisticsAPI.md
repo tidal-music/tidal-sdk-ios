@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **albumStatisticsIdGet**
 ```swift
-    open class func albumStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: AlbumStatisticsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func albumStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_albumStatisticsIdGet]? = nil, completion: @escaping (_ data: AlbumStatisticsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single albumStatistic.
@@ -24,10 +24,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album statistic id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single albumStatistic.
-AlbumStatisticsAPI.albumStatisticsIdGet(id: id, countryCode: countryCode, include: include) { (response, error) in
+AlbumStatisticsAPI.albumStatisticsIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,7 +46,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album statistic id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
 
@@ -77,7 +79,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Album statistic id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -98,7 +100,7 @@ AlbumStatisticsAPI.albumStatisticsIdRelationshipsOwnersGet(id: id, include: incl
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album statistic id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

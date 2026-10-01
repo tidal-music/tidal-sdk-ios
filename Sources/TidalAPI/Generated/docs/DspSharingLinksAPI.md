@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **dspSharingLinksGet**
 ```swift
-    open class func dspSharingLinksGet(include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DspSharingLinksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func dspSharingLinksGet(include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, includeLinkage: [IncludeLinkage_dspSharingLinksGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DspSharingLinksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple dspSharingLinks.
@@ -22,14 +22,15 @@ Retrieves multiple dspSharingLinks by available filters, or without if applicabl
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: subject (optional)
 let filterSubject = "filterSubject_example" // String | The subject whose DSP sharing links to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
 let filterSubjectId = ["inner_example"] // [String] | Deprecated: use filter[subject]. The id of the subject resource (optional)
 let filterSubjectType = ["filterSubjectType_example"] // [String] | Deprecated: use filter[subject]. The type of the subject resource (e.g. `tracks`) (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get multiple dspSharingLinks.
-DspSharingLinksAPI.dspSharingLinksGet(include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, replaceMedia: replaceMedia) { (response, error) in
+DspSharingLinksAPI.dspSharingLinksGet(include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,10 +46,11 @@ DspSharingLinksAPI.dspSharingLinksGet(include: include, filterSubject: filterSub
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: subject | [optional] 
  **filterSubject** | **String** | The subject whose DSP sharing links to return. Use either subject or the deprecated subject.id and subject.type pair. | [optional] 
  **filterSubjectId** | [**[String]**](String.md) | Deprecated: use filter[subject]. The id of the subject resource | [optional] 
  **filterSubjectType** | [**[String]**](String.md) | Deprecated: use filter[subject]. The type of the subject resource (e.g. &#x60;tracks&#x60;) | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 
 ### Return type
@@ -81,7 +83,7 @@ Retrieves subject relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | DspSharingLinks Id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: subject (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
@@ -102,7 +104,7 @@ DspSharingLinksAPI.dspSharingLinksIdRelationshipsSubjectGet(id: id, include: inc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | DspSharingLinks Id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: subject | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 
 ### Return type

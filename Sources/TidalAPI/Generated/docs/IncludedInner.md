@@ -3,9 +3,9 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | [**VideosAttributes**](VideosAttributes.md) |  | [optional] 
+**attributes** | [**ViewerContextsAttributes**](ViewerContextsAttributes.md) |  | [optional] 
 **id** | **String** | Resource id | 
-**relationships** | [**VideosRelationships**](VideosRelationships.md) |  | [optional] 
+**relationships** | [**ViewerContextsRelationships**](ViewerContextsRelationships.md) |  | [optional] 
 **type** | **String** | Resource type | 
 **meta** | [**TermsResourceObjectMeta**](TermsResourceObjectMeta.md) |  | [optional] 
 

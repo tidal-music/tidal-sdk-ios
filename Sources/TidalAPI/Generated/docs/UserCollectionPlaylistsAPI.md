@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userCollectionPlaylistsIdGet**
 ```swift
-    open class func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionPlaylistsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionPlaylistsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionPlaylistsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollectionPlaylist.
@@ -27,11 +27,12 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection playlists id. Use `me` for the authenticated user's resource
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: items, owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get single userCollectionPlaylist.
-UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGet(id: id, locale: locale, include: include, replaceMedia: replaceMedia) { (response, error) in
+UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGet(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -49,7 +50,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items, owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: items, owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 
 
 ### Return type
@@ -139,7 +141,7 @@ let id = "id_example" // String | User collection playlists id. Use `me` for the
 let collectionView = "collectionView_example" // String |  (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: items (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
 let filterQuery = "filterQuery_example" // String | Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView=FOLDERS. Internal clients only (e.g. `summer`) (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
@@ -164,7 +166,7 @@ Name | Type | Description  | Notes
  **collectionView** | **String** |  | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: items | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
  **filterQuery** | **String** | Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 
 
@@ -252,7 +254,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection playlists id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -273,7 +275,7 @@ UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsOwnersGet(id: i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

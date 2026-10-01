@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdGet**
 ```swift
-    open class func folderItemsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FolderItemsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func folderItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FolderItemsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single folderItem.
@@ -80,11 +80,12 @@ Retrieves single folderItem by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder item id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners, parent, subject (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, parent, subject (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: parent.children.subject (optional)
 
 // Get single folderItem.
-FolderItemsAPI.folderItemsIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+FolderItemsAPI.folderItemsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -101,7 +102,8 @@ FolderItemsAPI.folderItemsIdGet(id: id, include: include, replaceMedia: replaceM
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder item id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners, parent, subject | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, parent, subject | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject | [optional] 
 
 ### Return type
@@ -134,7 +136,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder item id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -155,7 +157,7 @@ FolderItemsAPI.folderItemsIdRelationshipsOwnersGet(id: id, include: include, pag
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder item id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
@@ -188,7 +190,7 @@ Retrieves parent relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder item id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: parent (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: parent (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: parent.children.subject (optional)
 
 // Get parent relationship (\"to-one\").
@@ -209,7 +211,7 @@ FolderItemsAPI.folderItemsIdRelationshipsParentGet(id: id, include: include, rep
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder item id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: parent | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: parent | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject | [optional] 
 
 ### Return type
@@ -296,7 +298,7 @@ Retrieves subject relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder item id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: subject (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
@@ -317,7 +319,7 @@ FolderItemsAPI.folderItemsIdRelationshipsSubjectGet(id: id, include: include, re
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder item id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: subject | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 
 ### Return type

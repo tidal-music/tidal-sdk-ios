@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 # **playlistGenerationsGet**
 ```swift
-    open class func playlistGenerationsGet(filterPlaylistId: [String], include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsGet(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple playlistGenerations.
@@ -30,11 +30,12 @@ Retrieves multiple playlistGenerations by available filters, or without if appli
 import OpenAPIClient
 
 let filterPlaylistId = ["inner_example"] // [String] | Playlist id (e.g. `550e8400-e29b-41d4-a716-446655440000`)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: baseGeneration, playlist, trackPreferences (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: baseGeneration, playlist, trackPreferences (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: baseGeneration.trackPreferences (optional)
 
 // Get multiple playlistGenerations.
-PlaylistGenerationsAPI.playlistGenerationsGet(filterPlaylistId: filterPlaylistId, include: include, replaceMedia: replaceMedia) { (response, error) in
+PlaylistGenerationsAPI.playlistGenerationsGet(filterPlaylistId: filterPlaylistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -51,7 +52,8 @@ PlaylistGenerationsAPI.playlistGenerationsGet(filterPlaylistId: filterPlaylistId
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterPlaylistId** | [**[String]**](String.md) | Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: baseGeneration, playlist, trackPreferences | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: baseGeneration, playlist, trackPreferences | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: baseGeneration.trackPreferences | [optional] 
 
 ### Return type
@@ -71,7 +73,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationsIdGet**
 ```swift
-    open class func playlistGenerationsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single playlistGeneration.
@@ -84,11 +86,12 @@ Retrieves single playlistGeneration by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist generation id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: baseGeneration, playlist, trackPreferences (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: baseGeneration, playlist, trackPreferences (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: baseGeneration.trackPreferences (optional)
 
 // Get single playlistGeneration.
-PlaylistGenerationsAPI.playlistGenerationsIdGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+PlaylistGenerationsAPI.playlistGenerationsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -105,7 +108,8 @@ PlaylistGenerationsAPI.playlistGenerationsIdGet(id: id, include: include, replac
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist generation id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: baseGeneration, playlist, trackPreferences | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: baseGeneration, playlist, trackPreferences | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: baseGeneration.trackPreferences | [optional] 
 
 ### Return type
@@ -138,7 +142,7 @@ Retrieves baseGeneration relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist generation id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: baseGeneration (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: baseGeneration (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: baseGeneration.trackPreferences (optional)
 
 // Get baseGeneration relationship (\"to-one\").
@@ -159,7 +163,7 @@ PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsBaseGenerationGet(id: i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist generation id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: baseGeneration | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: baseGeneration | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: baseGeneration.trackPreferences | [optional] 
 
 ### Return type
@@ -192,7 +196,7 @@ Retrieves playlist relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist generation id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlist (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: playlist (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playlist.items (optional)
 
 // Get playlist relationship (\"to-one\").
@@ -213,7 +217,7 @@ PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsPlaylistGet(id: id, inc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist generation id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlist | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: playlist | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlist.items | [optional] 
 
 ### Return type
@@ -301,7 +305,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist generation id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: trackPreferences (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: trackPreferences (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: trackPreferences (optional)
 
 // Get trackPreferences relationship (\"to-many\").
@@ -323,7 +327,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist generation id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: trackPreferences | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: trackPreferences | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: trackPreferences | [optional] 
 
 ### Return type

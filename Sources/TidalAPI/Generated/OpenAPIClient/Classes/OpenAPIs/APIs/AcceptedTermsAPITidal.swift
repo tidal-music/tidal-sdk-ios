@@ -34,13 +34,28 @@ public enum AcceptedTermsAPITidal {
 	}
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_acceptedTermsGet: String, CaseIterable {
+		case owners = "owners"
+		case terms = "terms"
+
+		func toAcceptedTermsAPIEnum() -> AcceptedTermsAPI.IncludeLinkage_acceptedTermsGet {
+			switch self {
+			case .owners: return .owners
+			case .terms: return .terms
+			}
+		}
+	}
+
+	/**
      Get multiple acceptedTerms.
      
      - returns: AcceptedTermsMultiResourceDataDocument
      */
-	public static func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [AcceptedTermsAPITidal.FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument {
+	public static func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [AcceptedTermsAPITidal.FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, includeLinkage: [AcceptedTermsAPITidal.IncludeLinkage_acceptedTermsGet]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AcceptedTermsAPI.acceptedTermsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType.compactMap { $0.toAcceptedTermsAPIEnum() }, include: include, filterTermsIsLatestVersion: filterTermsIsLatestVersion)
+			AcceptedTermsAPI.acceptedTermsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType.compactMap { $0.toAcceptedTermsAPIEnum() }, include: include, filterTermsIsLatestVersion: filterTermsIsLatestVersion, includeLinkage: includeLinkage?.compactMap { $0.toAcceptedTermsAPIEnum() })
 		}
 	}
 

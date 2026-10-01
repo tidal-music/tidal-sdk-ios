@@ -15,13 +15,32 @@ public enum UserPlaybackStatesAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_userPlaybackStatesIdGet: String, CaseIterable {
+		case activeplayer = "activePlayer"
+		case availableplayers = "availablePlayers"
+		case changeeventstream = "changeEventStream"
+		case playqueue = "playQueue"
+
+		func toUserPlaybackStatesAPIEnum() -> UserPlaybackStatesAPI.IncludeLinkage_userPlaybackStatesIdGet {
+			switch self {
+			case .activeplayer: return .activeplayer
+			case .availableplayers: return .availableplayers
+			case .changeeventstream: return .changeeventstream
+			case .playqueue: return .playqueue
+			}
+		}
+	}
+
+	/**
      Get single userPlaybackState.
      
      - returns: UserPlaybackStatesSingleResourceDataDocument
      */
-	public static func userPlaybackStatesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesSingleResourceDataDocument {
+	public static func userPlaybackStatesIdGet(id: String, include: [String]? = nil, includeLinkage: [UserPlaybackStatesAPITidal.IncludeLinkage_userPlaybackStatesIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserPlaybackStatesAPI.userPlaybackStatesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			UserPlaybackStatesAPI.userPlaybackStatesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserPlaybackStatesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

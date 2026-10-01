@@ -13,18 +13,27 @@ import AnyCodable
 internal class UserCollectionArtistsAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_userCollectionArtistsIdGet: String, CaseIterable {
+        case items = "items"
+        case owners = "owners"
+    }
+
+    /**
      Get single userCollectionArtist.
      
      - parameter id: (path) User collection artists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.albums (optional)
      - returns: UserCollectionArtistsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionArtistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionArtistsSingleResourceDataDocument {
+    internal class func userCollectionArtistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionArtistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionArtistsSingleResourceDataDocument {
         do {
-            return try await userCollectionArtistsIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
+            return try await userCollectionArtistsIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -40,11 +49,12 @@ internal class UserCollectionArtistsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection artists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.albums (optional)
      - returns: RequestBuilder<UserCollectionArtistsSingleResourceDataDocument> 
      */
-    internal class func userCollectionArtistsIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionArtistsSingleResourceDataDocument> {
+    internal class func userCollectionArtistsIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionArtistsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionArtistsSingleResourceDataDocument> {
         var localVariablePath = "/userCollectionArtists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -56,6 +66,7 @@ internal class UserCollectionArtistsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -139,14 +150,15 @@ internal class UserCollectionArtistsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter filterQuery: (query) Filter artists by a free-text query matched against the artist name. Internal clients only (e.g. &#x60;love&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.albums (optional)
      - returns: UserCollectionArtistsItemsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionArtistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument {
+    internal class func userCollectionArtistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
+            return try await userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -164,11 +176,12 @@ internal class UserCollectionArtistsAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter filterQuery: (query) Filter artists by a free-text query matched against the artist name. Internal clients only (e.g. &#x60;love&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.albums (optional)
      - returns: RequestBuilder<UserCollectionArtistsItemsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionArtistsItemsMultiRelationshipDataDocument> {
+    internal class func userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionArtistsItemsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollectionArtists/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -182,6 +195,7 @@ internal class UserCollectionArtistsAPI {
             "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[query]": (wrappedValue: filterQuery?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -252,7 +266,7 @@ internal class UserCollectionArtistsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) User collection artists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: UserCollectionArtistsOwnersMultiRelationshipDataDocument
      */
@@ -274,7 +288,7 @@ internal class UserCollectionArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection artists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<UserCollectionArtistsOwnersMultiRelationshipDataDocument> 
      */

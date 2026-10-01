@@ -62,17 +62,27 @@ internal class FolderItemsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_folderItemsIdGet: String, CaseIterable {
+        case owners = "owners"
+        case parent = "parent"
+        case subject = "subject"
+    }
+
+    /**
      Get single folderItem.
      
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, parent, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, parent, subject (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
      - returns: FolderItemsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func folderItemsIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSingleResourceDataDocument {
+    internal class func folderItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSingleResourceDataDocument {
         do {
-            return try await folderItemsIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await folderItemsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -87,11 +97,12 @@ internal class FolderItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, parent, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, parent, subject (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
      - returns: RequestBuilder<FolderItemsSingleResourceDataDocument> 
      */
-    internal class func folderItemsIdGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsSingleResourceDataDocument> {
+    internal class func folderItemsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsSingleResourceDataDocument> {
         var localVariablePath = "/folderItems/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -102,6 +113,7 @@ internal class FolderItemsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -120,7 +132,7 @@ internal class FolderItemsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: FolderItemsOwnersMultiRelationshipDataDocument
      */
@@ -142,7 +154,7 @@ internal class FolderItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<FolderItemsOwnersMultiRelationshipDataDocument> 
      */
@@ -175,7 +187,7 @@ internal class FolderItemsAPI {
      Get parent relationship (\"to-one\").
      
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: parent (optional)
+     - parameter include: (query) Include related resources. Available relationships: parent (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
      - returns: FolderItemsParentSingleRelationshipDataDocument
      */
@@ -197,7 +209,7 @@ internal class FolderItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: parent (optional)
+     - parameter include: (query) Include related resources. Available relationships: parent (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
      - returns: RequestBuilder<FolderItemsParentSingleRelationshipDataDocument> 
      */
@@ -282,7 +294,7 @@ internal class FolderItemsAPI {
      Get subject relationship (\"to-one\").
      
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: FolderItemsSubjectSingleRelationshipDataDocument
      */
@@ -304,7 +316,7 @@ internal class FolderItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<FolderItemsSubjectSingleRelationshipDataDocument> 
      */

@@ -15,25 +15,55 @@ public enum SharesAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_sharesGet: String, CaseIterable {
+		case owners = "owners"
+		case sharedresources = "sharedResources"
+
+		func toSharesAPIEnum() -> SharesAPI.IncludeLinkage_sharesGet {
+			switch self {
+			case .owners: return .owners
+			case .sharedresources: return .sharedresources
+			}
+		}
+	}
+
+	/**
      Get multiple shares.
      
      - returns: SharesMultiResourceDataDocument
      */
-	public static func sharesGet(filterCode: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
+	public static func sharesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [SharesAPITidal.IncludeLinkage_sharesGet]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesGetWithRequestBuilder(filterCode: filterCode, include: include, replaceMedia: replaceMedia)
+			SharesAPI.sharesGetWithRequestBuilder(filterCode: filterCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSharesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
+
+	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_sharesIdGet: String, CaseIterable {
+		case owners = "owners"
+		case sharedresources = "sharedResources"
+
+		func toSharesAPIEnum() -> SharesAPI.IncludeLinkage_sharesIdGet {
+			switch self {
+			case .owners: return .owners
+			case .sharedresources: return .sharedresources
+			}
+		}
+	}
 
 	/**
      Get single share.
      
      - returns: SharesSingleResourceDataDocument
      */
-	public static func sharesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesSingleResourceDataDocument {
+	public static func sharesIdGet(id: String, include: [String]? = nil, includeLinkage: [SharesAPITidal.IncludeLinkage_sharesIdGet]? = nil, replaceMedia: String? = nil) async throws -> SharesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			SharesAPI.sharesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSharesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

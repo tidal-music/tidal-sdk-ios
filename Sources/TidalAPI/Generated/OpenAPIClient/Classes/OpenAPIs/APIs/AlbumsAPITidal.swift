@@ -34,13 +34,50 @@ public enum AlbumsAPITidal {
 	}
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_albumsGet: String, CaseIterable {
+		case albumstatistics = "albumStatistics"
+		case artists = "artists"
+		case coverart = "coverArt"
+		case genres = "genres"
+		case items = "items"
+		case owners = "owners"
+		case priceconfig = "priceConfig"
+		case providers = "providers"
+		case replacement = "replacement"
+		case shares = "shares"
+		case similaralbums = "similarAlbums"
+		case suggestedcoverarts = "suggestedCoverArts"
+		case usagerules = "usageRules"
+
+		func toAlbumsAPIEnum() -> AlbumsAPI.IncludeLinkage_albumsGet {
+			switch self {
+			case .albumstatistics: return .albumstatistics
+			case .artists: return .artists
+			case .coverart: return .coverart
+			case .genres: return .genres
+			case .items: return .items
+			case .owners: return .owners
+			case .priceconfig: return .priceconfig
+			case .providers: return .providers
+			case .replacement: return .replacement
+			case .shares: return .shares
+			case .similaralbums: return .similaralbums
+			case .suggestedcoverarts: return .suggestedcoverarts
+			case .usagerules: return .usagerules
+			}
+		}
+	}
+
+	/**
      Get multiple albums.
      
      - returns: AlbumsMultiResourceDataDocument
      */
-	public static func albumsGet(pageCursor: String? = nil, sort: [AlbumsAPITidal.Sort_albumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsMultiResourceDataDocument {
+	public static func albumsGet(pageCursor: String? = nil, sort: [AlbumsAPITidal.Sort_albumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [AlbumsAPITidal.IncludeLinkage_albumsGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toAlbumsAPIEnum() }, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia, shareCode: shareCode)
+			AlbumsAPI.albumsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toAlbumsAPIEnum() }, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toAlbumsAPIEnum() }, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
@@ -58,13 +95,50 @@ public enum AlbumsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_albumsIdGet: String, CaseIterable {
+		case albumstatistics = "albumStatistics"
+		case artists = "artists"
+		case coverart = "coverArt"
+		case genres = "genres"
+		case items = "items"
+		case owners = "owners"
+		case priceconfig = "priceConfig"
+		case providers = "providers"
+		case replacement = "replacement"
+		case shares = "shares"
+		case similaralbums = "similarAlbums"
+		case suggestedcoverarts = "suggestedCoverArts"
+		case usagerules = "usageRules"
+
+		func toAlbumsAPIEnum() -> AlbumsAPI.IncludeLinkage_albumsIdGet {
+			switch self {
+			case .albumstatistics: return .albumstatistics
+			case .artists: return .artists
+			case .coverart: return .coverart
+			case .genres: return .genres
+			case .items: return .items
+			case .owners: return .owners
+			case .priceconfig: return .priceconfig
+			case .providers: return .providers
+			case .replacement: return .replacement
+			case .shares: return .shares
+			case .similaralbums: return .similaralbums
+			case .suggestedcoverarts: return .suggestedcoverarts
+			case .usagerules: return .usagerules
+			}
+		}
+	}
+
+	/**
      Get single album.
      
      - returns: AlbumsSingleResourceDataDocument
      */
-	public static func albumsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsSingleResourceDataDocument {
+	public static func albumsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [AlbumsAPITidal.IncludeLinkage_albumsIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+			AlbumsAPI.albumsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toAlbumsAPIEnum() }, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 

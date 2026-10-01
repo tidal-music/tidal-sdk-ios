@@ -57,13 +57,30 @@ public enum ReactionsAPITidal {
 	}
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_reactionsGet: String, CaseIterable {
+		case author = "author"
+		case ownerprofiles = "ownerProfiles"
+		case owners = "owners"
+
+		func toReactionsAPIEnum() -> ReactionsAPI.IncludeLinkage_reactionsGet {
+			switch self {
+			case .author: return .author
+			case .ownerprofiles: return .ownerprofiles
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get multiple reactions.
      
      - returns: ReactionsMultiResourceDataDocument
      */
-	public static func reactionsGet(stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [ReactionsAPITidal.FilterSubjectType_reactionsGet]? = nil, replaceMedia: String? = nil) async throws -> ReactionsMultiResourceDataDocument {
+	public static func reactionsGet(stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [ReactionsAPITidal.FilterSubjectType_reactionsGet]? = nil, includeLinkage: [ReactionsAPITidal.IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil) async throws -> ReactionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ReactionsAPI.reactionsGetWithRequestBuilder(stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toReactionsAPIEnum() }, replaceMedia: replaceMedia)
+			ReactionsAPI.reactionsGetWithRequestBuilder(stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toReactionsAPIEnum() }, includeLinkage: includeLinkage?.compactMap { $0.toReactionsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

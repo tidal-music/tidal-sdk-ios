@@ -15,13 +15,30 @@ public enum UserCollectionFoldersAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_userCollectionFoldersGet: String, CaseIterable {
+		case items = "items"
+		case owners = "owners"
+		case usercollection = "userCollection"
+
+		func toUserCollectionFoldersAPIEnum() -> UserCollectionFoldersAPI.IncludeLinkage_userCollectionFoldersGet {
+			switch self {
+			case .items: return .items
+			case .owners: return .owners
+			case .usercollection: return .usercollection
+			}
+		}
+	}
+
+	/**
      Get multiple userCollectionFolders.
      
      - returns: UserCollectionFoldersMultiResourceDataDocument
      */
-	public static func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
+	public static func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, includeLinkage: [UserCollectionFoldersAPITidal.IncludeLinkage_userCollectionFoldersGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersGetWithRequestBuilder(filterId: filterId, include: include, replaceMedia: replaceMedia)
+			UserCollectionFoldersAPI.userCollectionFoldersGetWithRequestBuilder(filterId: filterId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionFoldersAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -39,13 +56,30 @@ public enum UserCollectionFoldersAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_userCollectionFoldersIdGet: String, CaseIterable {
+		case items = "items"
+		case owners = "owners"
+		case usercollection = "userCollection"
+
+		func toUserCollectionFoldersAPIEnum() -> UserCollectionFoldersAPI.IncludeLinkage_userCollectionFoldersIdGet {
+			switch self {
+			case .items: return .items
+			case .owners: return .owners
+			case .usercollection: return .usercollection
+			}
+		}
+	}
+
+	/**
      Get single userCollectionFolder.
      
      - returns: UserCollectionFoldersSingleResourceDataDocument
      */
-	public static func userCollectionFoldersIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
+	public static func userCollectionFoldersIdGet(id: String, include: [String]? = nil, includeLinkage: [UserCollectionFoldersAPITidal.IncludeLinkage_userCollectionFoldersIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			UserCollectionFoldersAPI.userCollectionFoldersIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionFoldersAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

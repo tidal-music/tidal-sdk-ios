@@ -15,25 +15,99 @@ public enum ArtistsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_artistsGet: String, CaseIterable {
+		case albums = "albums"
+		case biography = "biography"
+		case claimstatus = "claimStatus"
+		case followers = "followers"
+		case following = "following"
+		case owners = "owners"
+		case profileart = "profileArt"
+		case radio = "radio"
+		case roles = "roles"
+		case similarartists = "similarArtists"
+		case trackproviders = "trackProviders"
+		case tracks = "tracks"
+		case videos = "videos"
+
+		func toArtistsAPIEnum() -> ArtistsAPI.IncludeLinkage_artistsGet {
+			switch self {
+			case .albums: return .albums
+			case .biography: return .biography
+			case .claimstatus: return .claimstatus
+			case .followers: return .followers
+			case .following: return .following
+			case .owners: return .owners
+			case .profileart: return .profileart
+			case .radio: return .radio
+			case .roles: return .roles
+			case .similarartists: return .similarartists
+			case .trackproviders: return .trackproviders
+			case .tracks: return .tracks
+			case .videos: return .videos
+			}
+		}
+	}
+
+	/**
      Get multiple artists.
      
      - returns: ArtistsMultiResourceDataDocument
      */
-	public static func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsMultiResourceDataDocument {
+	public static func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [ArtistsAPITidal.IncludeLinkage_artistsGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsGetWithRequestBuilder(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId, replaceMedia: replaceMedia)
+			ArtistsAPI.artistsGetWithRequestBuilder(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toArtistsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
+
+	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_artistsIdGet: String, CaseIterable {
+		case albums = "albums"
+		case biography = "biography"
+		case claimstatus = "claimStatus"
+		case followers = "followers"
+		case following = "following"
+		case owners = "owners"
+		case profileart = "profileArt"
+		case radio = "radio"
+		case roles = "roles"
+		case similarartists = "similarArtists"
+		case trackproviders = "trackProviders"
+		case tracks = "tracks"
+		case videos = "videos"
+
+		func toArtistsAPIEnum() -> ArtistsAPI.IncludeLinkage_artistsIdGet {
+			switch self {
+			case .albums: return .albums
+			case .biography: return .biography
+			case .claimstatus: return .claimstatus
+			case .followers: return .followers
+			case .following: return .following
+			case .owners: return .owners
+			case .profileart: return .profileart
+			case .radio: return .radio
+			case .roles: return .roles
+			case .similarartists: return .similarartists
+			case .trackproviders: return .trackproviders
+			case .tracks: return .tracks
+			case .videos: return .videos
+			}
+		}
+	}
 
 	/**
      Get single artist.
      
      - returns: ArtistsSingleResourceDataDocument
      */
-	public static func artistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsSingleResourceDataDocument {
+	public static func artistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [ArtistsAPITidal.IncludeLinkage_artistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+			ArtistsAPI.artistsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toArtistsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

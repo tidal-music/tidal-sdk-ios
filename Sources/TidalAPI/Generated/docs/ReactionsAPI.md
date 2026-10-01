@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **reactionsGet**
 ```swift
-    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ReactionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ReactionsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple reactions.
@@ -30,15 +30,16 @@ let stats = "stats_example" // String |  (optional)
 let statsOnly = true // Bool |  (optional)
 let viewerContext = "viewerContext_example" // String |  (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: author, ownerProfiles, owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: author, ownerProfiles, owners (optional)
 let filterEmoji = ["inner_example"] // [String] | Filter by emoji (e.g. `👍`) (optional)
 let filterSubject = "filterSubject_example" // String | The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
 let filterSubjectId = ["inner_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. `12345`) (optional)
 let filterSubjectType = ["filterSubjectType_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource type (e.g. `albums`) (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
 
 // Get multiple reactions.
-ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, replaceMedia: replaceMedia) { (response, error) in
+ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -58,11 +59,12 @@ Name | Type | Description  | Notes
  **statsOnly** | **Bool** |  | [optional] 
  **viewerContext** | **String** |  | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: author, ownerProfiles, owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: author, ownerProfiles, owners | [optional] 
  **filterEmoji** | [**[String]**](String.md) | Filter by emoji (e.g. &#x60;👍&#x60;) | [optional] 
  **filterSubject** | **String** | The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. | [optional] 
  **filterSubjectId** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) | [optional] 
  **filterSubjectType** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums | [optional] 
 
 ### Return type
@@ -147,7 +149,7 @@ The artist who left the reaction.
 import OpenAPIClient
 
 let id = "id_example" // String | Reaction Id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: author (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: author (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
 
 // Get author relationship (\"to-one\").
@@ -168,7 +170,7 @@ ReactionsAPI.reactionsIdRelationshipsAuthorGet(id: id, include: include, replace
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Reaction Id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: author | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: author | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums | [optional] 
 
 ### Return type
@@ -201,7 +203,7 @@ Deprecated. Use author for attribution.
 import OpenAPIClient
 
 let id = "id_example" // String | Reaction Id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: ownerProfiles (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get ownerProfiles relationship (\"to-many\").
@@ -222,7 +224,7 @@ ReactionsAPI.reactionsIdRelationshipsOwnerProfilesGet(id: id, include: include, 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Reaction Id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: ownerProfiles | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: ownerProfiles | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
@@ -255,7 +257,7 @@ Retrieves owners relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Reaction Id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
@@ -276,7 +278,7 @@ ReactionsAPI.reactionsIdRelationshipsOwnersGet(id: id, include: include, pageCur
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Reaction Id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type

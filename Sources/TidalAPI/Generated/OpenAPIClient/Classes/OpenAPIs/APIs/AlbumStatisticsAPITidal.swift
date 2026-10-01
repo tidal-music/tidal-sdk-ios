@@ -15,13 +15,26 @@ public enum AlbumStatisticsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_albumStatisticsIdGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toAlbumStatisticsAPIEnum() -> AlbumStatisticsAPI.IncludeLinkage_albumStatisticsIdGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get single albumStatistic.
      
      - returns: AlbumStatisticsSingleResourceDataDocument
      */
-	public static func albumStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> AlbumStatisticsSingleResourceDataDocument {
+	public static func albumStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [AlbumStatisticsAPITidal.IncludeLinkage_albumStatisticsIdGet]? = nil) async throws -> AlbumStatisticsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumStatisticsAPI.albumStatisticsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+			AlbumStatisticsAPI.albumStatisticsIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toAlbumStatisticsAPIEnum() })
 		}
 	}
 

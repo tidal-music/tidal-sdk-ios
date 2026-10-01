@@ -88,6 +88,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case usersResourceObject(UsersResourceObject)
     case videoManifestsResourceObject(VideoManifestsResourceObject)
     case videosResourceObject(VideosResourceObject)
+    case viewerContextsResourceObject(ViewerContextsResourceObject)
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
@@ -245,6 +246,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .videoManifestsResourceObject(let value):
             try container.encode(value)
         case .videosResourceObject(let value):
+            try container.encode(value)
+        case .viewerContextsResourceObject(let value):
             try container.encode(value)
         }
     }
@@ -489,6 +492,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "videos":
             let value = try VideosResourceObject(from: decoder)
             self = .videosResourceObject(value)
+        case "viewerContexts":
+            let value = try ViewerContextsResourceObject(from: decoder)
+            self = .viewerContextsResourceObject(value)
         default:
             throw DecodingError.dataCorruptedError(forKey: .type, in: container, debugDescription: "Unknown type: \\(type)")
         }
@@ -576,6 +582,7 @@ extension IncludedInner: Identifiable {
         case .usersResourceObject(let value): return value.id
         case .videoManifestsResourceObject(let value): return value.id
         case .videosResourceObject(let value): return value.id
+        case .viewerContextsResourceObject(let value): return value.id
         }
     }
 }

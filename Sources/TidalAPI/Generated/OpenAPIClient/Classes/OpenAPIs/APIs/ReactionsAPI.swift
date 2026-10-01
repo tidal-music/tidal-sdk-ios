@@ -35,24 +35,34 @@ internal class ReactionsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_reactionsGet: String, CaseIterable {
+        case author = "author"
+        case ownerprofiles = "ownerProfiles"
+        case owners = "owners"
+    }
+
+    /**
      Get multiple reactions.
      
      - parameter stats: (query)  (optional)
      - parameter statsOnly: (query)  (optional)
      - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: author, ownerProfiles, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, ownerProfiles, owners (optional)
      - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
      - parameter filterSubject: (query) The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
      - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
      - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: ReactionsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, replaceMedia: String? = nil) async throws -> ReactionsMultiResourceDataDocument {
+    internal class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil) async throws -> ReactionsMultiResourceDataDocument {
         do {
-            return try await reactionsGetWithRequestBuilder(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, replaceMedia: replaceMedia).execute().body
+            return try await reactionsGetWithRequestBuilder(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -70,15 +80,16 @@ internal class ReactionsAPI {
      - parameter statsOnly: (query)  (optional)
      - parameter viewerContext: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: author, ownerProfiles, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, ownerProfiles, owners (optional)
      - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
      - parameter filterSubject: (query) The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
      - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
      - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: RequestBuilder<ReactionsMultiResourceDataDocument> 
      */
-    internal class func reactionsGetWithRequestBuilder(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
+    internal class func reactionsGetWithRequestBuilder(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
         let localVariablePath = "/reactions"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -94,6 +105,7 @@ internal class ReactionsAPI {
             "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
             "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
             "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -161,7 +173,7 @@ internal class ReactionsAPI {
      Get author relationship (\"to-one\").
      
      - parameter id: (path) Reaction Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: author (optional)
+     - parameter include: (query) Include related resources. Available relationships: author (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: ReactionsAuthorSingleRelationshipDataDocument
      */
@@ -183,7 +195,7 @@ internal class ReactionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Reaction Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: author (optional)
+     - parameter include: (query) Include related resources. Available relationships: author (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: RequestBuilder<ReactionsAuthorSingleRelationshipDataDocument> 
      */
@@ -216,7 +228,7 @@ internal class ReactionsAPI {
      Get ownerProfiles relationship (\"to-many\").
      
      - parameter id: (path) Reaction Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
+     - parameter include: (query) Include related resources. Available relationships: ownerProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: ReactionsOwnerProfilesMultiRelationshipDataDocument
      */
@@ -239,7 +251,7 @@ internal class ReactionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Reaction Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: ownerProfiles (optional)
+     - parameter include: (query) Include related resources. Available relationships: ownerProfiles (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<ReactionsOwnerProfilesMultiRelationshipDataDocument> 
      */
@@ -273,7 +285,7 @@ internal class ReactionsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Reaction Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: ReactionsOwnersMultiRelationshipDataDocument
      */
@@ -295,7 +307,7 @@ internal class ReactionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Reaction Id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<ReactionsOwnersMultiRelationshipDataDocument> 
      */

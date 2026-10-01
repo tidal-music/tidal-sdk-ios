@@ -21,19 +21,28 @@ internal class PurchasesAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_purchasesGet: String, CaseIterable {
+        case owners = "owners"
+        case subject = "subject"
+    }
+
+    /**
      Get multiple purchases.
      
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter filterSubjectType: (query) The type of purchased content (e.g. &#x60;albums&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, subject (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: PurchasesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func purchasesGet(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PurchasesMultiResourceDataDocument {
+    internal class func purchasesGet(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_purchasesGet]? = nil, replaceMedia: String? = nil) async throws -> PurchasesMultiResourceDataDocument {
         do {
-            return try await purchasesGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
+            return try await purchasesGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -50,11 +59,12 @@ internal class PurchasesAPI {
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
      - parameter filterSubjectType: (query) The type of purchased content (e.g. &#x60;albums&#x60;) 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, subject (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<PurchasesMultiResourceDataDocument> 
      */
-    internal class func purchasesGetWithRequestBuilder(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PurchasesMultiResourceDataDocument> {
+    internal class func purchasesGetWithRequestBuilder(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_purchasesGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PurchasesMultiResourceDataDocument> {
         let localVariablePath = "/purchases"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -65,6 +75,7 @@ internal class PurchasesAPI {
             "filter[subject.type]": (wrappedValue: filterSubjectType.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -83,7 +94,7 @@ internal class PurchasesAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Purchase id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: PurchasesOwnersMultiRelationshipDataDocument
      */
@@ -105,7 +116,7 @@ internal class PurchasesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Purchase id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<PurchasesOwnersMultiRelationshipDataDocument> 
      */
@@ -138,7 +149,7 @@ internal class PurchasesAPI {
      Get subject relationship (\"to-one\").
      
      - parameter id: (path) Purchase id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: PurchasesSubjectSingleRelationshipDataDocument
      */
@@ -160,7 +171,7 @@ internal class PurchasesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Purchase id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
      - returns: RequestBuilder<PurchasesSubjectSingleRelationshipDataDocument> 
      */

@@ -13,18 +13,27 @@ import AnyCodable
 internal class UserCollectionPlaylistsAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_userCollectionPlaylistsIdGet: String, CaseIterable {
+        case items = "items"
+        case owners = "owners"
+    }
+
+    /**
      Get single userCollectionPlaylist.
      
      - parameter id: (path) User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: UserCollectionPlaylistsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument {
+    internal class func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionPlaylistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument {
         do {
-            return try await userCollectionPlaylistsIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
+            return try await userCollectionPlaylistsIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -40,11 +49,12 @@ internal class UserCollectionPlaylistsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items, owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: RequestBuilder<UserCollectionPlaylistsSingleResourceDataDocument> 
      */
-    internal class func userCollectionPlaylistsIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionPlaylistsSingleResourceDataDocument> {
+    internal class func userCollectionPlaylistsIdGetWithRequestBuilder(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionPlaylistsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserCollectionPlaylistsSingleResourceDataDocument> {
         var localVariablePath = "/userCollectionPlaylists/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -56,6 +66,7 @@ internal class UserCollectionPlaylistsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -149,7 +160,7 @@ internal class UserCollectionPlaylistsAPI {
      - parameter collectionView: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter filterQuery: (query) Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: UserCollectionPlaylistsItemsMultiRelationshipDataDocument
@@ -175,7 +186,7 @@ internal class UserCollectionPlaylistsAPI {
      - parameter collectionView: (query)  (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter filterQuery: (query) Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - returns: RequestBuilder<UserCollectionPlaylistsItemsMultiRelationshipDataDocument> 
@@ -265,7 +276,7 @@ internal class UserCollectionPlaylistsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: UserCollectionPlaylistsOwnersMultiRelationshipDataDocument
      */
@@ -287,7 +298,7 @@ internal class UserCollectionPlaylistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<UserCollectionPlaylistsOwnersMultiRelationshipDataDocument> 
      */

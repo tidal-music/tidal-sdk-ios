@@ -15,13 +15,28 @@ public enum UserCollectionAlbumsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_userCollectionAlbumsIdGet: String, CaseIterable {
+		case items = "items"
+		case owners = "owners"
+
+		func toUserCollectionAlbumsAPIEnum() -> UserCollectionAlbumsAPI.IncludeLinkage_userCollectionAlbumsIdGet {
+			switch self {
+			case .items: return .items
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get single userCollectionAlbum.
      
      - returns: UserCollectionAlbumsSingleResourceDataDocument
      */
-	public static func userCollectionAlbumsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionAlbumsSingleResourceDataDocument {
+	public static func userCollectionAlbumsIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserCollectionAlbumsAPITidal.IncludeLinkage_userCollectionAlbumsIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionAlbumsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionAlbumsAPI.userCollectionAlbumsIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
+			UserCollectionAlbumsAPI.userCollectionAlbumsIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionAlbumsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -70,9 +85,9 @@ public enum UserCollectionAlbumsAPITidal {
      
      - returns: UserCollectionAlbumsItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionAlbumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionAlbumsAPITidal.Sort_userCollectionAlbumsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionAlbumsItemsMultiRelationshipDataDocument {
+	public static func userCollectionAlbumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionAlbumsAPITidal.Sort_userCollectionAlbumsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionAlbumsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionAlbumsAPIEnum() }, locale: locale, include: include, replaceMedia: replaceMedia)
+			UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionAlbumsAPIEnum() }, locale: locale, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
 		}
 	}
 

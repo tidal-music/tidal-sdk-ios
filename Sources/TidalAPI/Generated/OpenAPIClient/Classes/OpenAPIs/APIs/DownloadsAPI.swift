@@ -13,16 +13,24 @@ import AnyCodable
 internal class DownloadsAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_downloadsGet: String, CaseIterable {
+        case owners = "owners"
+    }
+
+    /**
      Get multiple downloads.
      
      - parameter filterId: (query) Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;) 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: DownloadsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func downloadsGet(filterId: [String], include: [String]? = nil) async throws -> DownloadsMultiResourceDataDocument {
+    internal class func downloadsGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_downloadsGet]? = nil) async throws -> DownloadsMultiResourceDataDocument {
         do {
-            return try await downloadsGetWithRequestBuilder(filterId: filterId, include: include).execute().body
+            return try await downloadsGetWithRequestBuilder(filterId: filterId, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -37,10 +45,11 @@ internal class DownloadsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterId: (query) Download id (e.g. &#x60;VFJBQ0tTOjEyMzQ1&#x60;) 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<DownloadsMultiResourceDataDocument> 
      */
-    internal class func downloadsGetWithRequestBuilder(filterId: [String], include: [String]? = nil) -> RequestBuilder<DownloadsMultiResourceDataDocument> {
+    internal class func downloadsGetWithRequestBuilder(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_downloadsGet]? = nil) -> RequestBuilder<DownloadsMultiResourceDataDocument> {
         let localVariablePath = "/downloads"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -49,6 +58,7 @@ internal class DownloadsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -63,16 +73,24 @@ internal class DownloadsAPI {
     }
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_downloadsIdGet: String, CaseIterable {
+        case owners = "owners"
+    }
+
+    /**
      Get single download.
      
      - parameter id: (path) Download id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: DownloadsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func downloadsIdGet(id: String, include: [String]? = nil) async throws -> DownloadsSingleResourceDataDocument {
+    internal class func downloadsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_downloadsIdGet]? = nil) async throws -> DownloadsSingleResourceDataDocument {
         do {
-            return try await downloadsIdGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await downloadsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -87,10 +105,11 @@ internal class DownloadsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Download id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<DownloadsSingleResourceDataDocument> 
      */
-    internal class func downloadsIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<DownloadsSingleResourceDataDocument> {
+    internal class func downloadsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_downloadsIdGet]? = nil) -> RequestBuilder<DownloadsSingleResourceDataDocument> {
         var localVariablePath = "/downloads/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -101,6 +120,7 @@ internal class DownloadsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -118,7 +138,7 @@ internal class DownloadsAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Download id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: DownloadsOwnersMultiRelationshipDataDocument
      */
@@ -140,7 +160,7 @@ internal class DownloadsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Download id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<DownloadsOwnersMultiRelationshipDataDocument> 
      */

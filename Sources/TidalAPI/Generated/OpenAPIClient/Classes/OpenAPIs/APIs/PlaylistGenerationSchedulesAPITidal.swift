@@ -15,13 +15,26 @@ public enum PlaylistGenerationSchedulesAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_playlistGenerationSchedulesGet: String, CaseIterable {
+		case playlist = "playlist"
+
+		func toPlaylistGenerationSchedulesAPIEnum() -> PlaylistGenerationSchedulesAPI.IncludeLinkage_playlistGenerationSchedulesGet {
+			switch self {
+			case .playlist: return .playlist
+			}
+		}
+	}
+
+	/**
      Get multiple playlistGenerationSchedules.
      
      - returns: PlaylistGenerationSchedulesMultiResourceDataDocument
      */
-	public static func playlistGenerationSchedulesGet(filterPlaylistId: [String], include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationSchedulesMultiResourceDataDocument {
+	public static func playlistGenerationSchedulesGet(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [PlaylistGenerationSchedulesAPITidal.IncludeLinkage_playlistGenerationSchedulesGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationSchedulesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, include: include, replaceMedia: replaceMedia)
+			PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPlaylistGenerationSchedulesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -39,13 +52,26 @@ public enum PlaylistGenerationSchedulesAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_playlistGenerationSchedulesIdGet: String, CaseIterable {
+		case playlist = "playlist"
+
+		func toPlaylistGenerationSchedulesAPIEnum() -> PlaylistGenerationSchedulesAPI.IncludeLinkage_playlistGenerationSchedulesIdGet {
+			switch self {
+			case .playlist: return .playlist
+			}
+		}
+	}
+
+	/**
      Get single playlistGenerationSchedule.
      
      - returns: PlaylistGenerationSchedulesSingleResourceDataDocument
      */
-	public static func playlistGenerationSchedulesIdGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationSchedulesSingleResourceDataDocument {
+	public static func playlistGenerationSchedulesIdGet(id: String, include: [String]? = nil, includeLinkage: [PlaylistGenerationSchedulesAPITidal.IncludeLinkage_playlistGenerationSchedulesIdGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationSchedulesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPlaylistGenerationSchedulesAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

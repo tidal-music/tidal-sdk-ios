@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **providerProductInfosGet**
 ```swift
-    open class func providerProductInfosGet(filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ProviderProductInfosMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func providerProductInfosGet(filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil, includeLinkage: [IncludeLinkage_providerProductInfosGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ProviderProductInfosMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple providerProductInfos.
@@ -25,13 +25,14 @@ import OpenAPIClient
 
 let filterProviderId = ["inner_example"] // [String] | Content provider ID (e.g. `50`)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: provider, subject (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: provider, subject (optional)
 let filterBarcodeId = ["inner_example"] // [String] | List of barcode IDs (EAN-13 or UPC-A) (e.g. `00602527336510`) (optional)
 let filterGrid = ["inner_example"] // [String] | List of GRIDs (Global Release Identifier, ISO 7064) (e.g. `A10302B0013941653J`) (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get multiple providerProductInfos.
-ProviderProductInfosAPI.providerProductInfosGet(filterProviderId: filterProviderId, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterGrid: filterGrid, replaceMedia: replaceMedia) { (response, error) in
+ProviderProductInfosAPI.providerProductInfosGet(filterProviderId: filterProviderId, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterGrid: filterGrid, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -49,9 +50,10 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterProviderId** | [**[String]**](String.md) | Content provider ID (e.g. &#x60;50&#x60;) | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: provider, subject | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: provider, subject | [optional] 
  **filterBarcodeId** | [**[String]**](String.md) | List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) | [optional] 
  **filterGrid** | [**[String]**](String.md) | List of GRIDs (Global Release Identifier, ISO 7064) (e.g. &#x60;A10302B0013941653J&#x60;) | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 
 ### Return type
@@ -84,7 +86,7 @@ Retrieves provider relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Provider product info id
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: provider (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: provider (optional)
 
 // Get provider relationship (\"to-one\").
 ProviderProductInfosAPI.providerProductInfosIdRelationshipsProviderGet(id: id, include: include) { (response, error) in
@@ -104,7 +106,7 @@ ProviderProductInfosAPI.providerProductInfosIdRelationshipsProviderGet(id: id, i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Provider product info id | 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: provider | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: provider | [optional] 
 
 ### Return type
 
@@ -137,7 +139,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Provider product info id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: subject (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: subject (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
@@ -159,7 +161,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Provider product info id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: subject | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: subject | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 
 ### Return type

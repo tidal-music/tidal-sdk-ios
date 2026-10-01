@@ -13,16 +13,24 @@ import AnyCodable
 internal class StripeDashboardLinksAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_stripeDashboardLinksGet: String, CaseIterable {
+        case owners = "owners"
+    }
+
+    /**
      Get multiple stripeDashboardLinks.
      
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: StripeDashboardLinksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func stripeDashboardLinksGet(filterOwnersId: [String], include: [String]? = nil) async throws -> StripeDashboardLinksMultiResourceDataDocument {
+    internal class func stripeDashboardLinksGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_stripeDashboardLinksGet]? = nil) async throws -> StripeDashboardLinksMultiResourceDataDocument {
         do {
-            return try await stripeDashboardLinksGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include).execute().body
+            return try await stripeDashboardLinksGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -37,10 +45,11 @@ internal class StripeDashboardLinksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<StripeDashboardLinksMultiResourceDataDocument> 
      */
-    internal class func stripeDashboardLinksGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil) -> RequestBuilder<StripeDashboardLinksMultiResourceDataDocument> {
+    internal class func stripeDashboardLinksGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_stripeDashboardLinksGet]? = nil) -> RequestBuilder<StripeDashboardLinksMultiResourceDataDocument> {
         let localVariablePath = "/stripeDashboardLinks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -49,6 +58,7 @@ internal class StripeDashboardLinksAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -66,7 +76,7 @@ internal class StripeDashboardLinksAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Stripe dashboard link id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: StripeDashboardLinksOwnersMultiRelationshipDataDocument
      */
@@ -88,7 +98,7 @@ internal class StripeDashboardLinksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Stripe dashboard link id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<StripeDashboardLinksOwnersMultiRelationshipDataDocument> 
      */

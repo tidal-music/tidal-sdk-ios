@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **searchResultsGet**
 ```swift
-    open class func searchResultsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsGet? = nil, systemType: SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsGet? = nil, systemType: SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_searchResultsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchResultsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get search results by query.
@@ -33,11 +33,12 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let deviceType = "deviceType_example" // String | The type of device making the request (optional)
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 let clientVersion = "clientVersion_example" // String | Client version number (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: albums, artists, playlists, topHits, tracks, videos (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get search results by query.
-SearchResultsAPI.searchResultsGet(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, replaceMedia: replaceMedia) { (response, error) in
+SearchResultsAPI.searchResultsGet(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -59,7 +60,8 @@ Name | Type | Description  | Notes
  **deviceType** | **String** | The type of device making the request | [optional] 
  **systemType** | **String** | The system type of the device making the request | [optional] 
  **clientVersion** | **String** | Client version number | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, playlists, topHits, tracks, videos | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: albums, artists, playlists, topHits, tracks, videos | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
 
 ### Return type
@@ -98,7 +100,7 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let deviceType = "deviceType_example" // String | The type of device making the request (optional)
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 let clientVersion = "clientVersion_example" // String | Client version number (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: albums (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get albums relationship (\"to-many\").
@@ -125,7 +127,7 @@ Name | Type | Description  | Notes
  **deviceType** | **String** | The type of device making the request | [optional] 
  **systemType** | **String** | The system type of the device making the request | [optional] 
  **clientVersion** | **String** | Client version number | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: albums | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
 
 ### Return type
@@ -164,7 +166,7 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let deviceType = "deviceType_example" // String | The type of device making the request (optional)
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 let clientVersion = "clientVersion_example" // String | Client version number (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: artists (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists (optional)
 
 // Get artists relationship (\"to-many\").
@@ -191,7 +193,7 @@ Name | Type | Description  | Notes
  **deviceType** | **String** | The type of device making the request | [optional] 
  **systemType** | **String** | The system type of the device making the request | [optional] 
  **clientVersion** | **String** | Client version number | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: artists | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists | [optional] 
 
 ### Return type
@@ -230,7 +232,7 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let deviceType = "deviceType_example" // String | The type of device making the request (optional)
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 let clientVersion = "clientVersion_example" // String | Client version number (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: playlists (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: playlists (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playlists (optional)
 
 // Get playlists relationship (\"to-many\").
@@ -257,7 +259,7 @@ Name | Type | Description  | Notes
  **deviceType** | **String** | The type of device making the request | [optional] 
  **systemType** | **String** | The system type of the device making the request | [optional] 
  **clientVersion** | **String** | Client version number | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: playlists | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: playlists | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: playlists | [optional] 
 
 ### Return type
@@ -296,7 +298,7 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let deviceType = "deviceType_example" // String | The type of device making the request (optional)
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 let clientVersion = "clientVersion_example" // String | Client version number (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: topHits (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: topHits (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: topHits (optional)
 
 // Get topHits relationship (\"to-many\").
@@ -323,7 +325,7 @@ Name | Type | Description  | Notes
  **deviceType** | **String** | The type of device making the request | [optional] 
  **systemType** | **String** | The system type of the device making the request | [optional] 
  **clientVersion** | **String** | Client version number | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: topHits | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: topHits | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: topHits | [optional] 
 
 ### Return type
@@ -362,7 +364,7 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let deviceType = "deviceType_example" // String | The type of device making the request (optional)
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 let clientVersion = "clientVersion_example" // String | Client version number (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: tracks (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: tracks (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: tracks (optional)
 
 // Get tracks relationship (\"to-many\").
@@ -389,7 +391,7 @@ Name | Type | Description  | Notes
  **deviceType** | **String** | The type of device making the request | [optional] 
  **systemType** | **String** | The system type of the device making the request | [optional] 
  **clientVersion** | **String** | Client version number | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: tracks | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: tracks | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks | [optional] 
 
 ### Return type
@@ -428,7 +430,7 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let deviceType = "deviceType_example" // String | The type of device making the request (optional)
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 let clientVersion = "clientVersion_example" // String | Client version number (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: videos (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: videos (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: videos (optional)
 
 // Get videos relationship (\"to-many\").
@@ -455,7 +457,7 @@ Name | Type | Description  | Notes
  **deviceType** | **String** | The type of device making the request | [optional] 
  **systemType** | **String** | The system type of the device making the request | [optional] 
  **clientVersion** | **String** | Client version number | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: videos | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: videos | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos | [optional] 
 
 ### Return type

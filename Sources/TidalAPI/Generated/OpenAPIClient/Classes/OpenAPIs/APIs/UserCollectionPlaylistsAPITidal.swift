@@ -15,13 +15,28 @@ public enum UserCollectionPlaylistsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_userCollectionPlaylistsIdGet: String, CaseIterable {
+		case items = "items"
+		case owners = "owners"
+
+		func toUserCollectionPlaylistsAPIEnum() -> UserCollectionPlaylistsAPI.IncludeLinkage_userCollectionPlaylistsIdGet {
+			switch self {
+			case .items: return .items
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get single userCollectionPlaylist.
      
      - returns: UserCollectionPlaylistsSingleResourceDataDocument
      */
-	public static func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument {
+	public static func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserCollectionPlaylistsAPITidal.IncludeLinkage_userCollectionPlaylistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGetWithRequestBuilder(id: id, locale: locale, include: include, replaceMedia: replaceMedia)
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionPlaylistsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

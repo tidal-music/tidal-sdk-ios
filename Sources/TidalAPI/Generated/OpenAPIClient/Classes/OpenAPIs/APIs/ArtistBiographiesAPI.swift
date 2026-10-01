@@ -13,17 +13,25 @@ import AnyCodable
 internal class ArtistBiographiesAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_artistBiographiesIdGet: String, CaseIterable {
+        case owners = "owners"
+    }
+
+    /**
      Get single artistBiographie.
      
      - parameter id: (path) Artist biography id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: ArtistBiographiesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func artistBiographiesIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ArtistBiographiesSingleResourceDataDocument {
+    internal class func artistBiographiesIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistBiographiesIdGet]? = nil) async throws -> ArtistBiographiesSingleResourceDataDocument {
         do {
-            return try await artistBiographiesIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include).execute().body
+            return try await artistBiographiesIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -42,10 +50,11 @@ internal class ArtistBiographiesAPI {
        - name: Client_Credentials
      - parameter id: (path) Artist biography id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<ArtistBiographiesSingleResourceDataDocument> 
      */
-    internal class func artistBiographiesIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil) -> RequestBuilder<ArtistBiographiesSingleResourceDataDocument> {
+    internal class func artistBiographiesIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistBiographiesIdGet]? = nil) -> RequestBuilder<ArtistBiographiesSingleResourceDataDocument> {
         var localVariablePath = "/artistBiographies/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -57,6 +66,7 @@ internal class ArtistBiographiesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -126,7 +136,7 @@ internal class ArtistBiographiesAPI {
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Artist biography id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: ArtistBiographiesOwnersMultiRelationshipDataDocument
      */
@@ -151,7 +161,7 @@ internal class ArtistBiographiesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Artist biography id 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<ArtistBiographiesOwnersMultiRelationshipDataDocument> 
      */

@@ -15,13 +15,26 @@ public enum ArtistBiographiesAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_artistBiographiesIdGet: String, CaseIterable {
+		case owners = "owners"
+
+		func toArtistBiographiesAPIEnum() -> ArtistBiographiesAPI.IncludeLinkage_artistBiographiesIdGet {
+			switch self {
+			case .owners: return .owners
+			}
+		}
+	}
+
+	/**
      Get single artistBiographie.
      
      - returns: ArtistBiographiesSingleResourceDataDocument
      */
-	public static func artistBiographiesIdGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ArtistBiographiesSingleResourceDataDocument {
+	public static func artistBiographiesIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [ArtistBiographiesAPITidal.IncludeLinkage_artistBiographiesIdGet]? = nil) async throws -> ArtistBiographiesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistBiographiesAPI.artistBiographiesIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include)
+			ArtistBiographiesAPI.artistBiographiesIdGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toArtistBiographiesAPIEnum() })
 		}
 	}
 

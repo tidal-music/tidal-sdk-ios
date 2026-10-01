@@ -13,16 +13,25 @@ import AnyCodable
 internal class SquareConnectionsAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_squareConnectionsIdGet: String, CaseIterable {
+        case selectedsite = "selectedSite"
+        case sites = "sites"
+    }
+
+    /**
      Get single squareConnection.
      
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: selectedSite, sites (optional)
+     - parameter include: (query) Include related resources. Available relationships: selectedSite, sites (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: SquareConnectionsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func squareConnectionsIdGet(id: String, include: [String]? = nil) async throws -> SquareConnectionsSingleResourceDataDocument {
+    internal class func squareConnectionsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareConnectionsIdGet]? = nil) async throws -> SquareConnectionsSingleResourceDataDocument {
         do {
-            return try await squareConnectionsIdGetWithRequestBuilder(id: id, include: include).execute().body
+            return try await squareConnectionsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -37,10 +46,11 @@ internal class SquareConnectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: selectedSite, sites (optional)
+     - parameter include: (query) Include related resources. Available relationships: selectedSite, sites (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<SquareConnectionsSingleResourceDataDocument> 
      */
-    internal class func squareConnectionsIdGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<SquareConnectionsSingleResourceDataDocument> {
+    internal class func squareConnectionsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareConnectionsIdGet]? = nil) -> RequestBuilder<SquareConnectionsSingleResourceDataDocument> {
         var localVariablePath = "/squareConnections/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -51,6 +61,7 @@ internal class SquareConnectionsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -68,7 +79,7 @@ internal class SquareConnectionsAPI {
      Get selectedSite relationship (\"to-one\").
      
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: selectedSite (optional)
+     - parameter include: (query) Include related resources. Available relationships: selectedSite (optional)
      - returns: SquareConnectionsSelectedSiteSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -89,7 +100,7 @@ internal class SquareConnectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: selectedSite (optional)
+     - parameter include: (query) Include related resources. Available relationships: selectedSite (optional)
      - returns: RequestBuilder<SquareConnectionsSelectedSiteSingleRelationshipDataDocument> 
      */
     internal class func squareConnectionsIdRelationshipsSelectedSiteGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<SquareConnectionsSelectedSiteSingleRelationshipDataDocument> {
@@ -172,7 +183,7 @@ internal class SquareConnectionsAPI {
      Get sites relationship (\"to-many\").
      
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: sites (optional)
+     - parameter include: (query) Include related resources. Available relationships: sites (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: SquareConnectionsSitesMultiRelationshipDataDocument
      */
@@ -194,7 +205,7 @@ internal class SquareConnectionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Allows the client to customize which related resources should be returned. Available options: sites (optional)
+     - parameter include: (query) Include related resources. Available relationships: sites (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<SquareConnectionsSitesMultiRelationshipDataDocument> 
      */

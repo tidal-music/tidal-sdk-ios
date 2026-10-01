@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 # **videosGet**
 ```swift
-    open class func videosGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func videosGet(countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, includeLinkage: [IncludeLinkage_videosGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple videos.
@@ -32,13 +32,14 @@ Retrieves multiple videos by available filters, or without if applicable.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
 let filterId = ["inner_example"] // [String] | List of video IDs (e.g. `75623239`) (optional)
 let filterIsrc = ["inner_example"] // [String] | List of ISRCs (e.g. `QMJMT1701237`) (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get multiple videos.
-VideosAPI.videosGet(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, replaceMedia: replaceMedia) { (response, error) in
+VideosAPI.videosGet(countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -55,9 +56,10 @@ VideosAPI.videosGet(countryCode: countryCode, include: include, filterId: filter
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules | [optional] 
  **filterId** | [**[String]**](String.md) | List of video IDs (e.g. &#x60;75623239&#x60;) | [optional] 
  **filterIsrc** | [**[String]**](String.md) | List of ISRCs (e.g. &#x60;QMJMT1701237&#x60;) | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
 
 ### Return type
@@ -77,7 +79,7 @@ Name | Type | Description  | Notes
 
 # **videosIdGet**
 ```swift
-    open class func videosIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func videosIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_videosIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single video.
@@ -91,11 +93,12 @@ import OpenAPIClient
 
 let id = "id_example" // String | Video id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get single video.
-VideosAPI.videosIdGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia) { (response, error) in
+VideosAPI.videosIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -113,7 +116,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Video id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: albums, artists, credits, providers, replacement, similarVideos, suggestedVideos, thumbnailArt, usageRules | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
 
 ### Return type
@@ -148,7 +152,7 @@ import OpenAPIClient
 let id = "id_example" // String | Video id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: albums (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: albums (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get albums relationship (\"to-many\").
@@ -171,7 +175,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Video id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: albums | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: albums | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
 
 ### Return type
@@ -206,7 +210,7 @@ import OpenAPIClient
 let id = "id_example" // String | Video id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: artists (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: artists (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
 
 // Get artists relationship (\"to-many\").
@@ -229,7 +233,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Video id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: artists | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: artists | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums | [optional] 
 
 ### Return type
@@ -263,7 +267,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Video id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: credits (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: credits (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: credits.artist.albums (optional)
 
 // Get credits relationship (\"to-many\").
@@ -285,7 +289,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Video id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: credits | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: credits | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: credits.artist.albums | [optional] 
 
 ### Return type
@@ -320,7 +324,7 @@ import OpenAPIClient
 let id = "id_example" // String | Video id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: providers (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: providers (optional)
 
 // Get providers relationship (\"to-many\").
 VideosAPI.videosIdRelationshipsProvidersGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
@@ -342,7 +346,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Video id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: providers | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: providers | [optional] 
 
 ### Return type
 
@@ -375,7 +379,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Video id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: replacement (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: replacement (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: replacement (optional)
 
 // Get replacement relationship (\"to-one\").
@@ -397,7 +401,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Video id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: replacement | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: replacement | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: replacement | [optional] 
 
 ### Return type
@@ -432,7 +436,7 @@ import OpenAPIClient
 let id = "id_example" // String | Video id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: similarVideos (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: similarVideos (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: similarVideos (optional)
 
 // Get similarVideos relationship (\"to-many\").
@@ -455,7 +459,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Video id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: similarVideos | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: similarVideos | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarVideos | [optional] 
 
 ### Return type
@@ -490,7 +494,7 @@ import OpenAPIClient
 let id = "id_example" // String | Video id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: suggestedVideos (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: suggestedVideos (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: suggestedVideos (optional)
 
 // Get suggestedVideos relationship (\"to-many\").
@@ -513,7 +517,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Video id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: suggestedVideos | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: suggestedVideos | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: suggestedVideos | [optional] 
 
 ### Return type
@@ -548,7 +552,7 @@ import OpenAPIClient
 let id = "id_example" // String | Video id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: thumbnailArt (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: thumbnailArt (optional)
 
 // Get thumbnailArt relationship (\"to-many\").
 VideosAPI.videosIdRelationshipsThumbnailArtGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include) { (response, error) in
@@ -570,7 +574,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Video id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: thumbnailArt | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: thumbnailArt | [optional] 
 
 ### Return type
 
@@ -603,7 +607,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Video id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Allows the client to customize which related resources should be returned. Available options: usageRules (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: usageRules (optional)
 
 // Get usageRules relationship (\"to-one\").
 VideosAPI.videosIdRelationshipsUsageRulesGet(id: id, countryCode: countryCode, include: include) { (response, error) in
@@ -624,7 +628,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Video id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Allows the client to customize which related resources should be returned. Available options: usageRules | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: usageRules | [optional] 
 
 ### Return type
 
