@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.8] - 2026-10-01
+
+### Changed
+- Expand token repository resilience tests for rate limits, concurrent refreshes, persistence errors, and transient failures (AuthTests)
+- Generated API code (TidalAPI)
+
 ## [0.12.7] - 2026-09-16
 
 ### Changed
