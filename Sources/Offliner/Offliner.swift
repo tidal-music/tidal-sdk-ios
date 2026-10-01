@@ -275,6 +275,24 @@ public final class Offliner {
 		return page
 	}
 
+	/// Observes the first page of a collection, emitting when its stored items change.
+	///
+	/// Each emission replaces the previous page. Use ``getOfflineCollectionItems(collectionType:resourceId:limit:sort:after:)``
+	/// to load subsequent pages from the latest cursor.
+	public func observeOfflineCollectionItems(
+		collectionType: OfflineCollectionType,
+		resourceId: ResourceId,
+		limit: Int,
+		sort: OfflineCollectionItemSort? = nil
+	) -> AsyncThrowingStream<OfflineCollectionItemsPage, Error> {
+		offlineStore.observeCollectionItems(
+			collectionType: collectionType,
+			resourceId: resourceId.stringValue,
+			limit: limit,
+			sort: sort
+		)
+	}
+
 	public func findInOfflineCollection(
 		search: String,
 		collectionType: OfflineCollectionType,

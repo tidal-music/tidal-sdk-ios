@@ -587,6 +587,172 @@ final class CollectionItemsTests: OfflinerTestCase {
 		XCTAssertEqual(itemIds(in: page), ["track-alpha", "track-bravo"])
 	}
 
+	// MARK: - Observation
+
+	func testObserveCollectionItemsEmitsInitialPage() async throws {
+		let offliner = createOffliner(
+			offlineApiClient: StubOfflineApiClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+		let stream = offliner.observeOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: .identifier("album-observed"),
+			limit: 10
+		)
+		var iterator = stream.makeAsyncIterator()
+
+		let page = try await iterator.next()
+
+		XCTAssertEqual(page?.items.count, 0)
+		XCTAssertNil(page?.cursor)
+	}
+
+	func testObserveCollectionItemsRefreshesWhenTrackLandsInUserCollection() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+		let stream = offliner.observeOfflineCollectionItems(
+			collectionType: .userCollectionTracks,
+			resourceId: .me,
+			limit: 10
+		)
+		var iterator = stream.makeAsyncIterator()
+		let initialPage = try await iterator.next()
+		XCTAssertEqual(initialPage?.items.count, 0)
+
+		backend.enqueueTasks([.storeTrack(StoreTrackTask(
+			id: "observed-user-track-task",
+			track: TracksResourceObject(id: "observed-user-track", type: "tracks"),
+			artists: [],
+			artwork: nil,
+			collectionResourceType: OfflineCollectionType.userCollectionTracks.rawValue,
+			collectionResourceId: "ignored-for-user-collection",
+			volume: 1,
+			position: 1
+		))])
+		try await runAllTasks(offliner, backend: backend, expectedDownloads: 1)
+
+		let page = try await iterator.next()
+		XCTAssertEqual(page?.items.map(\.item.catalogMetadata.id), ["observed-user-track"])
+	}
+
+	func testObserveCollectionItemsRefreshesAfterRelevantRemoval() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+		let albumId = "observed-removal-album"
+		backend.enqueueTasks([.storeTrack(StoreTrackTask(
+			id: "observed-store-task",
+			track: TracksResourceObject(id: "observed-removed-track", type: "tracks"),
+			artists: [],
+			artwork: nil,
+			collectionResourceType: OfflineCollectionType.albums.rawValue,
+			collectionResourceId: albumId,
+			volume: 1,
+			position: 1
+		))])
+		try await runAllTasks(offliner, backend: backend, expectedDownloads: 1)
+
+		let stream = offliner.observeOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: .identifier(albumId),
+			limit: 10
+		)
+		var iterator = stream.makeAsyncIterator()
+		let initialPage = try await iterator.next()
+		XCTAssertEqual(initialPage?.items.count, 1)
+
+		backend.enqueueTasks([.removeItem(RemoveItemTask(
+			id: "observed-remove-task",
+			resourceType: OfflineMediaItemType.tracks.rawValue,
+			resourceId: "observed-removed-track",
+			collectionResourceType: OfflineCollectionType.albums.rawValue,
+			collectionResourceId: albumId
+		))])
+		await offliner.run()
+		await backend.waitForTasksToComplete()
+
+		let updatedPage = try await iterator.next()
+		XCTAssertEqual(updatedPage?.items.count, 0)
+	}
+
+	func testObserveCollectionItemsDoesNotEmitForUnrelatedCollectionChange() async throws {
+		let backend = StubOfflineApiClient()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+		let stream = offliner.observeOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: .identifier("observed-album"),
+			limit: 10
+		)
+		var iterator = stream.makeAsyncIterator()
+		let initialPage = try await iterator.next()
+		XCTAssertEqual(initialPage?.items.count, 0)
+
+		let unexpectedEmission = expectation(description: "Unrelated collection change emitted a page")
+		unexpectedEmission.isInverted = true
+		let nextPageTask = Task {
+			if try await iterator.next() != nil {
+				unexpectedEmission.fulfill()
+			}
+		}
+
+		backend.enqueueTasks([.storeTrack(StoreTrackTask(
+			id: "unrelated-store-task",
+			track: TracksResourceObject(id: "unrelated-track", type: "tracks"),
+			artists: [],
+			artwork: nil,
+			collectionResourceType: OfflineCollectionType.albums.rawValue,
+			collectionResourceId: "other-album",
+			volume: 1,
+			position: 1
+		))])
+		try await runAllTasks(offliner, backend: backend, expectedDownloads: 1)
+		await fulfillment(of: [unexpectedEmission], timeout: 0.2)
+		nextPageTask.cancel()
+	}
+
+	func testObserveCollectionItemsStopsAfterConsumerCancellation() async {
+		let offliner = createOffliner(
+			offlineApiClient: StubOfflineApiClient(),
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: SucceedingMediaDownloader()
+		)
+		let stream = offliner.observeOfflineCollectionItems(
+			collectionType: .albums,
+			resourceId: .identifier("album-cancelled"),
+			limit: 10
+		)
+		let receivedInitialPage = expectation(description: "Received initial page")
+		let observationFinished = expectation(description: "Observation finished")
+		let observationTask = Task {
+			defer { observationFinished.fulfill() }
+			do {
+				for try await _ in stream {
+					receivedInitialPage.fulfill()
+				}
+			} catch {
+				if !(error is CancellationError) {
+					XCTFail("Unexpected observation error: \(error)")
+				}
+			}
+		}
+
+		await fulfillment(of: [receivedInitialPage], timeout: 1)
+		observationTask.cancel()
+		await fulfillment(of: [observationFinished], timeout: 1)
+	}
+
 	// MARK: - Helpers
 
 	private func runAllTasks(_ offliner: Offliner, backend: StubOfflineApiClient, expectedDownloads: Int) async throws {
