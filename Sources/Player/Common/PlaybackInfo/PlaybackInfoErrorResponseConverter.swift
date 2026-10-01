@@ -29,23 +29,23 @@ enum PlaybackInfoErrorResponseConverter {
 
 private extension PlaybackInfoErrorResponseConverter {
 	static func convertHTTPErrorResponse(_ error: HTTPErrorResponse) -> Error {
-        switch error.statusCode {
+		switch error.statusCode {
 		case 401:
-			return AuthError(status: nil)
+			AuthError(status: nil)
 		case 403:
-            return handleForbidden(with: nil, errorCode: extractErrorCode(from: error))
+			handleForbidden(with: nil, errorCode: extractErrorCode(from: error))
 		case 404:
-			return handleNotFound(with: nil, errorCode: extractErrorCode(from: error))
+			handleNotFound(with: nil, errorCode: extractErrorCode(from: error))
 		case 429:
-			return PlaybackInfoFetcherError.rateLimited.error(.PERetryable)
-		case 500...599:
-			return PlayerInternalError(
+			PlaybackInfoFetcherError.rateLimited.error(.PERetryable)
+		case 500 ... 599:
+			PlayerInternalError(
 				errorId: .PERetryable,
 				errorType: .playbackInfoServerError,
-                code: error.statusCode
+				code: error.statusCode
 			)
 		default:
-			return PlaybackInfoFetcherError.unHandledHttpStatus.error(.EUnexpected)
+			PlaybackInfoFetcherError.unHandledHttpStatus.error(.EUnexpected)
 		}
 	}
 
@@ -85,23 +85,23 @@ private extension PlaybackInfoErrorResponseConverter {
 
 		return subStatus as? Int
 	}
-    
-    static func extractErrorCode(from error: HTTPErrorResponse) -> String {
-        if case .some(let code) = error.errorObject()?.code {
-            return code
-        }
-        
-        return "NA"
-    }
+
+	static func extractErrorCode(from error: HTTPErrorResponse) -> String {
+		if case let .some(code) = error.errorObject()?.code {
+			return code
+		}
+
+		return "NA"
+	}
 
 	static func handleForbidden(with subStatus: Int?, errorCode: String?) -> Error {
 		// Check for CONCURRENCY_LIMIT (maps to retry, but we handle it specially here)
-		if errorCode == "CONCURRENCY_LIMIT" || errorCode == "CONCURRENT_PLAYBACK" {
+		if errorCode == "CONCURRENCY_LIMIT" || errorCode == "CONCURRENT_PLAYBACK" {
 			return StreamingPrivilegesLostError()
 		}
 
 		// Prefer new error code format if available
-		if let errorCode = errorCode {
+		if let errorCode {
 			return PlayerInternalError(
 				errorId: ErrorId.playbackErrorId(from: errorCode),
 				errorType: .playbackInfoForbidden,
@@ -127,7 +127,7 @@ private extension PlaybackInfoErrorResponseConverter {
 
 	static func handleNotFound(with subStatus: Int?, errorCode: String?) -> Error {
 		// Prefer new error code format if available
-		if let errorCode = errorCode {
+		if let errorCode {
 			return PlayerInternalError(
 				errorId: ErrorId.playbackErrorId(from: errorCode),
 				errorType: .playbackInfoNotFound,

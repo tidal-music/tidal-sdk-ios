@@ -112,7 +112,9 @@ final class CollectionDurationTests: OfflinerTestCase {
 		var downloadsList: [Download] = []
 		for await download in downloads {
 			downloadsList.append(download)
-			if downloadsList.count == expectedDownloads { break }
+			if downloadsList.count == expectedDownloads {
+				break
+			}
 		}
 
 		await withTaskGroup(of: Void.self) { group in
@@ -120,8 +122,12 @@ final class CollectionDurationTests: OfflinerTestCase {
 				let events = download.events
 				group.addTask {
 					for await event in events {
-						if case .state(.completed) = event { break }
-						if case .state(.failed) = event { break }
+						if case .state(.completed) = event {
+							break
+						}
+						if case .state(.failed) = event {
+							break
+						}
 					}
 				}
 			}

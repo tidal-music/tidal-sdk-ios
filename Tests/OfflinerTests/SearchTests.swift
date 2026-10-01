@@ -3,7 +3,6 @@ import TidalAPI
 import XCTest
 
 final class SearchTests: OfflinerTestCase {
-
 	// MARK: - Matching
 
 	func testFindMatchesTitleCaseInsensitively() async throws {
@@ -18,7 +17,8 @@ final class SearchTests: OfflinerTestCase {
 		])
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 2)
 
-		let hits = try await offliner.findInOfflineCollection(search: "halo", collectionType: .albums, resourceId: .identifier(albumId)).hits
+		let hits = try await offliner.findInOfflineCollection(search: "halo", collectionType: .albums, resourceId: .identifier(albumId))
+			.hits
 		XCTAssertEqual(hits.map(\.item.item.catalogMetadata.id), ["track-1"])
 	}
 
@@ -29,12 +29,27 @@ final class SearchTests: OfflinerTestCase {
 		let albumId = "album-1"
 		backend.enqueueTasks([
 			.storeAlbum(albumTask(id: "task-0", albumId: albumId, title: "Compilation", artistNames: [])),
-			.storeTrack(trackTask(id: "task-1", trackId: "track-1", albumId: albumId, title: "One", artistNames: ["Daft Punk"], position: 1)),
-			.storeTrack(trackTask(id: "task-2", trackId: "track-2", albumId: albumId, title: "Two", artistNames: ["Justice"], position: 2)),
+			.storeTrack(trackTask(
+				id: "task-1",
+				trackId: "track-1",
+				albumId: albumId,
+				title: "One",
+				artistNames: ["Daft Punk"],
+				position: 1
+			)),
+			.storeTrack(trackTask(
+				id: "task-2",
+				trackId: "track-2",
+				albumId: albumId,
+				title: "Two",
+				artistNames: ["Justice"],
+				position: 2
+			)),
 		])
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 2)
 
-		let hits = try await offliner.findInOfflineCollection(search: "daft", collectionType: .albums, resourceId: .identifier(albumId)).hits
+		let hits = try await offliner.findInOfflineCollection(search: "daft", collectionType: .albums, resourceId: .identifier(albumId))
+			.hits
 		XCTAssertEqual(hits.map(\.item.item.catalogMetadata.id), ["track-1"])
 	}
 
@@ -53,12 +68,20 @@ final class SearchTests: OfflinerTestCase {
 				artistNames: ["Calvin Harris", "Dua Lipa"],
 				position: 1
 			)),
-			.storeTrack(trackTask(id: "task-2", trackId: "track-2", albumId: albumId, title: "Two", artistNames: ["Justice"], position: 2)),
+			.storeTrack(trackTask(
+				id: "task-2",
+				trackId: "track-2",
+				albumId: albumId,
+				title: "Two",
+				artistNames: ["Justice"],
+				position: 2
+			)),
 		])
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 2)
 
 		// `artist_sort` stores every credited artist as a comma-separated list, so a secondary artist matches too.
-		let hits = try await offliner.findInOfflineCollection(search: "dua", collectionType: .albums, resourceId: .identifier(albumId)).hits
+		let hits = try await offliner.findInOfflineCollection(search: "dua", collectionType: .albums, resourceId: .identifier(albumId))
+			.hits
 		XCTAssertEqual(hits.map(\.item.item.catalogMetadata.id), ["track-1"])
 	}
 
@@ -77,7 +100,8 @@ final class SearchTests: OfflinerTestCase {
 		])
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 3)
 
-		let hits = try await offliner.findInOfflineCollection(search: "halo", collectionType: .albums, resourceId: .identifier(albumA)).hits
+		let hits = try await offliner.findInOfflineCollection(search: "halo", collectionType: .albums, resourceId: .identifier(albumA))
+			.hits
 		XCTAssertEqual(hits.map(\.item.item.catalogMetadata.id), ["track-A1"])
 	}
 
@@ -88,8 +112,22 @@ final class SearchTests: OfflinerTestCase {
 		let albumId = "album-1"
 		backend.enqueueTasks([
 			.storeAlbum(albumTask(id: "task-0", albumId: albumId, title: "Lemonade", artistNames: ["Beyoncé"])),
-			.storeTrack(trackTask(id: "task-1", trackId: "track-1", albumId: albumId, title: "Halo", artistNames: ["Beyoncé"], position: 1)),
-			.storeTrack(trackTask(id: "task-2", trackId: "track-2", albumId: albumId, title: "Sorry", artistNames: ["Justice"], position: 2)),
+			.storeTrack(trackTask(
+				id: "task-1",
+				trackId: "track-1",
+				albumId: albumId,
+				title: "Halo",
+				artistNames: ["Beyoncé"],
+				position: 1
+			)),
+			.storeTrack(trackTask(
+				id: "task-2",
+				trackId: "track-2",
+				albumId: albumId,
+				title: "Sorry",
+				artistNames: ["Justice"],
+				position: 2
+			)),
 		])
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 2)
 
@@ -132,7 +170,8 @@ final class SearchTests: OfflinerTestCase {
 		])
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 1)
 
-		let hits = try await offliner.findInOfflineCollection(search: "halo", collectionType: .albums, resourceId: .identifier(albumId)).hits
+		let hits = try await offliner.findInOfflineCollection(search: "halo", collectionType: .albums, resourceId: .identifier(albumId))
+			.hits
 		XCTAssertTrue(hits.isEmpty)
 	}
 
@@ -147,7 +186,8 @@ final class SearchTests: OfflinerTestCase {
 		])
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 1)
 
-		let hits = try await offliner.findInOfflineCollection(search: "   ", collectionType: .albums, resourceId: .identifier(albumId)).hits
+		let hits = try await offliner.findInOfflineCollection(search: "   ", collectionType: .albums, resourceId: .identifier(albumId))
+			.hits
 		XCTAssertTrue(hits.isEmpty)
 	}
 
@@ -162,7 +202,8 @@ final class SearchTests: OfflinerTestCase {
 		])
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 1)
 
-		var hits = try await offliner.findInOfflineCollection(search: "halo", collectionType: .albums, resourceId: .identifier(albumId)).hits
+		var hits = try await offliner.findInOfflineCollection(search: "halo", collectionType: .albums, resourceId: .identifier(albumId))
+			.hits
 		XCTAssertEqual(hits.count, 1)
 
 		backend.enqueueTasks([.removeItem(RemoveItemTask(
@@ -174,7 +215,8 @@ final class SearchTests: OfflinerTestCase {
 		))])
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 0)
 
-		hits = try await offliner.findInOfflineCollection(search: "halo", collectionType: .albums, resourceId: .identifier(albumId)).hits
+		hits = try await offliner.findInOfflineCollection(search: "halo", collectionType: .albums, resourceId: .identifier(albumId))
+			.hits
 		XCTAssertTrue(hits.isEmpty)
 	}
 
@@ -195,7 +237,11 @@ final class SearchTests: OfflinerTestCase {
 		backend.enqueueTasks(enqueued)
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 10)
 
-		let hits = try await offliner.findInOfflineCollection(search: "needle", collectionType: .albums, resourceId: .identifier(albumId)).hits
+		let hits = try await offliner.findInOfflineCollection(
+			search: "needle",
+			collectionType: .albums,
+			resourceId: .identifier(albumId)
+		).hits
 		let hit = try XCTUnwrap(hits.first)
 		XCTAssertEqual(hit.item.item.catalogMetadata.id, "track-7")
 
@@ -278,7 +324,8 @@ final class SearchTests: OfflinerTestCase {
 		backend.enqueueTasks(enqueued)
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 25)
 
-		let hits = try await offliner.findInOfflineCollection(search: "song", collectionType: .albums, resourceId: .identifier(albumId)).hits
+		let hits = try await offliner.findInOfflineCollection(search: "song", collectionType: .albums, resourceId: .identifier(albumId))
+			.hits
 		XCTAssertEqual(hits.count, 20)
 	}
 
@@ -321,7 +368,11 @@ final class SearchTests: OfflinerTestCase {
 		backend.enqueueTasks(enqueued)
 		try await runAllTasks(offliner, backend: backend, expectedDownloads: 25)
 
-		let first = try await offliner.findInOfflineCollection(search: "song", collectionType: .albums, resourceId: .identifier(albumId))
+		let first = try await offliner.findInOfflineCollection(
+			search: "song",
+			collectionType: .albums,
+			resourceId: .identifier(albumId)
+		)
 		XCTAssertEqual(first.hits.count, 20)
 		let cursor = try XCTUnwrap(first.cursor)
 
@@ -368,7 +419,9 @@ final class SearchTests: OfflinerTestCase {
 				limit: 2,
 				after: cursor
 			)
-			if page.hits.isEmpty { break }
+			if page.hits.isEmpty {
+				break
+			}
 			pageSizes.append(page.hits.count)
 			collected += page.hits.map(\.item.item.catalogMetadata.id)
 			cursor = page.cursor
@@ -396,7 +449,9 @@ final class SearchTests: OfflinerTestCase {
 			var downloadsList: [Download] = []
 			for await download in downloads {
 				downloadsList.append(download)
-				if downloadsList.count == expectedDownloads { break }
+				if downloadsList.count == expectedDownloads {
+					break
+				}
 			}
 
 			await withTaskGroup(of: Void.self) { group in
@@ -404,8 +459,12 @@ final class SearchTests: OfflinerTestCase {
 					let events = download.events
 					group.addTask {
 						for await event in events {
-							if case .state(.completed) = event { break }
-							if case .state(.failed) = event { break }
+							if case .state(.completed) = event {
+								break
+							}
+							if case .state(.failed) = event {
+								break
+							}
 						}
 					}
 				}

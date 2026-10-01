@@ -21,15 +21,15 @@ extension TrackManifestsSingleResourceDataDocument {
 			trackPresentation: trackPresentation,
 			uri: uri
 		)
-		
+
 		let data = TrackManifestsResourceObject(
 			attributes: attributes,
 			id: trackId,
 			type: "trackManifests"
 		)
-		
+
 		let links = Links(_self: "")
-		
+
 		return TrackManifestsSingleResourceDataDocument(
 			data: data,
 			included: nil,

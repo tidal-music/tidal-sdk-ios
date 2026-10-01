@@ -4,7 +4,7 @@ import Foundation
 public extension AVPlayerItemErrorLogEvent {
 	override var description: String {
 		let httpResponseHeaderFields: String = if #available(iOS 17.5, macOS 14.5, *) {
-			self.allHTTPResponseHeaderFields?.description ?? "N/A"
+			allHTTPResponseHeaderFields?.description ?? "N/A"
 		} else {
 			"N/A"
 		}

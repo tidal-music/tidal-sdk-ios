@@ -21,7 +21,7 @@ final class LicenseDownloader: NSObject {
 	) {
 		self.fairPlayLicenseFetcher = fairPlayLicenseFetcher
 		self.featureFlagProvider = featureFlagProvider
-		self.downloadTaskId = downloadTask.id
+		downloadTaskId = downloadTask.id
 		self.downloadTask = downloadTask
 	}
 
@@ -34,7 +34,7 @@ final class LicenseDownloader: NSObject {
 		try persistableKey.write(to: url, options: .atomic)
 		downloadTask.setLicenseUrl(url)
 	}
-	
+
 	private func cleanupTask(for keyRequest: AVContentKeyRequest) {
 		serialQueue.async {
 			self.pendingTasks.removeValue(forKey: keyRequest)
@@ -52,10 +52,10 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 			contentKeySessionLegacy(session, didProvide: keyRequest)
 		}
 	}
-	
+
 	private func contentKeySessionImproved(_ session: AVContentKeySession, didProvide keyRequest: AVContentKeyRequest) {
 		// Capture strong reference early to avoid weak reference becoming nil
-		guard let downloadTask = self.downloadTask else {
+		guard let downloadTask else {
 			let error = PlayerInternalError(
 				errorId: .PERetryable,
 				errorType: .drmLicenseError,
@@ -66,7 +66,7 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 			keyRequest.processContentKeyResponseError(error)
 			return
 		}
-		
+
 		do {
 			#if os(iOS)
 				try keyRequest.respondByRequestingPersistableContentKeyRequestAndReturnError()
@@ -78,7 +78,7 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 			downloadTask.failed(with: error)
 		}
 	}
-	
+
 	private func contentKeySessionLegacy(_ session: AVContentKeySession, didProvide keyRequest: AVContentKeyRequest) {
 		guard let downloadTask else {
 			return
@@ -106,7 +106,7 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 				_ = session
 				await handlePersistableKeyRequest(keyRequest)
 			}
-			
+
 			serialQueue.async {
 				self.pendingTasks[keyRequest] = task
 			}
@@ -114,18 +114,22 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 			contentKeySessionLegacy(session, didProvide: keyRequest)
 		}
 	}
-	
-	func contentKeySession(_ session: AVContentKeySession, contentKeyRequest keyRequest: AVContentKeyRequest, didFailWithError error: Error) {
+
+	func contentKeySession(
+		_ session: AVContentKeySession,
+		contentKeyRequest keyRequest: AVContentKeyRequest,
+		didFailWithError error: Error
+	) {
 		PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseDownloaderGetLicenseFailed(error: error))
-		
+
 		if featureFlagProvider.shouldUseImprovedDRMHandling() {
 			cleanupTask(for: keyRequest)
 		}
-		
+
 		// Notify download task of failure
 		downloadTask?.failed(with: error)
 	}
-	
+
 	private func contentKeySessionLegacy(_ session: AVContentKeySession, didProvide keyRequest: AVPersistableContentKeyRequest) {
 		SafeTask {
 			do {
@@ -146,15 +150,15 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 			}
 		}
 	}
-	
+
 	private func handlePersistableKeyRequest(_ keyRequest: AVPersistableContentKeyRequest) async {
 		defer {
 			cleanupTask(for: keyRequest)
 		}
-		
+
 		do {
 			// Capture strong reference early to avoid weak reference becoming nil
-			guard let downloadTask = self.downloadTask else {
+			guard let downloadTask else {
 				let error = PlayerInternalError(
 					errorId: .PERetryable,
 					errorType: .drmLicenseError,
@@ -165,19 +169,19 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 				return
 			}
 
-			// Get persistable license data from server 
+			// Get persistable license data from server
 			// Note: FairPlayLicenseFetcher.getLicense() already creates the persistable key for AVPersistableContentKeyRequest
 			let persistableKey = try await fairPlayLicenseFetcher.getLicense(
 				streamingSessionId: downloadTaskId,
 				keyRequest: keyRequest
 			)
-			
+
 			// Check if task was cancelled before processing response
 			try Task.checkCancellation()
-			
+
 			// Store persistable key
 			try store(persistableKey, for: downloadTask)
-			
+
 			// Create response with persistable key data
 			let response = AVContentKeyResponse(fairPlayStreamingKeyResponseData: persistableKey)
 			keyRequest.processContentKeyResponse(response)
@@ -188,7 +192,7 @@ extension LicenseDownloader: AVContentKeySessionDelegate {
 		} catch {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.licenseDownloaderGetLicenseFailed(error: error))
 			keyRequest.processContentKeyResponseError(error)
-			
+
 			// Also notify download task of failure
 			downloadTask?.failed(with: error)
 		}

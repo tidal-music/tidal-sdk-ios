@@ -1,6 +1,8 @@
 import Foundation
 import GRDB
 
+// MARK: - Migrations
+
 enum Migrations {
 	static func run(_ dbQueue: DatabaseQueue) throws {
 		var migrator = DatabaseMigrator()
@@ -26,7 +28,9 @@ enum Migrations {
 		}
 
 		for path in searchPaths {
-			guard let contents = try? fileManager.contentsOfDirectory(atPath: path) else { continue }
+			guard let contents = try? fileManager.contentsOfDirectory(atPath: path) else {
+				continue
+			}
 
 			let migrations = try contents
 				.filter { $0.hasSuffix(".sql") && $0.hasPrefix("V") }
@@ -47,6 +51,8 @@ enum Migrations {
 	}
 }
 
+// MARK: - Migration
+
 private struct Migration {
 	let version: Int
 	let identifier: String
@@ -60,8 +66,8 @@ private struct Migration {
 		}
 
 		self.version = version
-		self.identifier = filename
-		self.sql = try String(contentsOf: url, encoding: .utf8)
+		identifier = filename
+		sql = try String(contentsOf: url, encoding: .utf8)
 	}
 
 	private static func parseVersion(from filename: String) -> Int? {
@@ -73,6 +79,8 @@ private struct Migration {
 		return Int(versionString)
 	}
 }
+
+// MARK: - MigrationError
 
 enum MigrationError: Error {
 	case migrationsDirectoryNotFound

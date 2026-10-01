@@ -1,6 +1,8 @@
 import AVFoundation
 import Foundation
 
+// MARK: - Constants
+
 private enum Constants {
 	static let defaultVolume: Float = 1
 }
@@ -141,14 +143,14 @@ final class CrossfadingPlayerWrapper: GenericMediaPlayer {
 
 // MARK: - Crossfade Logic
 
-extension CrossfadingPlayerWrapper {
-	fileprivate func setupProgressCallback() {
+private extension CrossfadingPlayerWrapper {
+	func setupProgressCallback() {
 		currentPlayer.onPlaybackProgress = { [weak self] position, duration in
 			self?.handlePlaybackProgress(position: position, duration: duration)
 		}
 	}
 
-	fileprivate func handlePlaybackProgress(position: Double, duration: Double) {
+	func handlePlaybackProgress(position: Double, duration: Double) {
 		let crossfadeStart = max(0, duration - Double(crossfadeDuration))
 		guard position >= crossfadeStart,
 		      !isCrossfading,
@@ -185,7 +187,7 @@ extension CrossfadingPlayerWrapper {
 		nextPlayer.play()
 	}
 
-	fileprivate func handleCurrentCompleted(asset: Asset?) {
+	func handleCurrentCompleted(asset: Asset?) {
 		isCrossfading = false
 		currentPlayer.player.currentItem?.audioMix = nil
 		nextPlayer.player.currentItem?.audioMix = nil
@@ -209,7 +211,7 @@ extension CrossfadingPlayerWrapper {
 		}
 	}
 
-	fileprivate func resetCrossfade() {
+	func resetCrossfade() {
 		isCrossfading = false
 		currentPlayer.player.currentItem?.audioMix = nil
 		nextPlayer.player.currentItem?.audioMix = nil
@@ -219,12 +221,12 @@ extension CrossfadingPlayerWrapper {
 		currentPlayer.player.volume = normalizedVolume(for: currentPlayer)
 	}
 
-	fileprivate func normalizedVolume(for player: AVQueuePlayerWrapper) -> Float {
+	func normalizedVolume(for player: AVQueuePlayerWrapper) -> Float {
 		player.currentAsset?.getLoudnessNormalizationConfiguration().getLoudnessNormalizer()?
 			.getScaleFactor() ?? Constants.defaultVolume
 	}
 
-	fileprivate func setVolumeRamp(
+	func setVolumeRamp(
 		from startVolume: Float,
 		to endVolume: Float,
 		startTime: Double,
@@ -278,44 +280,60 @@ private final class PlayerDelegate: PlayerMonitoringDelegate {
 	}
 
 	func loaded(asset: Asset?, with duration: Double) {
-		guard let owner else { return }
+		guard let owner else {
+			return
+		}
 		owner.delegates.loaded(asset: asset, with: duration)
 		owner.delegates.downloaded(asset: asset)
 	}
 
 	func playing(asset: Asset?) {
-		guard let owner, isCurrent, !owner.isCrossfading else { return }
+		guard let owner, isCurrent, !owner.isCrossfading else {
+			return
+		}
 		player.player.volume = owner.normalizedVolume(for: player)
 		owner.delegates.playing(asset: asset)
 	}
 
 	func paused(asset: Asset?) {
-		guard let owner, isCurrent else { return }
+		guard let owner, isCurrent else {
+			return
+		}
 		owner.delegates.paused(asset: asset)
 	}
 
 	func seeking(in asset: Asset?) {
-		guard let owner, isCurrent else { return }
+		guard let owner, isCurrent else {
+			return
+		}
 		owner.delegates.seeking(in: asset)
 	}
 
 	func stall(in asset: Asset?) {
-		guard let owner, isCurrent else { return }
+		guard let owner, isCurrent else {
+			return
+		}
 		owner.delegates.stall(in: asset)
 	}
 
 	func waiting(for asset: Asset?) {
-		guard let owner, isCurrent else { return }
+		guard let owner, isCurrent else {
+			return
+		}
 		owner.delegates.waiting(for: asset)
 	}
 
 	func downloaded(asset: Asset?) {
-		guard let owner, isCurrent else { return }
+		guard let owner, isCurrent else {
+			return
+		}
 		owner.delegates.downloaded(asset: asset)
 	}
 
 	func completed(asset: Asset?) {
-		guard let owner else { return }
+		guard let owner else {
+			return
+		}
 		if isCurrent {
 			owner.handleCurrentCompleted(asset: asset)
 		} else {
@@ -324,7 +342,9 @@ private final class PlayerDelegate: PlayerMonitoringDelegate {
 	}
 
 	func failed(asset: Asset?, with error: Error) {
-		guard let owner else { return }
+		guard let owner else {
+			return
+		}
 		if !isCurrent {
 			owner.resetCrossfade()
 		}
@@ -332,12 +352,16 @@ private final class PlayerDelegate: PlayerMonitoringDelegate {
 	}
 
 	func playbackMetadataLoaded(asset: Asset?) {
-		guard let owner else { return }
+		guard let owner else {
+			return
+		}
 		owner.delegates.playbackMetadataLoaded(asset: asset)
 	}
 
 	func playbackMetadataChanged(asset: Asset?, to metadata: AssetPlaybackMetadata) {
-		guard let owner else { return }
+		guard let owner else {
+			return
+		}
 		owner.delegates.playbackMetadataChanged(asset: asset, to: metadata)
 	}
 }

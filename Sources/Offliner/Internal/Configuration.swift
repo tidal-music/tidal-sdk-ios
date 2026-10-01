@@ -1,6 +1,8 @@
 import Foundation
 import TidalAPI
 
+// MARK: - AudioFormat
+
 public enum AudioFormat: String, CaseIterable, Codable {
 	case heaacv1 = "HEAACV1"
 	case aaclc = "AACLC"
@@ -10,14 +12,16 @@ public enum AudioFormat: String, CaseIterable, Codable {
 
 	var toAPIFormat: TrackManifestsAPITidal.Formats_trackManifestsIdGet {
 		switch self {
-		case .heaacv1: return .heaacv1
-		case .aaclc: return .aaclc
-		case .flac: return .flac
-		case .flacHires: return .flacHires
-		case .eac3Joc: return .eac3Joc
+		case .heaacv1: .heaacv1
+		case .aaclc: .aaclc
+		case .flac: .flac
+		case .flacHires: .flacHires
+		case .eac3Joc: .eac3Joc
 		}
 	}
 }
+
+// MARK: - Configuration
 
 public struct Configuration {
 	let audioFormats: [AudioFormat]

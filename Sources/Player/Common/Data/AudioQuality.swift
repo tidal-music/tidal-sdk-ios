@@ -30,15 +30,15 @@ public extension AudioQuality {
 	var typicalBitrate: Double {
 		switch self {
 		case .LOW:
-			return 96_000
+			96000
 		case .HIGH:
-			return 320_000
+			320_000
 		case .LOSSLESS:
-			return 1_411_200
+			1_411_200
 		case .HI_RES:
-			return 2_304_000
+			2_304_000
 		case .HI_RES_LOSSLESS:
-			return 4_608_000
+			4_608_000
 		}
 	}
 }

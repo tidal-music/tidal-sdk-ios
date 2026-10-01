@@ -109,7 +109,13 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration,
 		and licenseLoader: LicenseLoader?
 	) async -> Asset {
-		await load(url, cacheKey: cacheKey, loudnessNormalizationConfiguration: loudnessNormalizationConfiguration, and: licenseLoader, player: self)
+		await load(
+			url,
+			cacheKey: cacheKey,
+			loudnessNormalizationConfiguration: loudnessNormalizationConfiguration,
+			and: licenseLoader,
+			player: self
+		)
 	}
 
 	func load(
@@ -218,17 +224,17 @@ final class AVQueuePlayerWrapper: GenericMediaPlayer {
 		}
 	}
 
-    func unload() {
-        queue.cancelAllOperations()
-        queue.dispatch {
-            self.playerMonitor = nil
-            self.delegates.removeAll()
-            self.playerItemMonitors.removeAll()
-            self.playerItemAssets.removeAll()
+	func unload() {
+		queue.cancelAllOperations()
+		queue.dispatch {
+			self.playerMonitor = nil
+			self.delegates.removeAll()
+			self.playerItemMonitors.removeAll()
+			self.playerItemAssets.removeAll()
 
-            self.player.pause()
-            self.player.removeAllItems()
-        }
+			self.player.pause()
+			self.player.removeAllItems()
+		}
 	}
 
 	func reset() {
@@ -390,11 +396,11 @@ private extension AVQueuePlayerWrapper {
 					return
 				}
 
-				guard let asset = self.playerItemAssets[item] else {
+				guard let asset = playerItemAssets[item] else {
 					return
 				}
 
-				self.delegates.playbackMetadataChanged(asset: asset, to: metadata)
+				delegates.playbackMetadataChanged(asset: asset, to: metadata)
 			}
 		)
 	}

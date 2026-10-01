@@ -15,7 +15,8 @@ enum RequestHelper {
 					customHeaders: customHeaders,
 					builder: builder
 				)
-			})
+			}
+		)
 
 		return try await retryHandler.execute()
 	}

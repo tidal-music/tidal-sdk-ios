@@ -22,4 +22,3 @@ class AVPlayerAsset: Asset {
 		assetPosition = CMTimeGetSeconds(playerItem.currentTime())
 	}
 }
-

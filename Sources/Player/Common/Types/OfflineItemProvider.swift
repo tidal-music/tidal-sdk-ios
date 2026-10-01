@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - OfflinePlaybackItem
+
 public struct OfflinePlaybackItem {
 	public let mediaURL: URL
 	public let licenseURL: URL?
@@ -24,6 +26,8 @@ public struct OfflinePlaybackItem {
 		self.productType = productType
 	}
 }
+
+// MARK: - OfflineItemProvider
 
 public protocol OfflineItemProvider {
 	func get(productType: ProductType, productId: String) async -> OfflinePlaybackItem?

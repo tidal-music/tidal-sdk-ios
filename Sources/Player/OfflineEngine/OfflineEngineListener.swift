@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - OfflineError
+
 /// Represents errors that can occur during offline download operations.
 public enum OfflineError: Error {
 	/// Network-related errors such as connection loss, timeout, or no internet.
@@ -61,36 +63,36 @@ public enum OfflineError: Error {
 	private static func mapHTTPClientError(statusCode: Int) -> OfflineError {
 		switch statusCode {
 		case 401:
-			return .authenticationError(statusCode: statusCode)
+			.authenticationError(statusCode: statusCode)
 		case 403:
-			return .authorizationError(statusCode: statusCode)
+			.authorizationError(statusCode: statusCode)
 		case 404:
-			return .contentNotAvailable(statusCode: statusCode)
+			.contentNotAvailable(statusCode: statusCode)
 		case 429:
 			// TODO: Extract retry-after header if available from response
-			return .rateLimitExceeded(retryAfter: nil)
+			.rateLimitExceeded(retryAfter: nil)
 		default:
-			return .unknown(underlying: nil)
+			.unknown(underlying: nil)
 		}
 	}
 
 	private static func mapPlayerInternalError(_ error: PlayerInternalError) -> OfflineError {
 		switch error.errorType {
 		case .networkError, .timeOutError:
-			return .networkError(underlying: error)
+			.networkError(underlying: error)
 		case .authError:
-			return .authenticationError(statusCode: 401)
+			.authenticationError(statusCode: 401)
 		case .playbackInfoForbidden:
-			return .authorizationError(statusCode: 403)
+			.authorizationError(statusCode: 403)
 		case .playbackInfoNotFound:
-			return .contentNotAvailable(statusCode: 404)
+			.contentNotAvailable(statusCode: 404)
 		case .playbackInfoServerError:
-			return .serverError(statusCode: 500)
+			.serverError(statusCode: 500)
 		case .httpClientError:
 			// Try to extract status code from error code if available
-			return .unknown(underlying: error)
+			.unknown(underlying: error)
 		default:
-			return .unknown(underlying: error)
+			.unknown(underlying: error)
 		}
 	}
 
@@ -98,9 +100,9 @@ public enum OfflineError: Error {
 		switch urlError.code {
 		case .networkConnectionLost, .notConnectedToInternet, .cannotFindHost,
 		     .cannotConnectToHost, .dnsLookupFailed, .timedOut:
-			return .networkError(underlying: urlError)
+			.networkError(underlying: urlError)
 		default:
-			return .unknown(underlying: urlError)
+			.unknown(underlying: urlError)
 		}
 	}
 
@@ -133,6 +135,8 @@ public enum OfflineError: Error {
 		return .unknown(underlying: originalError)
 	}
 }
+
+// MARK: - OfflineEngineListener
 
 public protocol OfflineEngineListener: AnyObject {
 	func offliningStarted(for mediaProduct: MediaProduct)

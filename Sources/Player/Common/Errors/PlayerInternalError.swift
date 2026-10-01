@@ -95,7 +95,7 @@ public struct PlayerInternalError: Error, CustomStringConvertible, Equatable {
 
 	private static func mapHttpError(_ httpError: HttpError) -> PlayerInternalError {
 		switch httpError {
-		case .httpClientError(let statusCode, let message):
+		case let .httpClientError(statusCode, message):
 			// Map specific 4xx errors
 			let errorId: ErrorId = switch statusCode {
 			case 401, 403, 404:
@@ -106,11 +106,10 @@ public struct PlayerInternalError: Error, CustomStringConvertible, Equatable {
 				.EUnexpected
 			}
 
-			let description: String
-			if let data = message, let messageString = String(data: data, encoding: .utf8) {
-				description = "httpClientError(statusCode: \(statusCode), message: \(messageString))"
+			let description: String = if let data = message, let messageString = String(data: data, encoding: .utf8) {
+				"httpClientError(statusCode: \(statusCode), message: \(messageString))"
 			} else {
-				description = "httpClientError(statusCode: \(statusCode), message: \(message?.count ?? 0) bytes)"
+				"httpClientError(statusCode: \(statusCode), message: \(message?.count ?? 0) bytes)"
 			}
 
 			return PlayerInternalError(
@@ -120,7 +119,7 @@ public struct PlayerInternalError: Error, CustomStringConvertible, Equatable {
 				description: description
 			)
 
-		case .httpServerError(let statusCode):
+		case let .httpServerError(statusCode):
 			return PlayerInternalError(
 				errorId: .PERetryable, // Server errors are typically retryable
 				errorType: .httpClientError,
@@ -134,16 +133,16 @@ public struct PlayerInternalError: Error, CustomStringConvertible, Equatable {
 		switch avError.code {
 		// DRM-related errors
 		case .contentKeyRequestCancelled, .contentIsUnavailable:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .PERetryable,
 				errorType: .drmLicenseError,
 				code: avError.code.rawValue,
 				description: avError.localizedDescription
 			)
-		
+
 		// Other AVPlayer errors
 		default:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .EUnexpected,
 				errorType: .avPlayerAvError,
 				code: avError.code.rawValue,
@@ -151,30 +150,30 @@ public struct PlayerInternalError: Error, CustomStringConvertible, Equatable {
 			)
 		}
 	}
-	
+
 	private static func mapAVFoundationNSError(_ nsError: NSError) -> PlayerInternalError {
 		switch nsError.code {
 		// Your specific DRM error codes
 		case -11800, -11862:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .PERetryable,
 				errorType: .drmLicenseError,
 				code: nsError.code,
 				description: nsError.localizedDescription
 			)
-		
+
 		// URL-related AVFoundation errors
 		case -11849, -11850:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .PENetwork,
 				errorType: .avPlayerUrlError,
 				code: nsError.code,
 				description: nsError.localizedDescription
 			)
-		
+
 		// Other AVFoundation errors
 		default:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .EUnexpected,
 				errorType: .avPlayerOtherError,
 				code: nsError.code,
@@ -182,33 +181,33 @@ public struct PlayerInternalError: Error, CustomStringConvertible, Equatable {
 			)
 		}
 	}
-	
+
 	private static func mapURLError(_ urlError: URLError) -> PlayerInternalError {
 		switch urlError.code {
 		case .cancelled:
 			// Special case - cancellation should be handled differently
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .EUnexpected,
 				errorType: .urlSessionError,
 				code: urlError.code.rawValue,
 				description: "Operation cancelled"
 			)
 		case .timedOut:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .PENetwork,
 				errorType: .timeOutError,
 				code: urlError.code.rawValue,
 				description: urlError.localizedDescription
 			)
 		case .networkConnectionLost, .notConnectedToInternet, .cannotFindHost, .cannotConnectToHost, .dnsLookupFailed:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .PENetwork,
 				errorType: .networkError,
 				code: urlError.code.rawValue,
 				description: urlError.localizedDescription
 			)
 		default:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .PERetryable,
 				errorType: .urlSessionError,
 				code: urlError.code.rawValue,
@@ -216,34 +215,34 @@ public struct PlayerInternalError: Error, CustomStringConvertible, Equatable {
 			)
 		}
 	}
-	
+
 	private static func mapURLNSError(_ nsError: NSError) -> PlayerInternalError {
 		// Handle NSURLError domain errors that aren't URLError instances
 		switch nsError.code {
 		case URLError.cancelled.rawValue:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .EUnexpected,
 				errorType: .urlSessionError,
 				code: nsError.code,
 				description: "Operation cancelled"
 			)
 		case URLError.timedOut.rawValue:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .PENetwork,
 				errorType: .timeOutError,
 				code: nsError.code,
 				description: nsError.localizedDescription
 			)
-		case URLError.networkConnectionLost.rawValue, URLError.notConnectedToInternet.rawValue, 
-			 URLError.cannotFindHost.rawValue, URLError.cannotConnectToHost.rawValue, URLError.dnsLookupFailed.rawValue:
-			return PlayerInternalError(
+		case URLError.networkConnectionLost.rawValue, URLError.notConnectedToInternet.rawValue,
+		     URLError.cannotFindHost.rawValue, URLError.cannotConnectToHost.rawValue, URLError.dnsLookupFailed.rawValue:
+			PlayerInternalError(
 				errorId: .PENetwork,
 				errorType: .networkError,
 				code: nsError.code,
 				description: nsError.localizedDescription
 			)
 		default:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .PERetryable,
 				errorType: .urlSessionError,
 				code: nsError.code,
@@ -251,40 +250,40 @@ public struct PlayerInternalError: Error, CustomStringConvertible, Equatable {
 			)
 		}
 	}
-	
+
 	private static func mapOSStatusError(_ nsError: NSError) -> PlayerInternalError {
 		// OSStatus errors from Core Audio, Security framework, DRM, etc.
 		switch nsError.code {
 		// Known DRM-related OSStatus errors from your logs
 		case -19156, -17377, -12158:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .PERetryable,
 				errorType: .drmLicenseError,
 				code: nsError.code,
 				description: nsError.localizedDescription
 			)
-		
+
 		// Audio-related OSStatus errors (Core Audio framework)
 		case -50, -66, -10851, -10852, -10853, -10854:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .PERetryable,
 				errorType: .avPlayerOtherError,
 				code: nsError.code,
 				description: nsError.localizedDescription
 			)
-		
+
 		// Security framework errors that might be DRM-related
 		case -25293, -25300, -25301, -25308:
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .PERetryable,
 				errorType: .drmLicenseError,
 				code: nsError.code,
 				description: nsError.localizedDescription
 			)
-		
+
 		default:
 			// Only use .unknown for truly unknown OSStatus codes
-			return PlayerInternalError(
+			PlayerInternalError(
 				errorId: .EUnexpected,
 				errorType: .unknown,
 				code: nsError.code,
