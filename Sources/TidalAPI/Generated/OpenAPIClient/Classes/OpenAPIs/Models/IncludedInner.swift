@@ -22,6 +22,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artistsResourceObject(ArtistsResourceObject)
     case artworksResourceObject(ArtworksResourceObject)
     case changeEventStreamsResourceObject(ChangeEventStreamsResourceObject)
+    case clientCertificatesResourceObject(ClientCertificatesResourceObject)
     case clientsResourceObject(ClientsResourceObject)
     case collaborationInviteRedemptionsResourceObject(CollaborationInviteRedemptionsResourceObject)
     case collaborationInvitesResourceObject(CollaborationInvitesResourceObject)
@@ -114,6 +115,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .artworksResourceObject(let value):
             try container.encode(value)
         case .changeEventStreamsResourceObject(let value):
+            try container.encode(value)
+        case .clientCertificatesResourceObject(let value):
             try container.encode(value)
         case .clientsResourceObject(let value):
             try container.encode(value)
@@ -294,6 +297,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "changeEventStreams":
             let value = try ChangeEventStreamsResourceObject(from: decoder)
             self = .changeEventStreamsResourceObject(value)
+        case "clientCertificates":
+            let value = try ClientCertificatesResourceObject(from: decoder)
+            self = .clientCertificatesResourceObject(value)
         case "clients":
             let value = try ClientsResourceObject(from: decoder)
             self = .clientsResourceObject(value)
@@ -516,6 +522,7 @@ extension IncludedInner: Identifiable {
         case .artistsResourceObject(let value): return value.id
         case .artworksResourceObject(let value): return value.id
         case .changeEventStreamsResourceObject(let value): return value.id
+        case .clientCertificatesResourceObject(let value): return value.id
         case .clientsResourceObject(let value): return value.id
         case .collaborationInviteRedemptionsResourceObject(let value): return value.id
         case .collaborationInvitesResourceObject(let value): return value.id
