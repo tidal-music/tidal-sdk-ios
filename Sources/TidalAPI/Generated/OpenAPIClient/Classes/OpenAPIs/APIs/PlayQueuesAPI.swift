@@ -594,7 +594,7 @@ internal class PlayQueuesAPI {
     /**
      Add to future relationship (\"to-many\").
      - POST /playQueues/{id}/relationships/future
-     - Adds item(s) to future relationship.
+     - With meta.source, startIndex selects an entry in the first page's data before unsupported types are skipped. Tracks and videos are added in page order, retaining duplicates; other types are skipped without expansion. Reaching 1000 added items or 100 pages queues the collected prefix. Invalid sources or indexes, a suffix with no playable items, repeated pages, and read failures encountered before a cap leave the queue unchanged.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
