@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **certificateStatus** | **String** | Current lifecycle status of the certificate | 
 **createdAt** | **Date** | Time when the certificate request was created | 
 **lastModifiedAt** | **Date** | Time when the certificate request was last modified | 
+**packageDownloadLink** | [**LinkObject**](LinkObject.md) |  | [optional] 
 **packageExpiresAt** | **Date** | Time until which the certificate package can be downloaded | [optional] 
 **provisioningStatus** | **String** | Status of certificate and package provisioning | 
 

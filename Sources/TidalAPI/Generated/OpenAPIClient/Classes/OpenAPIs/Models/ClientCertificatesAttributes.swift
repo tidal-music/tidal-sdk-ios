@@ -32,6 +32,7 @@ public struct ClientCertificatesAttributes: Codable, Hashable {
     public var createdAt: Date
     /** Time when the certificate request was last modified */
     public var lastModifiedAt: Date
+    public var packageDownloadLink: LinkObject?
     /** Time until which the certificate package can be downloaded */
     public var packageExpiresAt: Date?
     /** Status of certificate and package provisioning */
@@ -42,6 +43,7 @@ public struct ClientCertificatesAttributes: Codable, Hashable {
         certificateStatus: CertificateStatus,
         createdAt: Date,
         lastModifiedAt: Date,
+        packageDownloadLink: LinkObject? = nil,
         packageExpiresAt: Date? = nil,
         provisioningStatus: ProvisioningStatus
     ) {
@@ -49,6 +51,7 @@ public struct ClientCertificatesAttributes: Codable, Hashable {
         self.certificateStatus = certificateStatus
         self.createdAt = createdAt
         self.lastModifiedAt = lastModifiedAt
+        self.packageDownloadLink = packageDownloadLink
         self.packageExpiresAt = packageExpiresAt
         self.provisioningStatus = provisioningStatus
     }
@@ -58,6 +61,7 @@ public struct ClientCertificatesAttributes: Codable, Hashable {
         case certificateStatus
         case createdAt
         case lastModifiedAt
+        case packageDownloadLink
         case packageExpiresAt
         case provisioningStatus
     }
@@ -70,6 +74,7 @@ public struct ClientCertificatesAttributes: Codable, Hashable {
         try container.encode(certificateStatus, forKey: .certificateStatus)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
+        try container.encodeIfPresent(packageDownloadLink, forKey: .packageDownloadLink)
         try container.encodeIfPresent(packageExpiresAt, forKey: .packageExpiresAt)
         try container.encode(provisioningStatus, forKey: .provisioningStatus)
     }

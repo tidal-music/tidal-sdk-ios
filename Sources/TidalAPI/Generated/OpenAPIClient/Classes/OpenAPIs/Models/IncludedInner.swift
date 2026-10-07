@@ -36,6 +36,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case folderItemsResourceObject(FolderItemsResourceObject)
     case foldersResourceObject(FoldersResourceObject)
     case genresResourceObject(GenresResourceObject)
+    case groupsResourceObject(GroupsResourceObject)
     case installationsResourceObject(InstallationsResourceObject)
     case lyricsResourceObject(LyricsResourceObject)
     case manualArtistClaimsResourceObject(ManualArtistClaimsResourceObject)
@@ -143,6 +144,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .foldersResourceObject(let value):
             try container.encode(value)
         case .genresResourceObject(let value):
+            try container.encode(value)
+        case .groupsResourceObject(let value):
             try container.encode(value)
         case .installationsResourceObject(let value):
             try container.encode(value)
@@ -339,6 +342,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "genres":
             let value = try GenresResourceObject(from: decoder)
             self = .genresResourceObject(value)
+        case "groups":
+            let value = try GroupsResourceObject(from: decoder)
+            self = .groupsResourceObject(value)
         case "installations":
             let value = try InstallationsResourceObject(from: decoder)
             self = .installationsResourceObject(value)
@@ -536,6 +542,7 @@ extension IncludedInner: Identifiable {
         case .folderItemsResourceObject(let value): return value.id
         case .foldersResourceObject(let value): return value.id
         case .genresResourceObject(let value): return value.id
+        case .groupsResourceObject(let value): return value.id
         case .installationsResourceObject(let value): return value.id
         case .lyricsResourceObject(let value): return value.id
         case .manualArtistClaimsResourceObject(let value): return value.id
