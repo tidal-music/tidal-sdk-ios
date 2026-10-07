@@ -78,7 +78,8 @@ final class PlayerItem {
 			sessionType: sessionType,
 			sessionProductType: mediaProduct.productType.rawValue,
 			sessionProductId: mediaProduct.productId,
-			sessionTags: sessionTags.isEmpty ? nil : sessionTags
+			sessionTags: sessionTags.isEmpty ? nil : sessionTags,
+			sessionSourceFileId: mediaProduct.sourceFileIdentifier
 		), extras: mediaProduct.extras)
 	}
 
@@ -395,7 +396,8 @@ private extension PlayerItem {
 			endTimestamp: endTimestamp,
 			tags: tags,
 			errorMessage: endInfo.message,
-			errorCode: endInfo.code
+			errorCode: endInfo.code,
+			sourceFileId: mediaProduct.sourceFileIdentifier
 		))
 	}
 
@@ -428,7 +430,8 @@ private extension PlayerItem {
 			sourceId: mediaProduct.playLogSource?.sourceId,
 			actions: metrics.actions,
 			endTimestamp: endTimestamp,
-			endAssetPosition: endAssetPosition
+			endAssetPosition: endAssetPosition,
+			sourceFileId: mediaProduct.sourceFileIdentifier
 		), extras: mediaProduct.extras)
 	}
 

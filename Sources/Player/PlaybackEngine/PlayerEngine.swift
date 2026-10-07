@@ -27,6 +27,15 @@ final class PlayerEngine {
 
 	@Atomic var notificationsHandler: NotificationsHandler?
 
+	/// The product last loaded or made current. Set before the load is queued and kept when a load fails, unlike
+	/// `currentItem`, so `Player.play()` right after a load, or after a failed one, still sees it.
+	@Atomic private var activeMediaProduct: MediaProduct?
+
+	/// Track source files never claim streaming privileges.
+	var claimsStreamingPrivilegesOnPlay: Bool {
+		activeMediaProduct?.productType != .TRACK_SOURCE_FILE
+	}
+
 	@Atomic private var state: InternalState {
 		didSet {
 			guard state != oldValue else {
@@ -43,6 +52,10 @@ final class PlayerEngine {
 		didSet {
 			if let oldValue, oldValue.id != currentItem?.id {
 				oldValue.emitEvents()
+			}
+
+			if let currentItem {
+				activeMediaProduct = currentItem.mediaProduct
 			}
 
 			notificationsHandler?.mediaTransitioned(to: currentItem)
@@ -92,7 +105,9 @@ final class PlayerEngine {
 		_ offlineItemProvider: OfflineItemProvider?,
 		_ playerLoader: PlayerLoader,
 		_ featureFlagProvider: FeatureFlagProvider,
-		_ notificationsHandler: NotificationsHandler?
+		_ notificationsHandler: NotificationsHandler?,
+		trackSourceFileManifestFetch: @escaping PlaybackInfoFetcher.TrackSourceFileManifestFetch =
+			PlaybackInfoFetcher.defaultTrackSourceFileManifestFetch
 	) {
 		self.queue = queue
 		playbackInfoFetcher = PlaybackInfoFetcher(
@@ -101,7 +116,8 @@ final class PlayerEngine {
 			credentialsProvider,
 			networkMonitor,
 			and: playerEventSender,
-			featureFlagProvider: featureFlagProvider
+			featureFlagProvider: featureFlagProvider,
+			trackSourceFileManifestFetch: trackSourceFileManifestFetch
 		)
 		self.fairplayLicenseFetcher = fairplayLicenseFetcher
 		self.configuration = configuration
@@ -136,6 +152,7 @@ final class PlayerEngine {
 	}
 
 	func load(_ mediaProduct: MediaProduct, timestamp: UInt64, isPreload: Bool = false) {
+		activeMediaProduct = mediaProduct
 		queue.dispatch {
 			self.state = .NOT_PLAYING
 			self.currentItem = PlayerItem(

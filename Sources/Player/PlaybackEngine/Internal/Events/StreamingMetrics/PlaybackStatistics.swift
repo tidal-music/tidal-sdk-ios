@@ -40,6 +40,8 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 	let endReason: String
 	let endTimestamp: UInt64
 	let tags: [EventTag]?
+	/// Set only for ``ProductType/TRACK_SOURCE_FILE``; omitted from the payload when nil.
+	let sourceFileId: String?
 
 	/// - Attention: This property is ignored in Equatable conformance.
 	let errorMessage: String?
@@ -65,6 +67,7 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		case sessionTags
 		case errorMessage
 		case errorCode
+		case sourceFileId
 	}
 
 	func encode(to encoder: Encoder) throws {
@@ -87,6 +90,7 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		try container.encode(errorMessage, forKey: .errorMessage)
 		try container.encode(errorCode, forKey: .errorCode)
 		try container.encode(streamingSessionId, forKey: .streamingSessionId)
+		try container.encodeIfPresent(sourceFileId, forKey: .sourceFileId)
 	}
 
 	init(from decoder: Decoder) throws {
@@ -107,6 +111,7 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		errorMessage = try container.decode(String?.self, forKey: .errorMessage)
 		errorCode = try container.decode(String?.self, forKey: .errorCode)
 		streamingSessionId = try container.decode(String.self, forKey: .streamingSessionId)
+		sourceFileId = try container.decodeIfPresent(String.self, forKey: .sourceFileId)
 	}
 
 	init(
@@ -125,7 +130,8 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		endTimestamp: UInt64,
 		tags: [EventTag]? = nil,
 		errorMessage: String?,
-		errorCode: String?
+		errorCode: String?,
+		sourceFileId: String? = nil
 	) {
 		self.streamingSessionId = streamingSessionId
 		self.idealStartTimestamp = idealStartTimestamp
@@ -143,6 +149,7 @@ struct PlaybackStatistics: StreamingMetricsEvent {
 		self.tags = tags
 		self.errorMessage = errorMessage
 		self.errorCode = errorCode
+		self.sourceFileId = sourceFileId
 	}
 }
 
@@ -175,6 +182,7 @@ extension PlaybackStatistics: Equatable {
 			lhs.endReason == rhs.endReason &&
 			lhs.endTimestamp == rhs.endTimestamp &&
 			lhs.tags == rhs.tags &&
-			lhs.errorCode == rhs.errorCode
+			lhs.errorCode == rhs.errorCode &&
+			lhs.sourceFileId == rhs.sourceFileId
 	}
 }

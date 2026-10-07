@@ -8,6 +8,7 @@ enum PlaybackInfoFetcherError: Int {
 	case noResponseData
 	case noResponseSubStatus
 	case unHandledHttpStatus
+	case trackSourceFileIdMissing
 
 	func error(_ errorId: ErrorId) -> Error {
 		PlayerInternalError(

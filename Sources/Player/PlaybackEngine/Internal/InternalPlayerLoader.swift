@@ -77,6 +77,8 @@ final class InternalPlayerLoader: PlayerLoader {
 		}
 
 		switch offlinedProduct.productType {
+		case .TRACK_SOURCE_FILE:
+			throw PlayerLoaderError.offlineNotSupported.error(.PENotSupported)
 		case .TRACK:
 			let player = try getPlayer(
 				for: offlinedProduct.audioMode,
@@ -118,6 +120,8 @@ final class InternalPlayerLoader: PlayerLoader {
 		)
 
 		switch storedMediaProduct.productType {
+		case .TRACK_SOURCE_FILE:
+			throw PlayerLoaderError.offlineNotSupported.error(.PENotSupported)
 		case .TRACK:
 			let player = try getPlayer(
 				for: storedMediaProduct.audioMode,
@@ -166,6 +170,8 @@ final class InternalPlayerLoader: PlayerLoader {
 		}
 
 		switch item.productType {
+		case .TRACK_SOURCE_FILE:
+			throw PlayerLoaderError.offlineNotSupported.error(.PENotSupported)
 		case .TRACK:
 			let player = try getPlayer(
 				for: playbackMetadata?.audioMode,
@@ -205,7 +211,9 @@ final class InternalPlayerLoader: PlayerLoader {
 		var licenseLoader: StreamingLicenseLoader?
 		// Skip license loader on simulator since AVContentKeySession doesn't support FairPlay
 		if !PlayerWorld.isSimulator,
-		   playbackInfo.licenseSecurityToken != nil || playbackInfo.productType == .TRACK {
+		   playbackInfo.licenseSecurityToken != nil || playbackInfo.productType == .TRACK
+		   || playbackInfo.productType == .TRACK_SOURCE_FILE
+		{
 			licenseLoader = StreamingLicenseLoader(
 				fairPlayLicenseFetcher: fairPlayLicenseFetcher,
 				streamingSessionId: streamingSessionId,
@@ -219,7 +227,7 @@ final class InternalPlayerLoader: PlayerLoader {
 		)
 
 		switch playbackInfo.productType {
-		case .TRACK:
+		case .TRACK, .TRACK_SOURCE_FILE:
 			let player = try getPlayer(
 				for: playbackInfo.audioMode,
 				and: playbackInfo.audioQuality,
