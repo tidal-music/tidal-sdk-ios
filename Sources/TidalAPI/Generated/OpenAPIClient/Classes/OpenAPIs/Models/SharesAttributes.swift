@@ -12,6 +12,10 @@ import AnyCodable
 
 public struct SharesAttributes: Codable, Hashable {
 
+    public enum Role: String, Codable, CaseIterable {
+        case viewer = "VIEWER"
+        case collaborator = "COLLABORATOR"
+    }
     public static let codeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Share code */
     public var code: String
@@ -19,21 +23,26 @@ public struct SharesAttributes: Codable, Hashable {
     public var createdAt: Date
     /** Links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
+    /** Role offered on the shared resource. */
+    public var role: Role
 
     public init(
         code: String,
         createdAt: Date,
-        externalLinks: [ExternalLink]? = nil
+        externalLinks: [ExternalLink]? = nil,
+        role: Role
     ) {
         self.code = code
         self.createdAt = createdAt
         self.externalLinks = externalLinks
+        self.role = role
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case code
         case createdAt
         case externalLinks
+        case role
     }
 
     // Encodable protocol methods
@@ -43,5 +52,6 @@ public struct SharesAttributes: Codable, Hashable {
         try container.encode(code, forKey: .code)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encode(role, forKey: .role)
     }
 }

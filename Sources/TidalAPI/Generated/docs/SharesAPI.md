@@ -248,7 +248,7 @@ Creates a new share.
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let sharesCreateOperationPayload = SharesCreateOperation_Payload(data: SharesCreateOperation_Payload_Data(relationships: SharesCreateOperation_Payload_Data_Relationships(sharedResources: SharesCreateOperation_Payload_Data_Relationships_SharedResources(data: [SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // SharesCreateOperationPayload |  (optional)
+let sharesCreateOperationPayload = SharesCreateOperation_Payload(data: SharesCreateOperation_Payload_Data(attributes: SharesCreateOperation_Payload_Data_Attributes(role: "role_example"), relationships: SharesCreateOperation_Payload_Data_Relationships(sharedResources: SharesCreateOperation_Payload_Data_Relationships_SharedResources(data: [SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // SharesCreateOperationPayload |  (optional)
 
 // Create single share.
 SharesAPI.sharesPost(idempotencyKey: idempotencyKey, sharesCreateOperationPayload: sharesCreateOperationPayload) { (response, error) in
