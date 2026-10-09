@@ -12,19 +12,23 @@ import AnyCodable
 
 public struct PlayQueuesPastResourceIdentifierMeta: Codable, Hashable {
 
+    public static let globalItemIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let itemIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var batchId: UUID
+    public var globalItemId: String
     public var itemId: String
     public var legacySource: LegacySource?
     public var replacement: ReplacementProvenance?
 
     public init(
         batchId: UUID,
+        globalItemId: String,
         itemId: String,
         legacySource: LegacySource? = nil,
         replacement: ReplacementProvenance? = nil
     ) {
         self.batchId = batchId
+        self.globalItemId = globalItemId
         self.itemId = itemId
         self.legacySource = legacySource
         self.replacement = replacement
@@ -32,6 +36,7 @@ public struct PlayQueuesPastResourceIdentifierMeta: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case batchId
+        case globalItemId
         case itemId
         case legacySource
         case replacement
@@ -42,6 +47,7 @@ public struct PlayQueuesPastResourceIdentifierMeta: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(batchId, forKey: .batchId)
+        try container.encode(globalItemId, forKey: .globalItemId)
         try container.encode(itemId, forKey: .itemId)
         try container.encodeIfPresent(legacySource, forKey: .legacySource)
         try container.encodeIfPresent(replacement, forKey: .replacement)

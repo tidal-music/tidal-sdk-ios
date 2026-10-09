@@ -15,6 +15,37 @@ public enum FoldersAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_foldersGet: String, CaseIterable {
+		case children = "children"
+		case owners = "owners"
+		case parent = "parent"
+		case preview = "preview"
+
+		func toFoldersAPIEnum() -> FoldersAPI.IncludeLinkage_foldersGet {
+			switch self {
+			case .children: return .children
+			case .owners: return .owners
+			case .parent: return .parent
+			case .preview: return .preview
+			}
+		}
+	}
+
+	/**
+     Get multiple folders.
+     
+     - returns: FoldersMultiResourceDataDocument
+     */
+	public static func foldersGet(filterId: [String], include: [String]? = nil, includeLinkage: [FoldersAPITidal.IncludeLinkage_foldersGet]? = nil, replaceMedia: String? = nil) async throws -> FoldersMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			FoldersAPI.foldersGetWithRequestBuilder(filterId: filterId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toFoldersAPIEnum() }, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
      Delete single folder.
      
      - returns: MutationResponseDocument
@@ -32,11 +63,15 @@ public enum FoldersAPITidal {
 	public enum IncludeLinkage_foldersIdGet: String, CaseIterable {
 		case children = "children"
 		case owners = "owners"
+		case parent = "parent"
+		case preview = "preview"
 
 		func toFoldersAPIEnum() -> FoldersAPI.IncludeLinkage_foldersIdGet {
 			switch self {
 			case .children: return .children
 			case .owners: return .owners
+			case .parent: return .parent
+			case .preview: return .preview
 			}
 		}
 	}
@@ -85,6 +120,30 @@ public enum FoldersAPITidal {
 	public static func foldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> FoldersOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			FoldersAPI.foldersIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Get parent relationship (\&quot;to-one\&quot;).
+     
+     - returns: FoldersParentSingleRelationshipDataDocument
+     */
+	public static func foldersIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FoldersParentSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			FoldersAPI.foldersIdRelationshipsParentGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Get preview relationship (\&quot;to-many\&quot;).
+     
+     - returns: FoldersPreviewMultiRelationshipDataDocument
+     */
+	public static func foldersIdRelationshipsPreviewGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FoldersPreviewMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			FoldersAPI.foldersIdRelationshipsPreviewGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
