@@ -188,7 +188,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdPatch**
 ```swift
-    open class func playQueuesIdPatch(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func playQueuesIdPatch(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update single playQueue.
@@ -227,7 +227,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**MutationResponseDocument**](MutationResponseDocument.md)
+[**PlayQueuesUpdateSingleResourceDataDocument**](PlayQueuesUpdateSingleResourceDataDocument.md)
 
 ### Authorization
 
@@ -348,7 +348,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsCurrentPatch**
 ```swift
-    open class func playQueuesIdRelationshipsCurrentPatch(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsCurrentPatch(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesCurrentUpdateSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update current relationship (\"to-one\").
@@ -387,7 +387,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**MutationResponseDocument**](MutationResponseDocument.md)
+[**PlayQueuesCurrentUpdateSingleRelationshipDataDocument**](PlayQueuesCurrentUpdateSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -512,12 +512,12 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsFuturePatch**
 ```swift
-    open class func playQueuesIdRelationshipsFuturePatch(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsFuturePatch(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesFutureUpdateMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update future relationship (\"to-many\").
 
-Updates future relationship.
+Returns empty data and meta.revision as an acknowledgement.
 
 ### Example
 ```swift
@@ -551,7 +551,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**MutationResponseDocument**](MutationResponseDocument.md)
+[**PlayQueuesFutureUpdateMultiRelationshipDataDocument**](PlayQueuesFutureUpdateMultiRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -566,12 +566,12 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsFuturePost**
 ```swift
-    open class func playQueuesIdRelationshipsFuturePost(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func playQueuesIdRelationshipsFuturePost(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesFutureAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to future relationship (\"to-many\").
 
-With meta.source, startIndex selects an entry in the first page's data before unsupported types are skipped. Tracks and videos are added in page order, retaining duplicates; other types are skipped without expansion. Reaching 1000 added items or 100 pages queues the collected prefix. Invalid sources or indexes, a suffix with no playable items, repeated pages, and read failures encountered before a cap leave the queue unchanged.
+With meta.source, startIndex selects an entry in the first page's data before unsupported types are skipped. Tracks and videos are added in page order, retaining duplicates; other types are skipped without expansion. Reaching 1000 added items or 100 pages queues the collected prefix. Invalid sources or indexes, a suffix with no playable items, repeated pages, and read failures encountered before a cap leave the queue unchanged. Returns empty data and meta.revision as an acknowledgement.
 
 ### Example
 ```swift
@@ -605,7 +605,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**MutationResponseDocument**](MutationResponseDocument.md)
+[**PlayQueuesFutureAddMultiRelationshipDataDocument**](PlayQueuesFutureAddMultiRelationshipDataDocument.md)
 
 ### Authorization
 

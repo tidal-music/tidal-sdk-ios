@@ -5,6 +5,7 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**sharesGet**](SharesAPI.md#sharesget) | **GET** /shares | Get multiple shares.
+[**sharesIdDelete**](SharesAPI.md#sharesiddelete) | **DELETE** /shares/{id} | Delete single share.
 [**sharesIdGet**](SharesAPI.md#sharesidget) | **GET** /shares/{id} | Get single share.
 [**sharesIdRelationshipsOwnersGet**](SharesAPI.md#sharesidrelationshipsownersget) | **GET** /shares/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**sharesIdRelationshipsSharedResourcesGet**](SharesAPI.md#sharesidrelationshipssharedresourcesget) | **GET** /shares/{id}/relationships/sharedResources | Get sharedResources relationship (\&quot;to-many\&quot;).
@@ -67,6 +68,60 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **sharesIdDelete**
+```swift
+    open class func sharesIdDelete(id: String, revokeGrants: Bool? = nil, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+```
+
+Delete single share.
+
+Delete share. Effectively revokes bearer access and acceptance.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Share id
+let revokeGrants = true // Bool | Also revoke grants issued through this share. Defaults to false; true is currently unsupported. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+
+// Delete single share.
+SharesAPI.sharesIdDelete(id: id, revokeGrants: revokeGrants, idempotencyKey: idempotencyKey) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Share id | 
+ **revokeGrants** | **Bool** | Also revoke grants issued through this share. Defaults to false; true is currently unsupported. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+
+### Return type
+
+[**MutationResponseDocument**](MutationResponseDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **sharesIdGet**
 ```swift
     open class func sharesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SharesSingleResourceDataDocument?, _ error: Error?) -> Void)
@@ -81,7 +136,7 @@ Retrieves single share by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User share id
+let id = "id_example" // String | Share id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, sharedResources (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: sharedResources (optional)
@@ -103,7 +158,7 @@ SharesAPI.sharesIdGet(id: id, include: include, includeLinkage: includeLinkage, 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User share id | 
+ **id** | **String** | Share id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, sharedResources | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources | [optional] 
@@ -137,7 +192,7 @@ Retrieves owners relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User share id
+let id = "id_example" // String | Share id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -158,7 +213,7 @@ SharesAPI.sharesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: p
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User share id | 
+ **id** | **String** | Share id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -191,7 +246,7 @@ Retrieves sharedResources relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | User share id
+let id = "id_example" // String | Share id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: sharedResources (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: sharedResources (optional)
@@ -213,7 +268,7 @@ SharesAPI.sharesIdRelationshipsSharedResourcesGet(id: id, pageCursor: pageCursor
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | User share id | 
+ **id** | **String** | Share id | 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: sharedResources | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources | [optional] 

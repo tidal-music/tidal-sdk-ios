@@ -206,10 +206,10 @@ internal class PlayQueuesAPI {
      - parameter id: (path) Play queue id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playQueuesUpdateOperationPayload: (body)  (optional)
-     - returns: MutationResponseDocument
+     - returns: PlayQueuesUpdateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdPatch(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+    internal class func playQueuesIdPatch(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil) async throws -> PlayQueuesUpdateSingleResourceDataDocument {
         do {
             return try await playQueuesIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playQueuesUpdateOperationPayload: playQueuesUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -228,9 +228,9 @@ internal class PlayQueuesAPI {
      - parameter id: (path) Play queue id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playQueuesUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<MutationResponseDocument> 
+     - returns: RequestBuilder<PlayQueuesUpdateSingleResourceDataDocument> 
      */
-    internal class func playQueuesIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
+    internal class func playQueuesIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil) -> RequestBuilder<PlayQueuesUpdateSingleResourceDataDocument> {
         var localVariablePath = "/playQueues/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -247,7 +247,7 @@ internal class PlayQueuesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PlayQueuesUpdateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -365,10 +365,10 @@ internal class PlayQueuesAPI {
      - parameter id: (path) Play queue id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playQueuesCurrentRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: MutationResponseDocument
+     - returns: PlayQueuesCurrentUpdateSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdRelationshipsCurrentPatch(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+    internal class func playQueuesIdRelationshipsCurrentPatch(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil) async throws -> PlayQueuesCurrentUpdateSingleRelationshipDataDocument {
         do {
             return try await playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playQueuesCurrentRelationshipUpdateOperationPayload: playQueuesCurrentRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -387,9 +387,9 @@ internal class PlayQueuesAPI {
      - parameter id: (path) Play queue id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playQueuesCurrentRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<MutationResponseDocument> 
+     - returns: RequestBuilder<PlayQueuesCurrentUpdateSingleRelationshipDataDocument> 
      */
-    internal class func playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
+    internal class func playQueuesIdRelationshipsCurrentPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<PlayQueuesCurrentUpdateSingleRelationshipDataDocument> {
         var localVariablePath = "/playQueues/{id}/relationships/current"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -406,7 +406,7 @@ internal class PlayQueuesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PlayQueuesCurrentUpdateSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -527,10 +527,10 @@ internal class PlayQueuesAPI {
      - parameter id: (path) Play queue id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playQueuesFutureRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: MutationResponseDocument
+     - returns: PlayQueuesFutureUpdateMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdRelationshipsFuturePatch(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+    internal class func playQueuesIdRelationshipsFuturePatch(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil) async throws -> PlayQueuesFutureUpdateMultiRelationshipDataDocument {
         do {
             return try await playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipUpdateOperationPayload: playQueuesFutureRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -542,16 +542,16 @@ internal class PlayQueuesAPI {
     /**
      Update future relationship (\"to-many\").
      - PATCH /playQueues/{id}/relationships/future
-     - Updates future relationship.
+     - Returns empty data and meta.revision as an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playQueuesFutureRelationshipUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<MutationResponseDocument> 
+     - returns: RequestBuilder<PlayQueuesFutureUpdateMultiRelationshipDataDocument> 
      */
-    internal class func playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
+    internal class func playQueuesIdRelationshipsFuturePatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<PlayQueuesFutureUpdateMultiRelationshipDataDocument> {
         var localVariablePath = "/playQueues/{id}/relationships/future"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -568,7 +568,7 @@ internal class PlayQueuesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PlayQueuesFutureUpdateMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -579,10 +579,10 @@ internal class PlayQueuesAPI {
      - parameter id: (path) Play queue id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playQueuesFutureRelationshipAddOperationPayload: (body)  (optional)
-     - returns: MutationResponseDocument
+     - returns: PlayQueuesFutureAddMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdRelationshipsFuturePost(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
+    internal class func playQueuesIdRelationshipsFuturePost(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil) async throws -> PlayQueuesFutureAddMultiRelationshipDataDocument {
         do {
             return try await playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipAddOperationPayload: playQueuesFutureRelationshipAddOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -594,16 +594,16 @@ internal class PlayQueuesAPI {
     /**
      Add to future relationship (\"to-many\").
      - POST /playQueues/{id}/relationships/future
-     - With meta.source, startIndex selects an entry in the first page's data before unsupported types are skipped. Tracks and videos are added in page order, retaining duplicates; other types are skipped without expansion. Reaching 1000 added items or 100 pages queues the collected prefix. Invalid sources or indexes, a suffix with no playable items, repeated pages, and read failures encountered before a cap leave the queue unchanged.
+     - With meta.source, startIndex selects an entry in the first page's data before unsupported types are skipped. Tracks and videos are added in page order, retaining duplicates; other types are skipped without expansion. Reaching 1000 added items or 100 pages queues the collected prefix. Invalid sources or indexes, a suffix with no playable items, repeated pages, and read failures encountered before a cap leave the queue unchanged. Returns empty data and meta.revision as an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - parameter playQueuesFutureRelationshipAddOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<MutationResponseDocument> 
+     - returns: RequestBuilder<PlayQueuesFutureAddMultiRelationshipDataDocument> 
      */
-    internal class func playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
+    internal class func playQueuesIdRelationshipsFuturePostWithRequestBuilder(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil) -> RequestBuilder<PlayQueuesFutureAddMultiRelationshipDataDocument> {
         var localVariablePath = "/playQueues/{id}/relationships/future"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -620,7 +620,7 @@ internal class PlayQueuesAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<PlayQueuesFutureAddMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

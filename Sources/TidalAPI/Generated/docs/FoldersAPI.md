@@ -29,7 +29,7 @@ Retrieves multiple folders by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterId = ["inner_example"] // [String] | Folder id
+let filterId = ["inner_example"] // [String] | Folder id (e.g. `e3226624-355b-48f8-aa93-db42532caa66`)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: children, owners, parent, preview (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: children.subject (optional)
@@ -51,7 +51,7 @@ FoldersAPI.foldersGet(filterId: filterId, include: include, includeLinkage: incl
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterId** | [**[String]**](String.md) | Folder id | 
+ **filterId** | [**[String]**](String.md) | Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;) | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: children, owners, parent, preview | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject | [optional] 

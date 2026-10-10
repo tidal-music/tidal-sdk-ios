@@ -1,11 +1,11 @@
-# PlayQueuesCreateSingleResourceDataDocument
+# PlayQueuesFutureAddMultiRelationshipDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**PlayQueuesResourceObject**](PlayQueuesResourceObject.md) |  | 
+**data** | [PlayQueuesFutureAddResourceIdentifier] |  | 
 **links** | [**Links**](Links.md) |  | 
-**meta** | [**PlayQueuesCreateSingleResourceDataDocumentMeta**](PlayQueuesCreateSingleResourceDataDocumentMeta.md) |  | [optional] 
+**meta** | [**PlayQueuesFutureAddMultiRelationshipDataDocumentMeta**](PlayQueuesFutureAddMultiRelationshipDataDocumentMeta.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

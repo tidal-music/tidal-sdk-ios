@@ -4,7 +4,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **batchId** | **UUID** |  | 
-**globalItemId** | **String** |  | 
 **itemId** | **String** |  | 
 **legacySource** | [**LegacySource**](LegacySource.md) |  | [optional] 
 **replacement** | [**ReplacementProvenance**](ReplacementProvenance.md) |  | [optional] 

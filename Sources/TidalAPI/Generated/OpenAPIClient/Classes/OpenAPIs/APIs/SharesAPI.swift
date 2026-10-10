@@ -80,6 +80,60 @@ internal class SharesAPI {
     }
 
     /**
+     Delete single share.
+     
+     - parameter id: (path) Share id 
+     - parameter revokeGrants: (query) Also revoke grants issued through this share. Defaults to false; true is currently unsupported. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - returns: MutationResponseDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func sharesIdDelete(id: String, revokeGrants: Bool? = nil, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+        do {
+            return try await sharesIdDeleteWithRequestBuilder(id: id, revokeGrants: revokeGrants, idempotencyKey: idempotencyKey).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Delete single share.
+     - DELETE /shares/{id}
+     - Delete share. Effectively revokes bearer access and acceptance.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Share id 
+     - parameter revokeGrants: (query) Also revoke grants issued through this share. Defaults to false; true is currently unsupported. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - returns: RequestBuilder<MutationResponseDocument> 
+     */
+    internal class func sharesIdDeleteWithRequestBuilder(id: String, revokeGrants: Bool? = nil, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
+        var localVariablePath = "/shares/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "revokeGrants": (wrappedValue: revokeGrants?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "DELETE", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_sharesIdGet: String, CaseIterable {
@@ -90,7 +144,7 @@ internal class SharesAPI {
     /**
      Get single share.
      
-     - parameter id: (path) User share id 
+     - parameter id: (path) Share id 
      - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
@@ -116,7 +170,7 @@ internal class SharesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) User share id 
+     - parameter id: (path) Share id 
      - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
@@ -151,7 +205,7 @@ internal class SharesAPI {
     /**
      Get owners relationship (\"to-many\").
      
-     - parameter id: (path) User share id 
+     - parameter id: (path) Share id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: SharesOwnersMultiRelationshipDataDocument
@@ -176,7 +230,7 @@ internal class SharesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) User share id 
+     - parameter id: (path) Share id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<SharesOwnersMultiRelationshipDataDocument> 
@@ -209,7 +263,7 @@ internal class SharesAPI {
     /**
      Get sharedResources relationship (\"to-many\").
      
-     - parameter id: (path) User share id 
+     - parameter id: (path) Share id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: sharedResources (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
@@ -235,7 +289,7 @@ internal class SharesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) User share id 
+     - parameter id: (path) Share id 
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: sharedResources (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
