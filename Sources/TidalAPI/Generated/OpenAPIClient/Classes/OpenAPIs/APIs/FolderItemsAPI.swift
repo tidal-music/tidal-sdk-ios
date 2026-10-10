@@ -65,6 +65,7 @@ internal class FolderItemsAPI {
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_folderItemsIdGet: String, CaseIterable {
+        case breadcrumb = "breadcrumb"
         case owners = "owners"
         case parent = "parent"
         case subject = "subject"
@@ -74,9 +75,9 @@ internal class FolderItemsAPI {
      Get single folderItem.
      
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Include related resources. Available relationships: owners, parent, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
      - returns: FolderItemsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -97,9 +98,9 @@ internal class FolderItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Include related resources. Available relationships: owners, parent, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
      - returns: RequestBuilder<FolderItemsSingleResourceDataDocument> 
      */
     internal class func folderItemsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsSingleResourceDataDocument> {
@@ -124,6 +125,64 @@ internal class FolderItemsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<FolderItemsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get breadcrumb relationship (\"to-many\").
+     
+     - parameter id: (path) Folder item id 
+     - parameter include: (query) Include related resources. Available relationships: breadcrumb (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     - returns: FolderItemsBreadcrumbMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func folderItemsIdRelationshipsBreadcrumbGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsBreadcrumbMultiRelationshipDataDocument {
+        do {
+            return try await folderItemsIdRelationshipsBreadcrumbGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get breadcrumb relationship (\"to-many\").
+     - GET /folderItems/{id}/relationships/breadcrumb
+     - The folders from the root to this item's parent; only for the tree's owner, empty otherwise.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Folder item id 
+     - parameter include: (query) Include related resources. Available relationships: breadcrumb (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     - returns: RequestBuilder<FolderItemsBreadcrumbMultiRelationshipDataDocument> 
+     */
+    internal class func folderItemsIdRelationshipsBreadcrumbGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsBreadcrumbMultiRelationshipDataDocument> {
+        var localVariablePath = "/folderItems/{id}/relationships/breadcrumb"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<FolderItemsBreadcrumbMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

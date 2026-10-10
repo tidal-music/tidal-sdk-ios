@@ -1,9 +1,11 @@
-# Membership
+# FolderItemsBreadcrumbMultiRelationshipDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**role** | **String** | Positive identity-derived membership role; NONE does not represent membership. | 
+**data** | [ResourceIdentifier] |  | [optional] 
+**included** | [IncludedInner] |  | [optional] 
+**links** | [**Links**](Links.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

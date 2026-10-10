@@ -12,28 +12,42 @@ import AnyCodable
 
 public struct SharesAttributes: Codable, Hashable {
 
+    public enum Role: String, Codable, CaseIterable {
+        case viewer = "VIEWER"
+        case collaborator = "COLLABORATOR"
+    }
     public static let codeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Share code */
     public var code: String
-    /** Datetime of share creation (ISO 8601) */
+    /** Time the share was created. */
     public var createdAt: Date
+    /** Time bearer access and acceptance expire. New shares expire seven days after creation; accepted grants remain valid. */
+    public var expiresAt: Date
     /** Links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
+    /** Role offered on the shared resource. */
+    public var role: Role
 
     public init(
         code: String,
         createdAt: Date,
-        externalLinks: [ExternalLink]? = nil
+        expiresAt: Date,
+        externalLinks: [ExternalLink]? = nil,
+        role: Role
     ) {
         self.code = code
         self.createdAt = createdAt
+        self.expiresAt = expiresAt
         self.externalLinks = externalLinks
+        self.role = role
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case code
         case createdAt
+        case expiresAt
         case externalLinks
+        case role
     }
 
     // Encodable protocol methods
@@ -42,6 +56,8 @@ public struct SharesAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(code, forKey: .code)
         try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(expiresAt, forKey: .expiresAt)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encode(role, forKey: .role)
     }
 }

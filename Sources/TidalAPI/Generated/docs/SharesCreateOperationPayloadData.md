@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**attributes** | [**SharesCreateOperationPayloadDataAttributes**](SharesCreateOperationPayloadDataAttributes.md) |  | 
 **relationships** | [**SharesCreateOperationPayloadDataRelationships**](SharesCreateOperationPayloadDataRelationships.md) |  | 
 **type** | **String** |  | 
 

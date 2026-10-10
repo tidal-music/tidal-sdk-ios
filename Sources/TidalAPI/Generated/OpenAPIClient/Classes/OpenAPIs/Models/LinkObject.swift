@@ -14,15 +14,20 @@ import AnyCodable
 public struct LinkObject: Codable, Hashable {
 
     public var href: String
+    /** Media type hint for the linked resource */
+    public var type: String?
 
     public init(
-        href: String
+        href: String,
+        type: String? = nil
     ) {
         self.href = href
+        self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case href
+        case type
     }
 
     // Encodable protocol methods
@@ -30,5 +35,6 @@ public struct LinkObject: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(href, forKey: .href)
+        try container.encodeIfPresent(type, forKey: .type)
     }
 }

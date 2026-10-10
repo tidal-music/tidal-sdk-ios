@@ -4,13 +4,72 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**foldersGet**](FoldersAPI.md#foldersget) | **GET** /folders | Get multiple folders.
 [**foldersIdDelete**](FoldersAPI.md#foldersiddelete) | **DELETE** /folders/{id} | Delete single folder.
 [**foldersIdGet**](FoldersAPI.md#foldersidget) | **GET** /folders/{id} | Get single folder.
 [**foldersIdPatch**](FoldersAPI.md#foldersidpatch) | **PATCH** /folders/{id} | Update single folder.
 [**foldersIdRelationshipsChildrenGet**](FoldersAPI.md#foldersidrelationshipschildrenget) | **GET** /folders/{id}/relationships/children | Get children relationship (\&quot;to-many\&quot;).
 [**foldersIdRelationshipsOwnersGet**](FoldersAPI.md#foldersidrelationshipsownersget) | **GET** /folders/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+[**foldersIdRelationshipsParentGet**](FoldersAPI.md#foldersidrelationshipsparentget) | **GET** /folders/{id}/relationships/parent | Get parent relationship (\&quot;to-one\&quot;).
+[**foldersIdRelationshipsPreviewGet**](FoldersAPI.md#foldersidrelationshipspreviewget) | **GET** /folders/{id}/relationships/preview | Get preview relationship (\&quot;to-many\&quot;).
 [**foldersPost**](FoldersAPI.md#folderspost) | **POST** /folders | Create single folder.
 
+
+# **foldersGet**
+```swift
+    open class func foldersGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_foldersGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FoldersMultiResourceDataDocument?, _ error: Error?) -> Void)
+```
+
+Get multiple folders.
+
+Retrieves multiple folders by available filters, or without if applicable.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let filterId = ["inner_example"] // [String] | Folder id (e.g. `e3226624-355b-48f8-aa93-db42532caa66`)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: children, owners, parent, preview (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: children.subject (optional)
+
+// Get multiple folders.
+FoldersAPI.foldersGet(filterId: filterId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **filterId** | [**[String]**](String.md) | Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;) | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: children, owners, parent, preview | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject | [optional] 
+
+### Return type
+
+[**FoldersMultiResourceDataDocument**](FoldersMultiResourceDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **foldersIdDelete**
 ```swift
@@ -79,7 +138,7 @@ Retrieves single folder by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: children, owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: children, owners, parent, preview (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: children.subject (optional)
 
@@ -101,7 +160,7 @@ FoldersAPI.foldersIdGet(id: id, include: include, includeLinkage: includeLinkage
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: children, owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: children, owners, parent, preview | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject | [optional] 
 
@@ -181,7 +240,7 @@ Name | Type | Description  | Notes
 
 Get children relationship (\"to-many\").
 
-Retrieves children relationship.
+Lists folder items newest first by placement timestamp, with ID as a stable tie-breaker. Moving to another parent resets the timestamp; renaming preserves it.
 
 ### Example
 ```swift
@@ -284,6 +343,116 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **foldersIdRelationshipsParentGet**
+```swift
+    open class func foldersIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FoldersParentSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get parent relationship (\"to-one\").
+
+Retrieves parent relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: parent (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: parent.children.subject (optional)
+
+// Get parent relationship (\"to-one\").
+FoldersAPI.foldersIdRelationshipsParentGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: parent | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject | [optional] 
+
+### Return type
+
+[**FoldersParentSingleRelationshipDataDocument**](FoldersParentSingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **foldersIdRelationshipsPreviewGet**
+```swift
+    open class func foldersIdRelationshipsPreviewGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FoldersPreviewMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get preview relationship (\"to-many\").
+
+The first four items of this folder, as `children` lists them.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: preview (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: preview.subject (optional)
+
+// Get preview relationship (\"to-many\").
+FoldersAPI.foldersIdRelationshipsPreviewGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: preview | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: preview.subject | [optional] 
+
+### Return type
+
+[**FoldersPreviewMultiRelationshipDataDocument**](FoldersPreviewMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **foldersPost**
 ```swift
     open class func foldersPost(idempotencyKey: String? = nil, foldersCreateOperationPayload: FoldersCreateOperationPayload? = nil, completion: @escaping (_ data: FoldersCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
@@ -299,7 +468,7 @@ Creates a new folder.
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let foldersCreateOperationPayload = FoldersCreateOperation_Payload(data: FoldersCreateOperation_Payload_Data(attributes: FoldersCreateOperation_Payload_Data_Attributes(name: "name_example"), type: "type_example")) // FoldersCreateOperationPayload |  (optional)
+let foldersCreateOperationPayload = FoldersCreateOperation_Payload(data: FoldersCreateOperation_Payload_Data(attributes: FoldersCreateOperation_Payload_Data_Attributes(name: "name_example"), relationships: FoldersCreateOperation_Payload_Data_Relationships(parent: FoldersCreateOperation_Payload_Data_Relationships_Parent(data: FoldersParentIdentifier(id: "id_example", type: "type_example"))), type: "type_example")) // FoldersCreateOperationPayload |  (optional)
 
 // Create single folder.
 FoldersAPI.foldersPost(idempotencyKey: idempotencyKey, foldersCreateOperationPayload: foldersCreateOperationPayload) { (response, error) in

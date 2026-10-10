@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **hasSavedForLater** | **AnyCodable** | The viewer has saved the subject for later. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. | [optional] 
 **isFollowedBy** | **AnyCodable** | The viewer is followed by the subject. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. | [optional] 
 **isFollowing** | **AnyCodable** | The viewer follows the subject. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. | [optional] 
-**isMemberOf** | [**Membership**](Membership.md) |  | [optional] 
+**isGranteeOf** | [**Grantee**](Grantee.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

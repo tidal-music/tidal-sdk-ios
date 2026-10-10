@@ -18,10 +18,12 @@ public enum ClientsAPITidal {
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_clientsGet: String, CaseIterable {
+		case certificates = "certificates"
 		case owners = "owners"
 
 		func toClientsAPIEnum() -> ClientsAPI.IncludeLinkage_clientsGet {
 			switch self {
+			case .certificates: return .certificates
 			case .owners: return .owners
 			}
 		}
@@ -55,10 +57,12 @@ public enum ClientsAPITidal {
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_clientsIdGet: String, CaseIterable {
+		case certificates = "certificates"
 		case owners = "owners"
 
 		func toClientsAPIEnum() -> ClientsAPI.IncludeLinkage_clientsIdGet {
 			switch self {
+			case .certificates: return .certificates
 			case .owners: return .owners
 			}
 		}
@@ -84,6 +88,18 @@ public enum ClientsAPITidal {
 	public static func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) async throws -> ClientsUpdateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ClientsAPI.clientsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, clientsUpdateOperationPayload: clientsUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Get certificates relationship (\&quot;to-many\&quot;).
+     
+     - returns: ClientsCertificatesMultiRelationshipDataDocument
+     */
+	public static func clientsIdRelationshipsCertificatesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ClientsCertificatesMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			ClientsAPI.clientsIdRelationshipsCertificatesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 

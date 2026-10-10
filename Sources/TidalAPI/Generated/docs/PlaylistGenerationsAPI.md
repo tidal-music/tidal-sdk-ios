@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 # **playlistGenerationsGet**
 ```swift
-    open class func playlistGenerationsGet(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsGet(filterPlaylistId: [String], generationView: GenerationView_playlistGenerationsGet? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple playlistGenerations.
@@ -30,12 +30,13 @@ Retrieves multiple playlistGenerations by available filters, or without if appli
 import OpenAPIClient
 
 let filterPlaylistId = ["inner_example"] // [String] | Playlist id (e.g. `550e8400-e29b-41d4-a716-446655440000`)
+let generationView = "generationView_example" // String | CURRENT selects the committed generation. LATEST selects the newest accepted attempt, regardless of status. New values may be added at any time. (optional) (default to .current)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: baseGeneration, playlist, trackPreferences (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: baseGeneration.trackPreferences (optional)
 
 // Get multiple playlistGenerations.
-PlaylistGenerationsAPI.playlistGenerationsGet(filterPlaylistId: filterPlaylistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+PlaylistGenerationsAPI.playlistGenerationsGet(filterPlaylistId: filterPlaylistId, generationView: generationView, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -52,6 +53,7 @@ PlaylistGenerationsAPI.playlistGenerationsGet(filterPlaylistId: filterPlaylistId
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterPlaylistId** | [**[String]**](String.md) | Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) | 
+ **generationView** | **String** | CURRENT selects the committed generation. LATEST selects the newest accepted attempt, regardless of status. New values may be added at any time. | [optional] [default to .current]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: baseGeneration, playlist, trackPreferences | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: baseGeneration.trackPreferences | [optional] 

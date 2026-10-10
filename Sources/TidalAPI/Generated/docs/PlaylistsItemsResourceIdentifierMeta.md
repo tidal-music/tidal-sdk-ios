@@ -4,7 +4,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **addedAt** | **Date** |  | [optional] 
-**itemCursor** | **String** |  | [optional] 
 **itemId** | **String** |  | [optional] 
 **replacement** | [**ReplacementProvenance**](ReplacementProvenance.md) |  | [optional] 
 
