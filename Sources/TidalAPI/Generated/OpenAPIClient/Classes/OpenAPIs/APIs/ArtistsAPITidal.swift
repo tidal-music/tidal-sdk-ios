@@ -19,10 +19,12 @@ public enum ArtistsAPITidal {
 	 */
 	public enum IncludeLinkage_artistsGet: String, CaseIterable {
 		case albums = "albums"
+		case bannerart = "bannerArt"
 		case biography = "biography"
 		case claimstatus = "claimStatus"
 		case followers = "followers"
 		case following = "following"
+		case logoart = "logoArt"
 		case owners = "owners"
 		case profileart = "profileArt"
 		case radio = "radio"
@@ -35,10 +37,12 @@ public enum ArtistsAPITidal {
 		func toArtistsAPIEnum() -> ArtistsAPI.IncludeLinkage_artistsGet {
 			switch self {
 			case .albums: return .albums
+			case .bannerart: return .bannerart
 			case .biography: return .biography
 			case .claimstatus: return .claimstatus
 			case .followers: return .followers
 			case .following: return .following
+			case .logoart: return .logoart
 			case .owners: return .owners
 			case .profileart: return .profileart
 			case .radio: return .radio
@@ -68,10 +72,12 @@ public enum ArtistsAPITidal {
 	 */
 	public enum IncludeLinkage_artistsIdGet: String, CaseIterable {
 		case albums = "albums"
+		case bannerart = "bannerArt"
 		case biography = "biography"
 		case claimstatus = "claimStatus"
 		case followers = "followers"
 		case following = "following"
+		case logoart = "logoArt"
 		case owners = "owners"
 		case profileart = "profileArt"
 		case radio = "radio"
@@ -84,10 +90,12 @@ public enum ArtistsAPITidal {
 		func toArtistsAPIEnum() -> ArtistsAPI.IncludeLinkage_artistsIdGet {
 			switch self {
 			case .albums: return .albums
+			case .bannerart: return .bannerart
 			case .biography: return .biography
 			case .claimstatus: return .claimstatus
 			case .followers: return .followers
 			case .following: return .following
+			case .logoart: return .logoart
 			case .owners: return .owners
 			case .profileart: return .profileart
 			case .radio: return .radio
@@ -132,6 +140,30 @@ public enum ArtistsAPITidal {
 	public static func artistsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsAlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ArtistsAPI.artistsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Get bannerArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: ArtistsBannerArtMultiRelationshipDataDocument
+     */
+	public static func artistsIdRelationshipsBannerArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsBannerArtMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsBannerArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Update bannerArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func artistsIdRelationshipsBannerArtPatch(id: String, idempotencyKey: String? = nil, artistsBannerArtRelationshipUpdateOperationPayload: ArtistsBannerArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsBannerArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsBannerArtRelationshipUpdateOperationPayload: artistsBannerArtRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -204,6 +236,30 @@ public enum ArtistsAPITidal {
 	public static func artistsIdRelationshipsFollowingPost(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			ArtistsAPI.artistsIdRelationshipsFollowingPostWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload)
+		}
+	}
+
+
+	/**
+     Get logoArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: ArtistsLogoArtMultiRelationshipDataDocument
+     */
+	public static func artistsIdRelationshipsLogoArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsLogoArtMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsLogoArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Update logoArt relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func artistsIdRelationshipsLogoArtPatch(id: String, idempotencyKey: String? = nil, artistsLogoArtRelationshipUpdateOperationPayload: ArtistsLogoArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			ArtistsAPI.artistsIdRelationshipsLogoArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, artistsLogoArtRelationshipUpdateOperationPayload: artistsLogoArtRelationshipUpdateOperationPayload)
 		}
 	}
 

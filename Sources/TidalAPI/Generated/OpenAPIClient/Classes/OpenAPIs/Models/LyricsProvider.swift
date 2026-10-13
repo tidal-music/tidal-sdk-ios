@@ -10,33 +10,40 @@ import Foundation
 import AnyCodable
 #endif
 
-public struct LyricsProvider: Codable, Hashable {
+public enum LyricsProvider: Codable, JSONEncodable, Hashable {
+    case thirdPartyLyricsProvider(ThirdPartyLyricsProvider)
+    case tidalLyricsProvider(TidalLyricsProvider)
 
-    public enum Source: String, Codable, CaseIterable {
-        case tidal = "TIDAL"
-        case thirdParty = "THIRD_PARTY"
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .thirdPartyLyricsProvider(let value):
+            try container.encode(value)
+        case .tidalLyricsProvider(let value):
+            try container.encode(value)
+        }
     }
-    public var name: String?
-    public var source: Source?
-
-    public init(
-        name: String? = nil,
-        source: Source? = nil
-    ) {
-        self.name = name
-        self.source = source
-    }
-
-    public enum CodingKeys: String, CodingKey, CaseIterable {
-        case name
+    
+    private enum CodingKeys: String, CodingKey {
         case source
     }
 
-    // Encodable protocol methods
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let type = try container.decode(String.self, forKey: .source)
 
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(name, forKey: .name)
-        try container.encodeIfPresent(source, forKey: .source)
+        switch type {
+        case "THIRD_PARTY":
+            let value = try ThirdPartyLyricsProvider(from: decoder)
+            self = .thirdPartyLyricsProvider(value)
+        case "TIDAL":
+            let value = try TidalLyricsProvider(from: decoder)
+            self = .tidalLyricsProvider(value)
+        default:
+            throw DecodingError.dataCorruptedError(forKey: .source, in: container, debugDescription: "Unknown type: \\(type)")
+        }
     }
 }
+
+
+

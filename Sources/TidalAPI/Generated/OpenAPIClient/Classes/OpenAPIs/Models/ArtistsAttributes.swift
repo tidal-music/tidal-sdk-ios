@@ -17,14 +17,20 @@ public struct ArtistsAttributes: Codable, Hashable {
         case user = "USER"
         case mixed = "MIXED"
     }
+    public static let backgroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/")
+    public static let foregroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/")
     public static let handleRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let numberOfFollowersRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
+    /** Artist profile background colour override */
+    public var backgroundColor: String?
     /** Is the artist enabled for contributions? */
     public var contributionsEnabled: Bool?
     /** Contributions sales pitch */
     public var contributionsSalesPitch: String?
     /** Artist links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
+    /** Artist profile foreground colour override */
+    public var foregroundColor: String?
     /** Artist handle */
     public var handle: String?
     /** Artist name */
@@ -39,9 +45,11 @@ public struct ArtistsAttributes: Codable, Hashable {
     public var spotlighted: Bool?
 
     public init(
+        backgroundColor: String? = nil,
         contributionsEnabled: Bool? = nil,
         contributionsSalesPitch: String? = nil,
         externalLinks: [ExternalLink]? = nil,
+        foregroundColor: String? = nil,
         handle: String? = nil,
         name: String,
         numberOfFollowers: Int? = nil,
@@ -49,9 +57,11 @@ public struct ArtistsAttributes: Codable, Hashable {
         popularity: Double,
         spotlighted: Bool? = nil
     ) {
+        self.backgroundColor = backgroundColor
         self.contributionsEnabled = contributionsEnabled
         self.contributionsSalesPitch = contributionsSalesPitch
         self.externalLinks = externalLinks
+        self.foregroundColor = foregroundColor
         self.handle = handle
         self.name = name
         self.numberOfFollowers = numberOfFollowers
@@ -61,9 +71,11 @@ public struct ArtistsAttributes: Codable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case backgroundColor
         case contributionsEnabled
         case contributionsSalesPitch
         case externalLinks
+        case foregroundColor
         case handle
         case name
         case numberOfFollowers
@@ -76,9 +88,11 @@ public struct ArtistsAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(backgroundColor, forKey: .backgroundColor)
         try container.encodeIfPresent(contributionsEnabled, forKey: .contributionsEnabled)
         try container.encodeIfPresent(contributionsSalesPitch, forKey: .contributionsSalesPitch)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encodeIfPresent(foregroundColor, forKey: .foregroundColor)
         try container.encodeIfPresent(handle, forKey: .handle)
         try container.encode(name, forKey: .name)
         try container.encodeIfPresent(numberOfFollowers, forKey: .numberOfFollowers)

@@ -8,12 +8,16 @@ Method | HTTP request | Description
 [**artistsIdGet**](ArtistsAPI.md#artistsidget) | **GET** /artists/{id} | Get single artist.
 [**artistsIdPatch**](ArtistsAPI.md#artistsidpatch) | **PATCH** /artists/{id} | Update single artist.
 [**artistsIdRelationshipsAlbumsGet**](ArtistsAPI.md#artistsidrelationshipsalbumsget) | **GET** /artists/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsBannerArtGet**](ArtistsAPI.md#artistsidrelationshipsbannerartget) | **GET** /artists/{id}/relationships/bannerArt | Get bannerArt relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsBannerArtPatch**](ArtistsAPI.md#artistsidrelationshipsbannerartpatch) | **PATCH** /artists/{id}/relationships/bannerArt | Update bannerArt relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsBiographyGet**](ArtistsAPI.md#artistsidrelationshipsbiographyget) | **GET** /artists/{id}/relationships/biography | Get biography relationship (\&quot;to-one\&quot;).
 [**artistsIdRelationshipsClaimStatusGet**](ArtistsAPI.md#artistsidrelationshipsclaimstatusget) | **GET** /artists/{id}/relationships/claimStatus | Get claimStatus relationship (\&quot;to-one\&quot;).
 [**artistsIdRelationshipsFollowersGet**](ArtistsAPI.md#artistsidrelationshipsfollowersget) | **GET** /artists/{id}/relationships/followers | Get followers relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsFollowingDelete**](ArtistsAPI.md#artistsidrelationshipsfollowingdelete) | **DELETE** /artists/{id}/relationships/following | Delete from following relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsFollowingGet**](ArtistsAPI.md#artistsidrelationshipsfollowingget) | **GET** /artists/{id}/relationships/following | Get following relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsFollowingPost**](ArtistsAPI.md#artistsidrelationshipsfollowingpost) | **POST** /artists/{id}/relationships/following | Add to following relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsLogoArtGet**](ArtistsAPI.md#artistsidrelationshipslogoartget) | **GET** /artists/{id}/relationships/logoArt | Get logoArt relationship (\&quot;to-many\&quot;).
+[**artistsIdRelationshipsLogoArtPatch**](ArtistsAPI.md#artistsidrelationshipslogoartpatch) | **PATCH** /artists/{id}/relationships/logoArt | Update logoArt relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsOwnersGet**](ArtistsAPI.md#artistsidrelationshipsownersget) | **GET** /artists/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsProfileArtGet**](ArtistsAPI.md#artistsidrelationshipsprofileartget) | **GET** /artists/{id}/relationships/profileArt | Get profileArt relationship (\&quot;to-many\&quot;).
 [**artistsIdRelationshipsProfileArtPatch**](ArtistsAPI.md#artistsidrelationshipsprofileartpatch) | **PATCH** /artists/{id}/relationships/profileArt | Update profileArt relationship (\&quot;to-many\&quot;).
@@ -41,7 +45,7 @@ Retrieves multiple artists by available filters, or without if applicable.
 import OpenAPIClient
 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: albums, bannerArt, biography, claimStatus, followers, following, logoArt, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
 let filterHandle = ["inner_example"] // [String] | Artist handle (e.g. `jayz`) (optional)
 let filterId = ["inner_example"] // [String] | List of artist IDs (e.g. `1566`) (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
@@ -66,7 +70,7 @@ ArtistsAPI.artistsGet(countryCode: countryCode, include: include, filterHandle: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: albums, bannerArt, biography, claimStatus, followers, following, logoArt, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
  **filterHandle** | [**[String]**](String.md) | Artist handle (e.g. &#x60;jayz&#x60;) | [optional] 
  **filterId** | [**[String]**](String.md) | List of artist IDs (e.g. &#x60;1566&#x60;) | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
@@ -104,7 +108,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: albums, bannerArt, biography, claimStatus, followers, following, logoArt, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
@@ -127,7 +131,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: albums, biography, claimStatus, followers, following, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: albums, bannerArt, biography, claimStatus, followers, following, logoArt, owners, profileArt, radio, roles, similarArtists, trackProviders, tracks, videos | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
 
@@ -153,7 +157,7 @@ Name | Type | Description  | Notes
 
 Update single artist.
 
-Updates existing artist.
+When both profile colours are available, they must have at least 3:1 contrast.
 
 ### Example
 ```swift
@@ -162,7 +166,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
-let artistsUpdateOperationPayload = ArtistsUpdateOperation_Payload(data: ArtistsUpdateOperation_Payload_Data(attributes: ArtistsUpdateOperation_Payload_Data_Attributes(contributionsEnabled: false, contributionsSalesPitch: "contributionsSalesPitch_example", externalLinks: [External_Link_Payload(href: "href_example", meta: External_Link_Meta(type: "type_example"))], handle: "handle_example", name: "name_example"), id: "id_example", type: "type_example"), meta: ArtistsUpdateOperation_Payload_Meta(dryRun: false)) // ArtistsUpdateOperationPayload |  (optional)
+let artistsUpdateOperationPayload = ArtistsUpdateOperation_Payload(data: ArtistsUpdateOperation_Payload_Data(attributes: ArtistsUpdateOperation_Payload_Data_Attributes(backgroundColor: "backgroundColor_example", contributionsEnabled: false, contributionsSalesPitch: "contributionsSalesPitch_example", externalLinks: [External_Link_Payload(href: "href_example", meta: External_Link_Meta(type: "type_example"))], foregroundColor: "foregroundColor_example", handle: "handle_example", name: "name_example"), id: "id_example", type: "type_example"), meta: ArtistsUpdateOperation_Payload_Meta(dryRun: false)) // ArtistsUpdateOperationPayload |  (optional)
 
 // Update single artist.
 ArtistsAPI.artistsIdPatch(id: id, idempotencyKey: idempotencyKey, artistsUpdateOperationPayload: artistsUpdateOperationPayload) { (response, error) in
@@ -254,6 +258,116 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **artistsIdRelationshipsBannerArtGet**
+```swift
+    open class func artistsIdRelationshipsBannerArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsBannerArtMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get bannerArt relationship (\"to-many\").
+
+Reads the selected header banner artwork.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Artist id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: bannerArt (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get bannerArt relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsBannerArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: bannerArt | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**ArtistsBannerArtMultiRelationshipDataDocument**](ArtistsBannerArtMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **artistsIdRelationshipsBannerArtPatch**
+```swift
+    open class func artistsIdRelationshipsBannerArtPatch(id: String, idempotencyKey: String? = nil, artistsBannerArtRelationshipUpdateOperationPayload: ArtistsBannerArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+```
+
+Update bannerArt relationship (\"to-many\").
+
+Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears the selection; null data and more than one entry are rejected. Returns an acknowledgement.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Artist id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let artistsBannerArtRelationshipUpdateOperationPayload = ArtistsBannerArtRelationshipUpdateOperation_Payload(data: [ArtistsBannerArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsBannerArtRelationshipUpdateOperationPayload |  (optional)
+
+// Update bannerArt relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsBannerArtPatch(id: id, idempotencyKey: idempotencyKey, artistsBannerArtRelationshipUpdateOperationPayload: artistsBannerArtRelationshipUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **artistsBannerArtRelationshipUpdateOperationPayload** | [**ArtistsBannerArtRelationshipUpdateOperationPayload**](ArtistsBannerArtRelationshipUpdateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+[**MutationResponseDocument**](MutationResponseDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -588,6 +702,116 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **artistsIdRelationshipsLogoArtGet**
+```swift
+    open class func artistsIdRelationshipsLogoArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsLogoArtMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get logoArt relationship (\"to-many\").
+
+Reads the selected logo artwork.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Artist id
+let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: logoArt (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get logoArt relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsLogoArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist id | 
+ **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: logoArt | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**ArtistsLogoArtMultiRelationshipDataDocument**](ArtistsLogoArtMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **artistsIdRelationshipsLogoArtPatch**
+```swift
+    open class func artistsIdRelationshipsLogoArtPatch(id: String, idempotencyKey: String? = nil, artistsLogoArtRelationshipUpdateOperationPayload: ArtistsLogoArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+```
+
+Update logoArt relationship (\"to-many\").
+
+Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears the selection; null data and more than one entry are rejected. Returns an acknowledgement.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Artist id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let artistsLogoArtRelationshipUpdateOperationPayload = ArtistsLogoArtRelationshipUpdateOperation_Payload(data: [ArtistsLogoArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsLogoArtRelationshipUpdateOperationPayload |  (optional)
+
+// Update logoArt relationship (\"to-many\").
+ArtistsAPI.artistsIdRelationshipsLogoArtPatch(id: id, idempotencyKey: idempotencyKey, artistsLogoArtRelationshipUpdateOperationPayload: artistsLogoArtRelationshipUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Artist id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **artistsLogoArtRelationshipUpdateOperationPayload** | [**ArtistsLogoArtRelationshipUpdateOperationPayload**](ArtistsLogoArtRelationshipUpdateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+[**MutationResponseDocument**](MutationResponseDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **artistsIdRelationshipsOwnersGet**
 ```swift
     open class func artistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
@@ -649,7 +873,7 @@ Name | Type | Description  | Notes
 
 Get profileArt relationship (\"to-many\").
 
-Retrieves profileArt relationship.
+Reads the artist's avatar artwork.
 
 ### Example
 ```swift
@@ -705,7 +929,7 @@ Name | Type | Description  | Notes
 
 Update profileArt relationship (\"to-many\").
 
-Updates profileArt relationship.
+Updates the artist's avatar artwork.
 
 ### Example
 ```swift
