@@ -58,16 +58,21 @@ final class PlayerItemLoader {
 
 private extension PlayerItemLoader {
 	func load(_ mediaProduct: MediaProduct, with streamingSessionId: String) async throws -> (Metadata, Asset) {
-		if let offlineItem = await offlineItemProvider?.get(productType: mediaProduct.productType, productId: mediaProduct.productId) {
+		// Source files are online only; they share productId with their track, so an offline lookup would find the track.
+		let mayUseOfflineSources = mediaProduct.productType != .TRACK_SOURCE_FILE
+
+		if mayUseOfflineSources,
+		   let offlineItem = await offlineItemProvider?.get(productType: mediaProduct.productType, productId: mediaProduct.productId)
+		{
 			return try await (metadata(of: offlineItem, productId: mediaProduct.productId), playerLoader.load(offlineItem))
 		}
 
 		let offlinePlaybackAllowed = offlinePlaybackPrivilegeCheck?() ?? false
-		if offlinePlaybackAllowed, let storedMediaProduct = mediaProduct as? StoredMediaProduct {
+		if mayUseOfflineSources, offlinePlaybackAllowed, let storedMediaProduct = mediaProduct as? StoredMediaProduct {
 			return try await (metadata(of: storedMediaProduct), playerLoader.load(storedMediaProduct))
 		}
 
-		if offlinePlaybackAllowed,
+		if mayUseOfflineSources, offlinePlaybackAllowed,
 		   let offlineEntry = try? offlineStorage?.get(key: mediaProduct.productId),
 		   let offlinedMediaProduct = PlayableOfflinedMediaProduct(from: offlineEntry)
 		{

@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `TrackSourceFileMediaProduct` and `ProductType.TRACK_SOURCE_FILE` play a specific source file of a track from `/trackSourceFileManifests/{id}` (Player)
+- Optional `sourceFileId` in play log and `playback_statistics` events and `sessionSourceFileId` in `streaming_session_start`, set only for source file plays (Player)
+
+### Changed
+- **Source-breaking:** `ProductType` has a new case, `TRACK_SOURCE_FILE`; exhaustive `switch`es over it need to handle it (Player)
+
 ## [0.12.8] - 2026-10-01
 
 ### Changed

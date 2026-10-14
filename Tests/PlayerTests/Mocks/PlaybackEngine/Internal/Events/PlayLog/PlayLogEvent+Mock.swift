@@ -16,7 +16,8 @@ extension PlayLogEvent {
 		sourceId: String? = nil,
 		actions: [Action] = [],
 		endTimestamp: UInt64 = 2,
-		endAssetPosition: Double = 2
+		endAssetPosition: Double = 2,
+		sourceFileId: String? = nil
 	) -> Self {
 		PlayLogEvent(
 			playbackSessionId: playbackSessionId,
@@ -33,7 +34,8 @@ extension PlayLogEvent {
 			sourceId: sourceId,
 			actions: actions,
 			endTimestamp: endTimestamp,
-			endAssetPosition: endAssetPosition
+			endAssetPosition: endAssetPosition,
+			sourceFileId: sourceFileId
 		)
 	}
 }

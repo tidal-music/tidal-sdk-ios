@@ -8,7 +8,8 @@ extension PlaybackInfoFetcher {
 		credentialsProvider: CredentialsProvider = CredentialsProviderMock(),
 		networkMonitor: NetworkMonitor = NetworkMonitorMock(),
 		playerEventSender: PlayerEventSender = PlayerEventSenderMock(),
-		featureFlagProvider: FeatureFlagProvider = .mock
+		featureFlagProvider: FeatureFlagProvider = .mock,
+		trackSourceFileManifestFetch: @escaping TrackSourceFileManifestFetch = PlaybackInfoFetcher.mockTrackSourceFileManifestFetch
 	) -> PlaybackInfoFetcher {
 		PlaybackInfoFetcher(
 			with: configuration,
@@ -16,7 +17,8 @@ extension PlaybackInfoFetcher {
 			credentialsProvider,
 			networkMonitor,
 			and: playerEventSender,
-			featureFlagProvider: featureFlagProvider
+			featureFlagProvider: featureFlagProvider,
+			trackSourceFileManifestFetch: trackSourceFileManifestFetch
 		)
 	}
 }

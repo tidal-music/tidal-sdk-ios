@@ -6,6 +6,7 @@ import Foundation
 
 enum PlayerLoaderError: Int {
 	case missingPlayer = 1
+	case offlineNotSupported
 
 	func error(_ errorId: ErrorId) -> Error {
 		PlayerInternalError(
