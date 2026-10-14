@@ -22,6 +22,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artistsResourceObject(ArtistsResourceObject)
     case artworksResourceObject(ArtworksResourceObject)
     case changeEventStreamsResourceObject(ChangeEventStreamsResourceObject)
+    case clientCertificatesResourceObject(ClientCertificatesResourceObject)
     case clientsResourceObject(ClientsResourceObject)
     case collaborationInviteRedemptionsResourceObject(CollaborationInviteRedemptionsResourceObject)
     case collaborationInvitesResourceObject(CollaborationInvitesResourceObject)
@@ -35,6 +36,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case folderItemsResourceObject(FolderItemsResourceObject)
     case foldersResourceObject(FoldersResourceObject)
     case genresResourceObject(GenresResourceObject)
+    case groupsResourceObject(GroupsResourceObject)
     case installationsResourceObject(InstallationsResourceObject)
     case lyricsResourceObject(LyricsResourceObject)
     case manualArtistClaimsResourceObject(ManualArtistClaimsResourceObject)
@@ -79,6 +81,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userDailyMixesResourceObject(UserDailyMixesResourceObject)
     case userDataExportRequestsResourceObject(UserDataExportRequestsResourceObject)
     case userDiscoveryMixesResourceObject(UserDiscoveryMixesResourceObject)
+    case userFeedItemsResourceObject(UserFeedItemsResourceObject)
+    case userFeedsResourceObject(UserFeedsResourceObject)
     case userNewReleaseMixesResourceObject(UserNewReleaseMixesResourceObject)
     case userOfflineMixesResourceObject(UserOfflineMixesResourceObject)
     case userPlaybackStatesResourceObject(UserPlaybackStatesResourceObject)
@@ -115,6 +119,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .changeEventStreamsResourceObject(let value):
             try container.encode(value)
+        case .clientCertificatesResourceObject(let value):
+            try container.encode(value)
         case .clientsResourceObject(let value):
             try container.encode(value)
         case .collaborationInviteRedemptionsResourceObject(let value):
@@ -140,6 +146,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .foldersResourceObject(let value):
             try container.encode(value)
         case .genresResourceObject(let value):
+            try container.encode(value)
+        case .groupsResourceObject(let value):
             try container.encode(value)
         case .installationsResourceObject(let value):
             try container.encode(value)
@@ -229,6 +237,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .userDiscoveryMixesResourceObject(let value):
             try container.encode(value)
+        case .userFeedItemsResourceObject(let value):
+            try container.encode(value)
+        case .userFeedsResourceObject(let value):
+            try container.encode(value)
         case .userNewReleaseMixesResourceObject(let value):
             try container.encode(value)
         case .userOfflineMixesResourceObject(let value):
@@ -294,6 +306,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "changeEventStreams":
             let value = try ChangeEventStreamsResourceObject(from: decoder)
             self = .changeEventStreamsResourceObject(value)
+        case "clientCertificates":
+            let value = try ClientCertificatesResourceObject(from: decoder)
+            self = .clientCertificatesResourceObject(value)
         case "clients":
             let value = try ClientsResourceObject(from: decoder)
             self = .clientsResourceObject(value)
@@ -333,6 +348,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "genres":
             let value = try GenresResourceObject(from: decoder)
             self = .genresResourceObject(value)
+        case "groups":
+            let value = try GroupsResourceObject(from: decoder)
+            self = .groupsResourceObject(value)
         case "installations":
             let value = try InstallationsResourceObject(from: decoder)
             self = .installationsResourceObject(value)
@@ -465,6 +483,12 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userDiscoveryMixes":
             let value = try UserDiscoveryMixesResourceObject(from: decoder)
             self = .userDiscoveryMixesResourceObject(value)
+        case "userFeedItems":
+            let value = try UserFeedItemsResourceObject(from: decoder)
+            self = .userFeedItemsResourceObject(value)
+        case "userFeeds":
+            let value = try UserFeedsResourceObject(from: decoder)
+            self = .userFeedsResourceObject(value)
         case "userNewReleaseMixes":
             let value = try UserNewReleaseMixesResourceObject(from: decoder)
             self = .userNewReleaseMixesResourceObject(value)
@@ -516,6 +540,7 @@ extension IncludedInner: Identifiable {
         case .artistsResourceObject(let value): return value.id
         case .artworksResourceObject(let value): return value.id
         case .changeEventStreamsResourceObject(let value): return value.id
+        case .clientCertificatesResourceObject(let value): return value.id
         case .clientsResourceObject(let value): return value.id
         case .collaborationInviteRedemptionsResourceObject(let value): return value.id
         case .collaborationInvitesResourceObject(let value): return value.id
@@ -529,6 +554,7 @@ extension IncludedInner: Identifiable {
         case .folderItemsResourceObject(let value): return value.id
         case .foldersResourceObject(let value): return value.id
         case .genresResourceObject(let value): return value.id
+        case .groupsResourceObject(let value): return value.id
         case .installationsResourceObject(let value): return value.id
         case .lyricsResourceObject(let value): return value.id
         case .manualArtistClaimsResourceObject(let value): return value.id
@@ -573,6 +599,8 @@ extension IncludedInner: Identifiable {
         case .userDailyMixesResourceObject(let value): return value.id
         case .userDataExportRequestsResourceObject(let value): return value.id
         case .userDiscoveryMixesResourceObject(let value): return value.id
+        case .userFeedItemsResourceObject(let value): return value.id
+        case .userFeedsResourceObject(let value): return value.id
         case .userNewReleaseMixesResourceObject(let value): return value.id
         case .userOfflineMixesResourceObject(let value): return value.id
         case .userPlaybackStatesResourceObject(let value): return value.id

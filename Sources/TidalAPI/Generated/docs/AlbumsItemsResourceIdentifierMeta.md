@@ -3,7 +3,6 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**itemCursor** | **String** |  | [optional] 
 **replacement** | [**ReplacementProvenance**](ReplacementProvenance.md) |  | [optional] 
 **trackNumber** | **Int** | track number | 
 **volumeNumber** | **Int** | volume number | 

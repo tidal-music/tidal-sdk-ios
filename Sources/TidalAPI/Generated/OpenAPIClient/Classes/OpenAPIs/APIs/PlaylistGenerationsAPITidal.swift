@@ -15,6 +15,21 @@ public enum PlaylistGenerationsAPITidal {
 
 
 	/**
+	 * enum for parameter generationView
+	 */
+	public enum GenerationView_playlistGenerationsGet: String, CaseIterable {
+		case current = "CURRENT"
+		case latest = "LATEST"
+
+		func toPlaylistGenerationsAPIEnum() -> PlaylistGenerationsAPI.GenerationView_playlistGenerationsGet {
+			switch self {
+			case .current: return .current
+			case .latest: return .latest
+			}
+		}
+	}
+
+	/**
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_playlistGenerationsGet: String, CaseIterable {
@@ -36,9 +51,9 @@ public enum PlaylistGenerationsAPITidal {
      
      - returns: PlaylistGenerationsMultiResourceDataDocument
      */
-	public static func playlistGenerationsGet(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [PlaylistGenerationsAPITidal.IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsMultiResourceDataDocument {
+	public static func playlistGenerationsGet(filterPlaylistId: [String], generationView: PlaylistGenerationsAPITidal.GenerationView_playlistGenerationsGet? = nil, include: [String]? = nil, includeLinkage: [PlaylistGenerationsAPITidal.IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistGenerationsAPI.playlistGenerationsGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPlaylistGenerationsAPIEnum() }, replaceMedia: replaceMedia)
+			PlaylistGenerationsAPI.playlistGenerationsGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, generationView: generationView?.toPlaylistGenerationsAPIEnum(), include: include, includeLinkage: includeLinkage?.compactMap { $0.toPlaylistGenerationsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

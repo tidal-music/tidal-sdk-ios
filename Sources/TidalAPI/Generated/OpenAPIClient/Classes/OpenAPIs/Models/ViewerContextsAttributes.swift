@@ -25,7 +25,7 @@ public struct ViewerContextsAttributes: Codable, Hashable {
     public var isFollowedBy: AnyCodable?
     /** The viewer follows the subject. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
     public var isFollowing: AnyCodable?
-    public var isMemberOf: Membership?
+    public var isGranteeOf: Grantee?
 
     public init(
         hasCommentedOn: AnyCodable? = nil,
@@ -35,7 +35,7 @@ public struct ViewerContextsAttributes: Codable, Hashable {
         hasSavedForLater: AnyCodable? = nil,
         isFollowedBy: AnyCodable? = nil,
         isFollowing: AnyCodable? = nil,
-        isMemberOf: Membership? = nil
+        isGranteeOf: Grantee? = nil
     ) {
         self.hasCommentedOn = hasCommentedOn
         self.hasInCollection = hasInCollection
@@ -44,7 +44,7 @@ public struct ViewerContextsAttributes: Codable, Hashable {
         self.hasSavedForLater = hasSavedForLater
         self.isFollowedBy = isFollowedBy
         self.isFollowing = isFollowing
-        self.isMemberOf = isMemberOf
+        self.isGranteeOf = isGranteeOf
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -55,7 +55,7 @@ public struct ViewerContextsAttributes: Codable, Hashable {
         case hasSavedForLater
         case isFollowedBy
         case isFollowing
-        case isMemberOf
+        case isGranteeOf
     }
 
     // Encodable protocol methods
@@ -69,6 +69,6 @@ public struct ViewerContextsAttributes: Codable, Hashable {
         try container.encodeIfPresent(hasSavedForLater, forKey: .hasSavedForLater)
         try container.encodeIfPresent(isFollowedBy, forKey: .isFollowedBy)
         try container.encodeIfPresent(isFollowing, forKey: .isFollowing)
-        try container.encodeIfPresent(isMemberOf, forKey: .isMemberOf)
+        try container.encodeIfPresent(isGranteeOf, forKey: .isGranteeOf)
     }
 }

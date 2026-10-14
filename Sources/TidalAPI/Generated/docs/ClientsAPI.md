@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**clientsIdDelete**](ClientsAPI.md#clientsiddelete) | **DELETE** /clients/{id} | Delete single client.
 [**clientsIdGet**](ClientsAPI.md#clientsidget) | **GET** /clients/{id} | Get single client.
 [**clientsIdPatch**](ClientsAPI.md#clientsidpatch) | **PATCH** /clients/{id} | Update single client.
+[**clientsIdRelationshipsCertificatesGet**](ClientsAPI.md#clientsidrelationshipscertificatesget) | **GET** /clients/{id}/relationships/certificates | Get certificates relationship (\&quot;to-many\&quot;).
 [**clientsIdRelationshipsOwnersGet**](ClientsAPI.md#clientsidrelationshipsownersget) | **GET** /clients/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**clientsPost**](ClientsAPI.md#clientspost) | **POST** /clients | Create single client.
 
@@ -27,7 +28,7 @@ Retrieves multiple clients by available filters, or without if applicable.
 import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: certificates, owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple clients.
@@ -48,7 +49,7 @@ ClientsAPI.clientsGet(filterOwnersId: filterOwnersId, include: include, includeL
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: certificates, owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
@@ -133,7 +134,7 @@ Retrieves single client by id.
 import OpenAPIClient
 
 let id = "id_example" // String | OAuth client identifier
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: certificates, owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single client.
@@ -154,7 +155,7 @@ ClientsAPI.clientsIdGet(id: id, include: include, includeLinkage: includeLinkage
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | OAuth client identifier | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: certificates, owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
@@ -222,6 +223,60 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **clientsIdRelationshipsCertificatesGet**
+```swift
+    open class func clientsIdRelationshipsCertificatesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ClientsCertificatesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+```
+
+Get certificates relationship (\"to-many\").
+
+Retrieves certificates relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | OAuth client identifier
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: certificates (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get certificates relationship (\"to-many\").
+ClientsAPI.clientsIdRelationshipsCertificatesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | OAuth client identifier | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: certificates | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**ClientsCertificatesMultiRelationshipDataDocument**](ClientsCertificatesMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

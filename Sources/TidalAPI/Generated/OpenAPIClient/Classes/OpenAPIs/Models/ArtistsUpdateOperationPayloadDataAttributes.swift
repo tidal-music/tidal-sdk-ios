@@ -12,32 +12,44 @@ import AnyCodable
 
 public struct ArtistsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
+    public static let backgroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/")
+    public static let foregroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/")
     public static let handleRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let nameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    /** Background colour override. */
+    public var backgroundColor: String?
     public var contributionsEnabled: Bool?
     public var contributionsSalesPitch: String?
     public var externalLinks: [ExternalLinkPayload]?
+    /** Foreground colour override. */
+    public var foregroundColor: String?
     public var handle: String?
     public var name: String?
 
     public init(
+        backgroundColor: String? = nil,
         contributionsEnabled: Bool? = nil,
         contributionsSalesPitch: String? = nil,
         externalLinks: [ExternalLinkPayload]? = nil,
+        foregroundColor: String? = nil,
         handle: String? = nil,
         name: String? = nil
     ) {
+        self.backgroundColor = backgroundColor
         self.contributionsEnabled = contributionsEnabled
         self.contributionsSalesPitch = contributionsSalesPitch
         self.externalLinks = externalLinks
+        self.foregroundColor = foregroundColor
         self.handle = handle
         self.name = name
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case backgroundColor
         case contributionsEnabled
         case contributionsSalesPitch
         case externalLinks
+        case foregroundColor
         case handle
         case name
     }
@@ -46,9 +58,11 @@ public struct ArtistsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(backgroundColor, forKey: .backgroundColor)
         try container.encodeIfPresent(contributionsEnabled, forKey: .contributionsEnabled)
         try container.encodeIfPresent(contributionsSalesPitch, forKey: .contributionsSalesPitch)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encodeIfPresent(foregroundColor, forKey: .foregroundColor)
         try container.encodeIfPresent(handle, forKey: .handle)
         try container.encodeIfPresent(name, forKey: .name)
     }

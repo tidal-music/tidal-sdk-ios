@@ -16,9 +16,9 @@ public struct CollaborationInvitesAttributes: Codable, Hashable {
     public var code: String
     /** Datetime the invite was created (ISO 8601) */
     public var createdAt: Date
-    /** Datetime the invite expires (ISO 8601) */
+    /** Time the underlying share expires; accepted grants remain valid */
     public var expiresAt: Date
-    /** Whether the invite has been revoked by the subject's owner */
+    /** Whether the underlying share has been revoked */
     public var revoked: Bool
 
     public init(

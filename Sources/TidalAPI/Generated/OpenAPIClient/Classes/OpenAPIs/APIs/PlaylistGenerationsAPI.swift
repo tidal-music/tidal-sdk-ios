@@ -13,6 +13,14 @@ import AnyCodable
 internal class PlaylistGenerationsAPI {
 
     /**
+     * enum for parameter generationView
+     */
+    public enum GenerationView_playlistGenerationsGet: String, CaseIterable {
+        case current = "CURRENT"
+        case latest = "LATEST"
+    }
+
+    /**
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_playlistGenerationsGet: String, CaseIterable {
@@ -25,15 +33,16 @@ internal class PlaylistGenerationsAPI {
      Get multiple playlistGenerations.
      
      - parameter filterPlaylistId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) 
+     - parameter generationView: (query) CURRENT selects the committed generation. LATEST selects the newest accepted attempt, regardless of status. New values may be added at any time. (optional, default to .current)
      - parameter include: (query) Include related resources. Available relationships: baseGeneration, playlist, trackPreferences (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: baseGeneration.trackPreferences (optional)
      - returns: PlaylistGenerationsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistGenerationsGet(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsMultiResourceDataDocument {
+    internal class func playlistGenerationsGet(filterPlaylistId: [String], generationView: GenerationView_playlistGenerationsGet? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsMultiResourceDataDocument {
         do {
-            return try await playlistGenerationsGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+            return try await playlistGenerationsGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, generationView: generationView, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -48,12 +57,13 @@ internal class PlaylistGenerationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterPlaylistId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) 
+     - parameter generationView: (query) CURRENT selects the committed generation. LATEST selects the newest accepted attempt, regardless of status. New values may be added at any time. (optional, default to .current)
      - parameter include: (query) Include related resources. Available relationships: baseGeneration, playlist, trackPreferences (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: baseGeneration.trackPreferences (optional)
      - returns: RequestBuilder<PlaylistGenerationsMultiResourceDataDocument> 
      */
-    internal class func playlistGenerationsGetWithRequestBuilder(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationsMultiResourceDataDocument> {
+    internal class func playlistGenerationsGetWithRequestBuilder(filterPlaylistId: [String], generationView: GenerationView_playlistGenerationsGet? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationsMultiResourceDataDocument> {
         let localVariablePath = "/playlistGenerations"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -61,6 +71,7 @@ internal class PlaylistGenerationsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[playlist.id]": (wrappedValue: filterPlaylistId.encodeToJSON(), isExplode: true),
+            "generationView": (wrappedValue: generationView?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),

@@ -17,18 +17,23 @@ public struct ArtworkFile: Codable, Hashable {
     /** Artwork file href */
     public var href: String
     public var meta: ArtworkFileMeta
+    /** Media type hint for the artwork file */
+    public var type: String?
 
     public init(
         href: String,
-        meta: ArtworkFileMeta
+        meta: ArtworkFileMeta,
+        type: String? = nil
     ) {
         self.href = href
         self.meta = meta
+        self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case href
         case meta
+        case type
     }
 
     // Encodable protocol methods
@@ -37,5 +42,6 @@ public struct ArtworkFile: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(href, forKey: .href)
         try container.encode(meta, forKey: .meta)
+        try container.encodeIfPresent(type, forKey: .type)
     }
 }

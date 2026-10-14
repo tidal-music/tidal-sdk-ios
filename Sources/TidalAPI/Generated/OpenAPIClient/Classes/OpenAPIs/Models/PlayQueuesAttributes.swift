@@ -28,6 +28,8 @@ public struct PlayQueuesAttributes: Codable, Hashable {
     public var lastModifiedAt: Date
     /** Queue's repeat mode */
     public var _repeat: Repeat
+    /** Opaque queue-wide equality token. */
+    public var revision: UUID
     /** Queue's shuffle mode */
     public var shuffle: Shuffle
     /** Queue is shuffled or not */
@@ -37,12 +39,14 @@ public struct PlayQueuesAttributes: Codable, Hashable {
         createdAt: Date,
         lastModifiedAt: Date,
         _repeat: Repeat,
+        revision: UUID,
         shuffle: Shuffle,
         shuffled: Bool
     ) {
         self.createdAt = createdAt
         self.lastModifiedAt = lastModifiedAt
         self._repeat = _repeat
+        self.revision = revision
         self.shuffle = shuffle
         self.shuffled = shuffled
     }
@@ -51,6 +55,7 @@ public struct PlayQueuesAttributes: Codable, Hashable {
         case createdAt
         case lastModifiedAt
         case _repeat = "repeat"
+        case revision
         case shuffle
         case shuffled
     }
@@ -62,6 +67,7 @@ public struct PlayQueuesAttributes: Codable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
         try container.encode(_repeat, forKey: ._repeat)
+        try container.encode(revision, forKey: .revision)
         try container.encode(shuffle, forKey: .shuffle)
         try container.encode(shuffled, forKey: .shuffled)
     }

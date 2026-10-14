@@ -15,9 +15,10 @@ public struct PriceConfigurationsCreateOperationPayloadDataAttributes: Codable, 
     public enum Currency: String, Codable, CaseIterable {
         case usd = "USD"
     }
+    public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^\\+?(?=[0-9.]*[1-9])(?:[0-9]+(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])/")
     /** Currency code (ISO 4217) */
     public var currency: Currency
-    /** Price amount with max 2 decimal places */
+    /** Amount in the currency's major units */
     public var price: String
 
     public init(

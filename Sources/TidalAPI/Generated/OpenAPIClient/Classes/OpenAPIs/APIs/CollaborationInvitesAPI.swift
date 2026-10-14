@@ -29,6 +29,7 @@ internal class CollaborationInvitesAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: CollaborationInvitesMultiResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesGet]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument {
         do {
@@ -52,6 +53,7 @@ internal class CollaborationInvitesAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: RequestBuilder<CollaborationInvitesMultiResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func collaborationInvitesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesMultiResourceDataDocument> {
         let localVariablePath = "/collaborationInvites"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
@@ -83,6 +85,7 @@ internal class CollaborationInvitesAPI {
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: MutationResponseDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func collaborationInvitesIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
         do {
@@ -104,6 +107,7 @@ internal class CollaborationInvitesAPI {
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func collaborationInvitesIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/collaborationInvites/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -142,6 +146,7 @@ internal class CollaborationInvitesAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: CollaborationInvitesSingleResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func collaborationInvitesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesIdGet]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument {
         do {
@@ -165,6 +170,7 @@ internal class CollaborationInvitesAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: RequestBuilder<CollaborationInvitesSingleResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func collaborationInvitesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesSingleResourceDataDocument> {
         var localVariablePath = "/collaborationInvites/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -199,6 +205,7 @@ internal class CollaborationInvitesAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: CollaborationInvitesOwnersMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func collaborationInvitesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CollaborationInvitesOwnersMultiRelationshipDataDocument {
         do {
@@ -221,6 +228,7 @@ internal class CollaborationInvitesAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<CollaborationInvitesOwnersMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func collaborationInvitesIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<CollaborationInvitesOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/collaborationInvites/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -254,6 +262,7 @@ internal class CollaborationInvitesAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: CollaborationInvitesSubjectSingleRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSubjectSingleRelationshipDataDocument {
         do {
@@ -276,6 +285,7 @@ internal class CollaborationInvitesAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.items (optional)
      - returns: RequestBuilder<CollaborationInvitesSubjectSingleRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func collaborationInvitesIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CollaborationInvitesSubjectSingleRelationshipDataDocument> {
         var localVariablePath = "/collaborationInvites/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -308,6 +318,7 @@ internal class CollaborationInvitesAPI {
      - parameter collaborationInvitesCreateOperationPayload: (body)  (optional)
      - returns: CollaborationInvitesCreateSingleResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func collaborationInvitesPost(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil) async throws -> CollaborationInvitesCreateSingleResourceDataDocument {
         do {
@@ -329,6 +340,7 @@ internal class CollaborationInvitesAPI {
      - parameter collaborationInvitesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<CollaborationInvitesCreateSingleResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func collaborationInvitesPostWithRequestBuilder(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil) -> RequestBuilder<CollaborationInvitesCreateSingleResourceDataDocument> {
         let localVariablePath = "/collaborationInvites"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath

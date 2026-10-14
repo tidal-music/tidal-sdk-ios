@@ -22,13 +22,13 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case ep = "EP"
         case single = "SINGLE"
     }
-    public static let barcodeIdRule = StringRule(minLength: 12, maxLength: 13, pattern: "/^[0-9]+$/")
+    public static let barcodeIdRule = StringRule(minLength: nil, maxLength: 13, pattern: "/^$|^[0-9]{12,13}$/")
     public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     public static let versionRule = StringRule(minLength: nil, maxLength: 255, pattern: nil)
     /** Access type */
     public var accessType: AccessType?
     public var albumType: AlbumType?
-    /** A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13) with a valid GS1 check digit. It can only be set while the album has no barcode of its own: the barcode TIDAL assigns at the album's first sale is permanent. Omit the field, and TIDAL assigns one then. */
+    /** A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13) with a valid GS1 check digit. A barcode set here can be replaced until the album is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The barcode TIDAL assigns at the album's first sale is permanent. Omit the field to leave the barcode unchanged. */
     public var barcodeId: String?
     public var copyright: Copyright?
     /** Explicit content */

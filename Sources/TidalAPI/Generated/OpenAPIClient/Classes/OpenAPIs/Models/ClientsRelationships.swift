@@ -12,15 +12,19 @@ import AnyCodable
 
 public struct ClientsRelationships: Codable, Hashable {
 
+    public var certificates: ClientsCertificatesMultiRelationshipDataDocument?
     public var owners: ClientsOwnersMultiRelationshipDataDocument?
 
     public init(
+        certificates: ClientsCertificatesMultiRelationshipDataDocument? = nil,
         owners: ClientsOwnersMultiRelationshipDataDocument? = nil
     ) {
+        self.certificates = certificates
         self.owners = owners
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case certificates
         case owners
     }
 
@@ -28,6 +32,7 @@ public struct ClientsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(certificates, forKey: .certificates)
         try container.encodeIfPresent(owners, forKey: .owners)
     }
 }

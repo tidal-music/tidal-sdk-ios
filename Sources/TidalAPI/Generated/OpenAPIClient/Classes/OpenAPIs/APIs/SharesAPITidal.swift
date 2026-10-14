@@ -42,6 +42,18 @@ public enum SharesAPITidal {
 
 
 	/**
+     Delete single share.
+     
+     - returns: MutationResponseDocument
+     */
+	public static func sharesIdDelete(id: String, revokeGrants: Bool? = nil, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			SharesAPI.sharesIdDeleteWithRequestBuilder(id: id, revokeGrants: revokeGrants, idempotencyKey: idempotencyKey)
+		}
+	}
+
+
+	/**
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_sharesIdGet: String, CaseIterable {

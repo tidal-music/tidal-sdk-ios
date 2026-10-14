@@ -49,7 +49,7 @@ public struct TracksUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case pentatonicMinor = "PENTATONIC_MINOR"
     }
     public static let bpmRule = NumericRule<Float>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
-    public static let isrcRule = StringRule(minLength: 12, maxLength: 12, pattern: "/^[A-Z]{2}[A-Z0-9]{3}[0-9]{2}[0-9]{5}$/")
+    public static let isrcRule = StringRule(minLength: nil, maxLength: 12, pattern: "/^$|^[A-Z]{2}[A-Z0-9]{3}[0-9]{2}[0-9]{5}$/")
     public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     public static let toneTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
     /** Access type */
@@ -57,7 +57,7 @@ public struct TracksUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public var bpm: Float?
     /** Explicit content */
     public var explicit: Bool?
-    /** An ISRC the rights holder already owns: the 12 characters ISO 3901 defines, without the hyphens of the display form. It can only be set while the track has no ISRC of its own: the ISRC TIDAL assigns at the track's first sale is permanent. Omit the field, and TIDAL assigns one then. */
+    /** An ISRC the rights holder already owns: the 12 characters ISO 3901 defines, without the hyphens of the display form. An ISRC set here can be replaced until the track is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The ISRC TIDAL assigns at the track's first sale is permanent. Omit the field to leave the ISRC unchanged. */
     public var isrc: String?
     public var key: Key?
     public var keyScale: KeyScale?

@@ -30,12 +30,14 @@ public enum FolderItemsAPITidal {
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_folderItemsIdGet: String, CaseIterable {
+		case breadcrumb = "breadcrumb"
 		case owners = "owners"
 		case parent = "parent"
 		case subject = "subject"
 
 		func toFolderItemsAPIEnum() -> FolderItemsAPI.IncludeLinkage_folderItemsIdGet {
 			switch self {
+			case .breadcrumb: return .breadcrumb
 			case .owners: return .owners
 			case .parent: return .parent
 			case .subject: return .subject
@@ -51,6 +53,18 @@ public enum FolderItemsAPITidal {
 	public static func folderItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [FolderItemsAPITidal.IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			FolderItemsAPI.folderItemsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toFolderItemsAPIEnum() }, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Get breadcrumb relationship (\&quot;to-many\&quot;).
+     
+     - returns: FolderItemsBreadcrumbMultiRelationshipDataDocument
+     */
+	public static func folderItemsIdRelationshipsBreadcrumbGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsBreadcrumbMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			FolderItemsAPI.folderItemsIdRelationshipsBreadcrumbGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
