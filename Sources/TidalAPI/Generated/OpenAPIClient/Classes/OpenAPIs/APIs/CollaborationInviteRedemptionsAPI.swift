@@ -19,6 +19,7 @@ internal class CollaborationInviteRedemptionsAPI {
      - parameter collaborationInviteRedemptionsCreateOperationPayload: (body)  (optional)
      - returns: CollaborationInviteRedemptionsCreateSingleResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func collaborationInviteRedemptionsPost(idempotencyKey: String? = nil, collaborationInviteRedemptionsCreateOperationPayload: CollaborationInviteRedemptionsCreateOperationPayload? = nil) async throws -> CollaborationInviteRedemptionsCreateSingleResourceDataDocument {
         do {
@@ -40,6 +41,7 @@ internal class CollaborationInviteRedemptionsAPI {
      - parameter collaborationInviteRedemptionsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<CollaborationInviteRedemptionsCreateSingleResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func collaborationInviteRedemptionsPostWithRequestBuilder(idempotencyKey: String? = nil, collaborationInviteRedemptionsCreateOperationPayload: CollaborationInviteRedemptionsCreateOperationPayload? = nil) -> RequestBuilder<CollaborationInviteRedemptionsCreateSingleResourceDataDocument> {
         let localVariablePath = "/collaborationInviteRedemptions"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath

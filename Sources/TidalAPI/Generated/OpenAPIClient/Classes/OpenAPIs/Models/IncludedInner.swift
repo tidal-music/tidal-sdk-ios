@@ -81,6 +81,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userDailyMixesResourceObject(UserDailyMixesResourceObject)
     case userDataExportRequestsResourceObject(UserDataExportRequestsResourceObject)
     case userDiscoveryMixesResourceObject(UserDiscoveryMixesResourceObject)
+    case userFeedItemsResourceObject(UserFeedItemsResourceObject)
+    case userFeedsResourceObject(UserFeedsResourceObject)
     case userNewReleaseMixesResourceObject(UserNewReleaseMixesResourceObject)
     case userOfflineMixesResourceObject(UserOfflineMixesResourceObject)
     case userPlaybackStatesResourceObject(UserPlaybackStatesResourceObject)
@@ -234,6 +236,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .userDataExportRequestsResourceObject(let value):
             try container.encode(value)
         case .userDiscoveryMixesResourceObject(let value):
+            try container.encode(value)
+        case .userFeedItemsResourceObject(let value):
+            try container.encode(value)
+        case .userFeedsResourceObject(let value):
             try container.encode(value)
         case .userNewReleaseMixesResourceObject(let value):
             try container.encode(value)
@@ -477,6 +483,12 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userDiscoveryMixes":
             let value = try UserDiscoveryMixesResourceObject(from: decoder)
             self = .userDiscoveryMixesResourceObject(value)
+        case "userFeedItems":
+            let value = try UserFeedItemsResourceObject(from: decoder)
+            self = .userFeedItemsResourceObject(value)
+        case "userFeeds":
+            let value = try UserFeedsResourceObject(from: decoder)
+            self = .userFeedsResourceObject(value)
         case "userNewReleaseMixes":
             let value = try UserNewReleaseMixesResourceObject(from: decoder)
             self = .userNewReleaseMixesResourceObject(value)
@@ -587,6 +599,8 @@ extension IncludedInner: Identifiable {
         case .userDailyMixesResourceObject(let value): return value.id
         case .userDataExportRequestsResourceObject(let value): return value.id
         case .userDiscoveryMixesResourceObject(let value): return value.id
+        case .userFeedItemsResourceObject(let value): return value.id
+        case .userFeedsResourceObject(let value): return value.id
         case .userNewReleaseMixesResourceObject(let value): return value.id
         case .userOfflineMixesResourceObject(let value): return value.id
         case .userPlaybackStatesResourceObject(let value): return value.id
