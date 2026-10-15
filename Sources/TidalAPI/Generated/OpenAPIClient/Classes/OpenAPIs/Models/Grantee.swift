@@ -10,7 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
-/** The viewer&#39;s effective role for the subject. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
+/** The viewer&#39;s effective role for the subject. Populated for albums, tracks and folders; omitted for other subject types. */
 public struct Grantee: Codable, Hashable {
 
     public enum Role: String, Codable, CaseIterable {

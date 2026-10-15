@@ -112,7 +112,7 @@ internal class UserFeedItemsAPI {
     /**
      Get actors relationship (\"to-many\").
      - GET /userFeedItems/{id}/relationships/actors
-     - Artists attributed to the activity.
+     - Artists attributed to the activity. Always empty for `ALBUM_FAVOURITED`, `TRACK_FAVOURITED` and `TRACK_PLAYLISTED`, which are counts only, and for `HISTORY_MIX_READY`, which nobody else acted on.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -169,7 +169,7 @@ internal class UserFeedItemsAPI {
     /**
      Get subject relationship (\"to-one\").
      - GET /userFeedItems/{id}/relationships/subject
-     - The resource the activity concerns.
+     - The resource the activity concerns. For `HISTORY_MIX_READY`, the viewer's history mix as a playlist.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

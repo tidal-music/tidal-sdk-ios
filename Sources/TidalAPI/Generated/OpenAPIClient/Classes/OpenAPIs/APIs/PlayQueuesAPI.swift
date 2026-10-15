@@ -221,7 +221,7 @@ internal class PlayQueuesAPI {
     /**
      Update single playQueue.
      - PATCH /playQueues/{id}
-     - Updates existing playQueue.
+     - Atomically applies attributes, future items, then current selection.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
