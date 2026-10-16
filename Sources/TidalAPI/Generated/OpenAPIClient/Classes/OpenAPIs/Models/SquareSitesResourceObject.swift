@@ -16,22 +16,26 @@ public struct SquareSitesResourceObject: Codable, Hashable {
     public var attributes: SquareSitesAttributes?
     /** Resource id */
     public var id: String
+    public var relationships: SquareSitesRelationships?
     /** Resource type */
     public var type: String
 
     public init(
         attributes: SquareSitesAttributes? = nil,
         id: String,
+        relationships: SquareSitesRelationships? = nil,
         type: String
     ) {
         self.attributes = attributes
         self.id = id
+        self.relationships = relationships
         self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case attributes
         case id
+        case relationships
         case type
     }
 
@@ -41,6 +45,7 @@ public struct SquareSitesResourceObject: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(attributes, forKey: .attributes)
         try container.encode(id, forKey: .id)
+        try container.encodeIfPresent(relationships, forKey: .relationships)
         try container.encode(type, forKey: .type)
     }
 }

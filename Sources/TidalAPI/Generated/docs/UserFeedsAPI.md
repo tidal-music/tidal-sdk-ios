@@ -73,7 +73,7 @@ Advances the supplied seen positions and returns the updated feed state.
 import OpenAPIClient
 
 let id = "id_example" // String | Opaque identifier of a user's feed state. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userFeedsUpdateOperationPayload = UserFeedsUpdateOperation_Payload(data: UserFeedsUpdateOperation_Payload_Data(attributes: UserFeedsUpdateOperation_Payload_Data_Attributes(feed: UserFeedsUpdateOperation_Payload_Data_Attributes_Feed(seenThroughToken: "seenThroughToken_example"), inbox: UserFeedsUpdateOperation_Payload_Data_Attributes_Inbox(seenThroughToken: "seenThroughToken_example")), id: "id_example", type: "type_example")) // UserFeedsUpdateOperationPayload |  (optional)
 
 // Update single userFeed.
@@ -94,7 +94,7 @@ UserFeedsAPI.userFeedsIdPatch(id: id, idempotencyKey: idempotencyKey, userFeedsU
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Opaque identifier of a user&#39;s feed state. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userFeedsUpdateOperationPayload** | [**UserFeedsUpdateOperationPayload**](UserFeedsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type

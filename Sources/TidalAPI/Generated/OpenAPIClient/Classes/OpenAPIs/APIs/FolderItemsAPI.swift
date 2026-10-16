@@ -13,10 +13,88 @@ import AnyCodable
 internal class FolderItemsAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_folderItemsGet: String, CaseIterable {
+        case breadcrumb = "breadcrumb"
+        case owners = "owners"
+        case parent = "parent"
+        case subject = "subject"
+    }
+
+    /**
+     Get multiple folderItems.
+     
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
+     - parameter filterParentId: (query) Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;) (optional)
+     - parameter filterParentIsRoot: (query) Filter by parent.isRoot (optional)
+     - parameter filterParentOwnersId: (query) Root folder owner; must be the authenticated user.. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter filterSubjectOwnersId: (query) In folders you own, me selects owned placements and !me selects shared placements. In someone else&#39;s folder, me returns no items and !me returns the normal listing. Omit for all items. (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     - returns: FolderItemsMultiResourceDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func folderItemsGet(pageCursor: String? = nil, include: [String]? = nil, filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSubjectOwnersId: String? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
+        do {
+            return try await folderItemsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSubjectOwnersId: filterSubjectOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get multiple folderItems.
+     - GET /folderItems
+     - Lists items in a folder, newest placement first. Select a folder with parent.id, or select your root with parent.isRoot=true and parent.owners.id=me. These forms cannot be combined; no other parent-filter combinations are supported.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
+     - parameter filterParentId: (query) Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;) (optional)
+     - parameter filterParentIsRoot: (query) Filter by parent.isRoot (optional)
+     - parameter filterParentOwnersId: (query) Root folder owner; must be the authenticated user.. Use &#x60;me&#x60; for the authenticated user (optional)
+     - parameter filterSubjectOwnersId: (query) In folders you own, me selects owned placements and !me selects shared placements. In someone else&#39;s folder, me returns no items and !me returns the normal listing. Omit for all items. (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     - returns: RequestBuilder<FolderItemsMultiResourceDataDocument> 
+     */
+    internal class func folderItemsGetWithRequestBuilder(pageCursor: String? = nil, include: [String]? = nil, filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSubjectOwnersId: String? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsMultiResourceDataDocument> {
+        let localVariablePath = "/folderItems"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[parent.id]": (wrappedValue: filterParentId?.encodeToJSON(), isExplode: true),
+            "filter[parent.isRoot]": (wrappedValue: filterParentIsRoot?.encodeToJSON(), isExplode: true),
+            "filter[parent.owners.id]": (wrappedValue: filterParentOwnersId?.encodeToJSON(), isExplode: true),
+            "filter[subject.owners.id]": (wrappedValue: filterSubjectOwnersId?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<FolderItemsMultiResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Delete single folderItem.
      
      - parameter id: (path) Folder item id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -37,7 +115,7 @@ internal class FolderItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder item id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
     internal class func folderItemsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
@@ -301,7 +379,7 @@ internal class FolderItemsAPI {
      Update parent relationship (\"to-one\").
      
      - parameter id: (path) Folder item id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter folderItemsParentRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: FolderItemsParentUpdateSingleRelationshipDataDocument
      */
@@ -323,7 +401,7 @@ internal class FolderItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder item id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter folderItemsParentRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<FolderItemsParentUpdateSingleRelationshipDataDocument> 
      */
@@ -407,7 +485,7 @@ internal class FolderItemsAPI {
     /**
      Create single folderItem.
      
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter folderItemsCreateOperationPayload: (body)  (optional)
      - returns: FolderItemsCreateSingleResourceDataDocument
      */
@@ -428,7 +506,7 @@ internal class FolderItemsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter folderItemsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<FolderItemsCreateSingleResourceDataDocument> 
      */

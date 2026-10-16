@@ -85,7 +85,7 @@ internal class UserCollectionAlbumsAPI {
      Delete from items relationship (\"to-many\").
      
      - parameter id: (path) User collection albums id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userCollectionAlbumsItemsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -107,7 +107,7 @@ internal class UserCollectionAlbumsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection albums id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userCollectionAlbumsItemsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -218,7 +218,7 @@ internal class UserCollectionAlbumsAPI {
      Add to items relationship (\"to-many\").
      
      - parameter id: (path) User collection albums id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userCollectionAlbumsItemsRelationshipAddOperationPayload: (body)  (optional)
      - returns: UserCollectionAlbumsItemsAddMultiRelationshipDataDocument
      */
@@ -240,7 +240,7 @@ internal class UserCollectionAlbumsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection albums id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userCollectionAlbumsItemsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserCollectionAlbumsItemsAddMultiRelationshipDataDocument> 
      */

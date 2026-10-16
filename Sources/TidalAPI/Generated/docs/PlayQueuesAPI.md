@@ -93,7 +93,7 @@ Deletes existing playQueue.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single playQueue.
 PlayQueuesAPI.playQueuesIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
@@ -113,7 +113,7 @@ PlayQueuesAPI.playQueuesIdDelete(id: id, idempotencyKey: idempotencyKey) { (resp
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -201,7 +201,7 @@ Atomically applies attributes, future items, then current selection.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playQueuesUpdateOperationPayload = PlayQueuesUpdateOperation_Payload(data: PlayQueuesUpdateOperation_Payload_Data(attributes: PlayQueuesUpdateOperation_Payload_Data_Attributes(_repeat: "_repeat_example", shuffle: "shuffle_example", shuffled: false), id: "id_example", relationships: PlayQueuesUpdateOperation_Payload_Data_Relationships(current: PlayQueuesUpdateOperation_Current(meta: PlayQueuesUpdateOperation_Current_Meta(itemId: "itemId_example", mode: "mode_example")), future: PlayQueuesUpdateOperation_Future(data: [PlayQueuesUpdateOperation_Future_Data(id: "id_example", type: "type_example")], meta: PlayQueuesUpdateOperation_Future_Meta(mode: "mode_example", positionBefore: "positionBefore_example", source: PlayQueuesFutureRelationshipSource(href: "href_example", startIndex: 123)))), type: "type_example")) // PlayQueuesUpdateOperationPayload |  (optional)
 
 // Update single playQueue.
@@ -222,7 +222,7 @@ PlayQueuesAPI.playQueuesIdPatch(id: id, idempotencyKey: idempotencyKey, playQueu
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playQueuesUpdateOperationPayload** | [**PlayQueuesUpdateOperationPayload**](PlayQueuesUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -361,7 +361,7 @@ Updates current relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playQueuesCurrentRelationshipUpdateOperationPayload = PlayQueuesCurrentRelationshipUpdateOperation_Payload(data: PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example", position: "position_example", updatedByInstallationId: "updatedByInstallationId_example"), type: "type_example")) // PlayQueuesCurrentRelationshipUpdateOperationPayload |  (optional)
 
 // Update current relationship (\"to-one\").
@@ -382,7 +382,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatch(id: id, idempotencyKey: idem
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playQueuesCurrentRelationshipUpdateOperationPayload** | [**PlayQueuesCurrentRelationshipUpdateOperationPayload**](PlayQueuesCurrentRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -415,7 +415,7 @@ Deletes item(s) from future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playQueuesFutureRelationshipRemoveOperationPayload = PlayQueuesFutureRelationshipRemoveOperation_Payload(data: [PlayQueuesFutureRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: PlayQueuesFutureRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // PlayQueuesFutureRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from future relationship (\"to-many\").
@@ -436,7 +436,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsFutureDelete(id: id, idempotencyKey: idem
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playQueuesFutureRelationshipRemoveOperationPayload** | [**PlayQueuesFutureRelationshipRemoveOperationPayload**](PlayQueuesFutureRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -525,7 +525,7 @@ Returns empty data and meta.revision as an acknowledgement.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playQueuesFutureRelationshipUpdateOperationPayload = PlayQueuesFutureRelationshipUpdateOperation_Payload(data: [PlayQueuesFutureRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlayQueuesFutureRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlayQueuesFutureRelationshipUpdateOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlayQueuesFutureRelationshipUpdateOperationPayload |  (optional)
 
 // Update future relationship (\"to-many\").
@@ -546,7 +546,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsFuturePatch(id: id, idempotencyKey: idemp
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playQueuesFutureRelationshipUpdateOperationPayload** | [**PlayQueuesFutureRelationshipUpdateOperationPayload**](PlayQueuesFutureRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -579,7 +579,7 @@ With meta.source, startIndex selects an entry in the first page's data before un
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playQueuesFutureRelationshipAddOperationPayload = PlayQueuesFutureRelationshipAddOperation_Payload(data: [PlayQueuesFutureRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlayQueuesFutureRelationshipAddOperation_Payload_Meta(batchId: 123, legacySource: LegacySource(id: "id_example", type: "type_example"), mode: "mode_example", positionBefore: "positionBefore_example", source: PlayQueuesFutureRelationshipSource(href: "href_example", startIndex: 123))) // PlayQueuesFutureRelationshipAddOperationPayload |  (optional)
 
 // Add to future relationship (\"to-many\").
@@ -600,7 +600,7 @@ PlayQueuesAPI.playQueuesIdRelationshipsFuturePost(id: id, idempotencyKey: idempo
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playQueuesFutureRelationshipAddOperationPayload** | [**PlayQueuesFutureRelationshipAddOperationPayload**](PlayQueuesFutureRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -742,7 +742,7 @@ Creates a new playQueue.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playQueuesCreateOperationPayload = PlayQueuesCreateOperation_Payload(data: PlayQueuesCreateOperation_Payload_Data(type: "type_example")) // PlayQueuesCreateOperationPayload |  (optional)
 
 // Create single playQueue.
@@ -762,7 +762,7 @@ PlayQueuesAPI.playQueuesPost(idempotencyKey: idempotencyKey, playQueuesCreateOpe
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playQueuesCreateOperationPayload** | [**PlayQueuesCreateOperationPayload**](PlayQueuesCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

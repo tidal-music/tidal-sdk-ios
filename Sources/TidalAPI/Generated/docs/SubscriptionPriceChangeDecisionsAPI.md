@@ -79,7 +79,7 @@ Updates existing subscriptionPriceChangeDecision.
 import OpenAPIClient
 
 let id = "id_example" // String | Price change decision id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let subscriptionPriceChangeDecisionsUpdateOperationPayload = SubscriptionPriceChangeDecisionsUpdateOperation_Payload(data: SubscriptionPriceChangeDecisionsUpdateOperation_Payload_Data(attributes: SubscriptionPriceChangeDecisionsUpdateOperation_Payload_Data_Attributes(status: "status_example"), id: "id_example", type: "type_example")) // SubscriptionPriceChangeDecisionsUpdateOperationPayload |  (optional)
 
 // Update single subscriptionPriceChangeDecision.
@@ -100,7 +100,7 @@ SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsIdPatch(id: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Price change decision id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **subscriptionPriceChangeDecisionsUpdateOperationPayload** | [**SubscriptionPriceChangeDecisionsUpdateOperationPayload**](SubscriptionPriceChangeDecisionsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -184,7 +184,7 @@ Creates a new subscriptionPriceChangeDecision.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let subscriptionPriceChangeDecisionsCreateOperationPayload = SubscriptionPriceChangeDecisionsCreateOperation_Payload(data: SubscriptionPriceChangeDecisionsCreateOperation_Payload_Data(attributes: SubscriptionPriceChangeDecisionsCreateOperation_Payload_Data_Attributes(status: "status_example"), relationships: SubscriptionPriceChangeDecisionsCreateOperation_Payload_Data_Relationships(priceChange: SubscriptionPriceChangeDecisionsCreateOperation_Payload_Data_Relationships_PriceChange(data: SubscriptionPriceChangeDecisionsCreateOperation_Payload_Data_Relationships_PriceChange_Data(id: "id_example", type: "type_example"))), type: "type_example")) // SubscriptionPriceChangeDecisionsCreateOperationPayload |  (optional)
 
 // Create single subscriptionPriceChangeDecision.
@@ -204,7 +204,7 @@ SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsPost(idempot
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **subscriptionPriceChangeDecisionsCreateOperationPayload** | [**SubscriptionPriceChangeDecisionsCreateOperationPayload**](SubscriptionPriceChangeDecisionsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

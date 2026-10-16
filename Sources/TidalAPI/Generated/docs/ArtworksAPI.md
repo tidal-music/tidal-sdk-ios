@@ -190,7 +190,7 @@ Creates a new artwork.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let artworksCreateOperationPayload = ArtworksCreateOperation_Payload(data: ArtworksCreateOperation_Payload_Data(attributes: ArtworksCreateOperation_Payload_Data_Attributes(mediaType: "mediaType_example", sourceFile: ArtworksCreateOperation_Payload_Data_Attributes_SourceFile(md5Hash: "md5Hash_example", size: 123)), type: "type_example")) // ArtworksCreateOperationPayload |  (optional)
 
 // Create single artwork.
@@ -210,7 +210,7 @@ ArtworksAPI.artworksPost(idempotencyKey: idempotencyKey, artworksCreateOperation
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **artworksCreateOperationPayload** | [**ArtworksCreateOperationPayload**](ArtworksCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

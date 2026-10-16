@@ -15,6 +15,37 @@ public enum FolderItemsAPITidal {
 
 
 	/**
+	 * enum for parameter includeLinkage
+	 */
+	public enum IncludeLinkage_folderItemsGet: String, CaseIterable {
+		case breadcrumb = "breadcrumb"
+		case owners = "owners"
+		case parent = "parent"
+		case subject = "subject"
+
+		func toFolderItemsAPIEnum() -> FolderItemsAPI.IncludeLinkage_folderItemsGet {
+			switch self {
+			case .breadcrumb: return .breadcrumb
+			case .owners: return .owners
+			case .parent: return .parent
+			case .subject: return .subject
+			}
+		}
+	}
+
+	/**
+     Get multiple folderItems.
+     
+     - returns: FolderItemsMultiResourceDataDocument
+     */
+	public static func folderItemsGet(pageCursor: String? = nil, include: [String]? = nil, filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSubjectOwnersId: String? = nil, includeLinkage: [FolderItemsAPITidal.IncludeLinkage_folderItemsGet]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			FolderItemsAPI.folderItemsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSubjectOwnersId: filterSubjectOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toFolderItemsAPIEnum() }, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
      Delete single folderItem.
      
      - returns: MutationResponseDocument

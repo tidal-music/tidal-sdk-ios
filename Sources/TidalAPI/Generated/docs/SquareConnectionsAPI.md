@@ -132,7 +132,7 @@ Updates selectedSite relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Square connection id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let squareConnectionsSelectedSiteRelationshipUpdateOperationPayload = SquareConnectionsSelectedSiteRelationshipUpdateOperation_Payload(data: SquareConnectionsSelectedSiteRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")) // SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload |  (optional)
 
 // Update selectedSite relationship (\"to-one\").
@@ -153,7 +153,7 @@ SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSitePatch(id: id, i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Square connection id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **squareConnectionsSelectedSiteRelationshipUpdateOperationPayload** | [**SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload**](SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -239,7 +239,7 @@ Creates a new squareConnection.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let squareConnectionsCreateOperationPayload = SquareConnectionsCreateOperation_Payload(data: SquareConnectionsCreateOperation_Payload_Data(type: "type_example"), meta: SquareConnectionsCreateOperation_Payload_Meta(platform: "platform_example", redirectUrl: "redirectUrl_example")) // SquareConnectionsCreateOperationPayload |  (optional)
 
 // Create single squareConnection.
@@ -259,7 +259,7 @@ SquareConnectionsAPI.squareConnectionsPost(idempotencyKey: idempotencyKey, squar
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **squareConnectionsCreateOperationPayload** | [**SquareConnectionsCreateOperationPayload**](SquareConnectionsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

@@ -21,7 +21,7 @@ Creates a new userDataExportRequest.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userDataExportRequestsCreateOperationPayload = UserDataExportRequestsCreateOperation_Payload(data: UserDataExportRequestsCreateOperation_Payload_Data(attributes: UserDataExportRequestsCreateOperation_Payload_Data_Attributes(flowType: "flowType_example"), type: "type_example")) // UserDataExportRequestsCreateOperationPayload |  (optional)
 
 // Create single userDataExportRequest.
@@ -41,7 +41,7 @@ UserDataExportRequestsAPI.userDataExportRequestsPost(idempotencyKey: idempotency
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userDataExportRequestsCreateOperationPayload** | [**UserDataExportRequestsCreateOperationPayload**](UserDataExportRequestsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

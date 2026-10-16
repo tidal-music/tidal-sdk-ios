@@ -87,7 +87,7 @@ Updates existing userPlaybackState.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userPlaybackStatesUpdateOperationPayload = UserPlaybackStatesUpdateOperation_Payload(data: UserPlaybackStatesUpdateOperation_Payload_Data(attributes: UserPlaybackStatesUpdateOperation_Payload_Data_Attributes(playbackStatus: "playbackStatus_example"), id: "id_example", type: "type_example")) // UserPlaybackStatesUpdateOperationPayload |  (optional)
 
 // Update single userPlaybackState.
@@ -108,7 +108,7 @@ UserPlaybackStatesAPI.userPlaybackStatesIdPatch(id: id, idempotencyKey: idempote
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userPlaybackStatesUpdateOperationPayload** | [**UserPlaybackStatesUpdateOperationPayload**](UserPlaybackStatesUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -195,7 +195,7 @@ Updates activePlayer relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload = UserPlaybackStatesActivePlayerRelationshipUpdateOperation_Payload(data: UserPlaybackStatesActivePlayerRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")) // UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload |  (optional)
 
 // Update activePlayer relationship (\"to-one\").
@@ -216,7 +216,7 @@ UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsActivePlayerPatch(id: id,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload** | [**UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload**](UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -249,7 +249,7 @@ Deletes item(s) from availablePlayers relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload = UserPlaybackStatesAvailablePlayersRelationshipRemoveOperation_Payload(data: [UserPlaybackStatesAvailablePlayersRelationshipOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from availablePlayers relationship (\"to-many\").
@@ -270,7 +270,7 @@ UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersDelete(id
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload** | [**UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload**](UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -359,7 +359,7 @@ Adds item(s) to availablePlayers relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload = UserPlaybackStatesAvailablePlayersRelationshipAddOperation_Payload(data: [UserPlaybackStatesAvailablePlayersRelationshipOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload |  (optional)
 
 // Add to availablePlayers relationship (\"to-many\").
@@ -380,7 +380,7 @@ UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersPost(id: 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload** | [**UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload**](UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -519,7 +519,7 @@ Updates playQueue relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User playback session id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload = UserPlaybackStatesPlayQueueRelationshipUpdateOperation_Payload(data: UserPlaybackStatesPlayQueueRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")) // UserPlaybackStatesPlayQueueRelationshipUpdateOperationPayload |  (optional)
 
 // Update playQueue relationship (\"to-one\").
@@ -540,7 +540,7 @@ UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsPlayQueuePatch(id: id, id
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload** | [**UserPlaybackStatesPlayQueueRelationshipUpdateOperationPayload**](UserPlaybackStatesPlayQueueRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type

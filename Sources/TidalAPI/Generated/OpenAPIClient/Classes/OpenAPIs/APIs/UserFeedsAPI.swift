@@ -63,7 +63,7 @@ internal class UserFeedsAPI {
      Update single userFeed.
      
      - parameter id: (path) Opaque identifier of a user&#39;s feed state. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userFeedsUpdateOperationPayload: (body)  (optional)
      - returns: UserFeedsUpdateSingleResourceDataDocument
      */
@@ -85,7 +85,7 @@ internal class UserFeedsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Opaque identifier of a user&#39;s feed state. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userFeedsUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserFeedsUpdateSingleResourceDataDocument> 
      */
