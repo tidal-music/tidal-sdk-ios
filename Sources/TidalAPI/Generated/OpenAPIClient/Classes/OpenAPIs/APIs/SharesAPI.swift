@@ -83,8 +83,8 @@ internal class SharesAPI {
      Delete single share.
      
      - parameter id: (path) Share id 
-     - parameter revokeGrants: (query) Also revoke grants issued through this share. Defaults to false; true is currently unsupported. (optional)
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter revokeGrants: (query) Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -105,8 +105,8 @@ internal class SharesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Share id 
-     - parameter revokeGrants: (query) Also revoke grants issued through this share. Defaults to false; true is currently unsupported. (optional)
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter revokeGrants: (query) Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
     internal class func sharesIdDeleteWithRequestBuilder(id: String, revokeGrants: Bool? = nil, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
@@ -324,7 +324,7 @@ internal class SharesAPI {
     /**
      Create single share.
      
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter sharesCreateOperationPayload: (body)  (optional)
      - returns: SharesCreateSingleResourceDataDocument
      */
@@ -345,7 +345,7 @@ internal class SharesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter sharesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<SharesCreateSingleResourceDataDocument> 
      */

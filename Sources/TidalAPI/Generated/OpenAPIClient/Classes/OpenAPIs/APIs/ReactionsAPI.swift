@@ -124,7 +124,7 @@ internal class ReactionsAPI {
      Delete single reaction.
      
      - parameter id: (path) Reaction Id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -145,7 +145,7 @@ internal class ReactionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Reaction Id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
     internal class func reactionsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
@@ -339,7 +339,7 @@ internal class ReactionsAPI {
     /**
      Create single reaction.
      
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter reactionsCreateOperationPayload: (body)  (optional)
      - returns: ReactionsCreateSingleResourceDataDocument
      */
@@ -360,7 +360,7 @@ internal class ReactionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter reactionsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<ReactionsCreateSingleResourceDataDocument> 
      */

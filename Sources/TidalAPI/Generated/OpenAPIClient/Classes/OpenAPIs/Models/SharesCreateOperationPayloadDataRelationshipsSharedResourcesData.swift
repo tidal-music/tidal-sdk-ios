@@ -16,6 +16,7 @@ public struct SharesCreateOperationPayloadDataRelationshipsSharedResourcesData: 
         case tracks = "tracks"
         case albums = "albums"
         case playlists = "playlists"
+        case folders = "folders"
     }
     public var id: String
     public var type: ModelType

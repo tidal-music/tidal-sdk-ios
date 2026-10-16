@@ -190,7 +190,7 @@ internal class ArtistsAPI {
      Update single artist.
      
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsUpdateOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -212,7 +212,7 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -367,7 +367,7 @@ internal class ArtistsAPI {
      Update bannerArt relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsBannerArtRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -389,7 +389,7 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsBannerArtRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -590,7 +590,7 @@ internal class ArtistsAPI {
      Delete from following relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsFollowingRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -612,7 +612,7 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsFollowingRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -703,7 +703,7 @@ internal class ArtistsAPI {
      Add to following relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsFollowingRelationshipAddOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -725,7 +725,7 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsFollowingRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -816,7 +816,7 @@ internal class ArtistsAPI {
      Update logoArt relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsLogoArtRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -838,7 +838,7 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsLogoArtRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -987,7 +987,7 @@ internal class ArtistsAPI {
      Update profileArt relationship (\"to-many\").
      
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsProfileArtRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -1009,7 +1009,7 @@ internal class ArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Artist id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsProfileArtRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -1421,7 +1421,7 @@ internal class ArtistsAPI {
     /**
      Create single artist.
      
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsCreateOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -1442,7 +1442,7 @@ internal class ArtistsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter artistsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */

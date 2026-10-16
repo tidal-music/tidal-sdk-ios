@@ -86,7 +86,7 @@ internal class PlayQueuesAPI {
      Delete single playQueue.
      
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -107,7 +107,7 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
     internal class func playQueuesIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
@@ -204,7 +204,7 @@ internal class PlayQueuesAPI {
      Update single playQueue.
      
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesUpdateOperationPayload: (body)  (optional)
      - returns: PlayQueuesUpdateSingleResourceDataDocument
      */
@@ -221,12 +221,12 @@ internal class PlayQueuesAPI {
     /**
      Update single playQueue.
      - PATCH /playQueues/{id}
-     - Updates existing playQueue.
+     - Atomically applies attributes, future items, then current selection.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlayQueuesUpdateSingleResourceDataDocument> 
      */
@@ -363,7 +363,7 @@ internal class PlayQueuesAPI {
      Update current relationship (\"to-one\").
      
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesCurrentRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: PlayQueuesCurrentUpdateSingleRelationshipDataDocument
      */
@@ -385,7 +385,7 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesCurrentRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlayQueuesCurrentUpdateSingleRelationshipDataDocument> 
      */
@@ -415,7 +415,7 @@ internal class PlayQueuesAPI {
      Delete from future relationship (\"to-many\").
      
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesFutureRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -437,7 +437,7 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesFutureRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -525,7 +525,7 @@ internal class PlayQueuesAPI {
      Update future relationship (\"to-many\").
      
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesFutureRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: PlayQueuesFutureUpdateMultiRelationshipDataDocument
      */
@@ -547,7 +547,7 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesFutureRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlayQueuesFutureUpdateMultiRelationshipDataDocument> 
      */
@@ -577,7 +577,7 @@ internal class PlayQueuesAPI {
      Add to future relationship (\"to-many\").
      
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesFutureRelationshipAddOperationPayload: (body)  (optional)
      - returns: PlayQueuesFutureAddMultiRelationshipDataDocument
      */
@@ -599,7 +599,7 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesFutureRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlayQueuesFutureAddMultiRelationshipDataDocument> 
      */
@@ -741,7 +741,7 @@ internal class PlayQueuesAPI {
     /**
      Create single playQueue.
      
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesCreateOperationPayload: (body)  (optional)
      - returns: PlayQueuesCreateSingleResourceDataDocument
      */
@@ -762,7 +762,7 @@ internal class PlayQueuesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playQueuesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlayQueuesCreateSingleResourceDataDocument> 
      */

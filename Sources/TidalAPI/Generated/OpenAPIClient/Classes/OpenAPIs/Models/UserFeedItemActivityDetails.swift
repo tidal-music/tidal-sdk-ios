@@ -12,17 +12,24 @@ import AnyCodable
 
 /** Details of the activity represented by the group. */
 public enum UserFeedItemActivityDetails: Codable, JSONEncodable, Hashable {
+    case userFeedItemAlbumFavouritedDetails(UserFeedItemAlbumFavouritedDetails)
     case userFeedItemAlbumReleasedDetails(UserFeedItemAlbumReleasedDetails)
     case userFeedItemAlbumSharedDetails(UserFeedItemAlbumSharedDetails)
     case userFeedItemArtistFollowedDetails(UserFeedItemArtistFollowedDetails)
     case userFeedItemCommentRepliedDetails(UserFeedItemCommentRepliedDetails)
     case userFeedItemCopyrightFlaggedDetails(UserFeedItemCopyrightFlaggedDetails)
+    case userFeedItemHistoryMixReadyDetails(UserFeedItemHistoryMixReadyDetails)
     case userFeedItemPlaylistUpdatedDetails(UserFeedItemPlaylistUpdatedDetails)
+    case userFeedItemTrackFavouritedDetails(UserFeedItemTrackFavouritedDetails)
+    case userFeedItemTrackPlayMilestoneDetails(UserFeedItemTrackPlayMilestoneDetails)
+    case userFeedItemTrackPlaylistedDetails(UserFeedItemTrackPlaylistedDetails)
     case userFeedItemTrackSourceFileCommentedDetails(UserFeedItemTrackSourceFileCommentedDetails)
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
+        case .userFeedItemAlbumFavouritedDetails(let value):
+            try container.encode(value)
         case .userFeedItemAlbumReleasedDetails(let value):
             try container.encode(value)
         case .userFeedItemAlbumSharedDetails(let value):
@@ -33,7 +40,15 @@ public enum UserFeedItemActivityDetails: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .userFeedItemCopyrightFlaggedDetails(let value):
             try container.encode(value)
+        case .userFeedItemHistoryMixReadyDetails(let value):
+            try container.encode(value)
         case .userFeedItemPlaylistUpdatedDetails(let value):
+            try container.encode(value)
+        case .userFeedItemTrackFavouritedDetails(let value):
+            try container.encode(value)
+        case .userFeedItemTrackPlayMilestoneDetails(let value):
+            try container.encode(value)
+        case .userFeedItemTrackPlaylistedDetails(let value):
             try container.encode(value)
         case .userFeedItemTrackSourceFileCommentedDetails(let value):
             try container.encode(value)
@@ -49,6 +64,9 @@ public enum UserFeedItemActivityDetails: Codable, JSONEncodable, Hashable {
         let type = try container.decode(String.self, forKey: .activityType)
 
         switch type {
+        case "ALBUM_FAVOURITED":
+            let value = try UserFeedItemAlbumFavouritedDetails(from: decoder)
+            self = .userFeedItemAlbumFavouritedDetails(value)
         case "ALBUM_RELEASED":
             let value = try UserFeedItemAlbumReleasedDetails(from: decoder)
             self = .userFeedItemAlbumReleasedDetails(value)
@@ -64,9 +82,21 @@ public enum UserFeedItemActivityDetails: Codable, JSONEncodable, Hashable {
         case "COPYRIGHT_FLAGGED":
             let value = try UserFeedItemCopyrightFlaggedDetails(from: decoder)
             self = .userFeedItemCopyrightFlaggedDetails(value)
+        case "HISTORY_MIX_READY":
+            let value = try UserFeedItemHistoryMixReadyDetails(from: decoder)
+            self = .userFeedItemHistoryMixReadyDetails(value)
         case "PLAYLIST_UPDATED":
             let value = try UserFeedItemPlaylistUpdatedDetails(from: decoder)
             self = .userFeedItemPlaylistUpdatedDetails(value)
+        case "TRACK_FAVOURITED":
+            let value = try UserFeedItemTrackFavouritedDetails(from: decoder)
+            self = .userFeedItemTrackFavouritedDetails(value)
+        case "TRACK_PLAYLISTED":
+            let value = try UserFeedItemTrackPlaylistedDetails(from: decoder)
+            self = .userFeedItemTrackPlaylistedDetails(value)
+        case "TRACK_PLAY_MILESTONE":
+            let value = try UserFeedItemTrackPlayMilestoneDetails(from: decoder)
+            self = .userFeedItemTrackPlayMilestoneDetails(value)
         case "TRACK_SOURCE_FILE_COMMENTED":
             let value = try UserFeedItemTrackSourceFileCommentedDetails(from: decoder)
             self = .userFeedItemTrackSourceFileCommentedDetails(value)

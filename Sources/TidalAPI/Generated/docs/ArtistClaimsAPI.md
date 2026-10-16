@@ -86,7 +86,7 @@ Deletes existing artistClaim.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single artistClaim.
 ArtistClaimsAPI.artistClaimsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
@@ -106,7 +106,7 @@ ArtistClaimsAPI.artistClaimsIdDelete(id: id, idempotencyKey: idempotencyKey) { (
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -194,7 +194,7 @@ Updates existing artistClaim.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: "id_example", type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example", redirectUri: "redirectUri_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
 
 // Update single artistClaim.
@@ -215,7 +215,7 @@ ArtistClaimsAPI.artistClaimsIdPatch(id: id, idempotencyKey: idempotencyKey, arti
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **artistClaimsUpdateOperationPayload** | [**ArtistClaimsUpdateOperationPayload**](ArtistClaimsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -304,7 +304,7 @@ Updates acceptedArtists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload = ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload(data: [ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload |  (optional)
 
 // Update acceptedArtists relationship (\"to-many\").
@@ -325,7 +325,7 @@ ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, idempote
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist claim id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload** | [**ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload**](ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -467,7 +467,7 @@ Creates a new artistClaim.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let artistClaimsCreateOperationPayload = ArtistClaimsCreateOperation_Payload(data: ArtistClaimsCreateOperation_Payload_Data(attributes: ArtistClaimsCreateOperation_Payload_Data_Attributes(artistId: "artistId_example", provider: "provider_example"), type: "type_example"), meta: ArtistClaimsCreateOperation_Payload_Meta(nonce: "nonce_example", redirectUrl: "redirectUrl_example")) // ArtistClaimsCreateOperationPayload |  (optional)
 
 // Create single artistClaim.
@@ -487,7 +487,7 @@ ArtistClaimsAPI.artistClaimsPost(idempotencyKey: idempotencyKey, artistClaimsCre
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **artistClaimsCreateOperationPayload** | [**ArtistClaimsCreateOperationPayload**](ArtistClaimsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

@@ -105,7 +105,7 @@ Deletes existing playlist.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single playlist.
 PlaylistsAPI.playlistsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
@@ -125,7 +125,7 @@ PlaylistsAPI.playlistsIdDelete(id: id, idempotencyKey: idempotencyKey) { (respon
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -215,7 +215,7 @@ Updates existing playlist.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playlistsUpdateOperationPayload = PlaylistsUpdateOperation_Payload(data: PlaylistsUpdateOperation_Payload_Data(attributes: PlaylistsUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", description: "description_example", name: "name_example"), id: "id_example", type: "type_example")) // PlaylistsUpdateOperationPayload |  (optional)
 
 // Update single playlist.
@@ -236,7 +236,7 @@ PlaylistsAPI.playlistsIdPatch(id: id, idempotencyKey: idempotencyKey, playlistsU
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playlistsUpdateOperationPayload** | [**PlaylistsUpdateOperationPayload**](PlaylistsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -269,7 +269,7 @@ Deletes item(s) from collaboratorProfiles relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playlistsCollaboratorProfilesRelationshipRemoveOperationPayload = PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload(data: [PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from collaboratorProfiles relationship (\"to-many\").
@@ -290,7 +290,7 @@ PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesDelete(id: id, idempote
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playlistsCollaboratorProfilesRelationshipRemoveOperationPayload** | [**PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload**](PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -487,7 +487,7 @@ Updates coverArt relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playlistsCoverArtRelationshipUpdateOperationPayload = PlaylistsCoverArtRelationshipUpdateOperation_Payload(data: [PlaylistsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // PlaylistsCoverArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update coverArt relationship (\"to-many\").
@@ -508,7 +508,7 @@ PlaylistsAPI.playlistsIdRelationshipsCoverArtPatch(id: id, idempotencyKey: idemp
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playlistsCoverArtRelationshipUpdateOperationPayload** | [**PlaylistsCoverArtRelationshipUpdateOperationPayload**](PlaylistsCoverArtRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -597,7 +597,7 @@ Deletes item(s) from items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playlistsItemsRelationshipRemoveOperationPayload = PlaylistsItemsRelationshipRemoveOperation_Payload(data: [PlaylistsItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // PlaylistsItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
@@ -618,7 +618,7 @@ PlaylistsAPI.playlistsIdRelationshipsItemsDelete(id: id, idempotencyKey: idempot
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playlistsItemsRelationshipRemoveOperationPayload** | [**PlaylistsItemsRelationshipRemoveOperationPayload**](PlaylistsItemsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -713,7 +713,7 @@ Updates items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playlistsItemsRelationshipUpdateOperationPayload = PlaylistsItemsRelationshipUpdateOperation_Payload(data: [PlaylistsItemsRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlaylistsItemsRelationshipUpdateOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipUpdateOperationPayload |  (optional)
 
 // Update items relationship (\"to-many\").
@@ -734,7 +734,7 @@ PlaylistsAPI.playlistsIdRelationshipsItemsPatch(id: id, idempotencyKey: idempote
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playlistsItemsRelationshipUpdateOperationPayload** | [**PlaylistsItemsRelationshipUpdateOperationPayload**](PlaylistsItemsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -767,7 +767,7 @@ Adds item(s) to items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playlistsItemsRelationshipAddOperationPayload = PlaylistsItemsRelationshipAddOperation_Payload(data: [PlaylistsItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")], meta: PlaylistsItemsRelationshipAddOperation_Payload_Meta(onDuplicates: "onDuplicates_example", positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
@@ -788,7 +788,7 @@ PlaylistsAPI.playlistsIdRelationshipsItemsPost(id: id, idempotencyKey: idempoten
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playlistsItemsRelationshipAddOperationPayload** | [**PlaylistsItemsRelationshipAddOperationPayload**](PlaylistsItemsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -982,7 +982,7 @@ Creates a new playlist.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let playlistsCreateOperationPayload = PlaylistsCreateOperation_Payload(data: PlaylistsCreateOperation_Payload_Data(attributes: PlaylistsCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", createdAt: Date(), description: "description_example", name: "name_example"), type: "type_example")) // PlaylistsCreateOperationPayload |  (optional)
 
 // Create single playlist.
@@ -1002,7 +1002,7 @@ PlaylistsAPI.playlistsPost(idempotencyKey: idempotencyKey, playlistsCreateOperat
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **playlistsCreateOperationPayload** | [**PlaylistsCreateOperationPayload**](PlaylistsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

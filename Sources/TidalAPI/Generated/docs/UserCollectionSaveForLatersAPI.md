@@ -82,7 +82,7 @@ Deletes item(s) from items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection save for later id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload = UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload(data: [UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
@@ -103,7 +103,7 @@ UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsDe
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload** | [**UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload**](UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -192,7 +192,7 @@ Adds item(s) to items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection save for later id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userCollectionSaveForLatersItemsRelationshipAddOperationPayload = UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload(data: [UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionSaveForLatersItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
@@ -213,7 +213,7 @@ UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsPo
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userCollectionSaveForLatersItemsRelationshipAddOperationPayload** | [**UserCollectionSaveForLatersItemsRelationshipAddOperationPayload**](UserCollectionSaveForLatersItemsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type

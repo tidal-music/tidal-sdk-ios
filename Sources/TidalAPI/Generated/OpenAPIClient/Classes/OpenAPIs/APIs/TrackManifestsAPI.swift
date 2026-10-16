@@ -56,7 +56,7 @@ internal class TrackManifestsAPI {
      - parameter uriScheme: (query)  
      - parameter usage: (query)  
      - parameter adaptive: (query)  
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TrackManifestsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -85,7 +85,7 @@ internal class TrackManifestsAPI {
      - parameter uriScheme: (query)  
      - parameter usage: (query)  
      - parameter adaptive: (query)  
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TrackManifestsSingleResourceDataDocument> 
      */
     internal class func trackManifestsIdGetWithRequestBuilder(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool, shareCode: String? = nil) -> RequestBuilder<TrackManifestsSingleResourceDataDocument> {

@@ -19,6 +19,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artistClaimStatusesResourceObject(ArtistClaimStatusesResourceObject)
     case artistClaimsResourceObject(ArtistClaimsResourceObject)
     case artistRolesResourceObject(ArtistRolesResourceObject)
+    case artistSalesStatisticsResourceObject(ArtistSalesStatisticsResourceObject)
+    case artistStreamsStatisticsResourceObject(ArtistStreamsStatisticsResourceObject)
     case artistsResourceObject(ArtistsResourceObject)
     case artworksResourceObject(ArtworksResourceObject)
     case changeEventStreamsResourceObject(ChangeEventStreamsResourceObject)
@@ -58,6 +60,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
     case sharesResourceObject(SharesResourceObject)
     case squareConnectionsResourceObject(SquareConnectionsResourceObject)
+    case squareItemsResourceObject(SquareItemsResourceObject)
     case squareSitesResourceObject(SquareSitesResourceObject)
     case stripeConnectionsResourceObject(StripeConnectionsResourceObject)
     case stripeDashboardLinksResourceObject(StripeDashboardLinksResourceObject)
@@ -112,6 +115,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .artistClaimsResourceObject(let value):
             try container.encode(value)
         case .artistRolesResourceObject(let value):
+            try container.encode(value)
+        case .artistSalesStatisticsResourceObject(let value):
+            try container.encode(value)
+        case .artistStreamsStatisticsResourceObject(let value):
             try container.encode(value)
         case .artistsResourceObject(let value):
             try container.encode(value)
@@ -190,6 +197,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .sharesResourceObject(let value):
             try container.encode(value)
         case .squareConnectionsResourceObject(let value):
+            try container.encode(value)
+        case .squareItemsResourceObject(let value):
             try container.encode(value)
         case .squareSitesResourceObject(let value):
             try container.encode(value)
@@ -297,6 +306,12 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "artistRoles":
             let value = try ArtistRolesResourceObject(from: decoder)
             self = .artistRolesResourceObject(value)
+        case "artistSalesStatistics":
+            let value = try ArtistSalesStatisticsResourceObject(from: decoder)
+            self = .artistSalesStatisticsResourceObject(value)
+        case "artistStreamsStatistics":
+            let value = try ArtistStreamsStatisticsResourceObject(from: decoder)
+            self = .artistStreamsStatisticsResourceObject(value)
         case "artists":
             let value = try ArtistsResourceObject(from: decoder)
             self = .artistsResourceObject(value)
@@ -414,6 +429,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "squareConnections":
             let value = try SquareConnectionsResourceObject(from: decoder)
             self = .squareConnectionsResourceObject(value)
+        case "squareItems":
+            let value = try SquareItemsResourceObject(from: decoder)
+            self = .squareItemsResourceObject(value)
         case "squareSites":
             let value = try SquareSitesResourceObject(from: decoder)
             self = .squareSitesResourceObject(value)
@@ -537,6 +555,8 @@ extension IncludedInner: Identifiable {
         case .artistClaimStatusesResourceObject(let value): return value.id
         case .artistClaimsResourceObject(let value): return value.id
         case .artistRolesResourceObject(let value): return value.id
+        case .artistSalesStatisticsResourceObject(let value): return value.id
+        case .artistStreamsStatisticsResourceObject(let value): return value.id
         case .artistsResourceObject(let value): return value.id
         case .artworksResourceObject(let value): return value.id
         case .changeEventStreamsResourceObject(let value): return value.id
@@ -576,6 +596,7 @@ extension IncludedInner: Identifiable {
         case .searchSuggestionsResourceObject(let value): return value.id
         case .sharesResourceObject(let value): return value.id
         case .squareConnectionsResourceObject(let value): return value.id
+        case .squareItemsResourceObject(let value): return value.id
         case .squareSitesResourceObject(let value): return value.id
         case .stripeConnectionsResourceObject(let value): return value.id
         case .stripeDashboardLinksResourceObject(let value): return value.id

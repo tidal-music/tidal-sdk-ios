@@ -188,7 +188,7 @@ Creates a new acceptedTerm.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let acceptedTermsCreateOperationPayload = AcceptedTermsCreateOperation_Payload(data: AcceptedTermsCreateOperation_Payload_Data(relationships: AcceptedTermsCreateOperation_Payload_Data_Relationships(terms: AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms(data: AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms_Data(id: "id_example", type: "type_example"))), type: "type_example")) // AcceptedTermsCreateOperationPayload |  (optional)
 
 // Create single acceptedTerm.
@@ -208,7 +208,7 @@ AcceptedTermsAPI.acceptedTermsPost(idempotencyKey: idempotencyKey, acceptedTerms
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **acceptedTermsCreateOperationPayload** | [**AcceptedTermsCreateOperationPayload**](AcceptedTermsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

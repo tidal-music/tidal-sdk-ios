@@ -82,7 +82,7 @@ Deletes existing client.
 import OpenAPIClient
 
 let id = "id_example" // String | OAuth client identifier
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single client.
 ClientsAPI.clientsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
@@ -102,7 +102,7 @@ ClientsAPI.clientsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | OAuth client identifier | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -188,7 +188,7 @@ Updates existing client.
 import OpenAPIClient
 
 let id = "id_example" // String | OAuth client identifier
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let clientsUpdateOperationPayload = ClientsUpdateOperation_Payload(data: ClientsUpdateOperation_Payload_Data(attributes: ClientsUpdateOperation_Payload_Data_Attributes(description: "description_example", name: "name_example", redirectUris: ["redirectUris_example"], scopes: ["scopes_example"]), id: "id_example", type: "type_example")) // ClientsUpdateOperationPayload |  (optional)
 
 // Update single client.
@@ -209,7 +209,7 @@ ClientsAPI.clientsIdPatch(id: id, idempotencyKey: idempotencyKey, clientsUpdateO
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | OAuth client identifier | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **clientsUpdateOperationPayload** | [**ClientsUpdateOperationPayload**](ClientsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -349,7 +349,7 @@ Creates a new client.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let clientsCreateOperationPayload = ClientsCreateOperation_Payload(data: ClientsCreateOperation_Payload_Data(attributes: ClientsCreateOperation_Payload_Data_Attributes(description: "description_example", name: "name_example"), type: "type_example")) // ClientsCreateOperationPayload |  (optional)
 
 // Create single client.
@@ -369,7 +369,7 @@ ClientsAPI.clientsPost(idempotencyKey: idempotencyKey, clientsCreateOperationPay
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **clientsCreateOperationPayload** | [**ClientsCreateOperationPayload**](ClientsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

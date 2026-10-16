@@ -90,7 +90,7 @@ Deletes item(s) from artists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userRecommendationBlocksArtistsRelationshipRemoveOperationPayload = UserRecommendationBlocksArtistsRelationshipRemoveOperation_Payload(data: [UserRecommendationBlocksArtistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from artists relationship (\"to-many\").
@@ -111,7 +111,7 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsDelete
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksArtistsRelationshipRemoveOperationPayload** | [**UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload**](UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -200,7 +200,7 @@ Adds item(s) to artists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userRecommendationBlocksArtistsRelationshipAddOperationPayload = UserRecommendationBlocksArtistsRelationshipAddOperation_Payload(data: [UserRecommendationBlocksArtistsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksArtistsRelationshipAddOperationPayload |  (optional)
 
 // Add to artists relationship (\"to-many\").
@@ -221,7 +221,7 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsPost(i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksArtistsRelationshipAddOperationPayload** | [**UserRecommendationBlocksArtistsRelationshipAddOperationPayload**](UserRecommendationBlocksArtistsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -308,7 +308,7 @@ Deletes item(s) from tracks relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userRecommendationBlocksTracksRelationshipRemoveOperationPayload = UserRecommendationBlocksTracksRelationshipRemoveOperation_Payload(data: [UserRecommendationBlocksTracksRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksTracksRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from tracks relationship (\"to-many\").
@@ -329,7 +329,7 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksDelete(
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksTracksRelationshipRemoveOperationPayload** | [**UserRecommendationBlocksTracksRelationshipRemoveOperationPayload**](UserRecommendationBlocksTracksRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -418,7 +418,7 @@ Adds item(s) to tracks relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userRecommendationBlocksTracksRelationshipAddOperationPayload = UserRecommendationBlocksTracksRelationshipAddOperation_Payload(data: [UserRecommendationBlocksTracksRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksTracksRelationshipAddOperationPayload |  (optional)
 
 // Add to tracks relationship (\"to-many\").
@@ -439,7 +439,7 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksPost(id
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksTracksRelationshipAddOperationPayload** | [**UserRecommendationBlocksTracksRelationshipAddOperationPayload**](UserRecommendationBlocksTracksRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -472,7 +472,7 @@ Deletes item(s) from videos relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userRecommendationBlocksVideosRelationshipRemoveOperationPayload = UserRecommendationBlocksVideosRelationshipRemoveOperation_Payload(data: [UserRecommendationBlocksVideosRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksVideosRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from videos relationship (\"to-many\").
@@ -493,7 +493,7 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosDelete(
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksVideosRelationshipRemoveOperationPayload** | [**UserRecommendationBlocksVideosRelationshipRemoveOperationPayload**](UserRecommendationBlocksVideosRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -582,7 +582,7 @@ Adds item(s) to videos relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userRecommendationBlocksVideosRelationshipAddOperationPayload = UserRecommendationBlocksVideosRelationshipAddOperation_Payload(data: [UserRecommendationBlocksVideosRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksVideosRelationshipAddOperationPayload |  (optional)
 
 // Add to videos relationship (\"to-many\").
@@ -603,7 +603,7 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosPost(id
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userRecommendationBlocksVideosRelationshipAddOperationPayload** | [**UserRecommendationBlocksVideosRelationshipAddOperationPayload**](UserRecommendationBlocksVideosRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type

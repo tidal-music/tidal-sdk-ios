@@ -87,7 +87,7 @@ Deletes existing userCollectionFolder.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single userCollectionFolder.
 UserCollectionFoldersAPI.userCollectionFoldersIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
@@ -107,7 +107,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdDelete(id: id, idempotencyKey: i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -195,7 +195,7 @@ Updates existing userCollectionFolder.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userCollectionFoldersUpdateOperationPayload = UserCollectionFoldersUpdateOperation_Payload(data: UserCollectionFoldersUpdateOperation_Payload_Data(attributes: UserCollectionFoldersUpdateOperation_Payload_Data_Attributes(name: "name_example"), id: "id_example", type: "type_example")) // UserCollectionFoldersUpdateOperationPayload |  (optional)
 
 // Update single userCollectionFolder.
@@ -216,7 +216,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdPatch(id: id, idempotencyKey: id
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userCollectionFoldersUpdateOperationPayload** | [**UserCollectionFoldersUpdateOperationPayload**](UserCollectionFoldersUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -249,7 +249,7 @@ Deletes item(s) from items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userCollectionFoldersItemsRelationshipRemoveOperationPayload = UserCollectionFoldersItemsRelationshipRemoveOperation_Payload(data: [UserCollectionFoldersItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionFoldersItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
@@ -270,7 +270,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(id: id,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userCollectionFoldersItemsRelationshipRemoveOperationPayload** | [**UserCollectionFoldersItemsRelationshipRemoveOperationPayload**](UserCollectionFoldersItemsRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -361,7 +361,7 @@ Adds item(s) to items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userCollectionFoldersItemsRelationshipAddOperationPayload = UserCollectionFoldersItemsRelationshipAddOperation_Payload(data: [UserCollectionFoldersItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionFoldersItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
@@ -382,7 +382,7 @@ UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPost(id: id, i
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userCollectionFoldersItemsRelationshipAddOperationPayload** | [**UserCollectionFoldersItemsRelationshipAddOperationPayload**](UserCollectionFoldersItemsRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -522,7 +522,7 @@ Creates a new userCollectionFolder.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let userCollectionFoldersCreateOperationPayload = UserCollectionFoldersCreateOperation_Payload(data: UserCollectionFoldersCreateOperation_Payload_Data(attributes: UserCollectionFoldersCreateOperation_Payload_Data_Attributes(name: "name_example"), relationships: UserCollectionFoldersCreateOperation_Payload_Data_Relationships(userCollection: UserCollectionFoldersCreateOperation_Payload_Data_Relationships_UserCollection(data: UserCollection(id: "id_example", type: "type_example"))), type: "type_example")) // UserCollectionFoldersCreateOperationPayload |  (optional)
 
 // Create single userCollectionFolder.
@@ -542,7 +542,7 @@ UserCollectionFoldersAPI.userCollectionFoldersPost(idempotencyKey: idempotencyKe
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **userCollectionFoldersCreateOperationPayload** | [**UserCollectionFoldersCreateOperationPayload**](UserCollectionFoldersCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

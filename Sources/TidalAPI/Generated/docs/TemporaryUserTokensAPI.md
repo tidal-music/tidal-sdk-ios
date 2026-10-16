@@ -131,7 +131,7 @@ Creates a new temporaryUserToken.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let temporaryUserTokensCreateOperationPayload = TemporaryUserTokensCreateOperation_Payload(data: TemporaryUserTokensCreateOperation_Payload_Data(type: "type_example")) // TemporaryUserTokensCreateOperationPayload |  (optional)
 
 // Create single temporaryUserToken.
@@ -151,7 +151,7 @@ TemporaryUserTokensAPI.temporaryUserTokensPost(idempotencyKey: idempotencyKey, t
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **temporaryUserTokensCreateOperationPayload** | [**TemporaryUserTokensCreateOperationPayload**](TemporaryUserTokensCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

@@ -144,7 +144,7 @@ Deletes item(s) from offlineInventory relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Installation id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let installationsOfflineInventoryRelationshipRemoveOperationPayload = InstallationsOfflineInventoryRelationshipRemoveOperation_Payload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from offlineInventory relationship (\"to-many\").
@@ -165,7 +165,7 @@ InstallationsAPI.installationsIdRelationshipsOfflineInventoryDelete(id: id, idem
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Installation id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **installationsOfflineInventoryRelationshipRemoveOperationPayload** | [**InstallationsOfflineInventoryRelationshipRemoveOperationPayload**](InstallationsOfflineInventoryRelationshipRemoveOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -260,7 +260,7 @@ Adds item(s) to offlineInventory relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Installation id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let installationsOfflineInventoryRelationshipAddOperationPayload = InstallationsOfflineInventoryRelationshipAddOperation_Payload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryRelationshipAddOperationPayload |  (optional)
 
 // Add to offlineInventory relationship (\"to-many\").
@@ -281,7 +281,7 @@ InstallationsAPI.installationsIdRelationshipsOfflineInventoryPost(id: id, idempo
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Installation id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **installationsOfflineInventoryRelationshipAddOperationPayload** | [**InstallationsOfflineInventoryRelationshipAddOperationPayload**](InstallationsOfflineInventoryRelationshipAddOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -367,7 +367,7 @@ Creates a new installation.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let installationsCreateOperationPayload = InstallationsCreateOperation_Payload(data: InstallationsCreateOperation_Payload_Data(attributes: InstallationsCreateOperation_Payload_Data_Attributes(clientProvidedInstallationId: "clientProvidedInstallationId_example", name: "name_example"), type: "type_example")) // InstallationsCreateOperationPayload |  (optional)
 
 // Create single installation.
@@ -387,7 +387,7 @@ InstallationsAPI.installationsPost(idempotencyKey: idempotencyKey, installations
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **installationsCreateOperationPayload** | [**InstallationsCreateOperationPayload**](InstallationsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

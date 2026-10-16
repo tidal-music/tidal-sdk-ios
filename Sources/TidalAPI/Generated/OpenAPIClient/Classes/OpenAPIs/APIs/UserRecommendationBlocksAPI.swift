@@ -87,7 +87,7 @@ internal class UserRecommendationBlocksAPI {
      Delete from artists relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -109,7 +109,7 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -197,7 +197,7 @@ internal class UserRecommendationBlocksAPI {
      Add to artists relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument
      */
@@ -219,7 +219,7 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksArtistsRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument> 
      */
@@ -304,7 +304,7 @@ internal class UserRecommendationBlocksAPI {
      Delete from tracks relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -326,7 +326,7 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -414,7 +414,7 @@ internal class UserRecommendationBlocksAPI {
      Add to tracks relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: UserRecommendationBlocksTracksAddMultiRelationshipDataDocument
      */
@@ -436,7 +436,7 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksTracksRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserRecommendationBlocksTracksAddMultiRelationshipDataDocument> 
      */
@@ -466,7 +466,7 @@ internal class UserRecommendationBlocksAPI {
      Delete from videos relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -488,7 +488,7 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -576,7 +576,7 @@ internal class UserRecommendationBlocksAPI {
      Add to videos relationship (\"to-many\").
      
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: UserRecommendationBlocksVideosAddMultiRelationshipDataDocument
      */
@@ -598,7 +598,7 @@ internal class UserRecommendationBlocksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userRecommendationBlocksVideosRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserRecommendationBlocksVideosAddMultiRelationshipDataDocument> 
      */

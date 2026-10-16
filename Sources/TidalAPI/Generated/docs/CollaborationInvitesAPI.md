@@ -83,7 +83,7 @@ Deletes existing collaborationInvite.
 import OpenAPIClient
 
 let id = "id_example" // String | Collaboration invite id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single collaborationInvite.
 CollaborationInvitesAPI.collaborationInvitesIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
@@ -103,7 +103,7 @@ CollaborationInvitesAPI.collaborationInvitesIdDelete(id: id, idempotencyKey: ide
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Collaboration invite id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -298,7 +298,7 @@ Creates a new collaborationInvite.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let collaborationInvitesCreateOperationPayload = CollaborationInvitesCreateOperation_Payload(data: CollaborationInvitesCreateOperation_Payload_Data(relationships: CollaborationInvitesCreateOperation_Payload_Data_Relationships(subject: CollaborationInvitesCreateOperation_Payload_Data_Relationships_Subject(data: CollaborationInvitesCreateOperation_Payload_Data_Relationships_Subject_Data(id: "id_example", type: "type_example"))), type: "type_example")) // CollaborationInvitesCreateOperationPayload |  (optional)
 
 // Create single collaborationInvite.
@@ -318,7 +318,7 @@ CollaborationInvitesAPI.collaborationInvitesPost(idempotencyKey: idempotencyKey,
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **collaborationInvitesCreateOperationPayload** | [**CollaborationInvitesCreateOperationPayload**](CollaborationInvitesCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

@@ -131,7 +131,7 @@ Creates a new stripeConnection.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let stripeConnectionsCreateOperationPayload = StripeConnectionsCreateOperation_Payload(data: StripeConnectionsCreateOperation_Payload_Data(attributes: StripeConnectionsCreateOperation_Payload_Data_Attributes(integrationType: "integrationType_example", refreshUrl: "refreshUrl_example", returnUrl: "returnUrl_example"), type: "type_example"), meta: StripeConnectionsCreateOperation_Payload_Meta(integrationType: "integrationType_example", refreshUrl: "refreshUrl_example", returnUrl: "returnUrl_example")) // StripeConnectionsCreateOperationPayload |  (optional)
 
 // Create single stripeConnection.
@@ -151,7 +151,7 @@ StripeConnectionsAPI.stripeConnectionsPost(idempotencyKey: idempotencyKey, strip
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **stripeConnectionsCreateOperationPayload** | [**StripeConnectionsCreateOperationPayload**](StripeConnectionsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type
