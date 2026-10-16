@@ -53,7 +53,7 @@ let filterIsrc = ["inner_example"] // [String] | List of ISRCs. When a single IS
 let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get multiple tracks.
 TracksAPI.tracksGet(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
@@ -81,7 +81,7 @@ Name | Type | Description  | Notes
  **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -169,7 +169,7 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get single track.
 TracksAPI.tracksIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
@@ -193,7 +193,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -283,7 +283,7 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: albums (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get albums relationship (\"to-many\").
 TracksAPI.tracksIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
@@ -307,7 +307,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: albums | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -397,7 +397,7 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: artists (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get artists relationship (\"to-many\").
 TracksAPI.tracksIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
@@ -421,7 +421,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: artists | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -456,7 +456,7 @@ let id = "id_example" // String | Track id
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: credits (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: credits.artist.albums (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get credits relationship (\"to-many\").
 TracksAPI.tracksIdRelationshipsCreditsGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
@@ -479,7 +479,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: credits | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: credits.artist.albums | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -512,7 +512,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: download (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get download relationship (\"to-one\").
 TracksAPI.tracksIdRelationshipsDownloadGet(id: id, include: include, shareCode: shareCode) { (response, error) in
@@ -533,7 +533,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: download | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -568,7 +568,7 @@ let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: genres (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get genres relationship (\"to-many\").
 TracksAPI.tracksIdRelationshipsGenresGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
@@ -591,7 +591,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: genres | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -626,7 +626,7 @@ let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: lyrics (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: lyrics.track (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get lyrics relationship (\"to-many\").
 TracksAPI.tracksIdRelationshipsLyricsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
@@ -649,7 +649,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: lyrics | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: lyrics.track | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -682,7 +682,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: metadataStatus (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get metadataStatus relationship (\"to-one\").
 TracksAPI.tracksIdRelationshipsMetadataStatusGet(id: id, include: include, shareCode: shareCode) { (response, error) in
@@ -703,7 +703,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: metadataStatus | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -737,7 +737,7 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get owners relationship (\"to-many\").
 TracksAPI.tracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
@@ -759,7 +759,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -793,7 +793,7 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: priceConfig (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get priceConfig relationship (\"to-one\").
 TracksAPI.tracksIdRelationshipsPriceConfigGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
@@ -815,7 +815,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: priceConfig | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -850,7 +850,7 @@ let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: providers (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get providers relationship (\"to-many\").
 TracksAPI.tracksIdRelationshipsProvidersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
@@ -873,7 +873,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: providers | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -908,7 +908,7 @@ let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: radio (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: radio.items (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get radio relationship (\"to-many\").
 TracksAPI.tracksIdRelationshipsRadioGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
@@ -931,7 +931,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: radio | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: radio.items | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -966,7 +966,7 @@ let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: replacement (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: replacement (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get replacement relationship (\"to-one\").
 TracksAPI.tracksIdRelationshipsReplacementGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
@@ -989,7 +989,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: replacement | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: replacement | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -1024,7 +1024,7 @@ let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: shares (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: shares.sharedResources (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get shares relationship (\"to-many\").
 TracksAPI.tracksIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
@@ -1047,7 +1047,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: shares | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: shares.sharedResources | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -1083,7 +1083,7 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: similarTracks (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: similarTracks (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get similarTracks relationship (\"to-many\").
 TracksAPI.tracksIdRelationshipsSimilarTracksGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
@@ -1107,7 +1107,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: similarTracks | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarTracks | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -1140,7 +1140,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: sourceFile (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get sourceFile relationship (\"to-one\").
 TracksAPI.tracksIdRelationshipsSourceFileGet(id: id, include: include, shareCode: shareCode) { (response, error) in
@@ -1161,7 +1161,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: sourceFile | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -1197,7 +1197,7 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: suggestedTracks (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: suggestedTracks (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get suggestedTracks relationship (\"to-many\").
 TracksAPI.tracksIdRelationshipsSuggestedTracksGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
@@ -1221,7 +1221,7 @@ Name | Type | Description  | Notes
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: suggestedTracks | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: suggestedTracks | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -1254,7 +1254,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: trackStatistics (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get trackStatistics relationship (\"to-one\").
 TracksAPI.tracksIdRelationshipsTrackStatisticsGet(id: id, include: include, shareCode: shareCode) { (response, error) in
@@ -1275,7 +1275,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: trackStatistics | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -1309,7 +1309,7 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: usageRules (optional)
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get usageRules relationship (\"to-one\").
 TracksAPI.tracksIdRelationshipsUsageRulesGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
@@ -1331,7 +1331,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: usageRules | [optional] 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 

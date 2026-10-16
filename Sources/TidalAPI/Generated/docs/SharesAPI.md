@@ -83,7 +83,7 @@ Delete share. Effectively revokes bearer access and acceptance.
 import OpenAPIClient
 
 let id = "id_example" // String | Share id
-let revokeGrants = true // Bool | Also revoke grants issued through this share. Defaults to false; true is currently unsupported. (optional)
+let revokeGrants = true // Bool | Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
 
 // Delete single share.
@@ -104,7 +104,7 @@ SharesAPI.sharesIdDelete(id: id, revokeGrants: revokeGrants, idempotencyKey: ide
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Share id | 
- **revokeGrants** | **Bool** | Also revoke grants issued through this share. Defaults to false; true is currently unsupported. | [optional] 
+ **revokeGrants** | **Bool** | Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
 
 ### Return type

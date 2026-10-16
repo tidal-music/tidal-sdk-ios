@@ -21,6 +21,7 @@ public enum UserFeedItemActivityDetails: Codable, JSONEncodable, Hashable {
     case userFeedItemHistoryMixReadyDetails(UserFeedItemHistoryMixReadyDetails)
     case userFeedItemPlaylistUpdatedDetails(UserFeedItemPlaylistUpdatedDetails)
     case userFeedItemTrackFavouritedDetails(UserFeedItemTrackFavouritedDetails)
+    case userFeedItemTrackPlayMilestoneDetails(UserFeedItemTrackPlayMilestoneDetails)
     case userFeedItemTrackPlaylistedDetails(UserFeedItemTrackPlaylistedDetails)
     case userFeedItemTrackSourceFileCommentedDetails(UserFeedItemTrackSourceFileCommentedDetails)
 
@@ -44,6 +45,8 @@ public enum UserFeedItemActivityDetails: Codable, JSONEncodable, Hashable {
         case .userFeedItemPlaylistUpdatedDetails(let value):
             try container.encode(value)
         case .userFeedItemTrackFavouritedDetails(let value):
+            try container.encode(value)
+        case .userFeedItemTrackPlayMilestoneDetails(let value):
             try container.encode(value)
         case .userFeedItemTrackPlaylistedDetails(let value):
             try container.encode(value)
@@ -91,6 +94,9 @@ public enum UserFeedItemActivityDetails: Codable, JSONEncodable, Hashable {
         case "TRACK_PLAYLISTED":
             let value = try UserFeedItemTrackPlaylistedDetails(from: decoder)
             self = .userFeedItemTrackPlaylistedDetails(value)
+        case "TRACK_PLAY_MILESTONE":
+            let value = try UserFeedItemTrackPlayMilestoneDetails(from: decoder)
+            self = .userFeedItemTrackPlayMilestoneDetails(value)
         case "TRACK_SOURCE_FILE_COMMENTED":
             let value = try UserFeedItemTrackSourceFileCommentedDetails(from: decoder)
             self = .userFeedItemTrackSourceFileCommentedDetails(value)

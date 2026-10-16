@@ -58,7 +58,7 @@ internal class TracksAPI {
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -90,7 +90,7 @@ internal class TracksAPI {
      - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksMultiResourceDataDocument> 
      */
     internal class func tracksGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_tracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_tracksGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMultiResourceDataDocument> {
@@ -204,7 +204,7 @@ internal class TracksAPI {
      - parameter include: (query) Include related resources. Available relationships: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -232,7 +232,7 @@ internal class TracksAPI {
      - parameter include: (query) Include related resources. Available relationships: albums, artists, credits, download, genres, lyrics, metadataStatus, owners, priceConfig, providers, radio, replacement, shares, similarTracks, sourceFile, suggestedTracks, trackStatistics, usageRules (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksSingleResourceDataDocument> 
      */
     internal class func tracksIdGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_tracksIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSingleResourceDataDocument> {
@@ -323,7 +323,7 @@ internal class TracksAPI {
      - parameter include: (query) Include related resources. Available relationships: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksAlbumsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -351,7 +351,7 @@ internal class TracksAPI {
      - parameter include: (query) Include related resources. Available relationships: albums (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: albums (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksAlbumsMultiRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsAlbumsGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksAlbumsMultiRelationshipDataDocument> {
@@ -442,7 +442,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: artists (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksArtistsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -470,7 +470,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: artists (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksArtistsMultiRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsArtistsGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksArtistsMultiRelationshipDataDocument> {
@@ -508,7 +508,7 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: credits (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksCreditsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -535,7 +535,7 @@ internal class TracksAPI {
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: credits (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: credits.artist.albums (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksCreditsMultiRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsCreditsGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksCreditsMultiRelationshipDataDocument> {
@@ -570,7 +570,7 @@ internal class TracksAPI {
      
      - parameter id: (path) Track id 
      - parameter include: (query) Include related resources. Available relationships: download (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksDownloadSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -592,7 +592,7 @@ internal class TracksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track id 
      - parameter include: (query) Include related resources. Available relationships: download (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksDownloadSingleRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsDownloadGetWithRequestBuilder(id: String, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksDownloadSingleRelationshipDataDocument> {
@@ -627,7 +627,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: genres (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksGenresMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -654,7 +654,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: genres (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksGenresMultiRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsGenresGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksGenresMultiRelationshipDataDocument> {
@@ -691,7 +691,7 @@ internal class TracksAPI {
      - parameter include: (query) Include related resources. Available relationships: lyrics (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: lyrics.track (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksLyricsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -718,7 +718,7 @@ internal class TracksAPI {
      - parameter include: (query) Include related resources. Available relationships: lyrics (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: lyrics.track (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksLyricsMultiRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsLyricsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksLyricsMultiRelationshipDataDocument> {
@@ -753,7 +753,7 @@ internal class TracksAPI {
      
      - parameter id: (path) Track id 
      - parameter include: (query) Include related resources. Available relationships: metadataStatus (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksMetadataStatusSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -775,7 +775,7 @@ internal class TracksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track id 
      - parameter include: (query) Include related resources. Available relationships: metadataStatus (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksMetadataStatusSingleRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsMetadataStatusGetWithRequestBuilder(id: String, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksMetadataStatusSingleRelationshipDataDocument> {
@@ -809,7 +809,7 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -835,7 +835,7 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksOwnersMultiRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksOwnersMultiRelationshipDataDocument> {
@@ -870,7 +870,7 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: priceConfig (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksPriceConfigSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -896,7 +896,7 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: priceConfig (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksPriceConfigSingleRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsPriceConfigGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksPriceConfigSingleRelationshipDataDocument> {
@@ -932,7 +932,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: providers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksProvidersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -959,7 +959,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: providers (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksProvidersMultiRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsProvidersGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksProvidersMultiRelationshipDataDocument> {
@@ -996,7 +996,7 @@ internal class TracksAPI {
      - parameter include: (query) Include related resources. Available relationships: radio (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: radio.items (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksRadioMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -1023,7 +1023,7 @@ internal class TracksAPI {
      - parameter include: (query) Include related resources. Available relationships: radio (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: radio.items (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksRadioMultiRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsRadioGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksRadioMultiRelationshipDataDocument> {
@@ -1060,7 +1060,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: replacement (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: replacement (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksReplacementSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -1087,7 +1087,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: replacement (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: replacement (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksReplacementSingleRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsReplacementGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksReplacementSingleRelationshipDataDocument> {
@@ -1124,7 +1124,7 @@ internal class TracksAPI {
      - parameter include: (query) Include related resources. Available relationships: shares (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: shares.sharedResources (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksSharesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -1148,7 +1148,7 @@ internal class TracksAPI {
      - parameter include: (query) Include related resources. Available relationships: shares (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: shares.sharedResources (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksSharesMultiRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsSharesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSharesMultiRelationshipDataDocument> {
@@ -1186,7 +1186,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: similarTracks (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarTracks (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksSimilarTracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -1214,7 +1214,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: similarTracks (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarTracks (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksSimilarTracksMultiRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSimilarTracksMultiRelationshipDataDocument> {
@@ -1250,7 +1250,7 @@ internal class TracksAPI {
      
      - parameter id: (path) Track id 
      - parameter include: (query) Include related resources. Available relationships: sourceFile (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksSourceFileSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -1275,7 +1275,7 @@ internal class TracksAPI {
        - name: Client_Credentials
      - parameter id: (path) Track id 
      - parameter include: (query) Include related resources. Available relationships: sourceFile (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksSourceFileSingleRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsSourceFileGetWithRequestBuilder(id: String, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSourceFileSingleRelationshipDataDocument> {
@@ -1311,7 +1311,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: suggestedTracks (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: suggestedTracks (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksSuggestedTracksMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -1339,7 +1339,7 @@ internal class TracksAPI {
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: suggestedTracks (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: suggestedTracks (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksSuggestedTracksMultiRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsSuggestedTracksGetWithRequestBuilder(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSuggestedTracksMultiRelationshipDataDocument> {
@@ -1375,7 +1375,7 @@ internal class TracksAPI {
      
      - parameter id: (path) Track id 
      - parameter include: (query) Include related resources. Available relationships: trackStatistics (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksTrackStatisticsSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -1397,7 +1397,7 @@ internal class TracksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track id 
      - parameter include: (query) Include related resources. Available relationships: trackStatistics (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksTrackStatisticsSingleRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsTrackStatisticsGetWithRequestBuilder(id: String, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksTrackStatisticsSingleRelationshipDataDocument> {
@@ -1431,7 +1431,7 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: usageRules (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksUsageRulesSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -1457,7 +1457,7 @@ internal class TracksAPI {
      - parameter id: (path) Track id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter include: (query) Include related resources. Available relationships: usageRules (optional)
-     - parameter shareCode: (query) Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksUsageRulesSingleRelationshipDataDocument> 
      */
     internal class func tracksIdRelationshipsUsageRulesGetWithRequestBuilder(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TracksUsageRulesSingleRelationshipDataDocument> {

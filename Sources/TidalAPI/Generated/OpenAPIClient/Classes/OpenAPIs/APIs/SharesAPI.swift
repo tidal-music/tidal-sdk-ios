@@ -83,7 +83,7 @@ internal class SharesAPI {
      Delete single share.
      
      - parameter id: (path) Share id 
-     - parameter revokeGrants: (query) Also revoke grants issued through this share. Defaults to false; true is currently unsupported. (optional)
+     - parameter revokeGrants: (query) Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: MutationResponseDocument
      */
@@ -105,7 +105,7 @@ internal class SharesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Share id 
-     - parameter revokeGrants: (query) Also revoke grants issued through this share. Defaults to false; true is currently unsupported. (optional)
+     - parameter revokeGrants: (query) Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */

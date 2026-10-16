@@ -27,7 +27,7 @@ let formats = ["formats_example"] // [String] |
 let uriScheme = "uriScheme_example" // String | 
 let usage = "usage_example" // String | 
 let adaptive = true // Bool | 
-let shareCode = "shareCode_example" // String | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get single trackManifest.
 TrackManifestsAPI.trackManifestsIdGet(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive, shareCode: shareCode) { (response, error) in
@@ -52,7 +52,7 @@ Name | Type | Description  | Notes
  **uriScheme** | **String** |  | 
  **usage** | **String** |  | 
  **adaptive** | **Bool** |  | 
- **shareCode** | **String** | Share code that grants access to UNLISTED resources. When provided, allows non-owners to access resources that would otherwise be restricted. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
