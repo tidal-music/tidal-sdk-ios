@@ -4,12 +4,12 @@ import Foundation
 // MARK: - TidalAuth
 
 public class TidalAuth: Auth & CredentialsProvider {
-    public static let shared = TidalAuth()
+	public static let shared = TidalAuth()
 
-    private var loginRepository: LoginRepository!
-    private var tokenRepository: TokenRepository!
-    private let refreshCoordinator = RefreshCoordinator()
-    private(set) var config: AuthConfig?
+	private var loginRepository: LoginRepository!
+	private var tokenRepository: TokenRepository!
+	private let refreshCoordinator = RefreshCoordinator()
+	private(set) var config: AuthConfig?
 
 	public func config(
 		config: AuthConfig

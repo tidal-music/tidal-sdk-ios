@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - RefreshCoalescing
+
 protocol RefreshCoalescing {
 	func runOrJoinCredentials(
 		key: String,
@@ -9,6 +11,8 @@ protocol RefreshCoalescing {
 
 	func upgradeRefreshIntent(for key: String) async
 }
+
+// MARK: - RefreshCoordinator
 
 actor RefreshCoordinator: RefreshCoalescing {
 	private struct InFlightTask {
@@ -36,7 +40,7 @@ actor RefreshCoordinator: RefreshCoalescing {
 	) async throws -> AuthResult<Credentials> {
 		// If a task is already in-flight for this key, join it instead of creating a new one
 		if let existing = tasks[key] {
-			if requiresRefresh && !existing.requiresRefresh {
+			if requiresRefresh, !existing.requiresRefresh {
 				let currentPriority = Task.currentPriority
 				let task = Task.detached(priority: currentPriority) {
 					_ = try? await existing.task.value
@@ -48,7 +52,7 @@ actor RefreshCoordinator: RefreshCoalescing {
 				Task.detached { [weak self, key, inFlightTask] in
 					_ = try? await inFlightTask.task.value
 					if let self {
-						await self.clearTask(for: key, taskId: inFlightTask.id)
+						await clearTask(for: key, taskId: inFlightTask.id)
 					}
 				}
 
@@ -75,7 +79,7 @@ actor RefreshCoordinator: RefreshCoalescing {
 		Task.detached { [weak self, key, inFlightTask] in
 			_ = try? await inFlightTask.task.value
 			if let self {
-				await self.clearTask(for: key, taskId: inFlightTask.id)
+				await clearTask(for: key, taskId: inFlightTask.id)
 			}
 		}
 

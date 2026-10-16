@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - GenericMediaPlayer
+
 public protocol GenericMediaPlayer: AnyObject {
 	// swiftlint:disable identifier_name
 	var shouldVerifyItWasPlayingBeforeInterruption: Bool { get }

@@ -22,15 +22,15 @@ public enum ErrorId: String {
 	static func playbackErrorId(from errorCode: String) -> ErrorId {
 		switch errorCode {
 		case "GEO_RESTRICTED":
-			return .PEContentNotAvailableInLocation
+			.PEContentNotAvailableInLocation
 		case "PURCHASE_REQUIRED":
-			return .PEContentNotAvailableForSubscription
+			.PEContentNotAvailableForSubscription
 		case "CLIENT_NOT_ENTITLED", "CONTENT_NOT_FOUND", "PREREQUISITE_MISSING", "CONCURRENCY_LIMIT", "CONCURRENT_PLAYBACK":
-			return .PENotAllowed
+			.PENotAllowed
 		case "TEMPORARY_ERROR", "INTERNAL_ERROR":
-			return .PERetryable
+			.PERetryable
 		default:
-			return .EUnexpected
+			.EUnexpected
 		}
 	}
 

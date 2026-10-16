@@ -55,8 +55,8 @@ final class FairPlayLicenseFetcher {
 			return license
 		}
 	}
-	
-	// Public method to access certificate for external callers (only available with improved DRM handling)
+
+	/// Public method to access certificate for external callers (only available with improved DRM handling)
 	func preloadCertificate() async throws {
 		guard featureFlagProvider.shouldUseImprovedDRMHandling() else {
 			// No-op when not using improved DRM handling
@@ -74,7 +74,7 @@ private extension FairPlayLicenseFetcher {
 	}
 
 	func getCertificate() async throws -> Data {
-		if let certificate = certificate {
+		if let certificate {
 			return certificate
 		}
 
@@ -84,15 +84,15 @@ private extension FairPlayLicenseFetcher {
 			return try await getCertificateLegacy()
 		}
 	}
-	
+
 	private func getCertificateWithRetry() async throws -> Data {
 		let maxRetries = 3
 		var lastError: Error?
-		
-		for attempt in 1...maxRetries {
+
+		for attempt in 1 ... maxRetries {
 			do {
 				let certificate = try await httpClient.get(
-					url: FairPlayLicenseFetcher.CERTIFICATE_URL, 
+					url: FairPlayLicenseFetcher.CERTIFICATE_URL,
 					headers: [:]
 				)
 				self.certificate = certificate
@@ -106,7 +106,7 @@ private extension FairPlayLicenseFetcher {
 				}
 			}
 		}
-		
+
 		throw lastError ?? PlayerInternalError(
 			errorId: .PERetryable,
 			errorType: .drmLicenseError,
@@ -114,7 +114,7 @@ private extension FairPlayLicenseFetcher {
 			description: "Certificate fetch failed after \(maxRetries) attempts"
 		)
 	}
-	
+
 	private func getCertificateLegacy() async throws -> Data {
 		let certificate = try await httpClient.get(url: FairPlayLicenseFetcher.CERTIFICATE_URL, headers: [:])
 		self.certificate = certificate
@@ -194,7 +194,7 @@ private extension FairPlayLicenseFetcher {
 		var lastError: Error?
 		var authTokenRefreshed = false
 
-		for attempt in 1...maxRetries {
+		for attempt in 1 ... maxRetries {
 			do {
 				let token = try await credentialsProvider.getAuthBearerToken()
 
@@ -214,9 +214,9 @@ private extension FairPlayLicenseFetcher {
 				lastError = error
 
 				switch error {
-				case .httpClientError(let statusCode, _):
+				case let .httpClientError(statusCode, _):
 					// Handle 401 Unauthorized - try refreshing token once
-					if statusCode == 401 && !authTokenRefreshed {
+					if statusCode == 401, !authTokenRefreshed {
 						// Force token refresh by requesting credentials with the invalid token sub-status
 						do {
 							_ = try await credentialsProvider.getCredentials(
@@ -236,7 +236,7 @@ private extension FairPlayLicenseFetcher {
 					}
 
 					// Handle 429 Rate Limit - retry with backoff
-					if statusCode == 429 && attempt < maxRetries {
+					if statusCode == 429, attempt < maxRetries {
 						let delay = UInt64(attempt * 2_000_000_000) // 2s, 4s, 6s
 						try await Task.sleep(nanoseconds: delay)
 						continue
@@ -259,7 +259,7 @@ private extension FairPlayLicenseFetcher {
 				lastError = error
 
 				// Check if this is a retryable network/timeout error
-				if isRetryableDRMError(error) && attempt < maxRetries {
+				if isRetryableDRMError(error), attempt < maxRetries {
 					let delay = UInt64(attempt * 1_000_000_000) // 1s, 2s, 3s
 					try await Task.sleep(nanoseconds: delay)
 					continue
@@ -297,7 +297,7 @@ private extension FairPlayLicenseFetcher {
 		if let urlError = error as? URLError {
 			switch urlError.code {
 			case .timedOut, .networkConnectionLost, .notConnectedToInternet,
-				 .cannotFindHost, .cannotConnectToHost, .dnsLookupFailed:
+			     .cannotFindHost, .cannotConnectToHost, .dnsLookupFailed:
 				return true
 			default:
 				return false

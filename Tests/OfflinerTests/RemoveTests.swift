@@ -119,7 +119,8 @@ final class RemoveTests: OfflinerTestCase {
 		await offliner.run()
 		await backend.waitForTasksToComplete()
 
-		let storedCollectionOptional = await offliner.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
+		let storedCollectionOptional = await offliner
+			.getOfflineCollection(collectionType: .albums, resourceId: .identifier("album-123")).latest()
 		let storedCollection = try XCTUnwrap(storedCollectionOptional)
 		let artworkURL = try XCTUnwrap(storedCollection.artworkURL)
 		XCTAssertTrue(FileManager.default.fileExists(atPath: artworkURL.path))

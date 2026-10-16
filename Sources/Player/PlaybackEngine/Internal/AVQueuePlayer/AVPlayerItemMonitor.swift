@@ -32,18 +32,19 @@ final class AVPlayerItemMonitor {
 		playerItemDidPlayToEndTimeMonitor = ItemPlayedToEndMonitor(playerItem: playerItem, onPlayedToEnd: onItemPlayedToEnd)
 
 		// MARK: Debug-Only Monitoring
+
 		// AVPlayerItemABRMonitor is only active when running in Xcode debug mode.
 		// This provides bitrate-based quality detection for debugging ABR behavior.
 		// Quality monitoring for production is handled by FormatVariantMonitor using HLS timed metadata.
 		#if DEBUG
-		abrMonitor = AVPlayerItemABRMonitor(
-			playerItem: playerItem,
-			queue: queue,
-			onQualityChanged: { _ in
-				// Quality monitoring is now handled by FormatVariantMonitor using HLS timed metadata
-				// Keep ABRMonitor for debugging only
-			}
-		)
+			abrMonitor = AVPlayerItemABRMonitor(
+				playerItem: playerItem,
+				queue: queue,
+				onQualityChanged: { _ in
+					// Quality monitoring is now handled by FormatVariantMonitor using HLS timed metadata
+					// Keep ABRMonitor for debugging only
+				}
+			)
 		#endif
 
 		formatVariantMonitor = FormatVariantMonitor(

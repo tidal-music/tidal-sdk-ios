@@ -1,6 +1,8 @@
 import AVFoundation
 import Foundation
 
+// MARK: - FormatVariantMonitor
+
 /// Monitors format variant switches in HLS streams using timed metadata.
 /// Observes ext-x-daterange metadata with "com.tidal.format" identifier
 /// to detect ABR variant changes and extract format details.
@@ -15,10 +17,10 @@ class FormatVariantMonitor: NSObject {
 	private let queue: OperationQueue
 	private var lastReportedFormat: AssetPlaybackMetadata?
 
-	// Metadata identifier for Tidal format information
+	/// Metadata identifier for Tidal format information
 	private static let groupLabel = "com.tidal.format"
 
-	// Cached whitespace character set for string trimming optimization
+	/// Cached whitespace character set for string trimming optimization
 	private static let whitespaceCharacters = CharacterSet.whitespaces
 
 	init(
@@ -44,7 +46,7 @@ class FormatVariantMonitor: NSObject {
 		metadataCollector.setDelegate(self, queue: DispatchQueue.main)
 		playerItem.add(metadataCollector)
 		self.metadataCollector = metadataCollector
-		
+
 		PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantMonitorInitialized)
 	}
 
@@ -68,10 +70,10 @@ class FormatVariantMonitor: NSObject {
 		// Dispatch callback through configured queue with playerItem validation
 		// to prevent race conditions during player item deallocation
 		queue.addOperation { [weak self] in
-			guard let self = self, self.playerItem != nil else {
+			guard let self, playerItem != nil else {
 				return
 			}
-			self.onFormatChanged(formatMetadata)
+			onFormatChanged(formatMetadata)
 		}
 	}
 
@@ -131,6 +133,7 @@ class FormatVariantMonitor: NSObject {
 }
 
 // MARK: AVPlayerItemMetadataCollectorPushDelegate
+
 extension FormatVariantMonitor: AVPlayerItemMetadataCollectorPushDelegate {
 	func metadataCollector(
 		_ metadataCollector: AVPlayerItemMetadataCollector,
@@ -142,7 +145,7 @@ extension FormatVariantMonitor: AVPlayerItemMetadataCollectorPushDelegate {
 			.filter { $0.classifyingLabel == Self.groupLabel }
 			.forEach { self.handleMetadataGroup($0) }
 	}
-	
+
 	func handleMetadataGroup(_ metadataGroup: AVDateRangeMetadataGroup) {
 		guard let formatMetadata = extractGroupFormatMetadata(from: metadataGroup) else {
 			PlayerWorld.logger?.log(loggable: PlayerLoggable.formatVariantExtractionFailed)
@@ -151,4 +154,3 @@ extension FormatVariantMonitor: AVPlayerItemMetadataCollectorPushDelegate {
 		processFormatMetadata(formatMetadata)
 	}
 }
-
