@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 # **foldersGet**
 ```swift
-    open class func foldersGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_foldersGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FoldersMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func foldersGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_foldersGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple folders.
@@ -33,9 +33,10 @@ let filterId = ["inner_example"] // [String] | Folder id (e.g. `e3226624-355b-48
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: children, owners, parent, preview (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: children.subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get multiple folders.
-FoldersAPI.foldersGet(filterId: filterId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+FoldersAPI.foldersGet(filterId: filterId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -55,6 +56,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: children, owners, parent, preview | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -62,7 +64,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
 
 ### HTTP request headers
 
@@ -125,7 +127,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdGet**
 ```swift
-    open class func foldersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_foldersIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func foldersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_foldersIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single folder.
@@ -141,9 +143,10 @@ let id = "id_example" // String | Folder id. Use `me` for the authenticated user
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: children, owners, parent, preview (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: children.subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get single folder.
-FoldersAPI.foldersIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+FoldersAPI.foldersIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -163,6 +166,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: children, owners, parent, preview | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -170,7 +174,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
 
 ### HTTP request headers
 
@@ -235,7 +239,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdRelationshipsChildrenGet**
 ```swift
-    open class func foldersIdRelationshipsChildrenGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FoldersChildrenMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func foldersIdRelationshipsChildrenGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersChildrenMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get children relationship (\"to-many\").
@@ -251,9 +255,10 @@ let id = "id_example" // String | Folder id. Use `me` for the authenticated user
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: children (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: children.subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get children relationship (\"to-many\").
-FoldersAPI.foldersIdRelationshipsChildrenGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia) { (response, error) in
+FoldersAPI.foldersIdRelationshipsChildrenGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -273,6 +278,7 @@ Name | Type | Description  | Notes
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: children | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -291,7 +297,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdRelationshipsOwnersGet**
 ```swift
-    open class func foldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: FoldersOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func foldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -306,9 +312,10 @@ import OpenAPIClient
 let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get owners relationship (\"to-many\").
-FoldersAPI.foldersIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+FoldersAPI.foldersIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -327,6 +334,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -334,7 +342,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
 
 ### HTTP request headers
 
@@ -345,7 +353,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdRelationshipsParentGet**
 ```swift
-    open class func foldersIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FoldersParentSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func foldersIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersParentSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get parent relationship (\"to-one\").
@@ -360,9 +368,10 @@ import OpenAPIClient
 let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: parent (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: parent.children.subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get parent relationship (\"to-one\").
-FoldersAPI.foldersIdRelationshipsParentGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+FoldersAPI.foldersIdRelationshipsParentGet(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -381,6 +390,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: parent | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -399,7 +409,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdRelationshipsPreviewGet**
 ```swift
-    open class func foldersIdRelationshipsPreviewGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FoldersPreviewMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func foldersIdRelationshipsPreviewGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersPreviewMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get preview relationship (\"to-many\").
@@ -415,9 +425,10 @@ let id = "id_example" // String | Folder id. Use `me` for the authenticated user
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: preview (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: preview.subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get preview relationship (\"to-many\").
-FoldersAPI.foldersIdRelationshipsPreviewGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+FoldersAPI.foldersIdRelationshipsPreviewGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -437,6 +448,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: preview | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: preview.subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
