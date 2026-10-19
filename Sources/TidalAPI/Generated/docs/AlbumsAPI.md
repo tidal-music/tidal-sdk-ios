@@ -28,7 +28,7 @@ Method | HTTP request | Description
 
 # **albumsGet**
 ```swift
-    open class func albumsGet(pageCursor: String? = nil, sort: [Sort_albumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_albumsGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func albumsGet(pageCursor: String? = nil, sort: [Sort_albumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_albumsGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsMultiResourceDataDocument
 ```
 
 Get multiple albums.
@@ -52,15 +52,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get multiple albums.
-AlbumsAPI.albumsGet(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsGet(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -96,7 +92,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdDelete**
 ```swift
-    open class func albumsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func albumsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single album.
@@ -112,15 +108,11 @@ let id = "id_example" // String | Album id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single album.
-AlbumsAPI.albumsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -148,7 +140,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdGet**
 ```swift
-    open class func albumsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_albumsIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_albumsIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsSingleResourceDataDocument
 ```
 
 Get single album.
@@ -168,15 +160,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get single album.
-AlbumsAPI.albumsIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -208,7 +196,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdPatch**
 ```swift
-    open class func albumsIdPatch(id: String, idempotencyKey: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func albumsIdPatch(id: String, idempotencyKey: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update single album.
@@ -225,15 +213,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let albumsUpdateOperationPayload = AlbumsUpdateOperation_Payload(data: AlbumsUpdateOperation_Payload_Data(attributes: AlbumsUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", albumType: "albumType_example", barcodeId: "barcodeId_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumsUpdateOperation_Payload_Data_Relationships(genres: AlbumsUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumsUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsUpdateOperationPayload |  (optional)
 
 // Update single album.
-AlbumsAPI.albumsIdPatch(id: id, idempotencyKey: idempotencyKey, albumsUpdateOperationPayload: albumsUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdPatch(id: id, idempotencyKey: idempotencyKey, albumsUpdateOperationPayload: albumsUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -262,7 +246,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsAlbumStatisticsGet**
 ```swift
-    open class func albumsIdRelationshipsAlbumStatisticsGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsAlbumStatisticsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsAlbumStatisticsGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsAlbumStatisticsSingleRelationshipDataDocument
 ```
 
 Get albumStatistics relationship (\"to-one\").
@@ -279,15 +263,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get albumStatistics relationship (\"to-one\").
-AlbumsAPI.albumsIdRelationshipsAlbumStatisticsGet(id: id, include: include, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsAlbumStatisticsGet(id: id, include: include, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -316,7 +296,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsArtistsGet**
 ```swift
-    open class func albumsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsArtistsMultiRelationshipDataDocument
 ```
 
 Get artists relationship (\"to-many\").
@@ -336,15 +316,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get artists relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -376,7 +352,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsCoverArtGet**
 ```swift
-    open class func albumsIdRelationshipsCoverArtGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsCoverArtMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsCoverArtGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsCoverArtMultiRelationshipDataDocument
 ```
 
 Get coverArt relationship (\"to-many\").
@@ -395,15 +371,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get coverArt relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsCoverArtGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsCoverArtGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -434,7 +406,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsCoverArtPatch**
 ```swift
-    open class func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update coverArt relationship (\"to-many\").
@@ -451,15 +423,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let albumsCoverArtRelationshipUpdateOperationPayload = AlbumsCoverArtRelationshipUpdateOperation_Payload(data: [AlbumsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // AlbumsCoverArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update coverArt relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsCoverArtPatch(id: id, idempotencyKey: idempotencyKey, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsCoverArtPatch(id: id, idempotencyKey: idempotencyKey, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -488,7 +456,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsGenresGet**
 ```swift
-    open class func albumsIdRelationshipsGenresGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsGenresMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsGenresGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsGenresMultiRelationshipDataDocument
 ```
 
 Get genres relationship (\"to-many\").
@@ -507,15 +475,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get genres relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsGenresGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsGenresGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -546,7 +510,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsItemsGet**
 ```swift
-    open class func albumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -566,15 +530,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get items relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -606,7 +566,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsItemsPatch**
 ```swift
-    open class func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update items relationship (\"to-many\").
@@ -623,15 +583,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let albumsItemsRelationshipUpdateOperationPayload = AlbumsItemsRelationshipUpdateOperation_Payload(data: [AlbumsItemsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsItemsRelationshipUpdateOperation_Payload_Meta(positionIndex: 123)) // AlbumsItemsRelationshipUpdateOperationPayload |  (optional)
 
 // Update items relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsItemsPatch(id: id, idempotencyKey: idempotencyKey, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsItemsPatch(id: id, idempotencyKey: idempotencyKey, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -660,7 +616,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsOwnersGet**
 ```swift
-    open class func albumsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -678,15 +634,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get owners relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -716,7 +668,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsPriceConfigGet**
 ```swift
-    open class func albumsIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsPriceConfigSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsPriceConfigSingleRelationshipDataDocument
 ```
 
 Get priceConfig relationship (\"to-one\").
@@ -734,15 +686,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get priceConfig relationship (\"to-one\").
-AlbumsAPI.albumsIdRelationshipsPriceConfigGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsPriceConfigGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -772,7 +720,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsProvidersGet**
 ```swift
-    open class func albumsIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsProvidersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsProvidersMultiRelationshipDataDocument
 ```
 
 Get providers relationship (\"to-many\").
@@ -791,15 +739,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get providers relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsProvidersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsProvidersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -830,7 +774,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsReplacementGet**
 ```swift
-    open class func albumsIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsReplacementSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsReplacementSingleRelationshipDataDocument
 ```
 
 Get replacement relationship (\"to-one\").
@@ -849,15 +793,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get replacement relationship (\"to-one\").
-AlbumsAPI.albumsIdRelationshipsReplacementGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsReplacementGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -888,7 +828,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsSharesGet**
 ```swift
-    open class func albumsIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSharesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsSharesMultiRelationshipDataDocument
 ```
 
 Get shares relationship (\"to-many\").
@@ -907,15 +847,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get shares relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -946,7 +882,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsSimilarAlbumsGet**
 ```swift
-    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSimilarAlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsSimilarAlbumsMultiRelationshipDataDocument
 ```
 
 Get similarAlbums relationship (\"to-many\").
@@ -966,15 +902,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get similarAlbums relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -1006,7 +938,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsSuggestedCoverArtsGet**
 ```swift
-    open class func albumsIdRelationshipsSuggestedCoverArtsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsSuggestedCoverArtsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsSuggestedCoverArtsMultiRelationshipDataDocument
 ```
 
 Get suggestedCoverArts relationship (\"to-many\").
@@ -1024,15 +956,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get suggestedCoverArts relationship (\"to-many\").
-AlbumsAPI.albumsIdRelationshipsSuggestedCoverArtsGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsSuggestedCoverArtsGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -1062,7 +990,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsUsageRulesGet**
 ```swift
-    open class func albumsIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: AlbumsUsageRulesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumsIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsUsageRulesSingleRelationshipDataDocument
 ```
 
 Get usageRules relationship (\"to-one\").
@@ -1080,15 +1008,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get usageRules relationship (\"to-one\").
-AlbumsAPI.albumsIdRelationshipsUsageRulesGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsUsageRulesGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -1118,7 +1042,7 @@ Name | Type | Description  | Notes
 
 # **albumsPost**
 ```swift
-    open class func albumsPost(idempotencyKey: String? = nil, albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil, completion: @escaping (_ data: AlbumsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func albumsPost(idempotencyKey: String? = nil, albumsCreateOperationPayload: AlbumsCreateOperationPayload? = nil) async throws -> AlbumsCreateSingleResourceDataDocument
 ```
 
 Create single album.
@@ -1134,15 +1058,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let albumsCreateOperationPayload = AlbumsCreateOperation_Payload(data: AlbumsCreateOperation_Payload_Data(attributes: AlbumsCreateOperation_Payload_Data_Attributes(albumType: "albumType_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), relationships: AlbumsCreateOperation_Payload_Data_Relationships(artists: AlbumsCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumsCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: AlbumsCreateOperation_Payload_Data_Relationships_Genres(data: [AlbumsCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsCreateOperationPayload |  (optional)
 
 // Create single album.
-AlbumsAPI.albumsPost(idempotencyKey: idempotencyKey, albumsCreateOperationPayload: albumsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumsAPI.albumsPost(idempotencyKey: idempotencyKey, albumsCreateOperationPayload: albumsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

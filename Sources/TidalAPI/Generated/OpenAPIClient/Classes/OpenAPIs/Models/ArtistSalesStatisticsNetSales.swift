@@ -13,8 +13,8 @@ import AnyCodable
 /** Sold minus refunded in the window. previousAmount is the same for the previous window of the same length and is absent when there is no earlier window to compare with */
 public struct ArtistSalesStatisticsNetSales: Codable, Hashable {
 
-    public static let amountRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])/")
-    public static let previousAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])/")
+    public static let amountRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])")
+    public static let previousAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])")
     /** Amount in the currency's major units */
     public var amount: String
     /** Amount in the currency's major units */

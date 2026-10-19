@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **trackFilesIdGet**
 ```swift
-    open class func trackFilesIdGet(id: String, formats: [Formats_trackFilesIdGet], usage: Usage_trackFilesIdGet, completion: @escaping (_ data: TrackFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackFilesIdGet(id: String, formats: [Formats_trackFilesIdGet], usage: Usage_trackFilesIdGet) async throws -> TrackFilesSingleResourceDataDocument
 ```
 
 Get single trackFile.
@@ -26,15 +26,11 @@ let formats = ["formats_example"] // [String] |
 let usage = "usage_example" // String | 
 
 // Get single trackFile.
-TrackFilesAPI.trackFilesIdGet(id: id, formats: formats, usage: usage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TrackFilesAPI.trackFilesIdGet(id: id, formats: formats, usage: usage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

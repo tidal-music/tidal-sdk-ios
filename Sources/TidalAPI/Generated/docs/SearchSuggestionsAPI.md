@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **searchSuggestionsGet**
 ```swift
-    open class func searchSuggestionsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_searchSuggestionsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchSuggestionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func searchSuggestionsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_searchSuggestionsGet]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument
 ```
 
 Get search suggestions by query.
@@ -31,15 +31,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: directHits (optional)
 
 // Get search suggestions by query.
-SearchSuggestionsAPI.searchSuggestionsGet(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SearchSuggestionsAPI.searchSuggestionsGet(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -71,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **searchSuggestionsIdRelationshipsDirectHitsGet**
 ```swift
-    open class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SearchSuggestionsDirectHitsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsDirectHitsMultiRelationshipDataDocument
 ```
 
 Get directHits relationship (\"to-many\").
@@ -91,15 +87,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: directHits (optional)
 
 // Get directHits relationship (\"to-many\").
-SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -131,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **searchSuggestionsIdRelationshipsHistoryGet**
 ```swift
-    open class func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SearchSuggestionsHistoryMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsHistoryMultiRelationshipDataDocument
 ```
 
 Get history relationship (\"to-many\").
@@ -150,15 +142,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get history relationship (\"to-many\").
-SearchSuggestionsAPI.searchSuggestionsIdRelationshipsHistoryGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SearchSuggestionsAPI.searchSuggestionsIdRelationshipsHistoryGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

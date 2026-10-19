@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 # **userCollectionFoldersGet**
 ```swift
-    open class func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionFoldersGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionFoldersGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersMultiResourceDataDocument
 ```
 
 Get multiple userCollectionFolders.
@@ -36,15 +36,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get multiple userCollectionFolders.
-UserCollectionFoldersAPI.userCollectionFoldersGet(filterId: filterId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionFoldersAPI.userCollectionFoldersGet(filterId: filterId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -74,7 +70,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdDelete**
 ```swift
-    open class func userCollectionFoldersIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single userCollectionFolder.
@@ -90,15 +86,11 @@ let id = "id_example" // String | Folder Id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single userCollectionFolder.
-UserCollectionFoldersAPI.userCollectionFoldersIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionFoldersAPI.userCollectionFoldersIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -126,7 +118,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdGet**
 ```swift
-    open class func userCollectionFoldersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionFoldersIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionFoldersIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersSingleResourceDataDocument
 ```
 
 Get single userCollectionFolder.
@@ -144,15 +136,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get single userCollectionFolder.
-UserCollectionFoldersAPI.userCollectionFoldersIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionFoldersAPI.userCollectionFoldersIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -182,7 +170,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdPatch**
 ```swift
-    open class func userCollectionFoldersIdPatch(id: String, idempotencyKey: String? = nil, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdPatch(id: String, idempotencyKey: String? = nil, userCollectionFoldersUpdateOperationPayload: UserCollectionFoldersUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update single userCollectionFolder.
@@ -199,15 +187,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionFoldersUpdateOperationPayload = UserCollectionFoldersUpdateOperation_Payload(data: UserCollectionFoldersUpdateOperation_Payload_Data(attributes: UserCollectionFoldersUpdateOperation_Payload_Data_Attributes(name: "name_example"), id: "id_example", type: "type_example")) // UserCollectionFoldersUpdateOperationPayload |  (optional)
 
 // Update single userCollectionFolder.
-UserCollectionFoldersAPI.userCollectionFoldersIdPatch(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionFoldersAPI.userCollectionFoldersIdPatch(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersUpdateOperationPayload: userCollectionFoldersUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -236,7 +220,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsItemsDelete**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipRemoveOperationPayload: UserCollectionFoldersItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from items relationship (\"to-many\").
@@ -253,15 +237,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionFoldersItemsRelationshipRemoveOperationPayload = UserCollectionFoldersItemsRelationshipRemoveOperation_Payload(data: [UserCollectionFoldersItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionFoldersItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipRemoveOperationPayload: userCollectionFoldersItemsRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -290,7 +270,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionFoldersIdRelationshipsItemsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionFoldersIdRelationshipsItemsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -309,15 +289,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get items relationship (\"to-many\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -348,7 +324,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionFoldersItemsRelationshipAddOperationPayload: UserCollectionFoldersItemsRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Add to items relationship (\"to-many\").
@@ -365,15 +341,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionFoldersItemsRelationshipAddOperationPayload = UserCollectionFoldersItemsRelationshipAddOperation_Payload(data: [UserCollectionFoldersItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionFoldersItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionFoldersItemsRelationshipAddOperationPayload: userCollectionFoldersItemsRelationshipAddOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -402,7 +374,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsOwnersGet**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionFoldersOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionFoldersOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -419,15 +391,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -456,7 +424,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsUserCollectionGet**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionFoldersUserCollectionSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersIdRelationshipsUserCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersUserCollectionSingleRelationshipDataDocument
 ```
 
 Get userCollection relationship (\"to-one\").
@@ -473,15 +441,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: userCollection.items.items (optional)
 
 // Get userCollection relationship (\"to-one\").
-UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsUserCollectionGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsUserCollectionGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -510,7 +474,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersPost**
 ```swift
-    open class func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil, completion: @escaping (_ data: UserCollectionFoldersCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionFoldersPost(idempotencyKey: String? = nil, userCollectionFoldersCreateOperationPayload: UserCollectionFoldersCreateOperationPayload? = nil) async throws -> UserCollectionFoldersCreateSingleResourceDataDocument
 ```
 
 Create single userCollectionFolder.
@@ -526,15 +490,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionFoldersCreateOperationPayload = UserCollectionFoldersCreateOperation_Payload(data: UserCollectionFoldersCreateOperation_Payload_Data(attributes: UserCollectionFoldersCreateOperation_Payload_Data_Attributes(name: "name_example"), relationships: UserCollectionFoldersCreateOperation_Payload_Data_Relationships(userCollection: UserCollectionFoldersCreateOperation_Payload_Data_Relationships_UserCollection(data: UserCollection(id: "id_example", type: "type_example"))), type: "type_example")) // UserCollectionFoldersCreateOperationPayload |  (optional)
 
 // Create single userCollectionFolder.
-UserCollectionFoldersAPI.userCollectionFoldersPost(idempotencyKey: idempotencyKey, userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionFoldersAPI.userCollectionFoldersPost(idempotencyKey: idempotencyKey, userCollectionFoldersCreateOperationPayload: userCollectionFoldersCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

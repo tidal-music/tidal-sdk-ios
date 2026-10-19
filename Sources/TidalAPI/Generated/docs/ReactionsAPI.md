@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **reactionsGet**
 ```swift
-    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ReactionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil) async throws -> ReactionsMultiResourceDataDocument
 ```
 
 Get multiple reactions.
@@ -39,15 +39,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
 
 // Get multiple reactions.
-ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -84,7 +80,7 @@ Name | Type | Description  | Notes
 
 # **reactionsIdDelete**
 ```swift
-    open class func reactionsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func reactionsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single reaction.
@@ -100,15 +96,11 @@ let id = "id_example" // String | Reaction Id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single reaction.
-ReactionsAPI.reactionsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ReactionsAPI.reactionsIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -136,7 +128,7 @@ Name | Type | Description  | Notes
 
 # **reactionsIdRelationshipsAuthorGet**
 ```swift
-    open class func reactionsIdRelationshipsAuthorGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ReactionsAuthorSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsIdRelationshipsAuthorGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ReactionsAuthorSingleRelationshipDataDocument
 ```
 
 Get author relationship (\"to-one\").
@@ -153,15 +145,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
 
 // Get author relationship (\"to-one\").
-ReactionsAPI.reactionsIdRelationshipsAuthorGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ReactionsAPI.reactionsIdRelationshipsAuthorGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -190,7 +178,7 @@ Name | Type | Description  | Notes
 
 # **reactionsIdRelationshipsOwnerProfilesGet**
 ```swift
-    open class func reactionsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ReactionsOwnerProfilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ReactionsOwnerProfilesMultiRelationshipDataDocument
 ```
 
 Get ownerProfiles relationship (\"to-many\").
@@ -207,15 +195,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get ownerProfiles relationship (\"to-many\").
-ReactionsAPI.reactionsIdRelationshipsOwnerProfilesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ReactionsAPI.reactionsIdRelationshipsOwnerProfilesGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -244,7 +228,7 @@ Name | Type | Description  | Notes
 
 # **reactionsIdRelationshipsOwnersGet**
 ```swift
-    open class func reactionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ReactionsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ReactionsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -261,15 +245,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-ReactionsAPI.reactionsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ReactionsAPI.reactionsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -298,7 +278,7 @@ Name | Type | Description  | Notes
 
 # **reactionsPost**
 ```swift
-    open class func reactionsPost(idempotencyKey: String? = nil, reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil, completion: @escaping (_ data: ReactionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func reactionsPost(idempotencyKey: String? = nil, reactionsCreateOperationPayload: ReactionsCreateOperationPayload? = nil) async throws -> ReactionsCreateSingleResourceDataDocument
 ```
 
 Create single reaction.
@@ -314,15 +294,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let reactionsCreateOperationPayload = ReactionsCreateOperation_Payload(data: ReactionsCreateOperation_Payload_Data(attributes: ReactionsCreateOperation_Payload_Data_Attributes(emoji: "emoji_example"), relationships: ReactionsCreateOperation_Payload_Data_Relationships(subject: ReactionsCreateOperation_Payload_Data_Relationships_Subject(data: ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data(id: "id_example", type: "type_example"))), type: "type_example")) // ReactionsCreateOperationPayload |  (optional)
 
 // Create single reaction.
-ReactionsAPI.reactionsPost(idempotencyKey: idempotencyKey, reactionsCreateOperationPayload: reactionsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ReactionsAPI.reactionsPost(idempotencyKey: idempotencyKey, reactionsCreateOperationPayload: reactionsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

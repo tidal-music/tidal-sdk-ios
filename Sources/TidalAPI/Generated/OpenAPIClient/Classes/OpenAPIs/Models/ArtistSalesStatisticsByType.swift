@@ -13,8 +13,8 @@ import AnyCodable
 /** Net sales by product type */
 public struct ArtistSalesStatisticsByType: Codable, Hashable {
 
-    public static let downloadsAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])/")
-    public static let merchAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])/")
+    public static let downloadsAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])")
+    public static let merchAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])")
     /** Amount in the currency's major units */
     public var downloadsAmount: String
     /** Amount in the currency's major units */

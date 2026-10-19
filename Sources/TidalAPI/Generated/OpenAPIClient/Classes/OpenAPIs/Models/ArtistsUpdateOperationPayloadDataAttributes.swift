@@ -12,8 +12,8 @@ import AnyCodable
 
 public struct ArtistsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public static let backgroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/")
-    public static let foregroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/")
+    public static let backgroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
+    public static let foregroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
     public static let handleRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let nameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Background colour override. */

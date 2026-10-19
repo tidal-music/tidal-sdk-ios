@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **trackManifestsIdGet**
 ```swift
-    open class func trackManifestsIdGet(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool, shareCode: String? = nil, completion: @escaping (_ data: TrackManifestsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackManifestsIdGet(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool, shareCode: String? = nil) async throws -> TrackManifestsSingleResourceDataDocument
 ```
 
 Get single trackManifest.
@@ -30,15 +30,11 @@ let adaptive = true // Bool |
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get single trackManifest.
-TrackManifestsAPI.trackManifestsIdGet(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TrackManifestsAPI.trackManifestsIdGet(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **userDiscoveryMixesIdGet**
 ```swift
-    open class func userDiscoveryMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userDiscoveryMixesIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserDiscoveryMixesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userDiscoveryMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userDiscoveryMixesIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesSingleResourceDataDocument
 ```
 
 Get single userDiscoveryMixe.
@@ -29,15 +29,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get single userDiscoveryMixe.
-UserDiscoveryMixesAPI.userDiscoveryMixesIdGet(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserDiscoveryMixesAPI.userDiscoveryMixesIdGet(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -68,7 +64,7 @@ Name | Type | Description  | Notes
 
 # **userDiscoveryMixesIdRelationshipsItemsGet**
 ```swift
-    open class func userDiscoveryMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserDiscoveryMixesItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userDiscoveryMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -87,15 +83,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get items relationship (\"to-many\").
-UserDiscoveryMixesAPI.userDiscoveryMixesIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserDiscoveryMixesAPI.userDiscoveryMixesIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

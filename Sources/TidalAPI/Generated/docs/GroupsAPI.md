@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **groupsGet**
 ```swift
-    open class func groupsGet(filterName: String, completion: @escaping (_ data: GroupsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func groupsGet(filterName: String) async throws -> GroupsMultiResourceDataDocument
 ```
 
 Get multiple groups.
@@ -25,15 +25,11 @@ import OpenAPIClient
 let filterName = "filterName_example" // String | Exact group name (case-sensitive) (e.g. `Everyone`)
 
 // Get multiple groups.
-GroupsAPI.groupsGet(filterName: filterName) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await GroupsAPI.groupsGet(filterName: filterName)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -60,7 +56,7 @@ Name | Type | Description  | Notes
 
 # **groupsIdGet**
 ```swift
-    open class func groupsIdGet(id: String, completion: @escaping (_ data: GroupsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func groupsIdGet(id: String) async throws -> GroupsSingleResourceDataDocument
 ```
 
 Get single group.
@@ -75,15 +71,11 @@ import OpenAPIClient
 let id = "id_example" // String | Group ID
 
 // Get single group.
-GroupsAPI.groupsIdGet(id: id) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await GroupsAPI.groupsIdGet(id: id)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

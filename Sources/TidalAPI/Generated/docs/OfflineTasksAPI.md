@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **offlineTasksGet**
 ```swift
-    open class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksGet]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksMultiResourceDataDocument
 ```
 
 Get multiple offlineTasks.
@@ -33,15 +33,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: collection (optional)
 
 // Get multiple offlineTasks.
-OfflineTasksAPI.offlineTasksGet(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await OfflineTasksAPI.offlineTasksGet(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -72,7 +68,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdGet**
 ```swift
-    open class func offlineTasksIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksIdGet]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksSingleResourceDataDocument
 ```
 
 Get single offlineTask.
@@ -90,15 +86,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: collection (optional)
 
 // Get single offlineTask.
-OfflineTasksAPI.offlineTasksIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await OfflineTasksAPI.offlineTasksIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -128,7 +120,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdPatch**
 ```swift
-    open class func offlineTasksIdPatch(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdPatch(id: String, idempotencyKey: String? = nil, offlineTasksUpdateOperationPayload: OfflineTasksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update single offlineTask.
@@ -145,15 +137,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let offlineTasksUpdateOperationPayload = OfflineTasksUpdateOperation_Payload(data: OfflineTasksUpdateOperation_Payload_Data(attributes: OfflineTasksUpdateOperation_Payload_Data_Attributes(state: "state_example"), id: "id_example", type: "type_example")) // OfflineTasksUpdateOperationPayload |  (optional)
 
 // Update single offlineTask.
-OfflineTasksAPI.offlineTasksIdPatch(id: id, idempotencyKey: idempotencyKey, offlineTasksUpdateOperationPayload: offlineTasksUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await OfflineTasksAPI.offlineTasksIdPatch(id: id, idempotencyKey: idempotencyKey, offlineTasksUpdateOperationPayload: offlineTasksUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -182,7 +170,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdRelationshipsCollectionGet**
 ```swift
-    open class func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksCollectionSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdRelationshipsCollectionGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksCollectionSingleRelationshipDataDocument
 ```
 
 Get collection relationship (\"to-one\").
@@ -199,15 +187,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: collection (optional)
 
 // Get collection relationship (\"to-one\").
-OfflineTasksAPI.offlineTasksIdRelationshipsCollectionGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await OfflineTasksAPI.offlineTasksIdRelationshipsCollectionGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -236,7 +220,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdRelationshipsItemGet**
 ```swift
-    open class func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: OfflineTasksItemSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdRelationshipsItemGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksItemSingleRelationshipDataDocument
 ```
 
 Get item relationship (\"to-one\").
@@ -253,15 +237,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: item (optional)
 
 // Get item relationship (\"to-one\").
-OfflineTasksAPI.offlineTasksIdRelationshipsItemGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await OfflineTasksAPI.offlineTasksIdRelationshipsItemGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -290,7 +270,7 @@ Name | Type | Description  | Notes
 
 # **offlineTasksIdRelationshipsOwnersGet**
 ```swift
-    open class func offlineTasksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: OfflineTasksOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func offlineTasksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> OfflineTasksOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -307,15 +287,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-OfflineTasksAPI.offlineTasksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await OfflineTasksAPI.offlineTasksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

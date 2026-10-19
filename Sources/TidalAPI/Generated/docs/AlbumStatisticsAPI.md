@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **albumStatisticsIdGet**
 ```swift
-    open class func albumStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_albumStatisticsIdGet]? = nil, completion: @escaping (_ data: AlbumStatisticsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func albumStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_albumStatisticsIdGet]? = nil) async throws -> AlbumStatisticsSingleResourceDataDocument
 ```
 
 Get single albumStatistic.
@@ -28,15 +28,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single albumStatistic.
-AlbumStatisticsAPI.albumStatisticsIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumStatisticsAPI.albumStatisticsIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -66,7 +62,7 @@ Name | Type | Description  | Notes
 
 # **albumStatisticsIdRelationshipsOwnersGet**
 ```swift
-    open class func albumStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AlbumStatisticsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func albumStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AlbumStatisticsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -83,15 +79,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-AlbumStatisticsAPI.albumStatisticsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await AlbumStatisticsAPI.albumStatisticsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

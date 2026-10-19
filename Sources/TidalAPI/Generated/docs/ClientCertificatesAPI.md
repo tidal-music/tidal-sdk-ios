@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **clientCertificatesIdGet**
 ```swift
-    open class func clientCertificatesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_clientCertificatesIdGet]? = nil, completion: @escaping (_ data: ClientCertificatesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientCertificatesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_clientCertificatesIdGet]? = nil) async throws -> ClientCertificatesSingleResourceDataDocument
 ```
 
 Get single clientCertificate.
@@ -28,15 +28,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single clientCertificate.
-ClientCertificatesAPI.clientCertificatesIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientCertificatesAPI.clientCertificatesIdGet(id: id, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -65,7 +61,7 @@ Name | Type | Description  | Notes
 
 # **clientCertificatesIdRelationshipsOwnersGet**
 ```swift
-    open class func clientCertificatesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ClientCertificatesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func clientCertificatesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ClientCertificatesOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -82,15 +78,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-ClientCertificatesAPI.clientCertificatesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientCertificatesAPI.clientCertificatesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -119,7 +111,7 @@ Name | Type | Description  | Notes
 
 # **clientCertificatesPost**
 ```swift
-    open class func clientCertificatesPost(idempotencyKey: String? = nil, clientCertificatesCreateOperationPayload: ClientCertificatesCreateOperationPayload? = nil, completion: @escaping (_ data: ClientCertificatesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientCertificatesPost(idempotencyKey: String? = nil, clientCertificatesCreateOperationPayload: ClientCertificatesCreateOperationPayload? = nil) async throws -> ClientCertificatesCreateSingleResourceDataDocument
 ```
 
 Create single clientCertificate.
@@ -135,15 +127,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let clientCertificatesCreateOperationPayload = ClientCertificatesCreateOperation_Payload(data: ClientCertificatesCreateOperation_Payload_Data(relationships: ClientCertificatesCreateOperation_Payload_Data_Relationships(client: ClientCertificatesCreateOperation_Payload_Data_Relationships_Client(data: ClientCertificatesCreateOperation_Payload_Data_Relationships_Client_Data(id: "id_example", type: "type_example"))), type: "type_example")) // ClientCertificatesCreateOperationPayload |  (optional)
 
 // Create single clientCertificate.
-ClientCertificatesAPI.clientCertificatesPost(idempotencyKey: idempotencyKey, clientCertificatesCreateOperationPayload: clientCertificatesCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientCertificatesAPI.clientCertificatesPost(idempotencyKey: idempotencyKey, clientCertificatesCreateOperationPayload: clientCertificatesCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

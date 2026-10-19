@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **genresGet**
 ```swift
-    open class func genresGet(filterId: [String], pageCursor: String? = nil, locale: String? = nil, completion: @escaping (_ data: GenresMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func genresGet(filterId: [String], pageCursor: String? = nil, locale: String? = nil) async throws -> GenresMultiResourceDataDocument
 ```
 
 Get multiple genres.
@@ -27,15 +27,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 
 // Get multiple genres.
-GenresAPI.genresGet(filterId: filterId, pageCursor: pageCursor, locale: locale) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await GenresAPI.genresGet(filterId: filterId, pageCursor: pageCursor, locale: locale)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -64,7 +60,7 @@ Name | Type | Description  | Notes
 
 # **genresIdGet**
 ```swift
-    open class func genresIdGet(id: String, locale: String? = nil, completion: @escaping (_ data: GenresSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func genresIdGet(id: String, locale: String? = nil) async throws -> GenresSingleResourceDataDocument
 ```
 
 Get single genre.
@@ -80,15 +76,11 @@ let id = "id_example" // String | Genre id
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 
 // Get single genre.
-GenresAPI.genresIdGet(id: id, locale: locale) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await GenresAPI.genresIdGet(id: id, locale: locale)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **artworksGet**
 ```swift
-    open class func artworksGet(filterId: [String], countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artworksGet]? = nil, completion: @escaping (_ data: ArtworksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artworksGet(filterId: [String], countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artworksGet]? = nil) async throws -> ArtworksMultiResourceDataDocument
 ```
 
 Get multiple artworks.
@@ -30,15 +30,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple artworks.
-ArtworksAPI.artworksGet(filterId: filterId, countryCode: countryCode, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ArtworksAPI.artworksGet(filterId: filterId, countryCode: countryCode, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -68,7 +64,7 @@ Name | Type | Description  | Notes
 
 # **artworksIdGet**
 ```swift
-    open class func artworksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artworksIdGet]? = nil, completion: @escaping (_ data: ArtworksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artworksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artworksIdGet]? = nil) async throws -> ArtworksSingleResourceDataDocument
 ```
 
 Get single artwork.
@@ -86,15 +82,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single artwork.
-ArtworksAPI.artworksIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ArtworksAPI.artworksIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -124,7 +116,7 @@ Name | Type | Description  | Notes
 
 # **artworksIdRelationshipsOwnersGet**
 ```swift
-    open class func artworksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtworksOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artworksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtworksOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -141,15 +133,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-ArtworksAPI.artworksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ArtworksAPI.artworksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -178,7 +166,7 @@ Name | Type | Description  | Notes
 
 # **artworksPost**
 ```swift
-    open class func artworksPost(idempotencyKey: String? = nil, artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil, completion: @escaping (_ data: ArtworksCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artworksPost(idempotencyKey: String? = nil, artworksCreateOperationPayload: ArtworksCreateOperationPayload? = nil) async throws -> ArtworksCreateSingleResourceDataDocument
 ```
 
 Create single artwork.
@@ -194,15 +182,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let artworksCreateOperationPayload = ArtworksCreateOperation_Payload(data: ArtworksCreateOperation_Payload_Data(attributes: ArtworksCreateOperation_Payload_Data_Attributes(mediaType: "mediaType_example", sourceFile: ArtworksCreateOperation_Payload_Data_Attributes_SourceFile(md5Hash: "md5Hash_example", size: 123)), type: "type_example")) // ArtworksCreateOperationPayload |  (optional)
 
 // Create single artwork.
-ArtworksAPI.artworksPost(idempotencyKey: idempotencyKey, artworksCreateOperationPayload: artworksCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ArtworksAPI.artworksPost(idempotencyKey: idempotencyKey, artworksCreateOperationPayload: artworksCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

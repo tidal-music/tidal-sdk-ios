@@ -16,7 +16,7 @@ public struct SquareItemsVariation: Codable, Hashable {
         case fixed = "FIXED"
         case variable = "VARIABLE"
     }
-    public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[+-]?(?:[0-9]+(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])/")
+    public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[+-]?(?:[0-9]+(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])")
     public static let variationIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Variation name, such as a size or color; may be empty */
     public var name: String

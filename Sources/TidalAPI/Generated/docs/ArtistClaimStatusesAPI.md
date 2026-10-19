@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **artistClaimStatusesGet**
 ```swift
-    open class func artistClaimStatusesGet(filterId: [String], completion: @escaping (_ data: ArtistClaimStatusesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistClaimStatusesGet(filterId: [String]) async throws -> ArtistClaimStatusesMultiResourceDataDocument
 ```
 
 Get multiple artistClaimStatuses.
@@ -24,15 +24,11 @@ import OpenAPIClient
 let filterId = ["inner_example"] // [String] | List of artist claim status IDs (e.g. `QVJUSVNUUzoxNTY2`)
 
 // Get multiple artistClaimStatuses.
-ArtistClaimStatusesAPI.artistClaimStatusesGet(filterId: filterId) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ArtistClaimStatusesAPI.artistClaimStatusesGet(filterId: filterId)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

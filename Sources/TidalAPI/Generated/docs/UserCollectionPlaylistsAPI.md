@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userCollectionPlaylistsIdGet**
 ```swift
-    open class func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionPlaylistsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionPlaylistsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionPlaylistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument
 ```
 
 Get single userCollectionPlaylist.
@@ -32,15 +32,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get single userCollectionPlaylist.
-UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGet(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGet(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -71,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionPlaylistsIdRelationshipsItemsDelete**
 ```swift
-    open class func userCollectionPlaylistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipRemoveOperationPayload: UserCollectionPlaylistsItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func userCollectionPlaylistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipRemoveOperationPayload: UserCollectionPlaylistsItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from items relationship (\"to-many\").
@@ -88,15 +84,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionPlaylistsItemsRelationshipRemoveOperationPayload = UserCollectionPlaylistsItemsRelationshipRemoveOperation_Payload(data: [UserCollectionPlaylistsItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionPlaylistsItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipRemoveOperationPayload: userCollectionPlaylistsItemsRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipRemoveOperationPayload: userCollectionPlaylistsItemsRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -125,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionPlaylistsIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionPlaylistsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -146,15 +138,11 @@ let filterQuery = "filterQuery_example" // String | Filter playlists by a free-t
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get items relationship (\"to-many\").
-UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGet(id: id, collectionView: collectionView, pageCursor: pageCursor, sort: sort, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGet(id: id, collectionView: collectionView, pageCursor: pageCursor, sort: sort, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -187,7 +175,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionPlaylistsIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionPlaylistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionPlaylistsItemsRelationshipAddOperationPayload: UserCollectionPlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument
 ```
 
 Add to items relationship (\"to-many\").
@@ -204,15 +192,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionPlaylistsItemsRelationshipAddOperationPayload = UserCollectionPlaylistsItemsRelationshipAddOperation_Payload(data: [UserCollectionPlaylistsItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionPlaylistsItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionPlaylistsItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipAddOperationPayload: userCollectionPlaylistsItemsRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionPlaylistsItemsRelationshipAddOperationPayload: userCollectionPlaylistsItemsRelationshipAddOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -241,7 +225,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionPlaylistsIdRelationshipsOwnersGet**
 ```swift
-    open class func userCollectionPlaylistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionPlaylistsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionPlaylistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionPlaylistsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -258,15 +242,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
