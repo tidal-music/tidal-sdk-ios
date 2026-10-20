@@ -28,7 +28,7 @@ Method | HTTP request | Description
 
 # **albumsGet**
 ```swift
-    open class func albumsGet(pageCursor: String? = nil, sort: [Sort_albumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_albumsGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsMultiResourceDataDocument
+    open class func albumsGet(countryCode: String? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_albumsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, sort: [Sort_albumsGet]? = nil) async throws -> AlbumsMultiResourceDataDocument
 ```
 
 Get multiple albums.
@@ -40,20 +40,20 @@ Retrieves multiple albums by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
 let filterBarcodeId = ["inner_example"] // [String] | List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. `196589525444`) (optional)
 let filterId = ["inner_example"] // [String] | List of album IDs (e.g. `251380836`) (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`. (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
+let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 
 // Get multiple albums.
 do {
-    let response = try await AlbumsAPI.albumsGet(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode)
+    let response = try await AlbumsAPI.albumsGet(countryCode: countryCode, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode, sort: sort)
     dump(response)
 } catch {
     print(error)
@@ -64,16 +64,16 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules | [optional] 
  **filterBarcodeId** | [**[String]**](String.md) | List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. &#x60;196589525444&#x60;) | [optional] 
  **filterId** | [**[String]**](String.md) | List of album IDs (e.g. &#x60;251380836&#x60;) | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums | [optional] 
  **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
+ **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
 
 ### Return type
 
@@ -296,7 +296,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsArtistsGet**
 ```swift
-    open class func albumsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsArtistsMultiRelationshipDataDocument
+    open class func albumsIdRelationshipsArtistsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsArtistsMultiRelationshipDataDocument
 ```
 
 Get artists relationship (\"to-many\").
@@ -309,15 +309,15 @@ Retrieves artists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: artists (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get artists relationship (\"to-many\").
 do {
-    let response = try await AlbumsAPI.albumsIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+    let response = try await AlbumsAPI.albumsIdRelationshipsArtistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -329,9 +329,9 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: artists | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums | [optional] 
  **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
@@ -352,7 +352,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsCoverArtGet**
 ```swift
-    open class func albumsIdRelationshipsCoverArtGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsCoverArtMultiRelationshipDataDocument
+    open class func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsCoverArtMultiRelationshipDataDocument
 ```
 
 Get coverArt relationship (\"to-many\").
@@ -365,14 +365,14 @@ Retrieves coverArt relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: coverArt (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get coverArt relationship (\"to-many\").
 do {
-    let response = try await AlbumsAPI.albumsIdRelationshipsCoverArtGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
+    let response = try await AlbumsAPI.albumsIdRelationshipsCoverArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -384,9 +384,9 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: coverArt | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
@@ -456,7 +456,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsGenresGet**
 ```swift
-    open class func albumsIdRelationshipsGenresGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsGenresMultiRelationshipDataDocument
+    open class func albumsIdRelationshipsGenresGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsGenresMultiRelationshipDataDocument
 ```
 
 Get genres relationship (\"to-many\").
@@ -469,14 +469,14 @@ Retrieves genres relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: genres (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get genres relationship (\"to-many\").
 do {
-    let response = try await AlbumsAPI.albumsIdRelationshipsGenresGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
+    let response = try await AlbumsAPI.albumsIdRelationshipsGenresGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -488,9 +488,9 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: genres | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
@@ -510,7 +510,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsItemsGet**
 ```swift
-    open class func albumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsItemsMultiRelationshipDataDocument
+    open class func albumsIdRelationshipsItemsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -523,15 +523,15 @@ Retrieves items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get items relationship (\"to-many\").
 do {
-    let response = try await AlbumsAPI.albumsIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+    let response = try await AlbumsAPI.albumsIdRelationshipsItemsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -543,9 +543,9 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
  **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
@@ -833,7 +833,7 @@ Name | Type | Description  | Notes
 
 Get shares relationship (\"to-many\").
 
-Retrieves shares relationship.
+The album's share links, active and expired, newest first.
 
 ### Example
 ```swift
@@ -882,7 +882,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsSimilarAlbumsGet**
 ```swift
-    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsSimilarAlbumsMultiRelationshipDataDocument
+    open class func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsSimilarAlbumsMultiRelationshipDataDocument
 ```
 
 Get similarAlbums relationship (\"to-many\").
@@ -895,15 +895,15 @@ Retrieves similarAlbums relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Album id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: similarAlbums (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: similarAlbums (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get similarAlbums relationship (\"to-many\").
 do {
-    let response = try await AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGet(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+    let response = try await AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -915,9 +915,9 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: similarAlbums | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: similarAlbums | [optional] 
  **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 

@@ -34,9 +34,9 @@ public enum InstallationsAPITidal {
      
      - returns: InstallationsMultiResourceDataDocument
      */
-	public static func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [InstallationsAPITidal.IncludeLinkage_installationsGet]? = nil, replaceMedia: String? = nil) async throws -> InstallationsMultiResourceDataDocument {
+	public static func installationsGet(filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [InstallationsAPITidal.IncludeLinkage_installationsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toInstallationsAPIEnum() }, replaceMedia: replaceMedia)
+			InstallationsAPI.installationsGetWithRequestBuilder(filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toInstallationsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -123,9 +123,9 @@ public enum InstallationsAPITidal {
      
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
-	public static func installationsIdRelationshipsOfflineInventoryGet(id: String, filterType: [InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet], pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [InstallationsAPITidal.FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
+	public static func installationsIdRelationshipsOfflineInventoryGet(filterType: [InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterId: [String]? = nil, filterState: [InstallationsAPITidal.FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(id: id, filterType: filterType.compactMap { $0.toInstallationsAPIEnum() }, pageCursor: pageCursor, include: include, filterId: filterId, filterState: filterState?.compactMap { $0.toInstallationsAPIEnum() }, replaceMedia: replaceMedia)
+			InstallationsAPI.installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(filterType: filterType.compactMap { $0.toInstallationsAPIEnum() }, id: id, filterId: filterId, filterState: filterState?.compactMap { $0.toInstallationsAPIEnum() }, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

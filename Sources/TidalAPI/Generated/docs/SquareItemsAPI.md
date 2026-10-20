@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **squareItemsGet**
 ```swift
-    open class func squareItemsGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, filterOrigin: FilterOrigin_squareItemsGet? = nil, filterQuery: String? = nil, includeLinkage: [IncludeLinkage_squareItemsGet]? = nil) async throws -> SquareItemsMultiResourceDataDocument
+    open class func squareItemsGet(filterOwnersId: [String], filterOrigin: FilterOrigin_squareItemsGet? = nil, filterQuery: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareItemsGet]? = nil, pageCursor: String? = nil) async throws -> SquareItemsMultiResourceDataDocument
 ```
 
 Get multiple squareItems.
@@ -26,16 +26,16 @@ Retrieves multiple squareItems by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let filterOrigin = "filterOrigin_example" // String | Only items with this origin (e.g. `TIDAL`) (optional)
 let filterQuery = "filterQuery_example" // String | Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. `tee`) (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get multiple squareItems.
 do {
-    let response = try await SquareItemsAPI.squareItemsGet(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, filterOrigin: filterOrigin, filterQuery: filterQuery, includeLinkage: includeLinkage)
+    let response = try await SquareItemsAPI.squareItemsGet(filterOwnersId: filterOwnersId, filterOrigin: filterOrigin, filterQuery: filterQuery, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor)
     dump(response)
 } catch {
     print(error)
@@ -46,12 +46,12 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **filterOrigin** | **String** | Only items with this origin (e.g. &#x60;TIDAL&#x60;) | [optional] 
  **filterQuery** | **String** | Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 

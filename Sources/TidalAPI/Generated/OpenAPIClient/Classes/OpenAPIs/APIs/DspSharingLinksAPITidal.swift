@@ -49,9 +49,9 @@ public enum DspSharingLinksAPITidal {
      
      - returns: DspSharingLinksMultiResourceDataDocument
      */
-	public static func dspSharingLinksGet(include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [DspSharingLinksAPITidal.FilterSubjectType_dspSharingLinksGet]? = nil, includeLinkage: [DspSharingLinksAPITidal.IncludeLinkage_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
+	public static func dspSharingLinksGet(filterSubjectId: [String]? = nil, filterSubjectType: [DspSharingLinksAPITidal.FilterSubjectType_dspSharingLinksGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [DspSharingLinksAPITidal.IncludeLinkage_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			DspSharingLinksAPI.dspSharingLinksGetWithRequestBuilder(include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toDspSharingLinksAPIEnum() }, includeLinkage: includeLinkage?.compactMap { $0.toDspSharingLinksAPIEnum() }, replaceMedia: replaceMedia)
+			DspSharingLinksAPI.dspSharingLinksGetWithRequestBuilder(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toDspSharingLinksAPIEnum() }, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage?.compactMap { $0.toDspSharingLinksAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

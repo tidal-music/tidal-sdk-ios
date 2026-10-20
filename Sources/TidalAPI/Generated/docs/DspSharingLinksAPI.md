@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **dspSharingLinksGet**
 ```swift
-    open class func dspSharingLinksGet(include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, includeLinkage: [IncludeLinkage_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument
+    open class func dspSharingLinksGet(filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument
 ```
 
 Get multiple dspSharingLinks.
@@ -22,16 +22,16 @@ Retrieves multiple dspSharingLinks by available filters, or without if applicabl
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: subject (optional)
-let filterSubject = "filterSubject_example" // String | The subject whose DSP sharing links to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
 let filterSubjectId = ["inner_example"] // [String] | Deprecated: use filter[subject]. The id of the subject resource (optional)
 let filterSubjectType = ["filterSubjectType_example"] // [String] | Deprecated: use filter[subject]. The type of the subject resource (e.g. `tracks`) (optional)
+let filterSubject = "filterSubject_example" // String | The subject whose DSP sharing links to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: subject (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get multiple dspSharingLinks.
 do {
-    let response = try await DspSharingLinksAPI.dspSharingLinksGet(include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await DspSharingLinksAPI.dspSharingLinksGet(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -42,10 +42,10 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: subject | [optional] 
- **filterSubject** | **String** | The subject whose DSP sharing links to return. Use either subject or the deprecated subject.id and subject.type pair. | [optional] 
  **filterSubjectId** | [**[String]**](String.md) | Deprecated: use filter[subject]. The id of the subject resource | [optional] 
  **filterSubjectType** | [**[String]**](String.md) | Deprecated: use filter[subject]. The type of the subject resource (e.g. &#x60;tracks&#x60;) | [optional] 
+ **filterSubject** | **String** | The subject whose DSP sharing links to return. Use either subject or the deprecated subject.id and subject.type pair. | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: subject | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 

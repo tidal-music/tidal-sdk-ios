@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **dynamicModulesGet**
 ```swift
-    open class func dynamicModulesGet(deviceType: DeviceType_dynamicModulesGet, systemType: SystemType_dynamicModulesGet, clientVersion: String, filterId: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicModulesGet]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesMultiResourceDataDocument
+    open class func dynamicModulesGet(clientVersion: String, deviceType: DeviceType_dynamicModulesGet, filterId: [String], systemType: SystemType_dynamicModulesGet, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicModulesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesMultiResourceDataDocument
 ```
 
 Get multiple dynamicModules.
@@ -24,20 +24,20 @@ Retrieves multiple dynamicModules by available filters, or without if applicable
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let deviceType = "deviceType_example" // String | The type of device making the request
-let systemType = "systemType_example" // String | The system type of the device making the request
 let clientVersion = "clientVersion_example" // String | Client version number
+let deviceType = "deviceType_example" // String | The type of device making the request
 let filterId = ["inner_example"] // [String] | DynamicModules Id (e.g. `nejMcAhh5N8S3EQ4LaqysVdI0cZZ`)
-let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
+let systemType = "systemType_example" // String | The system type of the device making the request
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items, seedItem (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
+let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get multiple dynamicModules.
 do {
-    let response = try await DynamicModulesAPI.dynamicModulesGet(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterId: filterId, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await DynamicModulesAPI.dynamicModulesGet(clientVersion: clientVersion, deviceType: deviceType, filterId: filterId, systemType: systemType, countryCode: countryCode, include: include, includeLinkage: includeLinkage, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -48,15 +48,15 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **deviceType** | **String** | The type of device making the request | 
- **systemType** | **String** | The system type of the device making the request | 
  **clientVersion** | **String** | Client version number | 
+ **deviceType** | **String** | The type of device making the request | 
  **filterId** | [**[String]**](String.md) | DynamicModules Id (e.g. &#x60;nejMcAhh5N8S3EQ4LaqysVdI0cZZ&#x60;) | 
- **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
+ **systemType** | **String** | The system type of the device making the request | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items, seedItem | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
+ **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
 
 ### Return type
@@ -76,7 +76,7 @@ Name | Type | Description  | Notes
 
 # **dynamicModulesIdGet**
 ```swift
-    open class func dynamicModulesIdGet(id: String, deviceType: DeviceType_dynamicModulesIdGet, systemType: SystemType_dynamicModulesIdGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicModulesIdGet]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesSingleResourceDataDocument
+    open class func dynamicModulesIdGet(clientVersion: String, deviceType: DeviceType_dynamicModulesIdGet, id: String, systemType: SystemType_dynamicModulesIdGet, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicModulesIdGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesSingleResourceDataDocument
 ```
 
 Get single dynamicModule.
@@ -88,20 +88,20 @@ Retrieves single dynamicModule by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | DynamicModules Id
-let deviceType = "deviceType_example" // String | The type of device making the request
-let systemType = "systemType_example" // String | The system type of the device making the request
 let clientVersion = "clientVersion_example" // String | Client version number
-let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
+let deviceType = "deviceType_example" // String | The type of device making the request
+let id = "id_example" // String | DynamicModules Id
+let systemType = "systemType_example" // String | The system type of the device making the request
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items, seedItem (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
+let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get single dynamicModule.
 do {
-    let response = try await DynamicModulesAPI.dynamicModulesIdGet(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await DynamicModulesAPI.dynamicModulesIdGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, includeLinkage: includeLinkage, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -112,15 +112,15 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | DynamicModules Id | 
- **deviceType** | **String** | The type of device making the request | 
- **systemType** | **String** | The system type of the device making the request | 
  **clientVersion** | **String** | Client version number | 
- **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
+ **deviceType** | **String** | The type of device making the request | 
+ **id** | **String** | DynamicModules Id | 
+ **systemType** | **String** | The system type of the device making the request | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items, seedItem | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
+ **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
 
 ### Return type
@@ -140,7 +140,7 @@ Name | Type | Description  | Notes
 
 # **dynamicModulesIdRelationshipsItemsGet**
 ```swift
-    open class func dynamicModulesIdRelationshipsItemsGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesItemsMultiRelationshipDataDocument
+    open class func dynamicModulesIdRelationshipsItemsGet(clientVersion: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, id: String, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -152,20 +152,20 @@ The module's items, in order — one stable collection per module, consistent fo
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | DynamicModules Id
-let deviceType = "deviceType_example" // String | The type of device making the request
-let systemType = "systemType_example" // String | The system type of the device making the request
 let clientVersion = "clientVersion_example" // String | Client version number
-let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let deviceType = "deviceType_example" // String | The type of device making the request
+let id = "id_example" // String | DynamicModules Id
+let systemType = "systemType_example" // String | The system type of the device making the request
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get items relationship (\"to-many\").
 do {
-    let response = try await DynamicModulesAPI.dynamicModulesIdRelationshipsItemsGet(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include, replaceMedia: replaceMedia)
+    let response = try await DynamicModulesAPI.dynamicModulesIdRelationshipsItemsGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, locale: locale, pageCursor: pageCursor, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -176,15 +176,15 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | DynamicModules Id | 
- **deviceType** | **String** | The type of device making the request | 
- **systemType** | **String** | The system type of the device making the request | 
  **clientVersion** | **String** | Client version number | 
- **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **deviceType** | **String** | The type of device making the request | 
+ **id** | **String** | DynamicModules Id | 
+ **systemType** | **String** | The system type of the device making the request | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
 
 ### Return type
@@ -204,7 +204,7 @@ Name | Type | Description  | Notes
 
 # **dynamicModulesIdRelationshipsSeedItemGet**
 ```swift
-    open class func dynamicModulesIdRelationshipsSeedItemGet(id: String, deviceType: DeviceType_dynamicModulesIdRelationshipsSeedItemGet, systemType: SystemType_dynamicModulesIdRelationshipsSeedItemGet, clientVersion: String, refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesSeedItemSingleRelationshipDataDocument
+    open class func dynamicModulesIdRelationshipsSeedItemGet(clientVersion: String, deviceType: DeviceType_dynamicModulesIdRelationshipsSeedItemGet, id: String, systemType: SystemType_dynamicModulesIdRelationshipsSeedItemGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesSeedItemSingleRelationshipDataDocument
 ```
 
 Get seedItem relationship (\"to-one\").
@@ -216,19 +216,19 @@ The item whose listen or add event seeded this module's collection (e.g. the alb
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | DynamicModules Id
-let deviceType = "deviceType_example" // String | The type of device making the request
-let systemType = "systemType_example" // String | The system type of the device making the request
 let clientVersion = "clientVersion_example" // String | Client version number
-let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
+let deviceType = "deviceType_example" // String | The type of device making the request
+let id = "id_example" // String | DynamicModules Id
+let systemType = "systemType_example" // String | The system type of the device making the request
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: seedItem (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
+let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: seedItem (optional)
 
 // Get seedItem relationship (\"to-one\").
 do {
-    let response = try await DynamicModulesAPI.dynamicModulesIdRelationshipsSeedItemGet(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, replaceMedia: replaceMedia)
+    let response = try await DynamicModulesAPI.dynamicModulesIdRelationshipsSeedItemGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -239,14 +239,14 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | DynamicModules Id | 
- **deviceType** | **String** | The type of device making the request | 
- **systemType** | **String** | The system type of the device making the request | 
  **clientVersion** | **String** | Client version number | 
- **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
+ **deviceType** | **String** | The type of device making the request | 
+ **id** | **String** | DynamicModules Id | 
+ **systemType** | **String** | The system type of the device making the request | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: seedItem | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
+ **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: seedItem | [optional] 
 
 ### Return type

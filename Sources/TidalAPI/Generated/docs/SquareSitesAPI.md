@@ -61,7 +61,7 @@ Name | Type | Description  | Notes
 
 # **squareSitesIdRelationshipsItemsGet**
 ```swift
-    open class func squareSitesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> SquareSitesItemsMultiRelationshipDataDocument
+    open class func squareSitesIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareSitesItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -74,12 +74,12 @@ Items published in the site, in title order. Missing catalog scopes return MISSI
 import OpenAPIClient
 
 let id = "id_example" // String | Square Online site id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get items relationship (\"to-many\").
 do {
-    let response = try await SquareSitesAPI.squareSitesIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, include: include)
+    let response = try await SquareSitesAPI.squareSitesIdRelationshipsItemsGet(id: id, include: include, pageCursor: pageCursor)
     dump(response)
 } catch {
     print(error)
@@ -91,8 +91,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Square Online site id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 

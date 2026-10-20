@@ -24,7 +24,7 @@ internal class ArtistClaimsAPI {
     /**
      Get multiple artistClaims.
      
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter include: (query) Include related resources. Available relationships: acceptedArtists, owners, recommendedArtists (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)
@@ -47,7 +47,7 @@ internal class ArtistClaimsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter include: (query) Include related resources. Available relationships: acceptedArtists, owners, recommendedArtists (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: acceptedArtists.albums (optional)

@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **offlineTasksGet**
 ```swift
-    open class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksGet]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksMultiResourceDataDocument
+    open class func offlineTasksGet(filterInstallationId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksMultiResourceDataDocument
 ```
 
 Get multiple offlineTasks.
@@ -27,14 +27,14 @@ Retrieves multiple offlineTasks by available filters, or without if applicable.
 import OpenAPIClient
 
 let filterInstallationId = ["inner_example"] // [String] | List of offline task IDs (e.g. `a468bee88def`)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: collection, item, owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: collection (optional)
 
 // Get multiple offlineTasks.
 do {
-    let response = try await OfflineTasksAPI.offlineTasksGet(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await OfflineTasksAPI.offlineTasksGet(filterInstallationId: filterInstallationId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -46,9 +46,9 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterInstallationId** | [**[String]**](String.md) | List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: collection, item, owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection | [optional] 
 
 ### Return type

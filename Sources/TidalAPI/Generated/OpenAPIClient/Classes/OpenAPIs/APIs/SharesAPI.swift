@@ -83,14 +83,14 @@ internal class SharesAPI {
      Delete single share.
      
      - parameter id: (path) Share id 
-     - parameter revokeGrants: (query) Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter revokeGrants: (query) Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func sharesIdDelete(id: String, revokeGrants: Bool? = nil, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+    internal class func sharesIdDelete(id: String, idempotencyKey: String? = nil, revokeGrants: Bool? = nil) async throws -> MutationResponseDocument {
         do {
-            return try await sharesIdDeleteWithRequestBuilder(id: id, revokeGrants: revokeGrants, idempotencyKey: idempotencyKey).execute().body
+            return try await sharesIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, revokeGrants: revokeGrants).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -105,11 +105,11 @@ internal class SharesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Share id 
-     - parameter revokeGrants: (query) Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter revokeGrants: (query) Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func sharesIdDeleteWithRequestBuilder(id: String, revokeGrants: Bool? = nil, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
+    internal class func sharesIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, revokeGrants: Bool? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/shares/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -264,15 +264,15 @@ internal class SharesAPI {
      Get sharedResources relationship (\"to-many\").
      
      - parameter id: (path) Share id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: sharedResources (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: SharesSharedResourcesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesSharedResourcesMultiRelationshipDataDocument {
+    internal class func sharesIdRelationshipsSharedResourcesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SharesSharedResourcesMultiRelationshipDataDocument {
         do {
-            return try await sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
+            return try await sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -290,12 +290,12 @@ internal class SharesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Share id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: sharedResources (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: RequestBuilder<SharesSharedResourcesMultiRelationshipDataDocument> 
      */
-    internal class func sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesSharedResourcesMultiRelationshipDataDocument> {
+    internal class func sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesSharedResourcesMultiRelationshipDataDocument> {
         var localVariablePath = "/shares/{id}/relationships/sharedResources"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -305,8 +305,8 @@ internal class SharesAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 

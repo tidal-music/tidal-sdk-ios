@@ -68,14 +68,14 @@ internal class SquareSitesAPI {
      Get items relationship (\"to-many\").
      
      - parameter id: (path) Square Online site id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: SquareSitesItemsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func squareSitesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> SquareSitesItemsMultiRelationshipDataDocument {
+    internal class func squareSitesIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareSitesItemsMultiRelationshipDataDocument {
         do {
-            return try await squareSitesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include).execute().body
+            return try await squareSitesIdRelationshipsItemsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -90,11 +90,11 @@ internal class SquareSitesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Square Online site id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<SquareSitesItemsMultiRelationshipDataDocument> 
      */
-    internal class func squareSitesIdRelationshipsItemsGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil) -> RequestBuilder<SquareSitesItemsMultiRelationshipDataDocument> {
+    internal class func squareSitesIdRelationshipsItemsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SquareSitesItemsMultiRelationshipDataDocument> {
         var localVariablePath = "/squareSites/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -104,8 +104,8 @@ internal class SquareSitesAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

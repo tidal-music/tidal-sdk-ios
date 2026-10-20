@@ -25,16 +25,16 @@ internal class OfflineTasksAPI {
      Get multiple offlineTasks.
      
      - parameter filterInstallationId: (query) List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: collection, item, owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection (optional)
      - returns: OfflineTasksMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksGet]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
+    internal class func offlineTasksGet(filterInstallationId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
         do {
-            return try await offlineTasksGetWithRequestBuilder(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+            return try await offlineTasksGetWithRequestBuilder(filterInstallationId: filterInstallationId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -49,13 +49,13 @@ internal class OfflineTasksAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterInstallationId: (query) List of offline task IDs (e.g. &#x60;a468bee88def&#x60;) 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: collection, item, owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: collection (optional)
      - returns: RequestBuilder<OfflineTasksMultiResourceDataDocument> 
      */
-    internal class func offlineTasksGetWithRequestBuilder(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<OfflineTasksMultiResourceDataDocument> {
+    internal class func offlineTasksGetWithRequestBuilder(filterInstallationId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_offlineTasksGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<OfflineTasksMultiResourceDataDocument> {
         let localVariablePath = "/offlineTasks"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -63,9 +63,9 @@ internal class OfflineTasksAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[installation.id]": (wrappedValue: filterInstallationId.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 

@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **userFeedItemsGet**
 ```swift
-    open class func userFeedItemsGet(filterOwnersId: [String], filterSurface: FilterSurface_userFeedItemsGet, pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userFeedItemsGet]? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsMultiResourceDataDocument
+    open class func userFeedItemsGet(filterOwnersId: [String], filterSurface: FilterSurface_userFeedItemsGet, include: [String]? = nil, includeLinkage: [IncludeLinkage_userFeedItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsMultiResourceDataDocument
 ```
 
 Get multiple userFeedItems.
@@ -23,16 +23,16 @@ The authenticated user's activity on the selected feed surface.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let filterSurface = "filterSurface_example" // String | Feed surface to read (e.g. `INBOX`)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: actors, subject (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: actors.albums (optional)
 
 // Get multiple userFeedItems.
 do {
-    let response = try await UserFeedItemsAPI.userFeedItemsGet(filterOwnersId: filterOwnersId, filterSurface: filterSurface, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await UserFeedItemsAPI.userFeedItemsGet(filterOwnersId: filterOwnersId, filterSurface: filterSurface, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -43,11 +43,11 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **filterSurface** | **String** | Feed surface to read (e.g. &#x60;INBOX&#x60;) | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: actors, subject | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: actors.albums | [optional] 
 
 ### Return type
@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **userFeedItemsIdRelationshipsActorsGet**
 ```swift
-    open class func userFeedItemsIdRelationshipsActorsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsActorsMultiRelationshipDataDocument
+    open class func userFeedItemsIdRelationshipsActorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsActorsMultiRelationshipDataDocument
 ```
 
 Get actors relationship (\"to-many\").
@@ -80,13 +80,13 @@ Artists attributed to the activity. Always empty for `ALBUM_FAVOURITED`, `TRACK_
 import OpenAPIClient
 
 let id = "id_example" // String | Opaque identifier of a user feed item.
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: actors (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: actors.albums (optional)
 
 // Get actors relationship (\"to-many\").
 do {
-    let response = try await UserFeedItemsAPI.userFeedItemsIdRelationshipsActorsGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+    let response = try await UserFeedItemsAPI.userFeedItemsIdRelationshipsActorsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -98,8 +98,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Opaque identifier of a user feed item. | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: actors | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: actors.albums | [optional] 
 
 ### Return type

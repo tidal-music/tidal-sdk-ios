@@ -46,23 +46,23 @@ internal class DynamicPagesAPI {
     /**
      Get multiple dynamicPages.
      
-     - parameter deviceType: (query) The type of device making the request 
-     - parameter systemType: (query) The system type of the device making the request 
      - parameter clientVersion: (query) Client version number 
+     - parameter deviceType: (query) The type of device making the request 
      - parameter filterPageType: (query) type of the page (e.g. &#x60;ARTIST&#x60;) 
-     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
+     - parameter systemType: (query) The system type of the device making the request 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
+     - parameter filterSubject: (query) The page subject. Its type must match pageType. Required except for HOME_FREE, where it must be omitted. Also accepts &#x60;users:me&#x60;. (optional)
      - parameter include: (query) Include related resources. Available relationships: modules, subject (optional)
-     - parameter filterSubject: (query) The page subject. Its type must match pageType. Required except for HOME_FREE, where it must be omitted. (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
+     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: DynamicPagesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubject: String? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
+    internal class func dynamicPagesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesGet, filterPageType: [String], systemType: SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
         do {
-            return try await dynamicPagesGetWithRequestBuilder(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterPageType: filterPageType, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, filterSubject: filterSubject, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+            return try await dynamicPagesGetWithRequestBuilder(clientVersion: clientVersion, deviceType: deviceType, filterPageType: filterPageType, systemType: systemType, countryCode: countryCode, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -79,36 +79,36 @@ internal class DynamicPagesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter deviceType: (query) The type of device making the request 
-     - parameter systemType: (query) The system type of the device making the request 
      - parameter clientVersion: (query) Client version number 
+     - parameter deviceType: (query) The type of device making the request 
      - parameter filterPageType: (query) type of the page (e.g. &#x60;ARTIST&#x60;) 
-     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
+     - parameter systemType: (query) The system type of the device making the request 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
+     - parameter filterSubject: (query) The page subject. Its type must match pageType. Required except for HOME_FREE, where it must be omitted. Also accepts &#x60;users:me&#x60;. (optional)
      - parameter include: (query) Include related resources. Available relationships: modules, subject (optional)
-     - parameter filterSubject: (query) The page subject. Its type must match pageType. Required except for HOME_FREE, where it must be omitted. (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
+     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: RequestBuilder<DynamicPagesMultiResourceDataDocument> 
      */
-    internal class func dynamicPagesGetWithRequestBuilder(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubject: String? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
+    internal class func dynamicPagesGetWithRequestBuilder(clientVersion: String, deviceType: DeviceType_dynamicPagesGet, filterPageType: [String], systemType: SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
         let localVariablePath = "/dynamicPages"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "deviceType": (wrappedValue: deviceType.encodeToJSON(), isExplode: true),
-            "systemType": (wrappedValue: systemType.encodeToJSON(), isExplode: true),
             "clientVersion": (wrappedValue: clientVersion.encodeToJSON(), isExplode: true),
+            "deviceType": (wrappedValue: deviceType.encodeToJSON(), isExplode: true),
             "filter[pageType]": (wrappedValue: filterPageType.encodeToJSON(), isExplode: true),
-            "refreshSeed": (wrappedValue: refreshSeed?.encodeToJSON(), isExplode: true),
+            "systemType": (wrappedValue: systemType.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
+            "refreshSeed": (wrappedValue: refreshSeed?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -149,22 +149,22 @@ internal class DynamicPagesAPI {
     /**
      Get modules relationship (\"to-many\").
      
-     - parameter id: (path) DynamicPages Id 
-     - parameter deviceType: (query) The type of device making the request 
-     - parameter systemType: (query) The system type of the device making the request 
      - parameter clientVersion: (query) Client version number 
-     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter deviceType: (query) The type of device making the request 
+     - parameter id: (path) DynamicPages Id 
+     - parameter systemType: (query) The system type of the device making the request 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Include related resources. Available relationships: modules (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: DynamicPagesModulesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesIdRelationshipsModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesModulesMultiRelationshipDataDocument {
+    internal class func dynamicPagesIdRelationshipsModulesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, id: String, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesModulesMultiRelationshipDataDocument {
         do {
-            return try await dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include, replaceMedia: replaceMedia).execute().body
+            return try await dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, locale: locale, pageCursor: pageCursor, refreshSeed: refreshSeed, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -181,19 +181,19 @@ internal class DynamicPagesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) DynamicPages Id 
-     - parameter deviceType: (query) The type of device making the request 
-     - parameter systemType: (query) The system type of the device making the request 
      - parameter clientVersion: (query) Client version number 
-     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter deviceType: (query) The type of device making the request 
+     - parameter id: (path) DynamicPages Id 
+     - parameter systemType: (query) The system type of the device making the request 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter include: (query) Include related resources. Available relationships: modules (optional)
+     - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter refreshSeed: (query) Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: RequestBuilder<DynamicPagesModulesMultiRelationshipDataDocument> 
      */
-    internal class func dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesModulesMultiRelationshipDataDocument> {
+    internal class func dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(clientVersion: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, id: String, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesModulesMultiRelationshipDataDocument> {
         var localVariablePath = "/dynamicPages/{id}/relationships/modules"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -203,14 +203,14 @@ internal class DynamicPagesAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "clientVersion": (wrappedValue: clientVersion.encodeToJSON(), isExplode: true),
             "deviceType": (wrappedValue: deviceType.encodeToJSON(), isExplode: true),
             "systemType": (wrappedValue: systemType.encodeToJSON(), isExplode: true),
-            "clientVersion": (wrappedValue: clientVersion.encodeToJSON(), isExplode: true),
-            "refreshSeed": (wrappedValue: refreshSeed?.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "refreshSeed": (wrappedValue: refreshSeed?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 

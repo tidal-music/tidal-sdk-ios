@@ -15,23 +15,6 @@ public enum ReactionsAPITidal {
 
 
 	/**
-	 * enum for parameter stats
-	 */
-	public enum Stats_reactionsGet: String, CaseIterable {
-		case all = "ALL"
-		case countsByType = "COUNTS_BY_TYPE"
-		case totalCount = "TOTAL_COUNT"
-
-		func toReactionsAPIEnum() -> ReactionsAPI.Stats_reactionsGet {
-			switch self {
-			case .all: return .all
-			case .countsByType: return .countsByType
-			case .totalCount: return .totalCount
-			}
-		}
-	}
-
-	/**
 	 * enum for parameter filterSubjectType
 	 */
 	public enum FilterSubjectType_reactionsGet: String, CaseIterable {
@@ -74,13 +57,30 @@ public enum ReactionsAPITidal {
 	}
 
 	/**
+	 * enum for parameter stats
+	 */
+	public enum Stats_reactionsGet: String, CaseIterable {
+		case all = "ALL"
+		case countsByType = "COUNTS_BY_TYPE"
+		case totalCount = "TOTAL_COUNT"
+
+		func toReactionsAPIEnum() -> ReactionsAPI.Stats_reactionsGet {
+			switch self {
+			case .all: return .all
+			case .countsByType: return .countsByType
+			case .totalCount: return .totalCount
+			}
+		}
+	}
+
+	/**
      Get multiple reactions.
      
      - returns: ReactionsMultiResourceDataDocument
      */
-	public static func reactionsGet(stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [ReactionsAPITidal.FilterSubjectType_reactionsGet]? = nil, includeLinkage: [ReactionsAPITidal.IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil) async throws -> ReactionsMultiResourceDataDocument {
+	public static func reactionsGet(filterEmoji: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [ReactionsAPITidal.FilterSubjectType_reactionsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [ReactionsAPITidal.IncludeLinkage_reactionsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, stats: ReactionsAPITidal.Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil) async throws -> ReactionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ReactionsAPI.reactionsGetWithRequestBuilder(stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toReactionsAPIEnum() }, includeLinkage: includeLinkage?.compactMap { $0.toReactionsAPIEnum() }, replaceMedia: replaceMedia)
+			ReactionsAPI.reactionsGetWithRequestBuilder(filterEmoji: filterEmoji, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toReactionsAPIEnum() }, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage?.compactMap { $0.toReactionsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia, stats: stats?.toReactionsAPIEnum(), statsOnly: statsOnly, viewerContext: viewerContext)
 		}
 	}
 

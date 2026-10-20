@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userCollectionPlaylistsIdGet**
 ```swift
-    open class func userCollectionPlaylistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionPlaylistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument
+    open class func userCollectionPlaylistsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionPlaylistsIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsSingleResourceDataDocument
 ```
 
 Get single userCollectionPlaylist.
@@ -26,14 +26,14 @@ Retrieves single userCollectionPlaylist by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection playlists id. Use `me` for the authenticated user's resource
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items, owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get single userCollectionPlaylist.
 do {
-    let response = try await UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGet(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await UserCollectionPlaylistsAPI.userCollectionPlaylistsIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -45,9 +45,9 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items, owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 
 
 ### Return type
@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionPlaylistsIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, pageCursor: String? = nil, sort: [Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument
+    open class func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, filterQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -131,15 +131,15 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection playlists id. Use `me` for the authenticated user's resource
 let collectionView = "collectionView_example" // String |  (optional)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
 let filterQuery = "filterQuery_example" // String | Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView=FOLDERS. Internal clients only (e.g. `summer`) (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
+let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 
 // Get items relationship (\"to-many\").
 do {
-    let response = try await UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGet(id: id, collectionView: collectionView, pageCursor: pageCursor, sort: sort, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
+    let response = try await UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGet(id: id, collectionView: collectionView, filterQuery: filterQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
     dump(response)
 } catch {
     print(error)
@@ -152,11 +152,11 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **collectionView** | **String** |  | [optional] 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
  **filterQuery** | **String** | Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 
+ **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
 
 ### Return type
 

@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 # **folderItemsGet**
 ```swift
-    open class func folderItemsGet(pageCursor: String? = nil, include: [String]? = nil, filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSubjectOwnersId: String? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument
+    open class func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument
 ```
 
 Get multiple folderItems.
@@ -29,18 +29,19 @@ Lists items in a folder, newest placement first. Select a folder with parent.id,
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
-let filterParentId = "filterParentId_example" // String | Folder id (e.g. `e3226624-355b-48f8-aa93-db42532caa66`) (optional)
+let filterParentId = "filterParentId_example" // String | Folder id (e.g. `e3226624-355b-48f8-aa93-db42532caa66`). Also accepts `me`. (optional)
 let filterParentIsRoot = "filterParentIsRoot_example" // String | Filter by parent.isRoot (optional)
-let filterParentOwnersId = "filterParentOwnersId_example" // String | Root folder owner; must be the authenticated user.. Use `me` for the authenticated user (optional)
-let filterSubjectOwnersId = "filterSubjectOwnersId_example" // String | In folders you own, me selects owned placements and !me selects shared placements. In someone else's folder, me returns no items and !me returns the normal listing. Omit for all items. (optional)
+let filterParentOwnersId = "filterParentOwnersId_example" // String | Root folder owner; must be the authenticated user. Also accepts `me`. (optional)
+let filterSubjectOwnersId = "filterSubjectOwnersId_example" // String | In your folders, `=me` selects owned placements and `[ne]=me` selects shared placements. In someone else's folder, `=me` returns no items and `[ne]=me` returns all items. Accepts only `me` or your own user ID. (optional)
+let filterSubjectOwnersIdNe = "filterSubjectOwnersIdNe_example" // String | In your folders, `=me` selects owned placements and `[ne]=me` selects shared placements. In someone else's folder, `=me` returns no items and `[ne]=me` returns all items. Accepts only `me` or your own user ID. (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: breadcrumb.children.subject (optional)
 
 // Get multiple folderItems.
 do {
-    let response = try await FolderItemsAPI.folderItemsGet(pageCursor: pageCursor, include: include, filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSubjectOwnersId: filterSubjectOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await FolderItemsAPI.folderItemsGet(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -51,13 +52,14 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: breadcrumb, owners, parent, subject | [optional] 
- **filterParentId** | **String** | Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;) | [optional] 
+ **filterParentId** | **String** | Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;). Also accepts &#x60;me&#x60;. | [optional] 
  **filterParentIsRoot** | **String** | Filter by parent.isRoot | [optional] 
- **filterParentOwnersId** | **String** | Root folder owner; must be the authenticated user.. Use &#x60;me&#x60; for the authenticated user | [optional] 
- **filterSubjectOwnersId** | **String** | In folders you own, me selects owned placements and !me selects shared placements. In someone else&#39;s folder, me returns no items and !me returns the normal listing. Omit for all items. | [optional] 
+ **filterParentOwnersId** | **String** | Root folder owner; must be the authenticated user. Also accepts &#x60;me&#x60;. | [optional] 
+ **filterSubjectOwnersId** | **String** | In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. | [optional] 
+ **filterSubjectOwnersIdNe** | **String** | In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: breadcrumb, owners, parent, subject | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject | [optional] 
 
 ### Return type

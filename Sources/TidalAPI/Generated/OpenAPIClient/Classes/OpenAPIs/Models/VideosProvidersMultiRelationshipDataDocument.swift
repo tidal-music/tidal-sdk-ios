@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;providers&#x60;. */
 public struct VideosProvidersMultiRelationshipDataDocument: Codable, Hashable {
 
     public var data: [ResourceIdentifier]?

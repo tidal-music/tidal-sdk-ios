@@ -273,7 +273,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationsIdRelationshipsTrackPreferencesGet**
 ```swift
-    open class func playlistGenerationsIdRelationshipsTrackPreferencesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument
+    open class func playlistGenerationsIdRelationshipsTrackPreferencesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument
 ```
 
 Get trackPreferences relationship (\"to-many\").
@@ -286,13 +286,13 @@ Retrieves trackPreferences relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist generation id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: trackPreferences (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: trackPreferences (optional)
 
 // Get trackPreferences relationship (\"to-many\").
 do {
-    let response = try await PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+    let response = try await PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -304,8 +304,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist generation id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: trackPreferences | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: trackPreferences | [optional] 
 
 ### Return type

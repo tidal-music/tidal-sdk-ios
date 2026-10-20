@@ -31,9 +31,9 @@ public enum SquareSitesAPITidal {
      
      - returns: SquareSitesItemsMultiRelationshipDataDocument
      */
-	public static func squareSitesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> SquareSitesItemsMultiRelationshipDataDocument {
+	public static func squareSitesIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareSitesItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SquareSitesAPI.squareSitesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+			SquareSitesAPI.squareSitesIdRelationshipsItemsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 

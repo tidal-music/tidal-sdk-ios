@@ -128,9 +128,9 @@ public enum PlaylistGenerationsAPITidal {
      
      - returns: PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument
      */
-	public static func playlistGenerationsIdRelationshipsTrackPreferencesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument {
+	public static func playlistGenerationsIdRelationshipsTrackPreferencesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

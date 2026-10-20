@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **searchSuggestionsGet**
 ```swift
-    open class func searchSuggestionsGet(filterQuery: String, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_searchSuggestionsGet]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument
+    open class func searchSuggestionsGet(filterQuery: String, countryCode: String? = nil, explicitFilter: ExplicitFilter_searchSuggestionsGet? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_searchSuggestionsGet]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument
 ```
 
 Get search suggestions by query.
@@ -24,15 +24,15 @@ Searches for a query and returns a collection containing exactly one search sugg
 import OpenAPIClient
 
 let filterQuery = "filterQuery_example" // String | Search query (e.g. `hello`)
-let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: directHits, history (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: directHits (optional)
 
 // Get search suggestions by query.
 do {
-    let response = try await SearchSuggestionsAPI.searchSuggestionsGet(filterQuery: filterQuery, explicitFilter: explicitFilter, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await SearchSuggestionsAPI.searchSuggestionsGet(filterQuery: filterQuery, countryCode: countryCode, explicitFilter: explicitFilter, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -44,8 +44,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterQuery** | **String** | Search query (e.g. &#x60;hello&#x60;) | 
- **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: directHits, history | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits | [optional] 
@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **searchSuggestionsIdRelationshipsDirectHitsGet**
 ```swift
-    open class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsDirectHitsMultiRelationshipDataDocument
+    open class func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, countryCode: String? = nil, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsDirectHitsMultiRelationshipDataDocument
 ```
 
 Get directHits relationship (\"to-many\").
@@ -80,15 +80,15 @@ Retrieves directHits relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | An opaque search suggestions identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: directHits (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: directHits (optional)
 
 // Get directHits relationship (\"to-many\").
 do {
-    let response = try await SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    let response = try await SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -100,8 +100,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | An opaque search suggestions identifier | 
- **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: directHits | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: directHits | [optional] 
@@ -123,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **searchSuggestionsIdRelationshipsHistoryGet**
 ```swift
-    open class func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsHistoryMultiRelationshipDataDocument
+    open class func searchSuggestionsIdRelationshipsHistoryGet(id: String, countryCode: String? = nil, explicitFilter: ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsHistoryMultiRelationshipDataDocument
 ```
 
 Get history relationship (\"to-many\").
@@ -136,14 +136,14 @@ Retrieves history relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | An opaque search suggestions identifier
-let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
+let explicitFilter = "explicitFilter_example" // String | Explicit filter. Valid values: INCLUDE or EXCLUDE (optional) (default to .include)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: history (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get history relationship (\"to-many\").
 do {
-    let response = try await SearchSuggestionsAPI.searchSuggestionsIdRelationshipsHistoryGet(id: id, explicitFilter: explicitFilter, countryCode: countryCode, include: include, pageCursor: pageCursor)
+    let response = try await SearchSuggestionsAPI.searchSuggestionsIdRelationshipsHistoryGet(id: id, countryCode: countryCode, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor)
     dump(response)
 } catch {
     print(error)
@@ -155,8 +155,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | An opaque search suggestions identifier | 
- **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
+ **explicitFilter** | **String** | Explicit filter. Valid values: INCLUDE or EXCLUDE | [optional] [default to .include]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: history | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 

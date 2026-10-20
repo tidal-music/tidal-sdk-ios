@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;albums&#x60;, &#x60;artists&#x60;, &#x60;comments&#x60;, &#x60;playlists&#x60;, &#x60;trackSourceFiles&#x60;, &#x60;tracks&#x60;. */
 public struct UserFeedItemsSubjectSingleRelationshipDataDocument: Codable, Hashable {
 
     public var data: UserFeedItemsSubjectResourceIdentifier?

@@ -115,7 +115,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionSaveForLatersIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersItemsMultiRelationshipDataDocument
+    open class func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -128,13 +128,13 @@ Retrieves items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection save for later id. Use `me` for the authenticated user's resource
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get items relationship (\"to-many\").
 do {
-    let response = try await UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+    let response = try await UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -146,8 +146,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection save for later id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
 
 ### Return type

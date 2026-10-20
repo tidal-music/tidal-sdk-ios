@@ -20,13 +20,14 @@ internal class FoldersAPI {
         case owners = "owners"
         case parent = "parent"
         case preview = "preview"
+        case shares = "shares"
     }
 
     /**
      Get multiple folders.
      
-     - parameter filterId: (query) Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;) 
-     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview (optional)
+     - parameter filterId: (query) Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;). Also accepts &#x60;me&#x60;. 
+     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview, shares (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
@@ -52,8 +53,8 @@ internal class FoldersAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter filterId: (query) Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;) 
-     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview (optional)
+     - parameter filterId: (query) Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;). Also accepts &#x60;me&#x60;. 
+     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview, shares (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
@@ -141,13 +142,14 @@ internal class FoldersAPI {
         case owners = "owners"
         case parent = "parent"
         case preview = "preview"
+        case shares = "shares"
     }
 
     /**
      Get single folder.
      
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview (optional)
+     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview, shares (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
@@ -174,7 +176,7 @@ internal class FoldersAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview (optional)
+     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview, shares (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
@@ -263,16 +265,16 @@ internal class FoldersAPI {
      Get children relationship (\"to-many\").
      
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: children (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: FoldersChildrenMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func foldersIdRelationshipsChildrenGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersChildrenMultiRelationshipDataDocument {
+    internal class func foldersIdRelationshipsChildrenGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersChildrenMultiRelationshipDataDocument {
         do {
-            return try await foldersIdRelationshipsChildrenGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
+            return try await foldersIdRelationshipsChildrenGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -287,13 +289,13 @@ internal class FoldersAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: children (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<FoldersChildrenMultiRelationshipDataDocument> 
      */
-    internal class func foldersIdRelationshipsChildrenGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<FoldersChildrenMultiRelationshipDataDocument> {
+    internal class func foldersIdRelationshipsChildrenGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<FoldersChildrenMultiRelationshipDataDocument> {
         var localVariablePath = "/folders/{id}/relationships/children"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -303,8 +305,8 @@ internal class FoldersAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
@@ -496,6 +498,67 @@ internal class FoldersAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<FoldersPreviewMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get shares relationship (\"to-many\").
+     
+     - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter include: (query) Include related resources. Available relationships: shares (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: shares.sharedResources (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: FoldersSharesMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func foldersIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersSharesMultiRelationshipDataDocument {
+        do {
+            return try await foldersIdRelationshipsSharesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get shares relationship (\"to-many\").
+     - GET /folders/{id}/relationships/shares
+     - The folder's share links, active and expired, newest first.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter include: (query) Include related resources. Available relationships: shares (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: shares.sharedResources (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: RequestBuilder<FoldersSharesMultiRelationshipDataDocument> 
+     */
+    internal class func foldersIdRelationshipsSharesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<FoldersSharesMultiRelationshipDataDocument> {
+        var localVariablePath = "/folders/{id}/relationships/shares"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<FoldersSharesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

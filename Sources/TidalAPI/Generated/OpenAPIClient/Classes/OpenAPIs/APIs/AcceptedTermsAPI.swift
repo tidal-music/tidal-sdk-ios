@@ -33,17 +33,17 @@ internal class AcceptedTermsAPI {
     /**
      Get multiple acceptedTerms.
      
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) 
-     - parameter include: (query) Include related resources. Available relationships: owners, terms (optional)
      - parameter filterTermsIsLatestVersion: (query) Filter by terms.isLatestVersion (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, terms (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: AcceptedTermsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, includeLinkage: [IncludeLinkage_acceptedTermsGet]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument {
+    internal class func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], filterTermsIsLatestVersion: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_acceptedTermsGet]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument {
         do {
-            return try await acceptedTermsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType, include: include, filterTermsIsLatestVersion: filterTermsIsLatestVersion, includeLinkage: includeLinkage).execute().body
+            return try await acceptedTermsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType, filterTermsIsLatestVersion: filterTermsIsLatestVersion, include: include, includeLinkage: includeLinkage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -57,14 +57,14 @@ internal class AcceptedTermsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterTermsTermsType: (query) One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) 
-     - parameter include: (query) Include related resources. Available relationships: owners, terms (optional)
      - parameter filterTermsIsLatestVersion: (query) Filter by terms.isLatestVersion (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, terms (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<AcceptedTermsMultiResourceDataDocument> 
      */
-    internal class func acceptedTermsGetWithRequestBuilder(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, includeLinkage: [IncludeLinkage_acceptedTermsGet]? = nil) -> RequestBuilder<AcceptedTermsMultiResourceDataDocument> {
+    internal class func acceptedTermsGetWithRequestBuilder(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], filterTermsIsLatestVersion: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_acceptedTermsGet]? = nil) -> RequestBuilder<AcceptedTermsMultiResourceDataDocument> {
         let localVariablePath = "/acceptedTerms"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -73,8 +73,8 @@ internal class AcceptedTermsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
             "filter[terms.termsType]": (wrappedValue: filterTermsTermsType.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[terms.isLatestVersion]": (wrappedValue: filterTermsIsLatestVersion?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
         ])
 

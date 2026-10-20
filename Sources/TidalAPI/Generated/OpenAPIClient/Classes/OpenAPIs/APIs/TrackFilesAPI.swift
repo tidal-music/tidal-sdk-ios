@@ -34,15 +34,15 @@ internal class TrackFilesAPI {
     /**
      Get single trackFile.
      
-     - parameter id: (path) Track file id 
      - parameter formats: (query)  
+     - parameter id: (path) Track file id 
      - parameter usage: (query)  
      - returns: TrackFilesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackFilesIdGet(id: String, formats: [Formats_trackFilesIdGet], usage: Usage_trackFilesIdGet) async throws -> TrackFilesSingleResourceDataDocument {
+    internal class func trackFilesIdGet(formats: [Formats_trackFilesIdGet], id: String, usage: Usage_trackFilesIdGet) async throws -> TrackFilesSingleResourceDataDocument {
         do {
-            return try await trackFilesIdGetWithRequestBuilder(id: id, formats: formats, usage: usage).execute().body
+            return try await trackFilesIdGetWithRequestBuilder(formats: formats, id: id, usage: usage).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -59,12 +59,12 @@ internal class TrackFilesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Track file id 
      - parameter formats: (query)  
+     - parameter id: (path) Track file id 
      - parameter usage: (query)  
      - returns: RequestBuilder<TrackFilesSingleResourceDataDocument> 
      */
-    internal class func trackFilesIdGetWithRequestBuilder(id: String, formats: [Formats_trackFilesIdGet], usage: Usage_trackFilesIdGet) -> RequestBuilder<TrackFilesSingleResourceDataDocument> {
+    internal class func trackFilesIdGetWithRequestBuilder(formats: [Formats_trackFilesIdGet], id: String, usage: Usage_trackFilesIdGet) -> RequestBuilder<TrackFilesSingleResourceDataDocument> {
         var localVariablePath = "/trackFiles/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""

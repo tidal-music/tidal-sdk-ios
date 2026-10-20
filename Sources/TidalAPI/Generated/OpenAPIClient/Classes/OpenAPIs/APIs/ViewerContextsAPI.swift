@@ -23,7 +23,7 @@ internal class ViewerContextsAPI {
     /**
      Get multiple viewerContexts.
      
-     - parameter filterSubject: (query) Original subjects to look up. 
+     - parameter filterSubject: (query) Original subjects to look up. Also accepts &#x60;folders:me&#x60;. 
      - parameter include: (query) Include related resources. Available relationships: subject, viewer (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
@@ -46,7 +46,7 @@ internal class ViewerContextsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterSubject: (query) Original subjects to look up. 
+     - parameter filterSubject: (query) Original subjects to look up. Also accepts &#x60;folders:me&#x60;. 
      - parameter include: (query) Include related resources. Available relationships: subject, viewer (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)

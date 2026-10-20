@@ -34,9 +34,9 @@ public enum UserCollectionVideosAPITidal {
      
      - returns: UserCollectionVideosSingleResourceDataDocument
      */
-	public static func userCollectionVideosIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserCollectionVideosAPITidal.IncludeLinkage_userCollectionVideosIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionVideosSingleResourceDataDocument {
+	public static func userCollectionVideosIdGet(id: String, include: [String]? = nil, includeLinkage: [UserCollectionVideosAPITidal.IncludeLinkage_userCollectionVideosIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionVideosSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionVideosAPI.userCollectionVideosIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionVideosAPIEnum() }, replaceMedia: replaceMedia)
+			UserCollectionVideosAPI.userCollectionVideosIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionVideosAPIEnum() }, locale: locale, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -85,9 +85,9 @@ public enum UserCollectionVideosAPITidal {
      
      - returns: UserCollectionVideosItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionVideosIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionVideosAPITidal.Sort_userCollectionVideosIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionVideosItemsMultiRelationshipDataDocument {
+	public static func userCollectionVideosIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionVideosAPITidal.Sort_userCollectionVideosIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionVideosItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionVideosAPIEnum() }, locale: locale, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
+			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsGetWithRequestBuilder(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionVideosAPIEnum() })
 		}
 	}
 

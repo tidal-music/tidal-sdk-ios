@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 # **commentsGet**
 ```swift
-    open class func commentsGet(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, replaceMedia: String? = nil) async throws -> CommentsMultiResourceDataDocument
+    open class func commentsGet(filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_commentsGet]? = nil) async throws -> CommentsMultiResourceDataDocument
 ```
 
 Get multiple comments.
@@ -28,19 +28,19 @@ Retrieves multiple comments by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: author, owners, parentComment (optional)
 let filterParentCommentId = ["inner_example"] // [String] | Filter by parent comment ID to get replies (e.g. `550e8400-e29b-41d4-a716-446655440000`) (optional)
-let filterSubject = "filterSubject_example" // String | The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
 let filterSubjectId = ["inner_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. `12345`) (optional)
 let filterSubjectType = ["filterSubjectType_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource type (e.g. `albums`) (optional)
+let filterSubject = "filterSubject_example" // String | The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: author, owners, parentComment (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
+let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 
 // Get multiple comments.
 do {
-    let response = try await CommentsAPI.commentsGet(pageCursor: pageCursor, sort: sort, include: include, filterParentCommentId: filterParentCommentId, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await CommentsAPI.commentsGet(filterParentCommentId: filterParentCommentId, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
     dump(response)
 } catch {
     print(error)
@@ -51,15 +51,15 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: author, owners, parentComment | [optional] 
  **filterParentCommentId** | [**[String]**](String.md) | Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) | [optional] 
- **filterSubject** | **String** | The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. | [optional] 
  **filterSubjectId** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) | [optional] 
  **filterSubjectType** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) | [optional] 
+ **filterSubject** | **String** | The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: author, owners, parentComment | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums | [optional] 
+ **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
 
 ### Return type
 

@@ -23,7 +23,7 @@ Retrieves multiple stripeConnections by available filters, or without if applica
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
@@ -40,7 +40,7 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 

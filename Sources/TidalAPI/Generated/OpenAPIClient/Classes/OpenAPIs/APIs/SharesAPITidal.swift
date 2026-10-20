@@ -46,9 +46,9 @@ public enum SharesAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func sharesIdDelete(id: String, revokeGrants: Bool? = nil, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+	public static func sharesIdDelete(id: String, idempotencyKey: String? = nil, revokeGrants: Bool? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesIdDeleteWithRequestBuilder(id: id, revokeGrants: revokeGrants, idempotencyKey: idempotencyKey)
+			SharesAPI.sharesIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, revokeGrants: revokeGrants)
 		}
 	}
 
@@ -97,9 +97,9 @@ public enum SharesAPITidal {
      
      - returns: SharesSharedResourcesMultiRelationshipDataDocument
      */
-	public static func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesSharedResourcesMultiRelationshipDataDocument {
+	public static func sharesIdRelationshipsSharedResourcesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SharesSharedResourcesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			SharesAPI.sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

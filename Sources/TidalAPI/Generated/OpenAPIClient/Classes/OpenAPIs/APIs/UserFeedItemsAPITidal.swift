@@ -49,9 +49,9 @@ public enum UserFeedItemsAPITidal {
      
      - returns: UserFeedItemsMultiResourceDataDocument
      */
-	public static func userFeedItemsGet(filterOwnersId: [String], filterSurface: UserFeedItemsAPITidal.FilterSurface_userFeedItemsGet, pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [UserFeedItemsAPITidal.IncludeLinkage_userFeedItemsGet]? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsMultiResourceDataDocument {
+	public static func userFeedItemsGet(filterOwnersId: [String], filterSurface: UserFeedItemsAPITidal.FilterSurface_userFeedItemsGet, include: [String]? = nil, includeLinkage: [UserFeedItemsAPITidal.IncludeLinkage_userFeedItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserFeedItemsAPI.userFeedItemsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSurface: filterSurface.toUserFeedItemsAPIEnum(), pageCursor: pageCursor, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserFeedItemsAPIEnum() }, replaceMedia: replaceMedia)
+			UserFeedItemsAPI.userFeedItemsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSurface: filterSurface.toUserFeedItemsAPIEnum(), include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserFeedItemsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -61,9 +61,9 @@ public enum UserFeedItemsAPITidal {
      
      - returns: UserFeedItemsActorsMultiRelationshipDataDocument
      */
-	public static func userFeedItemsIdRelationshipsActorsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsActorsMultiRelationshipDataDocument {
+	public static func userFeedItemsIdRelationshipsActorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsActorsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserFeedItemsAPI.userFeedItemsIdRelationshipsActorsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			UserFeedItemsAPI.userFeedItemsIdRelationshipsActorsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

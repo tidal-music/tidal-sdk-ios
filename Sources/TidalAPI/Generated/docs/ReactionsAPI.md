@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **reactionsGet**
 ```swift
-    open class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil) async throws -> ReactionsMultiResourceDataDocument
+    open class func reactionsGet(filterEmoji: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil) async throws -> ReactionsMultiResourceDataDocument
 ```
 
 Get multiple reactions.
@@ -26,21 +26,21 @@ Retrieves multiple reactions by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let filterEmoji = ["inner_example"] // [String] | Filter by emoji (e.g. `👍`) (optional)
+let filterSubjectId = ["inner_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. `12345`) (optional)
+let filterSubjectType = ["filterSubjectType_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource type (e.g. `albums`) (optional)
+let filterSubject = "filterSubject_example" // String | The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: author, ownerProfiles, owners (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
 let stats = "stats_example" // String |  (optional)
 let statsOnly = true // Bool |  (optional)
 let viewerContext = "viewerContext_example" // String |  (optional)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: author, ownerProfiles, owners (optional)
-let filterEmoji = ["inner_example"] // [String] | Filter by emoji (e.g. `👍`) (optional)
-let filterSubject = "filterSubject_example" // String | The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
-let filterSubjectId = ["inner_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. `12345`) (optional)
-let filterSubjectType = ["filterSubjectType_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource type (e.g. `albums`) (optional)
-let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
-let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
 
 // Get multiple reactions.
 do {
-    let response = try await ReactionsAPI.reactionsGet(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await ReactionsAPI.reactionsGet(filterEmoji: filterEmoji, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, stats: stats, statsOnly: statsOnly, viewerContext: viewerContext)
     dump(response)
 } catch {
     print(error)
@@ -51,17 +51,17 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **filterEmoji** | [**[String]**](String.md) | Filter by emoji (e.g. &#x60;👍&#x60;) | [optional] 
+ **filterSubjectId** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) | [optional] 
+ **filterSubjectType** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) | [optional] 
+ **filterSubject** | **String** | The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: author, ownerProfiles, owners | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums | [optional] 
  **stats** | **String** |  | [optional] 
  **statsOnly** | **Bool** |  | [optional] 
  **viewerContext** | **String** |  | [optional] 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: author, ownerProfiles, owners | [optional] 
- **filterEmoji** | [**[String]**](String.md) | Filter by emoji (e.g. &#x60;👍&#x60;) | [optional] 
- **filterSubject** | **String** | The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. | [optional] 
- **filterSubjectId** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) | [optional] 
- **filterSubjectType** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) | [optional] 
- **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
- **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums | [optional] 
 
 ### Return type
 

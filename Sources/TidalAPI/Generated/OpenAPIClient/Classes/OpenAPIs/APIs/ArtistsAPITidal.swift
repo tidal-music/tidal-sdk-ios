@@ -60,9 +60,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsMultiResourceDataDocument
      */
-	public static func artistsGet(countryCode: String? = nil, include: [String]? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [ArtistsAPITidal.IncludeLinkage_artistsGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistsMultiResourceDataDocument {
+	public static func artistsGet(countryCode: String? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [ArtistsAPITidal.IncludeLinkage_artistsGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsGetWithRequestBuilder(countryCode: countryCode, include: include, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toArtistsAPIEnum() }, replaceMedia: replaceMedia)
+			ArtistsAPI.artistsGetWithRequestBuilder(countryCode: countryCode, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toArtistsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -137,9 +137,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsAlbumsMultiRelationshipDataDocument
      */
-	public static func artistsIdRelationshipsAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsAlbumsMultiRelationshipDataDocument {
+	public static func artistsIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistsAlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+			ArtistsAPI.artistsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -197,9 +197,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsFollowersMultiRelationshipDataDocument
      */
-	public static func artistsIdRelationshipsFollowersGet(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsFollowersMultiRelationshipDataDocument {
+	public static func artistsIdRelationshipsFollowersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, viewerContext: String? = nil) async throws -> ArtistsFollowersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsFollowersGetWithRequestBuilder(id: id, viewerContext: viewerContext, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			ArtistsAPI.artistsIdRelationshipsFollowersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, viewerContext: viewerContext)
 		}
 	}
 
@@ -221,9 +221,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsFollowingMultiRelationshipDataDocument
      */
-	public static func artistsIdRelationshipsFollowingGet(id: String, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsFollowingMultiRelationshipDataDocument {
+	public static func artistsIdRelationshipsFollowingGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, viewerContext: String? = nil) async throws -> ArtistsFollowingMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsFollowingGetWithRequestBuilder(id: id, viewerContext: viewerContext, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			ArtistsAPI.artistsIdRelationshipsFollowingGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, viewerContext: viewerContext)
 		}
 	}
 
@@ -305,9 +305,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsRadioMultiRelationshipDataDocument
      */
-	public static func artistsIdRelationshipsRadioGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsRadioMultiRelationshipDataDocument {
+	public static func artistsIdRelationshipsRadioGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistsRadioMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsRadioGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+			ArtistsAPI.artistsIdRelationshipsRadioGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -329,9 +329,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsSimilarArtistsMultiRelationshipDataDocument
      */
-	public static func artistsIdRelationshipsSimilarArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsSimilarArtistsMultiRelationshipDataDocument {
+	public static func artistsIdRelationshipsSimilarArtistsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistsSimilarArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsSimilarArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+			ArtistsAPI.artistsIdRelationshipsSimilarArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -341,9 +341,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsTrackProvidersMultiRelationshipDataDocument
      */
-	public static func artistsIdRelationshipsTrackProvidersGet(id: String, pageCursor: String? = nil, include: [String]? = nil) async throws -> ArtistsTrackProvidersMultiRelationshipDataDocument {
+	public static func artistsIdRelationshipsTrackProvidersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsTrackProvidersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsTrackProvidersGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include)
+			ArtistsAPI.artistsIdRelationshipsTrackProvidersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 
@@ -368,9 +368,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsTracksMultiRelationshipDataDocument
      */
-	public static func artistsIdRelationshipsTracksGet(id: String, collapseBy: ArtistsAPITidal.CollapseBy_artistsIdRelationshipsTracksGet, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsTracksMultiRelationshipDataDocument {
+	public static func artistsIdRelationshipsTracksGet(collapseBy: ArtistsAPITidal.CollapseBy_artistsIdRelationshipsTracksGet, id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistsTracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsTracksGetWithRequestBuilder(id: id, collapseBy: collapseBy.toArtistsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+			ArtistsAPI.artistsIdRelationshipsTracksGetWithRequestBuilder(collapseBy: collapseBy.toArtistsAPIEnum(), id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -380,9 +380,9 @@ public enum ArtistsAPITidal {
      
      - returns: ArtistsVideosMultiRelationshipDataDocument
      */
-	public static func artistsIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistsVideosMultiRelationshipDataDocument {
+	public static func artistsIdRelationshipsVideosGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistsVideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			ArtistsAPI.artistsIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+			ArtistsAPI.artistsIdRelationshipsVideosGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

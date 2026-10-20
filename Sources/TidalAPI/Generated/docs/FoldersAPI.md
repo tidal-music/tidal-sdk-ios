@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**foldersIdRelationshipsOwnersGet**](FoldersAPI.md#foldersidrelationshipsownersget) | **GET** /folders/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**foldersIdRelationshipsParentGet**](FoldersAPI.md#foldersidrelationshipsparentget) | **GET** /folders/{id}/relationships/parent | Get parent relationship (\&quot;to-one\&quot;).
 [**foldersIdRelationshipsPreviewGet**](FoldersAPI.md#foldersidrelationshipspreviewget) | **GET** /folders/{id}/relationships/preview | Get preview relationship (\&quot;to-many\&quot;).
+[**foldersIdRelationshipsSharesGet**](FoldersAPI.md#foldersidrelationshipssharesget) | **GET** /folders/{id}/relationships/shares | Get shares relationship (\&quot;to-many\&quot;).
 [**foldersPost**](FoldersAPI.md#folderspost) | **POST** /folders | Create single folder.
 
 
@@ -29,8 +30,8 @@ Retrieves multiple folders by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterId = ["inner_example"] // [String] | Folder id (e.g. `e3226624-355b-48f8-aa93-db42532caa66`)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: children, owners, parent, preview (optional)
+let filterId = ["inner_example"] // [String] | Folder id (e.g. `e3226624-355b-48f8-aa93-db42532caa66`). Also accepts `me`.
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: children, owners, parent, preview, shares (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: children.subject (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
@@ -48,8 +49,8 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterId** | [**[String]**](String.md) | Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;) | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: children, owners, parent, preview | [optional] 
+ **filterId** | [**[String]**](String.md) | Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;). Also accepts &#x60;me&#x60;. | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: children, owners, parent, preview, shares | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject | [optional] 
  **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
@@ -132,7 +133,7 @@ Retrieves single folder by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: children, owners, parent, preview (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: children, owners, parent, preview, shares (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: children.subject (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
@@ -151,7 +152,7 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: children, owners, parent, preview | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: children, owners, parent, preview, shares | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject | [optional] 
  **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
@@ -223,7 +224,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdRelationshipsChildrenGet**
 ```swift
-    open class func foldersIdRelationshipsChildrenGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersChildrenMultiRelationshipDataDocument
+    open class func foldersIdRelationshipsChildrenGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersChildrenMultiRelationshipDataDocument
 ```
 
 Get children relationship (\"to-many\").
@@ -236,14 +237,14 @@ Lists folder items newest first by placement timestamp, with ID as a stable tie-
 import OpenAPIClient
 
 let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: children (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: children.subject (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get children relationship (\"to-many\").
 do {
-    let response = try await FoldersAPI.foldersIdRelationshipsChildrenGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+    let response = try await FoldersAPI.foldersIdRelationshipsChildrenGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -255,8 +256,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: children | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject | [optional] 
  **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
@@ -421,6 +422,60 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**FoldersPreviewMultiRelationshipDataDocument**](FoldersPreviewMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **foldersIdRelationshipsSharesGet**
+```swift
+    open class func foldersIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersSharesMultiRelationshipDataDocument
+```
+
+Get shares relationship (\"to-many\").
+
+The folder's share links, active and expired, newest first.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: shares (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: shares.sharedResources (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
+
+// Get shares relationship (\"to-many\").
+do {
+    let response = try await FoldersAPI.foldersIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: shares | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: shares.sharedResources | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
+
+### Return type
+
+[**FoldersSharesMultiRelationshipDataDocument**](FoldersSharesMultiRelationshipDataDocument.md)
 
 ### Authorization
 

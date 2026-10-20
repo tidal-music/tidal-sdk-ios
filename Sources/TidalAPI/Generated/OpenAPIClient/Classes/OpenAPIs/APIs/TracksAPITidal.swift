@@ -15,25 +15,6 @@ public enum TracksAPITidal {
 
 
 	/**
-	 * enum for parameter sort
-	 */
-	public enum Sort_tracksGet: String, CaseIterable {
-		case CreatedAtAsc = "createdAt"
-		case CreatedAtDesc = "-createdAt"
-		case TitleAsc = "title"
-		case TitleDesc = "-title"
-
-		func toTracksAPIEnum() -> TracksAPI.Sort_tracksGet {
-			switch self {
-			case .CreatedAtAsc: return .CreatedAtAsc
-			case .CreatedAtDesc: return .CreatedAtDesc
-			case .TitleAsc: return .TitleAsc
-			case .TitleDesc: return .TitleDesc
-			}
-		}
-	}
-
-	/**
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_tracksGet: String, CaseIterable {
@@ -81,13 +62,32 @@ public enum TracksAPITidal {
 	}
 
 	/**
+	 * enum for parameter sort
+	 */
+	public enum Sort_tracksGet: String, CaseIterable {
+		case CreatedAtAsc = "createdAt"
+		case CreatedAtDesc = "-createdAt"
+		case TitleAsc = "title"
+		case TitleDesc = "-title"
+
+		func toTracksAPIEnum() -> TracksAPI.Sort_tracksGet {
+			switch self {
+			case .CreatedAtAsc: return .CreatedAtAsc
+			case .CreatedAtDesc: return .CreatedAtDesc
+			case .TitleAsc: return .TitleAsc
+			case .TitleDesc: return .TitleDesc
+			}
+		}
+	}
+
+	/**
      Get multiple tracks.
      
      - returns: TracksMultiResourceDataDocument
      */
-	public static func tracksGet(pageCursor: String? = nil, sort: [TracksAPITidal.Sort_tracksGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [TracksAPITidal.IncludeLinkage_tracksGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksMultiResourceDataDocument {
+	public static func tracksGet(countryCode: String? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [TracksAPITidal.IncludeLinkage_tracksGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, sort: [TracksAPITidal.Sort_tracksGet]? = nil) async throws -> TracksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toTracksAPIEnum() }, countryCode: countryCode, include: include, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toTracksAPIEnum() }, replaceMedia: replaceMedia, shareCode: shareCode)
+			TracksAPI.tracksGetWithRequestBuilder(countryCode: countryCode, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toTracksAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode, sort: sort?.compactMap { $0.toTracksAPIEnum() })
 		}
 	}
 
@@ -204,9 +204,9 @@ public enum TracksAPITidal {
      
      - returns: TracksArtistsMultiRelationshipDataDocument
      */
-	public static func tracksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksArtistsMultiRelationshipDataDocument {
+	public static func tracksIdRelationshipsArtistsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+			TracksAPI.tracksIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
@@ -216,9 +216,9 @@ public enum TracksAPITidal {
      
      - returns: TracksCreditsMultiRelationshipDataDocument
      */
-	public static func tracksIdRelationshipsCreditsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksCreditsMultiRelationshipDataDocument {
+	public static func tracksIdRelationshipsCreditsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksCreditsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdRelationshipsCreditsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+			TracksAPI.tracksIdRelationshipsCreditsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
@@ -348,9 +348,9 @@ public enum TracksAPITidal {
      
      - returns: TracksSimilarTracksMultiRelationshipDataDocument
      */
-	public static func tracksIdRelationshipsSimilarTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSimilarTracksMultiRelationshipDataDocument {
+	public static func tracksIdRelationshipsSimilarTracksGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSimilarTracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+			TracksAPI.tracksIdRelationshipsSimilarTracksGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
@@ -372,9 +372,9 @@ public enum TracksAPITidal {
      
      - returns: TracksSuggestedTracksMultiRelationshipDataDocument
      */
-	public static func tracksIdRelationshipsSuggestedTracksGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSuggestedTracksMultiRelationshipDataDocument {
+	public static func tracksIdRelationshipsSuggestedTracksGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSuggestedTracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdRelationshipsSuggestedTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+			TracksAPI.tracksIdRelationshipsSuggestedTracksGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 

@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **installationsGet**
 ```swift
-    open class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_installationsGet]? = nil, replaceMedia: String? = nil) async throws -> InstallationsMultiResourceDataDocument
+    open class func installationsGet(filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_installationsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsMultiResourceDataDocument
 ```
 
 Get multiple installations.
@@ -27,16 +27,16 @@ Retrieves multiple installations by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: offlineInventory, owners (optional)
 let filterClientProvidedInstallationId = ["inner_example"] // [String] | Client-provided installation identifier to filter by (e.g. `a468bee88def`) (optional)
-let filterOwnersId = ["inner_example"] // [String] | User ID to filter by. Use `me` for the authenticated user (optional)
+let filterOwnersId = ["inner_example"] // [String] | User ID to filter by. Also accepts `me`. (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: offlineInventory, owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: offlineInventory (optional)
 
 // Get multiple installations.
 do {
-    let response = try await InstallationsAPI.installationsGet(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await InstallationsAPI.installationsGet(filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -47,11 +47,11 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: offlineInventory, owners | [optional] 
  **filterClientProvidedInstallationId** | [**[String]**](String.md) | Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User ID to filter by. Use &#x60;me&#x60; for the authenticated user | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User ID to filter by. Also accepts &#x60;me&#x60;. | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: offlineInventory, owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory | [optional] 
 
 ### Return type
@@ -173,7 +173,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryGet**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryGet(id: String, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument
+    open class func installationsIdRelationshipsOfflineInventoryGet(filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument
 ```
 
 Get offlineInventory relationship (\"to-many\").
@@ -185,17 +185,17 @@ Retrieves offlineInventory relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Installation id
 let filterType = ["filterType_example"] // [String] | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. `tracks`)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: offlineInventory (optional)
+let id = "id_example" // String | Installation id
 let filterId = ["inner_example"] // [String] | Offline item id (e.g. `1234`) (optional)
 let filterState = ["filterState_example"] // [String] | One of: PENDING, STORED, FAILED (e.g. `PENDING`) (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: offlineInventory (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: offlineInventory (optional)
 
 // Get offlineInventory relationship (\"to-many\").
 do {
-    let response = try await InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(id: id, filterType: filterType, pageCursor: pageCursor, include: include, filterId: filterId, filterState: filterState, replaceMedia: replaceMedia)
+    let response = try await InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(filterType: filterType, id: id, filterId: filterId, filterState: filterState, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -206,12 +206,12 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Installation id | 
  **filterType** | [**[String]**](String.md) | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: offlineInventory | [optional] 
+ **id** | **String** | Installation id | 
  **filterId** | [**[String]**](String.md) | Offline item id (e.g. &#x60;1234&#x60;) | [optional] 
  **filterState** | [**[String]**](String.md) | One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: offlineInventory | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory | [optional] 
 
 ### Return type

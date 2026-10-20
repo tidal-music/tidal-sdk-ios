@@ -22,7 +22,7 @@ Method | HTTP request | Description
 
 # **playQueuesGet**
 ```swift
-    open class func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesGet]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesMultiResourceDataDocument
+    open class func playQueuesGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesMultiResourceDataDocument
 ```
 
 Get multiple playQueues.
@@ -34,15 +34,15 @@ Retrieves multiple playQueues by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: changeEventStream, current, future, owners, past (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: current (optional)
 
 // Get multiple playQueues.
 do {
-    let response = try await PlayQueuesAPI.playQueuesGet(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await PlayQueuesAPI.playQueuesGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -53,10 +53,10 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: changeEventStream, current, future, owners, past | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current | [optional] 
 
 ### Return type
@@ -424,7 +424,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsFutureGet**
 ```swift
-    open class func playQueuesIdRelationshipsFutureGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesFutureMultiRelationshipDataDocument
+    open class func playQueuesIdRelationshipsFutureGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesFutureMultiRelationshipDataDocument
 ```
 
 Get future relationship (\"to-many\").
@@ -437,13 +437,13 @@ Retrieves future relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: future (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: future (optional)
 
 // Get future relationship (\"to-many\").
 do {
-    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsFutureGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsFutureGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -455,8 +455,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: future | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: future | [optional] 
 
 ### Return type
@@ -626,7 +626,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsPastGet**
 ```swift
-    open class func playQueuesIdRelationshipsPastGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesPastMultiRelationshipDataDocument
+    open class func playQueuesIdRelationshipsPastGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesPastMultiRelationshipDataDocument
 ```
 
 Get past relationship (\"to-many\").
@@ -639,13 +639,13 @@ Retrieves past relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Play queue id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: past (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: past (optional)
 
 // Get past relationship (\"to-many\").
 do {
-    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsPastGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsPastGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -657,8 +657,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Play queue id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: past | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: past | [optional] 
 
 ### Return type

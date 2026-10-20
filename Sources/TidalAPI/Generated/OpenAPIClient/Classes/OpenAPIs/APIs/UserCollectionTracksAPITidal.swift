@@ -34,9 +34,9 @@ public enum UserCollectionTracksAPITidal {
      
      - returns: UserCollectionTracksSingleResourceDataDocument
      */
-	public static func userCollectionTracksIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserCollectionTracksAPITidal.IncludeLinkage_userCollectionTracksIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionTracksSingleResourceDataDocument {
+	public static func userCollectionTracksIdGet(id: String, include: [String]? = nil, includeLinkage: [UserCollectionTracksAPITidal.IncludeLinkage_userCollectionTracksIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionTracksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionTracksAPIEnum() }, replaceMedia: replaceMedia)
+			UserCollectionTracksAPI.userCollectionTracksIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionTracksAPIEnum() }, locale: locale, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -89,9 +89,9 @@ public enum UserCollectionTracksAPITidal {
      
      - returns: UserCollectionTracksItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionTracksIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionTracksAPITidal.Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
+	public static func userCollectionTracksIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionTracksAPITidal.Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionTracksAPIEnum() }, locale: locale, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
+			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGetWithRequestBuilder(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionTracksAPIEnum() })
 		}
 	}
 

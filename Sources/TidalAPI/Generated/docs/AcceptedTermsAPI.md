@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **acceptedTermsGet**
 ```swift
-    open class func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, includeLinkage: [IncludeLinkage_acceptedTermsGet]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument
+    open class func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], filterTermsIsLatestVersion: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_acceptedTermsGet]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument
 ```
 
 Get multiple acceptedTerms.
@@ -24,15 +24,15 @@ Retrieves multiple acceptedTerms by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let filterTermsTermsType = ["filterTermsTermsType_example"] // [String] | One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER (e.g. `DEVELOPER`)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, terms (optional)
 let filterTermsIsLatestVersion = ["inner_example"] // [String] | Filter by terms.isLatestVersion (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, terms (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple acceptedTerms.
 do {
-    let response = try await AcceptedTermsAPI.acceptedTermsGet(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType, include: include, filterTermsIsLatestVersion: filterTermsIsLatestVersion, includeLinkage: includeLinkage)
+    let response = try await AcceptedTermsAPI.acceptedTermsGet(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType, filterTermsIsLatestVersion: filterTermsIsLatestVersion, include: include, includeLinkage: includeLinkage)
     dump(response)
 } catch {
     print(error)
@@ -43,10 +43,10 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **filterTermsTermsType** | [**[String]**](String.md) | One of: DEVELOPER, UPLOAD_MARKETPLACE, MERCH_GUIDELINES, TIDAL_CONNECT_DEVELOPER (e.g. &#x60;DEVELOPER&#x60;) | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, terms | [optional] 
  **filterTermsIsLatestVersion** | [**[String]**](String.md) | Filter by terms.isLatestVersion | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, terms | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type

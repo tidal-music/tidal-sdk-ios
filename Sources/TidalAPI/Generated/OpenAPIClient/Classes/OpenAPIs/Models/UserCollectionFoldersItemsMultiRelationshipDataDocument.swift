@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;playlists&#x60;, &#x60;userCollectionFolders&#x60;. */
 public struct UserCollectionFoldersItemsMultiRelationshipDataDocument: Codable, Hashable {
 
     public var data: [UserCollectionFoldersItemsResourceIdentifier]?

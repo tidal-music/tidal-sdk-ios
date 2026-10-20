@@ -31,18 +31,18 @@ internal class UserFeedItemsAPI {
     /**
      Get multiple userFeedItems.
      
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterSurface: (query) Feed surface to read (e.g. &#x60;INBOX&#x60;) 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: actors, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: actors.albums (optional)
      - returns: UserFeedItemsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userFeedItemsGet(filterOwnersId: [String], filterSurface: FilterSurface_userFeedItemsGet, pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userFeedItemsGet]? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsMultiResourceDataDocument {
+    internal class func userFeedItemsGet(filterOwnersId: [String], filterSurface: FilterSurface_userFeedItemsGet, include: [String]? = nil, includeLinkage: [IncludeLinkage_userFeedItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsMultiResourceDataDocument {
         do {
-            return try await userFeedItemsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSurface: filterSurface, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+            return try await userFeedItemsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSurface: filterSurface, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -56,15 +56,15 @@ internal class UserFeedItemsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterSurface: (query) Feed surface to read (e.g. &#x60;INBOX&#x60;) 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: actors, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: actors.albums (optional)
      - returns: RequestBuilder<UserFeedItemsMultiResourceDataDocument> 
      */
-    internal class func userFeedItemsGetWithRequestBuilder(filterOwnersId: [String], filterSurface: FilterSurface_userFeedItemsGet, pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userFeedItemsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserFeedItemsMultiResourceDataDocument> {
+    internal class func userFeedItemsGetWithRequestBuilder(filterOwnersId: [String], filterSurface: FilterSurface_userFeedItemsGet, include: [String]? = nil, includeLinkage: [IncludeLinkage_userFeedItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserFeedItemsMultiResourceDataDocument> {
         let localVariablePath = "/userFeedItems"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -73,9 +73,9 @@ internal class UserFeedItemsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
             "filter[surface]": (wrappedValue: filterSurface.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -94,15 +94,15 @@ internal class UserFeedItemsAPI {
      Get actors relationship (\"to-many\").
      
      - parameter id: (path) Opaque identifier of a user feed item. 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: actors (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: actors.albums (optional)
      - returns: UserFeedItemsActorsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userFeedItemsIdRelationshipsActorsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsActorsMultiRelationshipDataDocument {
+    internal class func userFeedItemsIdRelationshipsActorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsActorsMultiRelationshipDataDocument {
         do {
-            return try await userFeedItemsIdRelationshipsActorsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
+            return try await userFeedItemsIdRelationshipsActorsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -117,12 +117,12 @@ internal class UserFeedItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Opaque identifier of a user feed item. 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: actors (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: actors.albums (optional)
      - returns: RequestBuilder<UserFeedItemsActorsMultiRelationshipDataDocument> 
      */
-    internal class func userFeedItemsIdRelationshipsActorsGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserFeedItemsActorsMultiRelationshipDataDocument> {
+    internal class func userFeedItemsIdRelationshipsActorsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<UserFeedItemsActorsMultiRelationshipDataDocument> {
         var localVariablePath = "/userFeedItems/{id}/relationships/actors"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -132,8 +132,8 @@ internal class UserFeedItemsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 

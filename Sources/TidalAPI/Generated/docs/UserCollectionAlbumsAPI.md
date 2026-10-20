@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userCollectionAlbumsIdGet**
 ```swift
-    open class func userCollectionAlbumsIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionAlbumsIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionAlbumsSingleResourceDataDocument
+    open class func userCollectionAlbumsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionAlbumsIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionAlbumsSingleResourceDataDocument
 ```
 
 Get single userCollectionAlbum.
@@ -26,14 +26,14 @@ Retrieves single userCollectionAlbum by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection albums id. Use `me` for the authenticated user's resource
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items, owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get single userCollectionAlbum.
 do {
-    let response = try await UserCollectionAlbumsAPI.userCollectionAlbumsIdGet(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await UserCollectionAlbumsAPI.userCollectionAlbumsIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -45,9 +45,9 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection albums id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items, owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
 
 ### Return type
@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionAlbumsIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionAlbumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionAlbumsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionAlbumsItemsMultiRelationshipDataDocument
+    open class func userCollectionAlbumsIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionAlbumsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionAlbumsItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -130,16 +130,16 @@ Retrieves items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection albums id. Use `me` for the authenticated user's resource
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
 let filterQuery = "filterQuery_example" // String | Filter albums by a free-text query matched against the album title and artist names. Internal clients only (e.g. `love`) (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
+let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 
 // Get items relationship (\"to-many\").
 do {
-    let response = try await UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
+    let response = try await UserCollectionAlbumsAPI.userCollectionAlbumsIdRelationshipsItemsGet(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
     dump(response)
 } catch {
     print(error)
@@ -151,12 +151,12 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection albums id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
  **filterQuery** | **String** | Filter albums by a free-text query matched against the album title and artist names. Internal clients only (e.g. &#x60;love&#x60;) | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
+ **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
 
 ### Return type
 

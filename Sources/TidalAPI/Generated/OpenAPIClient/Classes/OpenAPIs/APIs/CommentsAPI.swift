@@ -13,20 +13,6 @@ import AnyCodable
 internal class CommentsAPI {
 
     /**
-     * enum for parameter sort
-     */
-    public enum Sort_commentsGet: String, CaseIterable {
-        case CreatedAtAsc = "createdAt"
-        case CreatedAtDesc = "-createdAt"
-        case LikeCountAsc = "likeCount"
-        case LikeCountDesc = "-likeCount"
-        case ReplyCountAsc = "replyCount"
-        case ReplyCountDesc = "-replyCount"
-        case StartTimeAsc = "startTime"
-        case StartTimeDesc = "-startTime"
-    }
-
-    /**
      * enum for parameter filterSubjectType
      */
     public enum FilterSubjectType_commentsGet: String, CaseIterable {
@@ -45,23 +31,37 @@ internal class CommentsAPI {
     }
 
     /**
+     * enum for parameter sort
+     */
+    public enum Sort_commentsGet: String, CaseIterable {
+        case CreatedAtAsc = "createdAt"
+        case CreatedAtDesc = "-createdAt"
+        case LikeCountAsc = "likeCount"
+        case LikeCountDesc = "-likeCount"
+        case ReplyCountAsc = "replyCount"
+        case ReplyCountDesc = "-replyCount"
+        case StartTimeAsc = "startTime"
+        case StartTimeDesc = "-startTime"
+    }
+
+    /**
      Get multiple comments.
      
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
      - parameter filterParentCommentId: (query) Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
-     - parameter filterSubject: (query) The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
      - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
      - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
+     - parameter filterSubject: (query) The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - returns: CommentsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsGet(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, replaceMedia: String? = nil) async throws -> CommentsMultiResourceDataDocument {
+    internal class func commentsGet(filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_commentsGet]? = nil) async throws -> CommentsMultiResourceDataDocument {
         do {
-            return try await commentsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort, include: include, filterParentCommentId: filterParentCommentId, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+            return try await commentsGetWithRequestBuilder(filterParentCommentId: filterParentCommentId, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -75,33 +75,33 @@ internal class CommentsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
-     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
      - parameter filterParentCommentId: (query) Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
-     - parameter filterSubject: (query) The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
      - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
      - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
+     - parameter filterSubject: (query) The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
+     - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - returns: RequestBuilder<CommentsMultiResourceDataDocument> 
      */
-    internal class func commentsGetWithRequestBuilder(pageCursor: String? = nil, sort: [Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CommentsMultiResourceDataDocument> {
+    internal class func commentsGetWithRequestBuilder(filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_commentsGet]? = nil) -> RequestBuilder<CommentsMultiResourceDataDocument> {
         let localVariablePath = "/comments"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-            "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "filter[parentComment.id]": (wrappedValue: filterParentCommentId?.encodeToJSON(), isExplode: true),
-            "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
             "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
             "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
+            "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+            "sort": (wrappedValue: sort?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

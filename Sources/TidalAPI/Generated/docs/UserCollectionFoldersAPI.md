@@ -270,7 +270,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionFoldersIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionFoldersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionFoldersIdRelationshipsItemsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersItemsMultiRelationshipDataDocument
+    open class func userCollectionFoldersIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionFoldersIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionFoldersItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -283,14 +283,14 @@ Retrieves items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder Id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
+let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 
 // Get items relationship (\"to-many\").
 do {
-    let response = try await UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, include: include, replaceMedia: replaceMedia)
+    let response = try await UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
     dump(response)
 } catch {
     print(error)
@@ -302,10 +302,10 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder Id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 
+ **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
 
 ### Return type
 

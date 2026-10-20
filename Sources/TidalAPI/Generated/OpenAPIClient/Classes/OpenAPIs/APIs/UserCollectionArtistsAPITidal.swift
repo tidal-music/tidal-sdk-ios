@@ -34,9 +34,9 @@ public enum UserCollectionArtistsAPITidal {
      
      - returns: UserCollectionArtistsSingleResourceDataDocument
      */
-	public static func userCollectionArtistsIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserCollectionArtistsAPITidal.IncludeLinkage_userCollectionArtistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionArtistsSingleResourceDataDocument {
+	public static func userCollectionArtistsIdGet(id: String, include: [String]? = nil, includeLinkage: [UserCollectionArtistsAPITidal.IncludeLinkage_userCollectionArtistsIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionArtistsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionArtistsAPI.userCollectionArtistsIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionArtistsAPIEnum() }, replaceMedia: replaceMedia)
+			UserCollectionArtistsAPI.userCollectionArtistsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserCollectionArtistsAPIEnum() }, locale: locale, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -77,9 +77,9 @@ public enum UserCollectionArtistsAPITidal {
      
      - returns: UserCollectionArtistsItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionArtistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionArtistsAPITidal.Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument {
+	public static func userCollectionArtistsIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionArtistsAPITidal.Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionArtistsAPIEnum() }, locale: locale, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
+			UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionArtistsAPIEnum() })
 		}
 	}
 

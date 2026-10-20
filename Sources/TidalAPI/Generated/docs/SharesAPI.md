@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **sharesIdDelete**
 ```swift
-    open class func sharesIdDelete(id: String, revokeGrants: Bool? = nil, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func sharesIdDelete(id: String, idempotencyKey: String? = nil, revokeGrants: Bool? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single share.
@@ -79,12 +79,12 @@ Delete share. Effectively revokes bearer access and acceptance.
 import OpenAPIClient
 
 let id = "id_example" // String | Share id
-let revokeGrants = true // Bool | Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let revokeGrants = true // Bool | Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
 
 // Delete single share.
 do {
-    let response = try await SharesAPI.sharesIdDelete(id: id, revokeGrants: revokeGrants, idempotencyKey: idempotencyKey)
+    let response = try await SharesAPI.sharesIdDelete(id: id, idempotencyKey: idempotencyKey, revokeGrants: revokeGrants)
     dump(response)
 } catch {
     print(error)
@@ -96,8 +96,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Share id | 
- **revokeGrants** | **Bool** | Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. | [optional] 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **revokeGrants** | **Bool** | Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. | [optional] 
 
 ### Return type
 
@@ -218,7 +218,7 @@ Name | Type | Description  | Notes
 
 # **sharesIdRelationshipsSharedResourcesGet**
 ```swift
-    open class func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesSharedResourcesMultiRelationshipDataDocument
+    open class func sharesIdRelationshipsSharedResourcesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SharesSharedResourcesMultiRelationshipDataDocument
 ```
 
 Get sharedResources relationship (\"to-many\").
@@ -231,13 +231,13 @@ Retrieves sharedResources relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Share id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: sharedResources (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: sharedResources (optional)
 
 // Get sharedResources relationship (\"to-many\").
 do {
-    let response = try await SharesAPI.sharesIdRelationshipsSharedResourcesGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+    let response = try await SharesAPI.sharesIdRelationshipsSharedResourcesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -249,8 +249,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Share id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: sharedResources | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources | [optional] 
 
 ### Return type

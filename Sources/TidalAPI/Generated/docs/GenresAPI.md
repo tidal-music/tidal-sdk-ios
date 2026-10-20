@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **genresGet**
 ```swift
-    open class func genresGet(filterId: [String], pageCursor: String? = nil, locale: String? = nil) async throws -> GenresMultiResourceDataDocument
+    open class func genresGet(filterId: [String], locale: String? = nil, pageCursor: String? = nil) async throws -> GenresMultiResourceDataDocument
 ```
 
 Get multiple genres.
@@ -23,12 +23,12 @@ Retrieves multiple genres by available filters, or without if applicable.
 import OpenAPIClient
 
 let filterId = ["inner_example"] // [String] | Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from (e.g. `'1,2,3' or 'USER_SELECTABLE'`)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get multiple genres.
 do {
-    let response = try await GenresAPI.genresGet(filterId: filterId, pageCursor: pageCursor, locale: locale)
+    let response = try await GenresAPI.genresGet(filterId: filterId, locale: locale, pageCursor: pageCursor)
     dump(response)
 } catch {
     print(error)
@@ -40,8 +40,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterId** | [**[String]**](String.md) | Allows filtering by genre id(s). USER_SELECTABLE is special value used to return specific genres which users can select from (e.g. &#x60;&#39;1,2,3&#39; or &#39;USER_SELECTABLE&#39;&#x60;) | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 

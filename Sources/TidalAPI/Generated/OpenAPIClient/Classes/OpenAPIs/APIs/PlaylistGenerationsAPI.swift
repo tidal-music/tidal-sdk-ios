@@ -321,15 +321,15 @@ internal class PlaylistGenerationsAPI {
      Get trackPreferences relationship (\"to-many\").
      
      - parameter id: (path) Playlist generation id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: trackPreferences (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: trackPreferences (optional)
      - returns: PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistGenerationsIdRelationshipsTrackPreferencesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument {
+    internal class func playlistGenerationsIdRelationshipsTrackPreferencesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument {
         do {
-            return try await playlistGenerationsIdRelationshipsTrackPreferencesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
+            return try await playlistGenerationsIdRelationshipsTrackPreferencesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -344,12 +344,12 @@ internal class PlaylistGenerationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist generation id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: trackPreferences (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: trackPreferences (optional)
      - returns: RequestBuilder<PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument> 
      */
-    internal class func playlistGenerationsIdRelationshipsTrackPreferencesGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument> {
+    internal class func playlistGenerationsIdRelationshipsTrackPreferencesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument> {
         var localVariablePath = "/playlistGenerations/{id}/relationships/trackPreferences"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -359,8 +359,8 @@ internal class PlaylistGenerationsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 

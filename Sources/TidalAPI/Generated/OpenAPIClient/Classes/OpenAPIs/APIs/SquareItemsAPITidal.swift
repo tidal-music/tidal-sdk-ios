@@ -47,9 +47,9 @@ public enum SquareItemsAPITidal {
      
      - returns: SquareItemsMultiResourceDataDocument
      */
-	public static func squareItemsGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, filterOrigin: SquareItemsAPITidal.FilterOrigin_squareItemsGet? = nil, filterQuery: String? = nil, includeLinkage: [SquareItemsAPITidal.IncludeLinkage_squareItemsGet]? = nil) async throws -> SquareItemsMultiResourceDataDocument {
+	public static func squareItemsGet(filterOwnersId: [String], filterOrigin: SquareItemsAPITidal.FilterOrigin_squareItemsGet? = nil, filterQuery: String? = nil, include: [String]? = nil, includeLinkage: [SquareItemsAPITidal.IncludeLinkage_squareItemsGet]? = nil, pageCursor: String? = nil) async throws -> SquareItemsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SquareItemsAPI.squareItemsGetWithRequestBuilder(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, filterOrigin: filterOrigin?.toSquareItemsAPIEnum(), filterQuery: filterQuery, includeLinkage: includeLinkage?.compactMap { $0.toSquareItemsAPIEnum() })
+			SquareItemsAPI.squareItemsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterOrigin: filterOrigin?.toSquareItemsAPIEnum(), filterQuery: filterQuery, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSquareItemsAPIEnum() }, pageCursor: pageCursor)
 		}
 	}
 

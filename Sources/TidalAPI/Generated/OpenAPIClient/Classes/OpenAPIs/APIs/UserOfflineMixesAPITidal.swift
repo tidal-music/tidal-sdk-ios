@@ -32,9 +32,9 @@ public enum UserOfflineMixesAPITidal {
      
      - returns: UserOfflineMixesSingleResourceDataDocument
      */
-	public static func userOfflineMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserOfflineMixesAPITidal.IncludeLinkage_userOfflineMixesIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserOfflineMixesSingleResourceDataDocument {
+	public static func userOfflineMixesIdGet(id: String, include: [String]? = nil, includeLinkage: [UserOfflineMixesAPITidal.IncludeLinkage_userOfflineMixesIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserOfflineMixesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserOfflineMixesAPI.userOfflineMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserOfflineMixesAPIEnum() }, replaceMedia: replaceMedia)
+			UserOfflineMixesAPI.userOfflineMixesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserOfflineMixesAPIEnum() }, locale: locale, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -44,9 +44,9 @@ public enum UserOfflineMixesAPITidal {
      
      - returns: UserOfflineMixesItemsMultiRelationshipDataDocument
      */
-	public static func userOfflineMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserOfflineMixesItemsMultiRelationshipDataDocument {
+	public static func userOfflineMixesIdRelationshipsItemsGet(id: String, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserOfflineMixesItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserOfflineMixesAPI.userOfflineMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia)
+			UserOfflineMixesAPI.userOfflineMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 }

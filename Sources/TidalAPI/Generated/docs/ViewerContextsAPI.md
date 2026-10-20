@@ -24,7 +24,7 @@ Returns viewer contexts for up to 20 original subjects. Duplicate subjects are r
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterSubject = ["inner_example"] // [String] | Original subjects to look up.
+let filterSubject = ["inner_example"] // [String] | Original subjects to look up. Also accepts `folders:me`.
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: subject, viewer (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
@@ -42,7 +42,7 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterSubject** | [**[String]**](String.md) | Original subjects to look up. | 
+ **filterSubject** | [**[String]**](String.md) | Original subjects to look up. Also accepts &#x60;folders:me&#x60;. | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: subject, viewer | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 

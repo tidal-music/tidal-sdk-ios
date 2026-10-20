@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 # **userRecommendationBlocksIdGet**
 ```swift
-    open class func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userRecommendationBlocksIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument
+    open class func userRecommendationBlocksIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userRecommendationBlocksIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument
 ```
 
 Get single userRecommendationBlock.
@@ -32,14 +32,14 @@ Retrieves single userRecommendationBlock by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: artists, owners, tracks, videos (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
 
 // Get single userRecommendationBlock.
 do {
-    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdGet(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -51,9 +51,9 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: artists, owners, tracks, videos | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums | [optional] 
 
 ### Return type
@@ -123,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsArtistsGet**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument
+    open class func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument
 ```
 
 Get artists relationship (\"to-many\").
@@ -136,13 +136,13 @@ Retrieves artists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: artists (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
 
 // Get artists relationship (\"to-many\").
 do {
-    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -154,8 +154,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: artists | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums | [optional] 
 
 ### Return type
@@ -325,7 +325,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsTracksGet**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument
+    open class func userRecommendationBlocksIdRelationshipsTracksGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument
 ```
 
 Get tracks relationship (\"to-many\").
@@ -338,13 +338,13 @@ Retrieves tracks relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: tracks (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: tracks (optional)
 
 // Get tracks relationship (\"to-many\").
 do {
-    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -356,8 +356,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: tracks | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks | [optional] 
 
 ### Return type
@@ -477,7 +477,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsVideosGet**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument
+    open class func userRecommendationBlocksIdRelationshipsVideosGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument
 ```
 
 Get videos relationship (\"to-many\").
@@ -490,13 +490,13 @@ Retrieves videos relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: videos (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: videos (optional)
 
 // Get videos relationship (\"to-many\").
 do {
-    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -508,8 +508,8 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: videos | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos | [optional] 
 
 ### Return type
