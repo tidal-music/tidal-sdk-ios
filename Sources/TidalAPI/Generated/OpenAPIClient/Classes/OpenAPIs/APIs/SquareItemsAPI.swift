@@ -25,6 +25,7 @@ internal class SquareItemsAPI {
      */
     public enum IncludeLinkage_squareItemsGet: String, CaseIterable {
         case owners = "owners"
+        case variations = "variations"
     }
 
     /**
@@ -33,7 +34,7 @@ internal class SquareItemsAPI {
      - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterOrigin: (query) Only items with this origin (e.g. &#x60;TIDAL&#x60;) (optional)
      - parameter filterQuery: (query) Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: SquareItemsMultiResourceDataDocument
@@ -58,7 +59,7 @@ internal class SquareItemsAPI {
      - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterOrigin: (query) Only items with this origin (e.g. &#x60;TIDAL&#x60;) (optional)
      - parameter filterQuery: (query) Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<SquareItemsMultiResourceDataDocument> 
@@ -143,13 +144,14 @@ internal class SquareItemsAPI {
      */
     public enum IncludeLinkage_squareItemsIdGet: String, CaseIterable {
         case owners = "owners"
+        case variations = "variations"
     }
 
     /**
      Get single squareItem.
      
      - parameter id: (path) Square item id 
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: SquareItemsSingleResourceDataDocument
      */
@@ -171,7 +173,7 @@ internal class SquareItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Square item id 
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<SquareItemsSingleResourceDataDocument> 
      */
@@ -305,6 +307,113 @@ internal class SquareItemsAPI {
         let localVariableRequestBuilder: RequestBuilder<SquareItemsOwnersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get variations relationship (\"to-many\").
+     
+     - parameter id: (path) Square item id 
+     - parameter include: (query) Include related resources. Available relationships: variations (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: SquareItemsVariationsMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func squareItemsIdRelationshipsVariationsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareItemsVariationsMultiRelationshipDataDocument {
+        do {
+            return try await squareItemsIdRelationshipsVariationsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get variations relationship (\"to-many\").
+     - GET /squareItems/{id}/relationships/variations
+     - Variations in Square's display order.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Square item id 
+     - parameter include: (query) Include related resources. Available relationships: variations (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<SquareItemsVariationsMultiRelationshipDataDocument> 
+     */
+    internal class func squareItemsIdRelationshipsVariationsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SquareItemsVariationsMultiRelationshipDataDocument> {
+        var localVariablePath = "/squareItems/{id}/relationships/variations"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SquareItemsVariationsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Update variations relationship (\"to-many\").
+     
+     - parameter id: (path) Square item id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. 
+     - parameter squareItemsVariationsRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: SquareItemsVariationsUpdateMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func squareItemsIdRelationshipsVariationsPatch(id: String, idempotencyKey: String, squareItemsVariationsRelationshipUpdateOperationPayload: SquareItemsVariationsRelationshipUpdateOperationPayload? = nil) async throws -> SquareItemsVariationsUpdateMultiRelationshipDataDocument {
+        do {
+            return try await squareItemsIdRelationshipsVariationsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareItemsVariationsRelationshipUpdateOperationPayload: squareItemsVariationsRelationshipUpdateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Update variations relationship (\"to-many\").
+     - PATCH /squareItems/{id}/relationships/variations
+     - Moves the selected variations as an ordered block before positionBefore, or to the end when omitted. Unselected variations retain their relative order. Returns the affected linkage only and the updated item revision. After a timeout or `5xx`, retry unchanged with the original Idempotency-Key. Replay protection is bounded by receipt availability and Square's idempotency retention.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Square item id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. 
+     - parameter squareItemsVariationsRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<SquareItemsVariationsUpdateMultiRelationshipDataDocument> 
+     */
+    internal class func squareItemsIdRelationshipsVariationsPatchWithRequestBuilder(id: String, idempotencyKey: String, squareItemsVariationsRelationshipUpdateOperationPayload: SquareItemsVariationsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<SquareItemsVariationsUpdateMultiRelationshipDataDocument> {
+        var localVariablePath = "/squareItems/{id}/relationships/variations"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: squareItemsVariationsRelationshipUpdateOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SquareItemsVariationsUpdateMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**

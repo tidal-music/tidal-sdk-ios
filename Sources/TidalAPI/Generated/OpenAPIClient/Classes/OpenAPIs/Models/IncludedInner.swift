@@ -53,6 +53,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case providersResourceObject(ProvidersResourceObject)
     case purchasesResourceObject(PurchasesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
+    case resourceGrantsResourceObject(ResourceGrantsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
     case scopesResourceObject(ScopesResourceObject)
     case searchHistoryEntriesResourceObject(SearchHistoryEntriesResourceObject)
@@ -60,6 +61,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
     case sharesResourceObject(SharesResourceObject)
     case squareConnectionsResourceObject(SquareConnectionsResourceObject)
+    case squareItemVariationPhysicalCountsResourceObject(SquareItemVariationPhysicalCountsResourceObject)
+    case squareItemVariationsResourceObject(SquareItemVariationsResourceObject)
     case squareItemsResourceObject(SquareItemsResourceObject)
     case squareSitesResourceObject(SquareSitesResourceObject)
     case stripeConnectionsResourceObject(StripeConnectionsResourceObject)
@@ -184,6 +187,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .reactionsResourceObject(let value):
             try container.encode(value)
+        case .resourceGrantsResourceObject(let value):
+            try container.encode(value)
         case .savedSharesResourceObject(let value):
             try container.encode(value)
         case .scopesResourceObject(let value):
@@ -197,6 +202,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .sharesResourceObject(let value):
             try container.encode(value)
         case .squareConnectionsResourceObject(let value):
+            try container.encode(value)
+        case .squareItemVariationPhysicalCountsResourceObject(let value):
+            try container.encode(value)
+        case .squareItemVariationsResourceObject(let value):
             try container.encode(value)
         case .squareItemsResourceObject(let value):
             try container.encode(value)
@@ -408,6 +417,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "reactions":
             let value = try ReactionsResourceObject(from: decoder)
             self = .reactionsResourceObject(value)
+        case "resourceGrants":
+            let value = try ResourceGrantsResourceObject(from: decoder)
+            self = .resourceGrantsResourceObject(value)
         case "savedShares":
             let value = try SavedSharesResourceObject(from: decoder)
             self = .savedSharesResourceObject(value)
@@ -429,6 +441,12 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "squareConnections":
             let value = try SquareConnectionsResourceObject(from: decoder)
             self = .squareConnectionsResourceObject(value)
+        case "squareItemVariationPhysicalCounts":
+            let value = try SquareItemVariationPhysicalCountsResourceObject(from: decoder)
+            self = .squareItemVariationPhysicalCountsResourceObject(value)
+        case "squareItemVariations":
+            let value = try SquareItemVariationsResourceObject(from: decoder)
+            self = .squareItemVariationsResourceObject(value)
         case "squareItems":
             let value = try SquareItemsResourceObject(from: decoder)
             self = .squareItemsResourceObject(value)
@@ -589,6 +607,7 @@ extension IncludedInner: Identifiable {
         case .providersResourceObject(let value): return value.id
         case .purchasesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
+        case .resourceGrantsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
         case .scopesResourceObject(let value): return value.id
         case .searchHistoryEntriesResourceObject(let value): return value.id
@@ -596,6 +615,8 @@ extension IncludedInner: Identifiable {
         case .searchSuggestionsResourceObject(let value): return value.id
         case .sharesResourceObject(let value): return value.id
         case .squareConnectionsResourceObject(let value): return value.id
+        case .squareItemVariationPhysicalCountsResourceObject(let value): return value.id
+        case .squareItemVariationsResourceObject(let value): return value.id
         case .squareItemsResourceObject(let value): return value.id
         case .squareSitesResourceObject(let value): return value.id
         case .stripeConnectionsResourceObject(let value): return value.id

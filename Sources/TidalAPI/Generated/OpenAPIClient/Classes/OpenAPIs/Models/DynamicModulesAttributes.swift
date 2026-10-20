@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct DynamicModulesAttributes: Codable, Hashable {
 
-    public enum Icons: String, Codable, CaseIterable {
+    public enum HeaderActions: String, Codable, CaseIterable {
         case spotlightInfo = "SPOTLIGHT_INFO"
         case unknown = "UNKNOWN"
     }
@@ -27,8 +27,8 @@ public struct DynamicModulesAttributes: Codable, Hashable {
         case list = "LIST"
         case unknown = "UNKNOWN"
     }
-    /** Semantic icons the module should show. SPOTLIGHT_INFO identifies modules whose content was selected by TIDAL's editorial team. */
-    public var icons: [Icons]
+    /** Actions available in the module header. SPOTLIGHT_INFO opens information about TIDAL Spotlight. Clients choose the presentation and ignore unsupported actions, including UNKNOWN. */
+    public var headerActions: [HeaderActions]
     /** Presentation family for items in a dynamic module preview. The API selects the semantic presentation intent while clients own platform-specific geometry. A layout does not prescribe scroll direction, row or column count, dimensions, spacing, breakpoints, or visible item count; clients preserve the server-provided item order. GRID means artwork-forward tiles or cards. LIST means detail-forward row cells, which clients may arrange in one or more columns. SHORTCUT means compact quick-access items, which clients may arrange as a responsive grid or rail. UNKNOWN is the forward-compatible default; clients should skip the module or use a safe default. */
     public var previewLayout: PreviewLayout
     /** Subtitle of the module */
@@ -39,13 +39,13 @@ public struct DynamicModulesAttributes: Codable, Hashable {
     public var viewAllLayout: ViewAllLayout?
 
     public init(
-        icons: [Icons],
+        headerActions: [HeaderActions],
         previewLayout: PreviewLayout,
         subtitle: String? = nil,
         title: String? = nil,
         viewAllLayout: ViewAllLayout? = nil
     ) {
-        self.icons = icons
+        self.headerActions = headerActions
         self.previewLayout = previewLayout
         self.subtitle = subtitle
         self.title = title
@@ -53,7 +53,7 @@ public struct DynamicModulesAttributes: Codable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case icons
+        case headerActions
         case previewLayout
         case subtitle
         case title
@@ -64,7 +64,7 @@ public struct DynamicModulesAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(icons, forKey: .icons)
+        try container.encode(headerActions, forKey: .headerActions)
         try container.encode(previewLayout, forKey: .previewLayout)
         try container.encodeIfPresent(subtitle, forKey: .subtitle)
         try container.encodeIfPresent(title, forKey: .title)

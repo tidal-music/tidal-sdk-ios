@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **dynamicPagesGet**
 ```swift
-    open class func dynamicPagesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesGet, filterPageType: [String], systemType: SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument
+    open class func dynamicPagesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesGet, filterPageType: [FilterPageType_dynamicPagesGet], systemType: SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument
 ```
 
 Get multiple dynamicPages.
@@ -25,7 +25,7 @@ import OpenAPIClient
 
 let clientVersion = "clientVersion_example" // String | Client version number
 let deviceType = "deviceType_example" // String | The type of device making the request
-let filterPageType = ["inner_example"] // [String] | type of the page (e.g. `ARTIST`)
+let filterPageType = ["filterPageType_example"] // [String] | Type of the page (e.g. `ARTIST`)
 let systemType = "systemType_example" // String | The system type of the device making the request
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
 let filterSubject = "filterSubject_example" // String | The page subject. Its type must match pageType. Required except for HOME_FREE, where it must be omitted. Also accepts `users:me`. (optional)
@@ -50,7 +50,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **clientVersion** | **String** | Client version number | 
  **deviceType** | **String** | The type of device making the request | 
- **filterPageType** | [**[String]**](String.md) | type of the page (e.g. &#x60;ARTIST&#x60;) | 
+ **filterPageType** | [**[String]**](String.md) | Type of the page (e.g. &#x60;ARTIST&#x60;) | 
  **systemType** | **String** | The system type of the device making the request | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
  **filterSubject** | **String** | The page subject. Its type must match pageType. Required except for HOME_FREE, where it must be omitted. Also accepts &#x60;users:me&#x60;. | [optional] 
@@ -82,7 +82,7 @@ Name | Type | Description  | Notes
 
 Get modules relationship (\"to-many\").
 
-Retrieves modules relationship.
+The page's modules, in display order.
 
 ### Example
 ```swift

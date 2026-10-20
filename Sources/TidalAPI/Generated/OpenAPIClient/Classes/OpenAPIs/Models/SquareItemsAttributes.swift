@@ -35,8 +35,6 @@ public struct SquareItemsAttributes: Codable, Hashable {
     public var revision: Int64
     /** Item title; empty for an untitled item created in Square */
     public var title: String
-    /** Variations, in Square's order */
-    public var variations: [SquareItemsVariation]
 
     public init(
         currency: Currency,
@@ -45,8 +43,7 @@ public struct SquareItemsAttributes: Codable, Hashable {
         origin: Origin? = nil,
         publishedInSelectedSite: Bool? = nil,
         revision: Int64,
-        title: String,
-        variations: [SquareItemsVariation]
+        title: String
     ) {
         self.currency = currency
         self.description = description
@@ -55,7 +52,6 @@ public struct SquareItemsAttributes: Codable, Hashable {
         self.publishedInSelectedSite = publishedInSelectedSite
         self.revision = revision
         self.title = title
-        self.variations = variations
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -66,7 +62,6 @@ public struct SquareItemsAttributes: Codable, Hashable {
         case publishedInSelectedSite
         case revision
         case title
-        case variations
     }
 
     // Encodable protocol methods
@@ -80,6 +75,5 @@ public struct SquareItemsAttributes: Codable, Hashable {
         try container.encodeIfPresent(publishedInSelectedSite, forKey: .publishedInSelectedSite)
         try container.encode(revision, forKey: .revision)
         try container.encode(title, forKey: .title)
-        try container.encode(variations, forKey: .variations)
     }
 }
