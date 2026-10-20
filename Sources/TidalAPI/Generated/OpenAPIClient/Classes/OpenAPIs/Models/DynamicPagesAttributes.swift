@@ -17,6 +17,7 @@ public struct DynamicPagesAttributes: Codable, Hashable {
         case homeUploads = "HOME_UPLOADS"
         case homeEditorial = "HOME_EDITORIAL"
         case homeFree = "HOME_FREE"
+        case studioHome = "STUDIO_HOME"
         case artist = "ARTIST"
         case album = "ALBUM"
         case playlist = "PLAYLIST"

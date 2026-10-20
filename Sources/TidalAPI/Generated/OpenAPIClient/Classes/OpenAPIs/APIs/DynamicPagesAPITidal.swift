@@ -38,6 +38,37 @@ public enum DynamicPagesAPITidal {
 	}
 
 	/**
+	 * enum for parameter filterPageType
+	 */
+	public enum FilterPageType_dynamicPagesGet: String, CaseIterable {
+		case homeStatic = "HOME_STATIC"
+		case homeUploads = "HOME_UPLOADS"
+		case homeEditorial = "HOME_EDITORIAL"
+		case homeFree = "HOME_FREE"
+		case studioHome = "STUDIO_HOME"
+		case artist = "ARTIST"
+		case album = "ALBUM"
+		case playlist = "PLAYLIST"
+		case track = "TRACK"
+		case video = "VIDEO"
+
+		func toDynamicPagesAPIEnum() -> DynamicPagesAPI.FilterPageType_dynamicPagesGet {
+			switch self {
+			case .homeStatic: return .homeStatic
+			case .homeUploads: return .homeUploads
+			case .homeEditorial: return .homeEditorial
+			case .homeFree: return .homeFree
+			case .studioHome: return .studioHome
+			case .artist: return .artist
+			case .album: return .album
+			case .playlist: return .playlist
+			case .track: return .track
+			case .video: return .video
+			}
+		}
+	}
+
+	/**
 	 * enum for parameter systemType
 	 */
 	public enum SystemType_dynamicPagesGet: String, CaseIterable {
@@ -78,9 +109,9 @@ public enum DynamicPagesAPITidal {
      
      - returns: DynamicPagesMultiResourceDataDocument
      */
-	public static func dynamicPagesGet(clientVersion: String, deviceType: DynamicPagesAPITidal.DeviceType_dynamicPagesGet, filterPageType: [String], systemType: DynamicPagesAPITidal.SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [DynamicPagesAPITidal.IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
+	public static func dynamicPagesGet(clientVersion: String, deviceType: DynamicPagesAPITidal.DeviceType_dynamicPagesGet, filterPageType: [DynamicPagesAPITidal.FilterPageType_dynamicPagesGet], systemType: DynamicPagesAPITidal.SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [DynamicPagesAPITidal.IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			DynamicPagesAPI.dynamicPagesGetWithRequestBuilder(clientVersion: clientVersion, deviceType: deviceType.toDynamicPagesAPIEnum(), filterPageType: filterPageType, systemType: systemType.toDynamicPagesAPIEnum(), countryCode: countryCode, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage?.compactMap { $0.toDynamicPagesAPIEnum() }, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
+			DynamicPagesAPI.dynamicPagesGetWithRequestBuilder(clientVersion: clientVersion, deviceType: deviceType.toDynamicPagesAPIEnum(), filterPageType: filterPageType.compactMap { $0.toDynamicPagesAPIEnum() }, systemType: systemType.toDynamicPagesAPIEnum(), countryCode: countryCode, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage?.compactMap { $0.toDynamicPagesAPIEnum() }, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
 		}
 	}
 

@@ -10,7 +10,6 @@ Name | Type | Description | Notes
 **publishedInSelectedSite** | **Bool** | Whether the item is published in the seller&#39;s selected Square Online site; false when no site is selected | [optional] 
 **revision** | **Int64** | Square catalog item revision used to guard item updates; excludes inventory stock | 
 **title** | **String** | Item title; empty for an untitled item created in Square | 
-**variations** | [SquareItemsVariation] | Variations, in Square&#39;s order | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

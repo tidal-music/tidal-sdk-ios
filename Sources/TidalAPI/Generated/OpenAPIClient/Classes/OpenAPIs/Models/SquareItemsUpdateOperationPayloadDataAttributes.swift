@@ -14,28 +14,22 @@ public struct SquareItemsUpdateOperationPayloadDataAttributes: Codable, Hashable
 
     public static let descriptionRule = StringRule(minLength: nil, maxLength: 4096, pattern: nil)
     public static let titleRule = StringRule(minLength: 1, maxLength: 512, pattern: nil)
-    public static let variationsRule = ArrayRule(minItems: 1, maxItems: 100, uniqueItems: false)
     /** Item description; an empty string removes it */
     public var description: String?
     /** Item title */
     public var title: String?
-    /** Complete variation list in display order; variations without a variationId are added and omitted ones deleted. Every price must be positive and is written as FIXED. Replacement requires every existing variation to have a positive fixed price at the main location; otherwise edit the variations in Square Dashboard. Updates without variations remain supported. */
-    public var variations: [SquareItemsUpdateOperationPayloadDataAttributesVariation]?
 
     public init(
         description: String? = nil,
-        title: String? = nil,
-        variations: [SquareItemsUpdateOperationPayloadDataAttributesVariation]? = nil
+        title: String? = nil
     ) {
         self.description = description
         self.title = title
-        self.variations = variations
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case description
         case title
-        case variations
     }
 
     // Encodable protocol methods
@@ -44,6 +38,5 @@ public struct SquareItemsUpdateOperationPayloadDataAttributes: Codable, Hashable
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(description, forKey: .description)
         try container.encodeIfPresent(title, forKey: .title)
-        try container.encodeIfPresent(variations, forKey: .variations)
     }
 }

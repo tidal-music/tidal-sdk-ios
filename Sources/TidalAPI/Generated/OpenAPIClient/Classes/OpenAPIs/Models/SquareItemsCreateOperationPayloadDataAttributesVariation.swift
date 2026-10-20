@@ -19,7 +19,7 @@ public struct SquareItemsCreateOperationPayloadDataAttributesVariation: Codable,
     public var name: String?
     /** Amount in the currency's major units */
     public var price: String
-    /** Units in stock at the seller's main location; applies only when stock is tracked */
+    /** Units in stock at the selected site's shipping location (merchant-main fallback); applies only when stock is tracked */
     public var stockQuantity: Int64?
     /** Whether Square tracks stock for this variation */
     public var stockTracked: Bool

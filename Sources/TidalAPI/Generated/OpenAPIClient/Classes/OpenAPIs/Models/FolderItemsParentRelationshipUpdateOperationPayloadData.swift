@@ -15,6 +15,7 @@ public struct FolderItemsParentRelationshipUpdateOperationPayloadData: Codable, 
     public enum ModelType: String, Codable, CaseIterable {
         case folders = "folders"
     }
+    /** Also accepts `me`. */
     public var id: String
     public var type: ModelType
 

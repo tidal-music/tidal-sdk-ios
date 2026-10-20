@@ -25,6 +25,22 @@ internal class DynamicPagesAPI {
     }
 
     /**
+     * enum for parameter filterPageType
+     */
+    public enum FilterPageType_dynamicPagesGet: String, CaseIterable {
+        case homeStatic = "HOME_STATIC"
+        case homeUploads = "HOME_UPLOADS"
+        case homeEditorial = "HOME_EDITORIAL"
+        case homeFree = "HOME_FREE"
+        case studioHome = "STUDIO_HOME"
+        case artist = "ARTIST"
+        case album = "ALBUM"
+        case playlist = "PLAYLIST"
+        case track = "TRACK"
+        case video = "VIDEO"
+    }
+
+    /**
      * enum for parameter systemType
      */
     public enum SystemType_dynamicPagesGet: String, CaseIterable {
@@ -48,7 +64,7 @@ internal class DynamicPagesAPI {
      
      - parameter clientVersion: (query) Client version number 
      - parameter deviceType: (query) The type of device making the request 
-     - parameter filterPageType: (query) type of the page (e.g. &#x60;ARTIST&#x60;) 
+     - parameter filterPageType: (query) Type of the page (e.g. &#x60;ARTIST&#x60;) 
      - parameter systemType: (query) The system type of the device making the request 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter filterSubject: (query) The page subject. Its type must match pageType. Required except for HOME_FREE, where it must be omitted. Also accepts &#x60;users:me&#x60;. (optional)
@@ -60,7 +76,7 @@ internal class DynamicPagesAPI {
      - returns: DynamicPagesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func dynamicPagesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesGet, filterPageType: [String], systemType: SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
+    internal class func dynamicPagesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesGet, filterPageType: [FilterPageType_dynamicPagesGet], systemType: SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
         do {
             return try await dynamicPagesGetWithRequestBuilder(clientVersion: clientVersion, deviceType: deviceType, filterPageType: filterPageType, systemType: systemType, countryCode: countryCode, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -81,7 +97,7 @@ internal class DynamicPagesAPI {
        - name: Client_Credentials
      - parameter clientVersion: (query) Client version number 
      - parameter deviceType: (query) The type of device making the request 
-     - parameter filterPageType: (query) type of the page (e.g. &#x60;ARTIST&#x60;) 
+     - parameter filterPageType: (query) Type of the page (e.g. &#x60;ARTIST&#x60;) 
      - parameter systemType: (query) The system type of the device making the request 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
      - parameter filterSubject: (query) The page subject. Its type must match pageType. Required except for HOME_FREE, where it must be omitted. Also accepts &#x60;users:me&#x60;. (optional)
@@ -92,7 +108,7 @@ internal class DynamicPagesAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items (optional)
      - returns: RequestBuilder<DynamicPagesMultiResourceDataDocument> 
      */
-    internal class func dynamicPagesGetWithRequestBuilder(clientVersion: String, deviceType: DeviceType_dynamicPagesGet, filterPageType: [String], systemType: SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
+    internal class func dynamicPagesGetWithRequestBuilder(clientVersion: String, deviceType: DeviceType_dynamicPagesGet, filterPageType: [FilterPageType_dynamicPagesGet], systemType: SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<DynamicPagesMultiResourceDataDocument> {
         let localVariablePath = "/dynamicPages"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -174,7 +190,7 @@ internal class DynamicPagesAPI {
     /**
      Get modules relationship (\"to-many\").
      - GET /dynamicPages/{id}/relationships/modules
-     - Retrieves modules relationship.
+     - The page's modules, in display order.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

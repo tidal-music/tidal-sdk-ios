@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct SquareItemsUpdateResource409ResponseBody: Codable, Hashable {
 
-    public var errors: [SquareItemsUpdateResource409ResponseBodyErrorsInner]
+    public var errors: [SquareItemVariationsCreateResource409ResponseBodyErrorsInner]
 
     public init(
-        errors: [SquareItemsUpdateResource409ResponseBodyErrorsInner]
+        errors: [SquareItemVariationsCreateResource409ResponseBodyErrorsInner]
     ) {
         self.errors = errors
     }

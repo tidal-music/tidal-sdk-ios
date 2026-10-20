@@ -34,10 +34,12 @@ public enum SquareItemsAPITidal {
 	 */
 	public enum IncludeLinkage_squareItemsGet: String, CaseIterable {
 		case owners = "owners"
+		case variations = "variations"
 
 		func toSquareItemsAPIEnum() -> SquareItemsAPI.IncludeLinkage_squareItemsGet {
 			switch self {
 			case .owners: return .owners
+			case .variations: return .variations
 			}
 		}
 	}
@@ -71,10 +73,12 @@ public enum SquareItemsAPITidal {
 	 */
 	public enum IncludeLinkage_squareItemsIdGet: String, CaseIterable {
 		case owners = "owners"
+		case variations = "variations"
 
 		func toSquareItemsAPIEnum() -> SquareItemsAPI.IncludeLinkage_squareItemsIdGet {
 			switch self {
 			case .owners: return .owners
+			case .variations: return .variations
 			}
 		}
 	}
@@ -111,6 +115,30 @@ public enum SquareItemsAPITidal {
 	public static func squareItemsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareItemsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SquareItemsAPI.squareItemsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Get variations relationship (\&quot;to-many\&quot;).
+     
+     - returns: SquareItemsVariationsMultiRelationshipDataDocument
+     */
+	public static func squareItemsIdRelationshipsVariationsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareItemsVariationsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			SquareItemsAPI.squareItemsIdRelationshipsVariationsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Update variations relationship (\&quot;to-many\&quot;).
+     
+     - returns: SquareItemsVariationsUpdateMultiRelationshipDataDocument
+     */
+	public static func squareItemsIdRelationshipsVariationsPatch(id: String, idempotencyKey: String, squareItemsVariationsRelationshipUpdateOperationPayload: SquareItemsVariationsRelationshipUpdateOperationPayload? = nil) async throws -> SquareItemsVariationsUpdateMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			SquareItemsAPI.squareItemsIdRelationshipsVariationsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareItemsVariationsRelationshipUpdateOperationPayload: squareItemsVariationsRelationshipUpdateOperationPayload)
 		}
 	}
 

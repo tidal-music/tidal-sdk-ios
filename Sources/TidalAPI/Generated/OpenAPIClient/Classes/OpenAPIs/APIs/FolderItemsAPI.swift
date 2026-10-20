@@ -27,7 +27,8 @@ internal class FolderItemsAPI {
      
      - parameter filterParentId: (query) Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;). Also accepts &#x60;me&#x60;. (optional)
      - parameter filterParentIsRoot: (query) Filter by parent.isRoot (optional)
-     - parameter filterParentOwnersId: (query) Root folder owner; must be the authenticated user. Also accepts &#x60;me&#x60;. (optional)
+     - parameter filterParentOwnersId: (query) Owner of the folder an item is in; must be the authenticated user. With parent.isRoot&#x3D;true it selects your root, and with query your whole tree. Also accepts &#x60;me&#x60;. (optional)
+     - parameter filterQuery: (query) Searches every folder in your tree, selected with parent.owners.id&#x3D;me, and lists the matching items in one flat list. An item matches when each word given starts a word in its folder&#39;s name, its album&#39;s title or the title of one of the album&#39;s tracks, ignoring case. An item shared with you matches by its subject, and only while you can open it. (e.g. &#x60;demo&#x60;) (optional)
      - parameter filterSubjectOwnersId: (query) In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. (optional)
      - parameter filterSubjectOwnersIdNe: (query) In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. (optional)
      - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
@@ -37,9 +38,9 @@ internal class FolderItemsAPI {
      - returns: FolderItemsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
+    internal class func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterQuery: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
         do {
-            return try await folderItemsGetWithRequestBuilder(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
+            return try await folderItemsGetWithRequestBuilder(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterQuery: filterQuery, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -49,13 +50,14 @@ internal class FolderItemsAPI {
     /**
      Get multiple folderItems.
      - GET /folderItems
-     - Lists items in a folder, newest placement first. Select a folder with parent.id, or select your root with parent.isRoot=true and parent.owners.id=me. These forms cannot be combined; no other parent-filter combinations are supported.
+     - Lists items in a folder, newest placement first. Select a folder with parent.id, or select your root with parent.isRoot=true and parent.owners.id=me. These forms cannot be combined; no other parent-filter combinations are supported. To search every folder in your tree instead, use query with parent.owners.id=me alone.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterParentId: (query) Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;). Also accepts &#x60;me&#x60;. (optional)
      - parameter filterParentIsRoot: (query) Filter by parent.isRoot (optional)
-     - parameter filterParentOwnersId: (query) Root folder owner; must be the authenticated user. Also accepts &#x60;me&#x60;. (optional)
+     - parameter filterParentOwnersId: (query) Owner of the folder an item is in; must be the authenticated user. With parent.isRoot&#x3D;true it selects your root, and with query your whole tree. Also accepts &#x60;me&#x60;. (optional)
+     - parameter filterQuery: (query) Searches every folder in your tree, selected with parent.owners.id&#x3D;me, and lists the matching items in one flat list. An item matches when each word given starts a word in its folder&#39;s name, its album&#39;s title or the title of one of the album&#39;s tracks, ignoring case. An item shared with you matches by its subject, and only while you can open it. (e.g. &#x60;demo&#x60;) (optional)
      - parameter filterSubjectOwnersId: (query) In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. (optional)
      - parameter filterSubjectOwnersIdNe: (query) In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. (optional)
      - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
@@ -64,7 +66,7 @@ internal class FolderItemsAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
      - returns: RequestBuilder<FolderItemsMultiResourceDataDocument> 
      */
-    internal class func folderItemsGetWithRequestBuilder(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsMultiResourceDataDocument> {
+    internal class func folderItemsGetWithRequestBuilder(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterQuery: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsMultiResourceDataDocument> {
         let localVariablePath = "/folderItems"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -74,6 +76,7 @@ internal class FolderItemsAPI {
             "filter[parent.id]": (wrappedValue: filterParentId?.encodeToJSON(), isExplode: true),
             "filter[parent.isRoot]": (wrappedValue: filterParentIsRoot?.encodeToJSON(), isExplode: true),
             "filter[parent.owners.id]": (wrappedValue: filterParentOwnersId?.encodeToJSON(), isExplode: true),
+            "filter[query]": (wrappedValue: filterQuery?.encodeToJSON(), isExplode: true),
             "filter[subject.owners.id]": (wrappedValue: filterSubjectOwnersId?.encodeToJSON(), isExplode: true),
             "filter[subject.owners.id][ne]": (wrappedValue: filterSubjectOwnersIdNe?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),

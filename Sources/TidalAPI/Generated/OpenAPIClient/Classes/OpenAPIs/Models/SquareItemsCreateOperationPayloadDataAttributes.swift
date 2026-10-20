@@ -13,29 +13,29 @@ import AnyCodable
 public struct SquareItemsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public static let descriptionRule = StringRule(minLength: nil, maxLength: 4096, pattern: nil)
+    public static let initialVariationsRule = ArrayRule(minItems: 1, maxItems: 100, uniqueItems: false)
     public static let titleRule = StringRule(minLength: 1, maxLength: 512, pattern: nil)
-    public static let variationsRule = ArrayRule(minItems: 1, maxItems: 100, uniqueItems: false)
     /** Item description */
     public var description: String?
+    /** Variations, in display order */
+    public var initialVariations: [SquareItemsCreateOperationPayloadDataAttributesVariation]
     /** Item title */
     public var title: String
-    /** Variations, in display order */
-    public var variations: [SquareItemsCreateOperationPayloadDataAttributesVariation]
 
     public init(
         description: String? = nil,
-        title: String,
-        variations: [SquareItemsCreateOperationPayloadDataAttributesVariation]
+        initialVariations: [SquareItemsCreateOperationPayloadDataAttributesVariation],
+        title: String
     ) {
         self.description = description
+        self.initialVariations = initialVariations
         self.title = title
-        self.variations = variations
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case description
+        case initialVariations
         case title
-        case variations
     }
 
     // Encodable protocol methods
@@ -43,7 +43,7 @@ public struct SquareItemsCreateOperationPayloadDataAttributes: Codable, Hashable
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(description, forKey: .description)
+        try container.encode(initialVariations, forKey: .initialVariations)
         try container.encode(title, forKey: .title)
-        try container.encode(variations, forKey: .variations)
     }
 }
