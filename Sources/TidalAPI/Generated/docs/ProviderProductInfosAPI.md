@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **providerProductInfosGet**
 ```swift
-    open class func providerProductInfosGet(filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil, includeLinkage: [IncludeLinkage_providerProductInfosGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ProviderProductInfosMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func providerProductInfosGet(filterProviderId: [String], countryCode: String? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_providerProductInfosGet]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument
 ```
 
 Get multiple providerProductInfos.
@@ -25,22 +25,18 @@ import OpenAPIClient
 
 let filterProviderId = ["inner_example"] // [String] | Content provider ID (e.g. `50`)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: provider, subject (optional)
 let filterBarcodeId = ["inner_example"] // [String] | List of barcode IDs (EAN-13 or UPC-A) (e.g. `00602527336510`) (optional)
 let filterGrid = ["inner_example"] // [String] | List of GRIDs (Global Release Identifier, ISO 7064) (e.g. `A10302B0013941653J`) (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: provider, subject (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get multiple providerProductInfos.
-ProviderProductInfosAPI.providerProductInfosGet(filterProviderId: filterProviderId, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterGrid: filterGrid, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ProviderProductInfosAPI.providerProductInfosGet(filterProviderId: filterProviderId, countryCode: countryCode, filterBarcodeId: filterBarcodeId, filterGrid: filterGrid, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -50,9 +46,9 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterProviderId** | [**[String]**](String.md) | Content provider ID (e.g. &#x60;50&#x60;) | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: provider, subject | [optional] 
  **filterBarcodeId** | [**[String]**](String.md) | List of barcode IDs (EAN-13 or UPC-A) (e.g. &#x60;00602527336510&#x60;) | [optional] 
  **filterGrid** | [**[String]**](String.md) | List of GRIDs (Global Release Identifier, ISO 7064) (e.g. &#x60;A10302B0013941653J&#x60;) | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: provider, subject | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 
@@ -73,7 +69,7 @@ Name | Type | Description  | Notes
 
 # **providerProductInfosIdRelationshipsProviderGet**
 ```swift
-    open class func providerProductInfosIdRelationshipsProviderGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ProviderProductInfosProviderSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func providerProductInfosIdRelationshipsProviderGet(id: String, include: [String]? = nil) async throws -> ProviderProductInfosProviderSingleRelationshipDataDocument
 ```
 
 Get provider relationship (\"to-one\").
@@ -89,15 +85,11 @@ let id = "id_example" // String | Provider product info id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: provider (optional)
 
 // Get provider relationship (\"to-one\").
-ProviderProductInfosAPI.providerProductInfosIdRelationshipsProviderGet(id: id, include: include) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ProviderProductInfosAPI.providerProductInfosIdRelationshipsProviderGet(id: id, include: include)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -125,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **providerProductInfosIdRelationshipsSubjectGet**
 ```swift
-    open class func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ProviderProductInfosSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func providerProductInfosIdRelationshipsSubjectGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosSubjectSingleRelationshipDataDocument
 ```
 
 Get subject relationship (\"to-one\").
@@ -143,15 +135,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-ProviderProductInfosAPI.providerProductInfosIdRelationshipsSubjectGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ProviderProductInfosAPI.providerProductInfosIdRelationshipsSubjectGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

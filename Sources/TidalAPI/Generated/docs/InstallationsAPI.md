@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **installationsGet**
 ```swift
-    open class func installationsGet(pageCursor: String? = nil, include: [String]? = nil, filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_installationsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: InstallationsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func installationsGet(filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_installationsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsMultiResourceDataDocument
 ```
 
 Get multiple installations.
@@ -27,23 +27,19 @@ Retrieves multiple installations by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: offlineInventory, owners (optional)
 let filterClientProvidedInstallationId = ["inner_example"] // [String] | Client-provided installation identifier to filter by (e.g. `a468bee88def`) (optional)
-let filterOwnersId = ["inner_example"] // [String] | User ID to filter by. Use `me` for the authenticated user (optional)
+let filterOwnersId = ["inner_example"] // [String] | User ID to filter by. Also accepts `me`. (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: offlineInventory, owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: offlineInventory (optional)
 
 // Get multiple installations.
-InstallationsAPI.installationsGet(pageCursor: pageCursor, include: include, filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsGet(filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -51,11 +47,11 @@ InstallationsAPI.installationsGet(pageCursor: pageCursor, include: include, filt
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: offlineInventory, owners | [optional] 
  **filterClientProvidedInstallationId** | [**[String]**](String.md) | Client-provided installation identifier to filter by (e.g. &#x60;a468bee88def&#x60;) | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User ID to filter by. Use &#x60;me&#x60; for the authenticated user | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User ID to filter by. Also accepts &#x60;me&#x60;. | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: offlineInventory, owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory | [optional] 
 
 ### Return type
@@ -75,7 +71,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdGet**
 ```swift
-    open class func installationsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_installationsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: InstallationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func installationsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_installationsIdGet]? = nil, replaceMedia: String? = nil) async throws -> InstallationsSingleResourceDataDocument
 ```
 
 Get single installation.
@@ -93,15 +89,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: offlineInventory (optional)
 
 // Get single installation.
-InstallationsAPI.installationsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -131,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryDelete**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryDelete(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryDelete(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from offlineInventory relationship (\"to-many\").
@@ -148,15 +140,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let installationsOfflineInventoryRelationshipRemoveOperationPayload = InstallationsOfflineInventoryRelationshipRemoveOperation_Payload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryDelete(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsIdRelationshipsOfflineInventoryDelete(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -185,7 +173,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryGet**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryGet(id: String, filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], pageCursor: String? = nil, include: [String]? = nil, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: InstallationsOfflineInventoryMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryGet(filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument
 ```
 
 Get offlineInventory relationship (\"to-many\").
@@ -197,24 +185,20 @@ Retrieves offlineInventory relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Installation id
 let filterType = ["filterType_example"] // [String] | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. `tracks`)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: offlineInventory (optional)
+let id = "id_example" // String | Installation id
 let filterId = ["inner_example"] // [String] | Offline item id (e.g. `1234`) (optional)
 let filterState = ["filterState_example"] // [String] | One of: PENDING, STORED, FAILED (e.g. `PENDING`) (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: offlineInventory (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: offlineInventory (optional)
 
 // Get offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(id: id, filterType: filterType, pageCursor: pageCursor, include: include, filterId: filterId, filterState: filterState, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(filterType: filterType, id: id, filterId: filterId, filterState: filterState, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -222,12 +206,12 @@ InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(id: id, filterT
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Installation id | 
  **filterType** | [**[String]**](String.md) | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: offlineInventory | [optional] 
+ **id** | **String** | Installation id | 
  **filterId** | [**[String]**](String.md) | Offline item id (e.g. &#x60;1234&#x60;) | [optional] 
  **filterState** | [**[String]**](String.md) | One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: offlineInventory | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory | [optional] 
 
 ### Return type
@@ -247,7 +231,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryPost**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryPost(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryPost(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Add to offlineInventory relationship (\"to-many\").
@@ -264,15 +248,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let installationsOfflineInventoryRelationshipAddOperationPayload = InstallationsOfflineInventoryRelationshipAddOperation_Payload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryRelationshipAddOperationPayload |  (optional)
 
 // Add to offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryPost(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsIdRelationshipsOfflineInventoryPost(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -301,7 +281,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOwnersGet**
 ```swift
-    open class func installationsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: InstallationsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> InstallationsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -318,15 +298,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -355,7 +331,7 @@ Name | Type | Description  | Notes
 
 # **installationsPost**
 ```swift
-    open class func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil, completion: @escaping (_ data: InstallationsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) async throws -> InstallationsCreateSingleResourceDataDocument
 ```
 
 Create single installation.
@@ -371,15 +347,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let installationsCreateOperationPayload = InstallationsCreateOperation_Payload(data: InstallationsCreateOperation_Payload_Data(attributes: InstallationsCreateOperation_Payload_Data_Attributes(clientProvidedInstallationId: "clientProvidedInstallationId_example", name: "name_example"), type: "type_example")) // InstallationsCreateOperationPayload |  (optional)
 
 // Create single installation.
-InstallationsAPI.installationsPost(idempotencyKey: idempotencyKey, installationsCreateOperationPayload: installationsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsPost(idempotencyKey: idempotencyKey, installationsCreateOperationPayload: installationsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

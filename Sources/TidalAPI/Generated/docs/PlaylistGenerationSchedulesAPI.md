@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **playlistGenerationSchedulesGet**
 ```swift
-    open class func playlistGenerationSchedulesGet(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationSchedulesGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationSchedulesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationSchedulesGet(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationSchedulesGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationSchedulesMultiResourceDataDocument
 ```
 
 Get multiple playlistGenerationSchedules.
@@ -32,15 +32,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playlist.items (optional)
 
 // Get multiple playlistGenerationSchedules.
-PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesGet(filterPlaylistId: filterPlaylistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesGet(filterPlaylistId: filterPlaylistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -70,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationSchedulesIdDelete**
 ```swift
-    open class func playlistGenerationSchedulesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationSchedulesIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single playlistGenerationSchedule.
@@ -86,15 +82,11 @@ let id = "id_example" // String |
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single playlistGenerationSchedule.
-PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -122,7 +114,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationSchedulesIdGet**
 ```swift
-    open class func playlistGenerationSchedulesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationSchedulesIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationSchedulesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationSchedulesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationSchedulesIdGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationSchedulesSingleResourceDataDocument
 ```
 
 Get single playlistGenerationSchedule.
@@ -140,15 +132,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playlist.items (optional)
 
 // Get single playlistGenerationSchedule.
-PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -178,7 +166,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationSchedulesIdPatch**
 ```swift
-    open class func playlistGenerationSchedulesIdPatch(id: String, idempotencyKey: String? = nil, playlistGenerationSchedulesUpdateOperationPayload: PlaylistGenerationSchedulesUpdateOperationPayload? = nil, completion: @escaping (_ data: PlaylistGenerationSchedulesUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationSchedulesIdPatch(id: String, idempotencyKey: String? = nil, playlistGenerationSchedulesUpdateOperationPayload: PlaylistGenerationSchedulesUpdateOperationPayload? = nil) async throws -> PlaylistGenerationSchedulesUpdateSingleResourceDataDocument
 ```
 
 Update single playlistGenerationSchedule.
@@ -195,15 +183,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistGenerationSchedulesUpdateOperationPayload = PlaylistGenerationSchedulesUpdateOperation_Payload(data: PlaylistGenerationSchedulesUpdateOperation_Payload_Data(attributes: PlaylistGenerationSchedulesUpdateOperation_Payload_Data_Attributes(timeZone: "timeZone_example", weekday: "weekday_example"), id: "id_example", type: "type_example")) // PlaylistGenerationSchedulesUpdateOperationPayload |  (optional)
 
 // Update single playlistGenerationSchedule.
-PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdPatch(id: id, idempotencyKey: idempotencyKey, playlistGenerationSchedulesUpdateOperationPayload: playlistGenerationSchedulesUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdPatch(id: id, idempotencyKey: idempotencyKey, playlistGenerationSchedulesUpdateOperationPayload: playlistGenerationSchedulesUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -232,7 +216,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationSchedulesIdRelationshipsPlaylistGet**
 ```swift
-    open class func playlistGenerationSchedulesIdRelationshipsPlaylistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationSchedulesPlaylistSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationSchedulesIdRelationshipsPlaylistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationSchedulesPlaylistSingleRelationshipDataDocument
 ```
 
 Get playlist relationship (\"to-one\").
@@ -249,15 +233,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playlist.items (optional)
 
 // Get playlist relationship (\"to-one\").
-PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdRelationshipsPlaylistGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesIdRelationshipsPlaylistGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -286,7 +266,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationSchedulesPost**
 ```swift
-    open class func playlistGenerationSchedulesPost(idempotencyKey: String? = nil, playlistGenerationSchedulesCreateOperationPayload: PlaylistGenerationSchedulesCreateOperationPayload? = nil, completion: @escaping (_ data: PlaylistGenerationSchedulesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationSchedulesPost(idempotencyKey: String? = nil, playlistGenerationSchedulesCreateOperationPayload: PlaylistGenerationSchedulesCreateOperationPayload? = nil) async throws -> PlaylistGenerationSchedulesCreateSingleResourceDataDocument
 ```
 
 Create single playlistGenerationSchedule.
@@ -302,15 +282,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistGenerationSchedulesCreateOperationPayload = PlaylistGenerationSchedulesCreateOperation_Payload(data: PlaylistGenerationSchedulesCreateOperation_Payload_Data(attributes: PlaylistGenerationSchedulesCreateOperation_Payload_Data_Attributes(timeZone: "timeZone_example", weekday: "weekday_example"), relationships: PlaylistGenerationSchedulesCreateOperation_Payload_Data_Relationships(playlist: PlaylistGenerationSchedulesCreateOperation_Payload_Data_Relationships_Playlist(data: PlaylistGenerationSchedulesCreateOperation_Payload_Data_Relationships_Playlist_Data(id: "id_example", type: "type_example"))), type: "type_example")) // PlaylistGenerationSchedulesCreateOperationPayload |  (optional)
 
 // Create single playlistGenerationSchedule.
-PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesPost(idempotencyKey: idempotencyKey, playlistGenerationSchedulesCreateOperationPayload: playlistGenerationSchedulesCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationSchedulesAPI.playlistGenerationSchedulesPost(idempotencyKey: idempotencyKey, playlistGenerationSchedulesCreateOperationPayload: playlistGenerationSchedulesCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

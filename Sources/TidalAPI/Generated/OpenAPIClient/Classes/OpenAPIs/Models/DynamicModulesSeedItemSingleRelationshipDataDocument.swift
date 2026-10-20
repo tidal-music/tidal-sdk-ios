@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;albums&#x60;, &#x60;artists&#x60;. */
 public struct DynamicModulesSeedItemSingleRelationshipDataDocument: Codable, Hashable {
 
     public var data: DynamicModulesSeedItemResourceIdentifier?

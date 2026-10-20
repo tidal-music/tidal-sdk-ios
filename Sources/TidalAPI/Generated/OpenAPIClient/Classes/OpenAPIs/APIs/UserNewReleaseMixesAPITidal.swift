@@ -32,9 +32,9 @@ public enum UserNewReleaseMixesAPITidal {
      
      - returns: UserNewReleaseMixesSingleResourceDataDocument
      */
-	public static func userNewReleaseMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserNewReleaseMixesAPITidal.IncludeLinkage_userNewReleaseMixesIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserNewReleaseMixesSingleResourceDataDocument {
+	public static func userNewReleaseMixesIdGet(id: String, include: [String]? = nil, includeLinkage: [UserNewReleaseMixesAPITidal.IncludeLinkage_userNewReleaseMixesIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserNewReleaseMixesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserNewReleaseMixesAPI.userNewReleaseMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserNewReleaseMixesAPIEnum() }, replaceMedia: replaceMedia)
+			UserNewReleaseMixesAPI.userNewReleaseMixesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserNewReleaseMixesAPIEnum() }, locale: locale, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -44,9 +44,9 @@ public enum UserNewReleaseMixesAPITidal {
      
      - returns: UserNewReleaseMixesItemsMultiRelationshipDataDocument
      */
-	public static func userNewReleaseMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserNewReleaseMixesItemsMultiRelationshipDataDocument {
+	public static func userNewReleaseMixesIdRelationshipsItemsGet(id: String, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserNewReleaseMixesItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserNewReleaseMixesAPI.userNewReleaseMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia)
+			UserNewReleaseMixesAPI.userNewReleaseMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 }

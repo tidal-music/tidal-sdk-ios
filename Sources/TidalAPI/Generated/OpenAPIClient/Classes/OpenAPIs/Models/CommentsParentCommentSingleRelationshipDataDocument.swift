@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;comments&#x60;. */
 public struct CommentsParentCommentSingleRelationshipDataDocument: Codable, Hashable {
 
     public var data: ResourceIdentifier?

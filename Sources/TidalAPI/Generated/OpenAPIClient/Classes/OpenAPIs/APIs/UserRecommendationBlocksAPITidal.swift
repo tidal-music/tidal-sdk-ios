@@ -38,9 +38,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksSingleResourceDataDocument
      */
-	public static func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserRecommendationBlocksAPITidal.IncludeLinkage_userRecommendationBlocksIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
+	public static func userRecommendationBlocksIdGet(id: String, include: [String]? = nil, includeLinkage: [UserRecommendationBlocksAPITidal.IncludeLinkage_userRecommendationBlocksIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserRecommendationBlocksAPIEnum() }, replaceMedia: replaceMedia)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserRecommendationBlocksAPIEnum() }, locale: locale, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -62,9 +62,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksArtistsMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -110,9 +110,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksTracksMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsTracksGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -146,9 +146,9 @@ public enum UserRecommendationBlocksAPITidal {
      
      - returns: UserRecommendationBlocksVideosMultiRelationshipDataDocument
      */
-	public static func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
+	public static func userRecommendationBlocksIdRelationshipsVideosGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

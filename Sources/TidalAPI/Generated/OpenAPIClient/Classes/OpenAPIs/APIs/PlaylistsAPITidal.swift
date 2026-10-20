@@ -15,29 +15,6 @@ public enum PlaylistsAPITidal {
 
 
 	/**
-	 * enum for parameter sort
-	 */
-	public enum Sort_playlistsGet: String, CaseIterable {
-		case CreatedAtAsc = "createdAt"
-		case CreatedAtDesc = "-createdAt"
-		case LastModifiedAtAsc = "lastModifiedAt"
-		case LastModifiedAtDesc = "-lastModifiedAt"
-		case NameAsc = "name"
-		case NameDesc = "-name"
-
-		func toPlaylistsAPIEnum() -> PlaylistsAPI.Sort_playlistsGet {
-			switch self {
-			case .CreatedAtAsc: return .CreatedAtAsc
-			case .CreatedAtDesc: return .CreatedAtDesc
-			case .LastModifiedAtAsc: return .LastModifiedAtAsc
-			case .LastModifiedAtDesc: return .LastModifiedAtDesc
-			case .NameAsc: return .NameAsc
-			case .NameDesc: return .NameDesc
-			}
-		}
-	}
-
-	/**
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_playlistsGet: String, CaseIterable {
@@ -65,13 +42,36 @@ public enum PlaylistsAPITidal {
 	}
 
 	/**
+	 * enum for parameter sort
+	 */
+	public enum Sort_playlistsGet: String, CaseIterable {
+		case CreatedAtAsc = "createdAt"
+		case CreatedAtDesc = "-createdAt"
+		case LastModifiedAtAsc = "lastModifiedAt"
+		case LastModifiedAtDesc = "-lastModifiedAt"
+		case NameAsc = "name"
+		case NameDesc = "-name"
+
+		func toPlaylistsAPIEnum() -> PlaylistsAPI.Sort_playlistsGet {
+			switch self {
+			case .CreatedAtAsc: return .CreatedAtAsc
+			case .CreatedAtDesc: return .CreatedAtDesc
+			case .LastModifiedAtAsc: return .LastModifiedAtAsc
+			case .LastModifiedAtDesc: return .LastModifiedAtDesc
+			case .NameAsc: return .NameAsc
+			case .NameDesc: return .NameDesc
+			}
+		}
+	}
+
+	/**
      Get multiple playlists.
      
      - returns: PlaylistsMultiResourceDataDocument
      */
-	public static func playlistsGet(pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [PlaylistsAPITidal.IncludeLinkage_playlistsGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsMultiResourceDataDocument {
+	public static func playlistsGet(countryCode: String? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [PlaylistsAPITidal.IncludeLinkage_playlistsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsGet]? = nil) async throws -> PlaylistsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include, filterCollaboratorsId: filterCollaboratorsId, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toPlaylistsAPIEnum() }, replaceMedia: replaceMedia)
+			PlaylistsAPI.playlistsGetWithRequestBuilder(countryCode: countryCode, filterCollaboratorsId: filterCollaboratorsId, filterId: filterId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPlaylistsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() })
 		}
 	}
 
@@ -204,9 +204,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsCuratorsMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsCuratorsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsCuratorsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsCuratorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlaylistsCuratorsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsCuratorsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			PlaylistsAPI.playlistsIdRelationshipsCuratorsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -263,9 +263,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsItemsMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsItemsGet(id: String, countryCode: String? = nil, filterQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsIdRelationshipsItemsGet]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() }, countryCode: countryCode, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia)
+			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, filterQuery: filterQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() })
 		}
 	}
 

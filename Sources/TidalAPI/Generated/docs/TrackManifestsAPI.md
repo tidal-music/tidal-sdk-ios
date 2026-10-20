@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **trackManifestsIdGet**
 ```swift
-    open class func trackManifestsIdGet(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool, shareCode: String? = nil, completion: @escaping (_ data: TrackManifestsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackManifestsIdGet(adaptive: Bool, formats: [Formats_trackManifestsIdGet], id: String, manifestType: ManifestType_trackManifestsIdGet, uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, shareCode: String? = nil) async throws -> TrackManifestsSingleResourceDataDocument
 ```
 
 Get single trackManifest.
@@ -21,24 +21,20 @@ Retrieves single trackManifest by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
+let adaptive = true // Bool | 
+let formats = ["formats_example"] // [String] | 
 let id = "id_example" // String | Track manifest id
 let manifestType = "manifestType_example" // String | 
-let formats = ["formats_example"] // [String] | 
 let uriScheme = "uriScheme_example" // String | 
 let usage = "usage_example" // String | 
-let adaptive = true // Bool | 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get single trackManifest.
-TrackManifestsAPI.trackManifestsIdGet(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive, shareCode: shareCode) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TrackManifestsAPI.trackManifestsIdGet(adaptive: adaptive, formats: formats, id: id, manifestType: manifestType, uriScheme: uriScheme, usage: usage, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -46,12 +42,12 @@ TrackManifestsAPI.trackManifestsIdGet(id: id, manifestType: manifestType, format
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **adaptive** | **Bool** |  | 
+ **formats** | [**[String]**](String.md) |  | 
  **id** | **String** | Track manifest id | 
  **manifestType** | **String** |  | 
- **formats** | [**[String]**](String.md) |  | 
  **uriScheme** | **String** |  | 
  **usage** | **String** |  | 
- **adaptive** | **Bool** |  | 
  **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type

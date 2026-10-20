@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **manualArtistClaimsPost**
 ```swift
-    open class func manualArtistClaimsPost(idempotencyKey: String? = nil, manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ManualArtistClaimsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func manualArtistClaimsPost(idempotencyKey: String? = nil, manualArtistClaimsCreateOperationPayload: ManualArtistClaimsCreateOperationPayload? = nil) async throws -> ManualArtistClaimsCreateSingleResourceDataDocument
 ```
 
 Create single manualArtistClaim.
@@ -25,15 +25,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let manualArtistClaimsCreateOperationPayload = ManualArtistClaimsCreateOperation_Payload(data: ManualArtistClaimsCreateOperation_Payload_Data(attributes: ManualArtistClaimsCreateOperation_Payload_Data_Attributes(acceptedTerms: false, artistId: "artistId_example", distributorName: "distributorName_example", errorReason: "errorReason_example", labelContactEmail: "labelContactEmail_example", labelContactName: "labelContactName_example", labelName: "labelName_example", legalFirstName: "legalFirstName_example", legalLastName: "legalLastName_example", managerEmail: "managerEmail_example", managerName: "managerName_example", role: "role_example", selectedAlbums: ["selectedAlbums_example"], selectedSingles: ["selectedSingles_example"], socialLink: ManualArtistClaimsExternalLink(href: "href_example"), upcs: ["upcs_example"], websiteOrSocialLink: nil), type: "type_example")) // ManualArtistClaimsCreateOperationPayload |  (optional)
 
 // Create single manualArtistClaim.
-ManualArtistClaimsAPI.manualArtistClaimsPost(idempotencyKey: idempotencyKey, manualArtistClaimsCreateOperationPayload: manualArtistClaimsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ManualArtistClaimsAPI.manualArtistClaimsPost(idempotencyKey: idempotencyKey, manualArtistClaimsCreateOperationPayload: manualArtistClaimsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 # **userRecommendationBlocksIdGet**
 ```swift
-    open class func userRecommendationBlocksIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userRecommendationBlocksIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserRecommendationBlocksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userRecommendationBlocksIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksSingleResourceDataDocument
 ```
 
 Get single userRecommendationBlock.
@@ -32,21 +32,17 @@ Retrieves single userRecommendationBlock by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: artists, owners, tracks, videos (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
 
 // Get single userRecommendationBlock.
-UserRecommendationBlocksAPI.userRecommendationBlocksIdGet(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -55,9 +51,9 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdGet(id: id, locale: locale
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: artists, owners, tracks, videos | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums | [optional] 
 
 ### Return type
@@ -77,7 +73,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsArtistsDelete**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsArtistsDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from artists relationship (\"to-many\").
@@ -94,15 +90,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userRecommendationBlocksArtistsRelationshipRemoveOperationPayload = UserRecommendationBlocksArtistsRelationshipRemoveOperation_Payload(data: [UserRecommendationBlocksArtistsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksArtistsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from artists relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsDelete(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: userRecommendationBlocksArtistsRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsDelete(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipRemoveOperationPayload: userRecommendationBlocksArtistsRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -131,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsArtistsGet**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserRecommendationBlocksArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksArtistsMultiRelationshipDataDocument
 ```
 
 Get artists relationship (\"to-many\").
@@ -144,20 +136,16 @@ Retrieves artists relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: artists (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
 
 // Get artists relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -166,8 +154,8 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsGet(id
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: artists | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums | [optional] 
 
 ### Return type
@@ -187,7 +175,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsArtistsPost**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsArtistsPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksArtistsRelationshipAddOperationPayload: UserRecommendationBlocksArtistsRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument
 ```
 
 Add to artists relationship (\"to-many\").
@@ -204,15 +192,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userRecommendationBlocksArtistsRelationshipAddOperationPayload = UserRecommendationBlocksArtistsRelationshipAddOperation_Payload(data: [UserRecommendationBlocksArtistsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksArtistsRelationshipAddOperationPayload |  (optional)
 
 // Add to artists relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsPost(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipAddOperationPayload: userRecommendationBlocksArtistsRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsArtistsPost(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksArtistsRelationshipAddOperationPayload: userRecommendationBlocksArtistsRelationshipAddOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -241,7 +225,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsOwnersGet**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserRecommendationBlocksOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserRecommendationBlocksOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -258,15 +242,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -295,7 +275,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsTracksDelete**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsTracksDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: UserRecommendationBlocksTracksRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from tracks relationship (\"to-many\").
@@ -312,15 +292,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userRecommendationBlocksTracksRelationshipRemoveOperationPayload = UserRecommendationBlocksTracksRelationshipRemoveOperation_Payload(data: [UserRecommendationBlocksTracksRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksTracksRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from tracks relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksDelete(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: userRecommendationBlocksTracksRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksDelete(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipRemoveOperationPayload: userRecommendationBlocksTracksRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -349,7 +325,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsTracksGet**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsTracksGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserRecommendationBlocksTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsTracksGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksTracksMultiRelationshipDataDocument
 ```
 
 Get tracks relationship (\"to-many\").
@@ -362,20 +338,16 @@ Retrieves tracks relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: tracks (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: tracks (optional)
 
 // Get tracks relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -384,8 +356,8 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksGet(id:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: tracks | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: tracks | [optional] 
 
 ### Return type
@@ -405,7 +377,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsTracksPost**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksTracksAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsTracksPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksTracksRelationshipAddOperationPayload: UserRecommendationBlocksTracksRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksTracksAddMultiRelationshipDataDocument
 ```
 
 Add to tracks relationship (\"to-many\").
@@ -422,15 +394,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userRecommendationBlocksTracksRelationshipAddOperationPayload = UserRecommendationBlocksTracksRelationshipAddOperation_Payload(data: [UserRecommendationBlocksTracksRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksTracksRelationshipAddOperationPayload |  (optional)
 
 // Add to tracks relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksPost(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipAddOperationPayload: userRecommendationBlocksTracksRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsTracksPost(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksTracksRelationshipAddOperationPayload: userRecommendationBlocksTracksRelationshipAddOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -459,7 +427,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsVideosDelete**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsVideosDelete(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: UserRecommendationBlocksVideosRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from videos relationship (\"to-many\").
@@ -476,15 +444,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userRecommendationBlocksVideosRelationshipRemoveOperationPayload = UserRecommendationBlocksVideosRelationshipRemoveOperation_Payload(data: [UserRecommendationBlocksVideosRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksVideosRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from videos relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosDelete(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: userRecommendationBlocksVideosRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosDelete(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipRemoveOperationPayload: userRecommendationBlocksVideosRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -513,7 +477,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsVideosGet**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsVideosGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserRecommendationBlocksVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsVideosGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserRecommendationBlocksVideosMultiRelationshipDataDocument
 ```
 
 Get videos relationship (\"to-many\").
@@ -526,20 +490,16 @@ Retrieves videos relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User recommendation blocks id. Use `me` for the authenticated user's resource
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: videos (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: videos (optional)
 
 // Get videos relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -548,8 +508,8 @@ UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosGet(id:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User recommendation blocks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: videos | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: videos | [optional] 
 
 ### Return type
@@ -569,7 +529,7 @@ Name | Type | Description  | Notes
 
 # **userRecommendationBlocksIdRelationshipsVideosPost**
 ```swift
-    open class func userRecommendationBlocksIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserRecommendationBlocksVideosAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userRecommendationBlocksIdRelationshipsVideosPost(id: String, idempotencyKey: String? = nil, userRecommendationBlocksVideosRelationshipAddOperationPayload: UserRecommendationBlocksVideosRelationshipAddOperationPayload? = nil) async throws -> UserRecommendationBlocksVideosAddMultiRelationshipDataDocument
 ```
 
 Add to videos relationship (\"to-many\").
@@ -586,15 +546,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userRecommendationBlocksVideosRelationshipAddOperationPayload = UserRecommendationBlocksVideosRelationshipAddOperation_Payload(data: [UserRecommendationBlocksVideosRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserRecommendationBlocksVideosRelationshipAddOperationPayload |  (optional)
 
 // Add to videos relationship (\"to-many\").
-UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosPost(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipAddOperationPayload: userRecommendationBlocksVideosRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserRecommendationBlocksAPI.userRecommendationBlocksIdRelationshipsVideosPost(id: id, idempotencyKey: idempotencyKey, userRecommendationBlocksVideosRelationshipAddOperationPayload: userRecommendationBlocksVideosRelationshipAddOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

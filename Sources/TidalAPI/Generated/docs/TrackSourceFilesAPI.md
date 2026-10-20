@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **trackSourceFilesIdGet**
 ```swift
-    open class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil, completion: @escaping (_ data: TrackSourceFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument
 ```
 
 Get single trackSourceFile.
@@ -28,15 +28,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single trackSourceFile.
-TrackSourceFilesAPI.trackSourceFilesIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TrackSourceFilesAPI.trackSourceFilesIdGet(id: id, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -65,7 +61,7 @@ Name | Type | Description  | Notes
 
 # **trackSourceFilesIdRelationshipsOwnersGet**
 ```swift
-    open class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TrackSourceFilesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -82,15 +78,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-TrackSourceFilesAPI.trackSourceFilesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TrackSourceFilesAPI.trackSourceFilesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -119,7 +111,7 @@ Name | Type | Description  | Notes
 
 # **trackSourceFilesPost**
 ```swift
-    open class func trackSourceFilesPost(idempotencyKey: String? = nil, trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil, completion: @escaping (_ data: TrackSourceFilesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackSourceFilesPost(idempotencyKey: String? = nil, trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil) async throws -> TrackSourceFilesCreateSingleResourceDataDocument
 ```
 
 Create single trackSourceFile.
@@ -135,15 +127,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let trackSourceFilesCreateOperationPayload = TrackSourceFilesCreateOperation_Payload(data: TrackSourceFilesCreateOperation_Payload_Data(attributes: TrackSourceFilesCreateOperation_Payload_Data_Attributes(md5Hash: "md5Hash_example", size: 123), relationships: TrackSourceFilesCreateOperation_Payload_Data_Relationships(track: TrackSourceFilesCreateOperation_Payload_Data_Relationships_Track(data: TrackSourceFilesCreateOperation_Payload_Data_Relationships_Track_Data(id: "id_example", type: "type_example"), id: "id_example", type: "type_example")), type: "type_example")) // TrackSourceFilesCreateOperationPayload |  (optional)
 
 // Create single trackSourceFile.
-TrackSourceFilesAPI.trackSourceFilesPost(idempotencyKey: idempotencyKey, trackSourceFilesCreateOperationPayload: trackSourceFilesCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TrackSourceFilesAPI.trackSourceFilesPost(idempotencyKey: idempotencyKey, trackSourceFilesCreateOperationPayload: trackSourceFilesCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

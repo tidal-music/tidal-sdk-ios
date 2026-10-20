@@ -13,7 +13,7 @@ import AnyCodable
 public struct SquareItemsUpdateOperationPayloadDataAttributesVariation: Codable, Hashable {
 
     public static let nameRule = StringRule(minLength: nil, maxLength: 255, pattern: nil)
-    public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^\\+?(?=[0-9.]*[1-9])(?:0*[0-9]{1,16}(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])/")
+    public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "^\\+?(?=[0-9.]*[1-9])(?:0*[0-9]{1,16}(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])")
     public static let stockQuantityRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public static let variationIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Variation name, such as a size or color; an empty string for none */

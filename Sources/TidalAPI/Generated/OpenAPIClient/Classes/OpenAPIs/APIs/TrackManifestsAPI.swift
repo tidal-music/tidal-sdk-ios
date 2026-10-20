@@ -13,14 +13,6 @@ import AnyCodable
 internal class TrackManifestsAPI {
 
     /**
-     * enum for parameter manifestType
-     */
-    public enum ManifestType_trackManifestsIdGet: String, CaseIterable {
-        case hls = "HLS"
-        case mpegDash = "MPEG_DASH"
-    }
-
-    /**
      * enum for parameter formats
      */
     public enum Formats_trackManifestsIdGet: String, CaseIterable {
@@ -29,6 +21,14 @@ internal class TrackManifestsAPI {
         case flac = "FLAC"
         case flacHires = "FLAC_HIRES"
         case eac3Joc = "EAC3_JOC"
+    }
+
+    /**
+     * enum for parameter manifestType
+     */
+    public enum ManifestType_trackManifestsIdGet: String, CaseIterable {
+        case hls = "HLS"
+        case mpegDash = "MPEG_DASH"
     }
 
     /**
@@ -50,19 +50,19 @@ internal class TrackManifestsAPI {
     /**
      Get single trackManifest.
      
+     - parameter adaptive: (query)  
+     - parameter formats: (query)  
      - parameter id: (path) Track manifest id 
      - parameter manifestType: (query)  
-     - parameter formats: (query)  
      - parameter uriScheme: (query)  
      - parameter usage: (query)  
-     - parameter adaptive: (query)  
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TrackManifestsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackManifestsIdGet(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool, shareCode: String? = nil) async throws -> TrackManifestsSingleResourceDataDocument {
+    internal class func trackManifestsIdGet(adaptive: Bool, formats: [Formats_trackManifestsIdGet], id: String, manifestType: ManifestType_trackManifestsIdGet, uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, shareCode: String? = nil) async throws -> TrackManifestsSingleResourceDataDocument {
         do {
-            return try await trackManifestsIdGetWithRequestBuilder(id: id, manifestType: manifestType, formats: formats, uriScheme: uriScheme, usage: usage, adaptive: adaptive, shareCode: shareCode).execute().body
+            return try await trackManifestsIdGetWithRequestBuilder(adaptive: adaptive, formats: formats, id: id, manifestType: manifestType, uriScheme: uriScheme, usage: usage, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -79,16 +79,16 @@ internal class TrackManifestsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
+     - parameter adaptive: (query)  
+     - parameter formats: (query)  
      - parameter id: (path) Track manifest id 
      - parameter manifestType: (query)  
-     - parameter formats: (query)  
      - parameter uriScheme: (query)  
      - parameter usage: (query)  
-     - parameter adaptive: (query)  
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TrackManifestsSingleResourceDataDocument> 
      */
-    internal class func trackManifestsIdGetWithRequestBuilder(id: String, manifestType: ManifestType_trackManifestsIdGet, formats: [Formats_trackManifestsIdGet], uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, adaptive: Bool, shareCode: String? = nil) -> RequestBuilder<TrackManifestsSingleResourceDataDocument> {
+    internal class func trackManifestsIdGetWithRequestBuilder(adaptive: Bool, formats: [Formats_trackManifestsIdGet], id: String, manifestType: ManifestType_trackManifestsIdGet, uriScheme: UriScheme_trackManifestsIdGet, usage: Usage_trackManifestsIdGet, shareCode: String? = nil) -> RequestBuilder<TrackManifestsSingleResourceDataDocument> {
         var localVariablePath = "/trackManifests/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -98,11 +98,11 @@ internal class TrackManifestsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "manifestType": (wrappedValue: manifestType.encodeToJSON(), isExplode: true),
+            "adaptive": (wrappedValue: adaptive.encodeToJSON(), isExplode: true),
             "formats": (wrappedValue: formats.encodeToJSON(), isExplode: true),
+            "manifestType": (wrappedValue: manifestType.encodeToJSON(), isExplode: true),
             "uriScheme": (wrappedValue: uriScheme.encodeToJSON(), isExplode: true),
             "usage": (wrappedValue: usage.encodeToJSON(), isExplode: true),
-            "adaptive": (wrappedValue: adaptive.encodeToJSON(), isExplode: true),
             "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 

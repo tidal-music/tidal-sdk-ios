@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;priceConfigurations&#x60;. */
 public struct TracksPriceConfigSingleRelationshipDataDocument: Codable, Hashable {
 
     public var data: ResourceIdentifier?

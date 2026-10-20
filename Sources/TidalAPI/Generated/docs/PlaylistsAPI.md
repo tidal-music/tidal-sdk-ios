@@ -26,7 +26,7 @@ Method | HTTP request | Description
 
 # **playlistsGet**
 ```swift
-    open class func playlistsGet(pageCursor: String? = nil, sort: [Sort_playlistsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [IncludeLinkage_playlistsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsGet(countryCode: String? = nil, filterCollaboratorsId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_playlistsGet]? = nil) async throws -> PlaylistsMultiResourceDataDocument
 ```
 
 Get multiple playlists.
@@ -38,26 +38,22 @@ Retrieves multiple playlists by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts (optional)
-let filterCollaboratorsId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
+let filterCollaboratorsId = ["inner_example"] // [String] | User id. Also accepts `me`. (optional)
 let filterId = ["inner_example"] // [String] | List of playlist IDs (e.g. `550e8400-e29b-41d4-a716-446655440000`) (optional)
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`. (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: curators.albums (optional)
+let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 
 // Get multiple playlists.
-PlaylistsAPI.playlistsGet(pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterCollaboratorsId: filterCollaboratorsId, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsGet(countryCode: countryCode, filterCollaboratorsId: filterCollaboratorsId, filterId: filterId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -65,15 +61,15 @@ PlaylistsAPI.playlistsGet(pageCursor: pageCursor, sort: sort, countryCode: count
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts | [optional] 
- **filterCollaboratorsId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
+ **filterCollaboratorsId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | [optional] 
  **filterId** | [**[String]**](String.md) | List of playlist IDs (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) | [optional] 
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: collaboratorProfiles, collaborators, coverArt, curators, items, ownerProfiles, owners, suggestedCoverArts | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: curators.albums | [optional] 
+ **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
 
 ### Return type
 
@@ -92,7 +88,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdDelete**
 ```swift
-    open class func playlistsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single playlist.
@@ -108,15 +104,11 @@ let id = "id_example" // String | Playlist id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single playlist.
-PlaylistsAPI.playlistsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -144,7 +136,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdGet**
 ```swift
-    open class func playlistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistsSingleResourceDataDocument
 ```
 
 Get single playlist.
@@ -163,15 +155,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: curators.albums (optional)
 
 // Get single playlist.
-PlaylistsAPI.playlistsIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -202,7 +190,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdPatch**
 ```swift
-    open class func playlistsIdPatch(id: String, idempotencyKey: String? = nil, playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = nil, completion: @escaping (_ data: PlaylistsUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdPatch(id: String, idempotencyKey: String? = nil, playlistsUpdateOperationPayload: PlaylistsUpdateOperationPayload? = nil) async throws -> PlaylistsUpdateSingleResourceDataDocument
 ```
 
 Update single playlist.
@@ -219,15 +207,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistsUpdateOperationPayload = PlaylistsUpdateOperation_Payload(data: PlaylistsUpdateOperation_Payload_Data(attributes: PlaylistsUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", description: "description_example", name: "name_example"), id: "id_example", type: "type_example")) // PlaylistsUpdateOperationPayload |  (optional)
 
 // Update single playlist.
-PlaylistsAPI.playlistsIdPatch(id: id, idempotencyKey: idempotencyKey, playlistsUpdateOperationPayload: playlistsUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdPatch(id: id, idempotencyKey: idempotencyKey, playlistsUpdateOperationPayload: playlistsUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -256,7 +240,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCollaboratorProfilesDelete**
 ```swift
-    open class func playlistsIdRelationshipsCollaboratorProfilesDelete(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCollaboratorProfilesDelete(id: String, idempotencyKey: String? = nil, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from collaboratorProfiles relationship (\"to-many\").
@@ -273,15 +257,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistsCollaboratorProfilesRelationshipRemoveOperationPayload = PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload(data: [PlaylistsCollaboratorProfilesRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from collaboratorProfiles relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesDelete(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: playlistsCollaboratorProfilesRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesDelete(id: id, idempotencyKey: idempotencyKey, playlistsCollaboratorProfilesRelationshipRemoveOperationPayload: playlistsCollaboratorProfilesRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -310,7 +290,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCollaboratorProfilesGet**
 ```swift
-    open class func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCollaboratorProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsCollaboratorProfilesMultiRelationshipDataDocument
 ```
 
 Get collaboratorProfiles relationship (\"to-many\").
@@ -327,15 +307,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get collaboratorProfiles relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsCollaboratorProfilesGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -364,7 +340,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCollaboratorsGet**
 ```swift
-    open class func playlistsIdRelationshipsCollaboratorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsCollaboratorsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCollaboratorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsCollaboratorsMultiRelationshipDataDocument
 ```
 
 Get collaborators relationship (\"to-many\").
@@ -381,15 +357,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get collaborators relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsCollaboratorsGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -418,7 +390,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCoverArtGet**
 ```swift
-    open class func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsCoverArtMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsCoverArtMultiRelationshipDataDocument
 ```
 
 Get coverArt relationship (\"to-many\").
@@ -436,15 +408,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get coverArt relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCoverArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsCoverArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -474,7 +442,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCoverArtPatch**
 ```swift
-    open class func playlistsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, playlistsCoverArtRelationshipUpdateOperationPayload: PlaylistsCoverArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update coverArt relationship (\"to-many\").
@@ -491,15 +459,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistsCoverArtRelationshipUpdateOperationPayload = PlaylistsCoverArtRelationshipUpdateOperation_Payload(data: [PlaylistsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // PlaylistsCoverArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update coverArt relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCoverArtPatch(id: id, idempotencyKey: idempotencyKey, playlistsCoverArtRelationshipUpdateOperationPayload: playlistsCoverArtRelationshipUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsCoverArtPatch(id: id, idempotencyKey: idempotencyKey, playlistsCoverArtRelationshipUpdateOperationPayload: playlistsCoverArtRelationshipUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -528,7 +492,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsCuratorsGet**
 ```swift
-    open class func playlistsIdRelationshipsCuratorsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistsCuratorsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsCuratorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlaylistsCuratorsMultiRelationshipDataDocument
 ```
 
 Get curators relationship (\"to-many\").
@@ -541,20 +505,16 @@ Artist profiles credited for the playlist
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: curators (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: curators.albums (optional)
 
 // Get curators relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsCuratorsGet(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsCuratorsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -563,8 +523,8 @@ PlaylistsAPI.playlistsIdRelationshipsCuratorsGet(id: id, pageCursor: pageCursor,
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: curators | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: curators.albums | [optional] 
 
 ### Return type
@@ -584,7 +544,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsItemsDelete**
 ```swift
-    open class func playlistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipRemoveOperationPayload: PlaylistsItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from items relationship (\"to-many\").
@@ -601,15 +561,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistsItemsRelationshipRemoveOperationPayload = PlaylistsItemsRelationshipRemoveOperation_Payload(data: [PlaylistsItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // PlaylistsItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipRemoveOperationPayload: playlistsItemsRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipRemoveOperationPayload: playlistsItemsRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -638,7 +594,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsItemsGet**
 ```swift
-    open class func playlistsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistsItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsGet(id: String, countryCode: String? = nil, filterQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -651,23 +607,19 @@ Retrieves items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
 let filterQuery = "filterQuery_example" // String | Filter playlist items by a free-text query (e.g. `halo`) (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
+let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 
 // Get items relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, countryCode: countryCode, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsItemsGet(id: id, countryCode: countryCode, filterQuery: filterQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -676,12 +628,12 @@ PlaylistsAPI.playlistsIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, so
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
  **filterQuery** | **String** | Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
+ **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
 
 ### Return type
 
@@ -700,7 +652,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsItemsPatch**
 ```swift
-    open class func playlistsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipUpdateOperationPayload: PlaylistsItemsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update items relationship (\"to-many\").
@@ -717,15 +669,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistsItemsRelationshipUpdateOperationPayload = PlaylistsItemsRelationshipUpdateOperation_Payload(data: [PlaylistsItemsRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlaylistsItemsRelationshipUpdateOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipUpdateOperationPayload |  (optional)
 
 // Update items relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsItemsPatch(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipUpdateOperationPayload: playlistsItemsRelationshipUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsItemsPatch(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipUpdateOperationPayload: playlistsItemsRelationshipUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -754,7 +702,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsItemsPost**
 ```swift
-    open class func playlistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: PlaylistsItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, playlistsItemsRelationshipAddOperationPayload: PlaylistsItemsRelationshipAddOperationPayload? = nil) async throws -> PlaylistsItemsAddMultiRelationshipDataDocument
 ```
 
 Add to items relationship (\"to-many\").
@@ -771,15 +719,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistsItemsRelationshipAddOperationPayload = PlaylistsItemsRelationshipAddOperation_Payload(data: [PlaylistsItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")], meta: PlaylistsItemsRelationshipAddOperation_Payload_Meta(onDuplicates: "onDuplicates_example", positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, playlistsItemsRelationshipAddOperationPayload: playlistsItemsRelationshipAddOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -808,7 +752,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsOwnerProfilesGet**
 ```swift
-    open class func playlistsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsOwnerProfilesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsOwnerProfilesMultiRelationshipDataDocument
 ```
 
 Get ownerProfiles relationship (\"to-many\").
@@ -825,15 +769,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get ownerProfiles relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsOwnerProfilesGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -862,7 +802,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsOwnersGet**
 ```swift
-    open class func playlistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -879,15 +819,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -916,7 +852,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsSuggestedCoverArtsGet**
 ```swift
-    open class func playlistsIdRelationshipsSuggestedCoverArtsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsIdRelationshipsSuggestedCoverArtsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument
 ```
 
 Get suggestedCoverArts relationship (\"to-many\").
@@ -933,15 +869,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get suggestedCoverArts relationship (\"to-many\").
-PlaylistsAPI.playlistsIdRelationshipsSuggestedCoverArtsGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsSuggestedCoverArtsGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -970,7 +902,7 @@ Name | Type | Description  | Notes
 
 # **playlistsPost**
 ```swift
-    open class func playlistsPost(idempotencyKey: String? = nil, playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = nil, completion: @escaping (_ data: PlaylistsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistsPost(idempotencyKey: String? = nil, playlistsCreateOperationPayload: PlaylistsCreateOperationPayload? = nil) async throws -> PlaylistsCreateSingleResourceDataDocument
 ```
 
 Create single playlist.
@@ -986,15 +918,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistsCreateOperationPayload = PlaylistsCreateOperation_Payload(data: PlaylistsCreateOperation_Payload_Data(attributes: PlaylistsCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", createdAt: Date(), description: "description_example", name: "name_example"), type: "type_example")) // PlaylistsCreateOperationPayload |  (optional)
 
 // Create single playlist.
-PlaylistsAPI.playlistsPost(idempotencyKey: idempotencyKey, playlistsCreateOperationPayload: playlistsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistsAPI.playlistsPost(idempotencyKey: idempotencyKey, playlistsCreateOperationPayload: playlistsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

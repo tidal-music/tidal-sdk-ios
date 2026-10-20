@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [SearchResultsPlaylistsResourceIdentifier] |  | [optional] 
+**data** | [ResourceIdentifier] |  | [optional] 
 **included** | [IncludedInner] |  | [optional] 
 **links** | [**Links**](Links.md) |  | 
 

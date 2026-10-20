@@ -38,9 +38,9 @@ public enum FolderItemsAPITidal {
      
      - returns: FolderItemsMultiResourceDataDocument
      */
-	public static func folderItemsGet(pageCursor: String? = nil, include: [String]? = nil, filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSubjectOwnersId: String? = nil, includeLinkage: [FolderItemsAPITidal.IncludeLinkage_folderItemsGet]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
+	public static func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [FolderItemsAPITidal.IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsGetWithRequestBuilder(pageCursor: pageCursor, include: include, filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSubjectOwnersId: filterSubjectOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toFolderItemsAPIEnum() }, replaceMedia: replaceMedia)
+			FolderItemsAPI.folderItemsGetWithRequestBuilder(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage?.compactMap { $0.toFolderItemsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

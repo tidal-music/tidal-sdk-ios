@@ -13,15 +13,6 @@ import AnyCodable
 internal class ReactionsAPI {
 
     /**
-     * enum for parameter stats
-     */
-    public enum Stats_reactionsGet: String, CaseIterable {
-        case all = "ALL"
-        case countsByType = "COUNTS_BY_TYPE"
-        case totalCount = "TOTAL_COUNT"
-    }
-
-    /**
      * enum for parameter filterSubjectType
      */
     public enum FilterSubjectType_reactionsGet: String, CaseIterable {
@@ -44,25 +35,34 @@ internal class ReactionsAPI {
     }
 
     /**
+     * enum for parameter stats
+     */
+    public enum Stats_reactionsGet: String, CaseIterable {
+        case all = "ALL"
+        case countsByType = "COUNTS_BY_TYPE"
+        case totalCount = "TOTAL_COUNT"
+    }
+
+    /**
      Get multiple reactions.
      
+     - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
+     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
+     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
+     - parameter filterSubject: (query) The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, ownerProfiles, owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - parameter stats: (query)  (optional)
      - parameter statsOnly: (query)  (optional)
      - parameter viewerContext: (query)  (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Include related resources. Available relationships: author, ownerProfiles, owners (optional)
-     - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
-     - parameter filterSubject: (query) The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
-     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
-     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: ReactionsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil) async throws -> ReactionsMultiResourceDataDocument {
+    internal class func reactionsGet(filterEmoji: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil) async throws -> ReactionsMultiResourceDataDocument {
         do {
-            return try await reactionsGetWithRequestBuilder(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+            return try await reactionsGetWithRequestBuilder(filterEmoji: filterEmoji, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, stats: stats, statsOnly: statsOnly, viewerContext: viewerContext).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -76,37 +76,37 @@ internal class ReactionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
+     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
+     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
+     - parameter filterSubject: (query) The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, ownerProfiles, owners (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - parameter stats: (query)  (optional)
      - parameter statsOnly: (query)  (optional)
      - parameter viewerContext: (query)  (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Include related resources. Available relationships: author, ownerProfiles, owners (optional)
-     - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
-     - parameter filterSubject: (query) The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
-     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
-     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: RequestBuilder<ReactionsMultiResourceDataDocument> 
      */
-    internal class func reactionsGetWithRequestBuilder(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
+    internal class func reactionsGetWithRequestBuilder(filterEmoji: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
         let localVariablePath = "/reactions"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "filter[emoji]": (wrappedValue: filterEmoji?.encodeToJSON(), isExplode: true),
+            "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
+            "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
+            "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
             "stats": (wrappedValue: stats?.encodeToJSON(), isExplode: true),
             "statsOnly": (wrappedValue: statsOnly?.encodeToJSON(), isExplode: true),
             "viewerContext": (wrappedValue: viewerContext?.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "filter[emoji]": (wrappedValue: filterEmoji?.encodeToJSON(), isExplode: true),
-            "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
-            "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
-            "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
-            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
-            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

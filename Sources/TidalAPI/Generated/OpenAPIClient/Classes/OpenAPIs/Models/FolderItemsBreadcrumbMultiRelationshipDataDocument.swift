@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;folders&#x60;. */
 public struct FolderItemsBreadcrumbMultiRelationshipDataDocument: Codable, Hashable {
 
     public var data: [ResourceIdentifier]?

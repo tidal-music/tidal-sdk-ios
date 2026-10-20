@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **userSubscriptionPriceChangesGet**
 ```swift
-    open class func userSubscriptionPriceChangesGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_userSubscriptionPriceChangesGet]? = nil, completion: @escaping (_ data: UserSubscriptionPriceChangesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userSubscriptionPriceChangesGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_userSubscriptionPriceChangesGet]? = nil) async throws -> UserSubscriptionPriceChangesMultiResourceDataDocument
 ```
 
 Get multiple userSubscriptionPriceChanges.
@@ -22,20 +22,16 @@ Retrieves multiple userSubscriptionPriceChanges by available filters, or without
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: decision (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple userSubscriptionPriceChanges.
-UserSubscriptionPriceChangesAPI.userSubscriptionPriceChangesGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserSubscriptionPriceChangesAPI.userSubscriptionPriceChangesGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -43,7 +39,7 @@ UserSubscriptionPriceChangesAPI.userSubscriptionPriceChangesGet(filterOwnersId: 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: decision | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
@@ -64,7 +60,7 @@ Name | Type | Description  | Notes
 
 # **userSubscriptionPriceChangesIdRelationshipsDecisionGet**
 ```swift
-    open class func userSubscriptionPriceChangesIdRelationshipsDecisionGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userSubscriptionPriceChangesIdRelationshipsDecisionGet(id: String, include: [String]? = nil) async throws -> UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument
 ```
 
 Get decision relationship (\"to-one\").
@@ -80,15 +76,11 @@ let id = "id_example" // String | Price change id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: decision (optional)
 
 // Get decision relationship (\"to-one\").
-UserSubscriptionPriceChangesAPI.userSubscriptionPriceChangesIdRelationshipsDecisionGet(id: id, include: include) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserSubscriptionPriceChangesAPI.userSubscriptionPriceChangesIdRelationshipsDecisionGet(id: id, include: include)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

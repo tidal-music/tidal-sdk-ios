@@ -15,21 +15,6 @@ public enum SearchResultsAPITidal {
 
 
 	/**
-	 * enum for parameter explicitFilter
-	 */
-	public enum ExplicitFilter_searchResultsGet: String, CaseIterable {
-		case include = "INCLUDE"
-		case exclude = "EXCLUDE"
-
-		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsGet {
-			switch self {
-			case .include: return .include
-			case .exclude: return .exclude
-			}
-		}
-	}
-
-	/**
 	 * enum for parameter deviceType
 	 */
 	public enum DeviceType_searchResultsGet: String, CaseIterable {
@@ -53,22 +38,16 @@ public enum SearchResultsAPITidal {
 	}
 
 	/**
-	 * enum for parameter systemType
+	 * enum for parameter explicitFilter
 	 */
-	public enum SystemType_searchResultsGet: String, CaseIterable {
-		case android = "ANDROID"
-		case desktop = "DESKTOP"
-		case tesla = "TESLA"
-		case ios = "IOS"
-		case web = "WEB"
+	public enum ExplicitFilter_searchResultsGet: String, CaseIterable {
+		case include = "INCLUDE"
+		case exclude = "EXCLUDE"
 
-		func toSearchResultsAPIEnum() -> SearchResultsAPI.SystemType_searchResultsGet {
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsGet {
 			switch self {
-			case .android: return .android
-			case .desktop: return .desktop
-			case .tesla: return .tesla
-			case .ios: return .ios
-			case .web: return .web
+			case .include: return .include
+			case .exclude: return .exclude
 			}
 		}
 	}
@@ -97,31 +76,37 @@ public enum SearchResultsAPITidal {
 	}
 
 	/**
+	 * enum for parameter systemType
+	 */
+	public enum SystemType_searchResultsGet: String, CaseIterable {
+		case android = "ANDROID"
+		case desktop = "DESKTOP"
+		case tesla = "TESLA"
+		case ios = "IOS"
+		case web = "WEB"
+
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.SystemType_searchResultsGet {
+			switch self {
+			case .android: return .android
+			case .desktop: return .desktop
+			case .tesla: return .tesla
+			case .ios: return .ios
+			case .web: return .web
+			}
+		}
+	}
+
+	/**
      Get search results by query.
      
      - returns: SearchResultsMultiResourceDataDocument
      */
-	public static func searchResultsGet(filterQuery: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsGet? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, includeLinkage: [SearchResultsAPITidal.IncludeLinkage_searchResultsGet]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsMultiResourceDataDocument {
+	public static func searchResultsGet(filterQuery: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsGet? = nil, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsGet? = nil, include: [String]? = nil, includeLinkage: [SearchResultsAPITidal.IncludeLinkage_searchResultsGet]? = nil, replaceMedia: String? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsGet? = nil) async throws -> SearchResultsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchResultsAPI.searchResultsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSearchResultsAPIEnum() }, replaceMedia: replaceMedia)
+			SearchResultsAPI.searchResultsGetWithRequestBuilder(filterQuery: filterQuery, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), include: include, includeLinkage: includeLinkage?.compactMap { $0.toSearchResultsAPIEnum() }, replaceMedia: replaceMedia, systemType: systemType?.toSearchResultsAPIEnum())
 		}
 	}
 
-
-	/**
-	 * enum for parameter explicitFilter
-	 */
-	public enum ExplicitFilter_searchResultsIdRelationshipsAlbumsGet: String, CaseIterable {
-		case include = "INCLUDE"
-		case exclude = "EXCLUDE"
-
-		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsAlbumsGet {
-			switch self {
-			case .include: return .include
-			case .exclude: return .exclude
-			}
-		}
-	}
 
 	/**
 	 * enum for parameter deviceType
@@ -142,6 +127,21 @@ public enum SearchResultsAPITidal {
 			case .phone: return .phone
 			case .tablet: return .tablet
 			case .tv: return .tv
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter explicitFilter
+	 */
+	public enum ExplicitFilter_searchResultsIdRelationshipsAlbumsGet: String, CaseIterable {
+		case include = "INCLUDE"
+		case exclude = "EXCLUDE"
+
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsAlbumsGet {
+			switch self {
+			case .include: return .include
+			case .exclude: return .exclude
 			}
 		}
 	}
@@ -172,27 +172,12 @@ public enum SearchResultsAPITidal {
      
      - returns: SearchResultsAlbumsMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsAlbumsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsAlbumsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsAlbumsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsAlbumsMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsAlbumsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsAlbumsGet? = nil, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsAlbumsGet? = nil) async throws -> SearchResultsAlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchResultsAPI.searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
+			SearchResultsAPI.searchResultsIdRelationshipsAlbumsGetWithRequestBuilder(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType?.toSearchResultsAPIEnum())
 		}
 	}
 
-
-	/**
-	 * enum for parameter explicitFilter
-	 */
-	public enum ExplicitFilter_searchResultsIdRelationshipsArtistsGet: String, CaseIterable {
-		case include = "INCLUDE"
-		case exclude = "EXCLUDE"
-
-		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsArtistsGet {
-			switch self {
-			case .include: return .include
-			case .exclude: return .exclude
-			}
-		}
-	}
 
 	/**
 	 * enum for parameter deviceType
@@ -213,6 +198,21 @@ public enum SearchResultsAPITidal {
 			case .phone: return .phone
 			case .tablet: return .tablet
 			case .tv: return .tv
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter explicitFilter
+	 */
+	public enum ExplicitFilter_searchResultsIdRelationshipsArtistsGet: String, CaseIterable {
+		case include = "INCLUDE"
+		case exclude = "EXCLUDE"
+
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsArtistsGet {
+			switch self {
+			case .include: return .include
+			case .exclude: return .exclude
 			}
 		}
 	}
@@ -243,27 +243,12 @@ public enum SearchResultsAPITidal {
      
      - returns: SearchResultsArtistsMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsArtistsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsArtistsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsArtistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsArtistsMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsArtistsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsArtistsGet? = nil, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsArtistsGet? = nil) async throws -> SearchResultsArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchResultsAPI.searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
+			SearchResultsAPI.searchResultsIdRelationshipsArtistsGetWithRequestBuilder(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType?.toSearchResultsAPIEnum())
 		}
 	}
 
-
-	/**
-	 * enum for parameter explicitFilter
-	 */
-	public enum ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet: String, CaseIterable {
-		case include = "INCLUDE"
-		case exclude = "EXCLUDE"
-
-		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet {
-			switch self {
-			case .include: return .include
-			case .exclude: return .exclude
-			}
-		}
-	}
 
 	/**
 	 * enum for parameter deviceType
@@ -284,6 +269,21 @@ public enum SearchResultsAPITidal {
 			case .phone: return .phone
 			case .tablet: return .tablet
 			case .tv: return .tv
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter explicitFilter
+	 */
+	public enum ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet: String, CaseIterable {
+		case include = "INCLUDE"
+		case exclude = "EXCLUDE"
+
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet {
+			switch self {
+			case .include: return .include
+			case .exclude: return .exclude
 			}
 		}
 	}
@@ -314,27 +314,12 @@ public enum SearchResultsAPITidal {
      
      - returns: SearchResultsPlaylistsMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsPlaylistsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsPlaylistsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsPlaylistsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsPlaylistsMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsPlaylistsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsPlaylistsGet? = nil, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsPlaylistsGet? = nil) async throws -> SearchResultsPlaylistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
+			SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGetWithRequestBuilder(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType?.toSearchResultsAPIEnum())
 		}
 	}
 
-
-	/**
-	 * enum for parameter explicitFilter
-	 */
-	public enum ExplicitFilter_searchResultsIdRelationshipsTopHitsGet: String, CaseIterable {
-		case include = "INCLUDE"
-		case exclude = "EXCLUDE"
-
-		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsTopHitsGet {
-			switch self {
-			case .include: return .include
-			case .exclude: return .exclude
-			}
-		}
-	}
 
 	/**
 	 * enum for parameter deviceType
@@ -355,6 +340,21 @@ public enum SearchResultsAPITidal {
 			case .phone: return .phone
 			case .tablet: return .tablet
 			case .tv: return .tv
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter explicitFilter
+	 */
+	public enum ExplicitFilter_searchResultsIdRelationshipsTopHitsGet: String, CaseIterable {
+		case include = "INCLUDE"
+		case exclude = "EXCLUDE"
+
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsTopHitsGet {
+			switch self {
+			case .include: return .include
+			case .exclude: return .exclude
 			}
 		}
 	}
@@ -385,27 +385,12 @@ public enum SearchResultsAPITidal {
      
      - returns: SearchResultsTopHitsMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsTopHitsGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsTopHitsGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsTopHitsGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsTopHitsMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsTopHitsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsTopHitsGet? = nil, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsTopHitsGet? = nil) async throws -> SearchResultsTopHitsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchResultsAPI.searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
+			SearchResultsAPI.searchResultsIdRelationshipsTopHitsGetWithRequestBuilder(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType?.toSearchResultsAPIEnum())
 		}
 	}
 
-
-	/**
-	 * enum for parameter explicitFilter
-	 */
-	public enum ExplicitFilter_searchResultsIdRelationshipsTracksGet: String, CaseIterable {
-		case include = "INCLUDE"
-		case exclude = "EXCLUDE"
-
-		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsTracksGet {
-			switch self {
-			case .include: return .include
-			case .exclude: return .exclude
-			}
-		}
-	}
 
 	/**
 	 * enum for parameter deviceType
@@ -426,6 +411,21 @@ public enum SearchResultsAPITidal {
 			case .phone: return .phone
 			case .tablet: return .tablet
 			case .tv: return .tv
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter explicitFilter
+	 */
+	public enum ExplicitFilter_searchResultsIdRelationshipsTracksGet: String, CaseIterable {
+		case include = "INCLUDE"
+		case exclude = "EXCLUDE"
+
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsTracksGet {
+			switch self {
+			case .include: return .include
+			case .exclude: return .exclude
 			}
 		}
 	}
@@ -456,27 +456,12 @@ public enum SearchResultsAPITidal {
      
      - returns: SearchResultsTracksMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsTracksGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsTracksGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsTracksGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsTracksMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsTracksGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsTracksGet? = nil, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsTracksGet? = nil) async throws -> SearchResultsTracksMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchResultsAPI.searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
+			SearchResultsAPI.searchResultsIdRelationshipsTracksGetWithRequestBuilder(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType?.toSearchResultsAPIEnum())
 		}
 	}
 
-
-	/**
-	 * enum for parameter explicitFilter
-	 */
-	public enum ExplicitFilter_searchResultsIdRelationshipsVideosGet: String, CaseIterable {
-		case include = "INCLUDE"
-		case exclude = "EXCLUDE"
-
-		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsVideosGet {
-			switch self {
-			case .include: return .include
-			case .exclude: return .exclude
-			}
-		}
-	}
 
 	/**
 	 * enum for parameter deviceType
@@ -497,6 +482,21 @@ public enum SearchResultsAPITidal {
 			case .phone: return .phone
 			case .tablet: return .tablet
 			case .tv: return .tv
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter explicitFilter
+	 */
+	public enum ExplicitFilter_searchResultsIdRelationshipsVideosGet: String, CaseIterable {
+		case include = "INCLUDE"
+		case exclude = "EXCLUDE"
+
+		func toSearchResultsAPIEnum() -> SearchResultsAPI.ExplicitFilter_searchResultsIdRelationshipsVideosGet {
+			switch self {
+			case .include: return .include
+			case .exclude: return .exclude
 			}
 		}
 	}
@@ -527,9 +527,9 @@ public enum SearchResultsAPITidal {
      
      - returns: SearchResultsVideosMultiRelationshipDataDocument
      */
-	public static func searchResultsIdRelationshipsVideosGet(id: String, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, pageCursor: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsVideosGet? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsVideosGet? = nil, clientVersion: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SearchResultsVideosMultiRelationshipDataDocument {
+	public static func searchResultsIdRelationshipsVideosGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: SearchResultsAPITidal.DeviceType_searchResultsIdRelationshipsVideosGet? = nil, explicitFilter: SearchResultsAPITidal.ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SearchResultsAPITidal.SystemType_searchResultsIdRelationshipsVideosGet? = nil) async throws -> SearchResultsVideosMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchResultsAPI.searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), pageCursor: pageCursor, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), systemType: systemType?.toSearchResultsAPIEnum(), clientVersion: clientVersion, include: include, replaceMedia: replaceMedia)
+			SearchResultsAPI.searchResultsIdRelationshipsVideosGetWithRequestBuilder(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType?.toSearchResultsAPIEnum(), explicitFilter: explicitFilter?.toSearchResultsAPIEnum(), include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType?.toSearchResultsAPIEnum())
 		}
 	}
 }

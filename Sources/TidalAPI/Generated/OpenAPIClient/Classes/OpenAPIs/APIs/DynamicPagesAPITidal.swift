@@ -78,9 +78,9 @@ public enum DynamicPagesAPITidal {
      
      - returns: DynamicPagesMultiResourceDataDocument
      */
-	public static func dynamicPagesGet(deviceType: DynamicPagesAPITidal.DeviceType_dynamicPagesGet, systemType: DynamicPagesAPITidal.SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, includeLinkage: [DynamicPagesAPITidal.IncludeLinkage_dynamicPagesGet]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
+	public static func dynamicPagesGet(clientVersion: String, deviceType: DynamicPagesAPITidal.DeviceType_dynamicPagesGet, filterPageType: [String], systemType: DynamicPagesAPITidal.SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [DynamicPagesAPITidal.IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			DynamicPagesAPI.dynamicPagesGetWithRequestBuilder(deviceType: deviceType.toDynamicPagesAPIEnum(), systemType: systemType.toDynamicPagesAPIEnum(), clientVersion: clientVersion, filterPageType: filterPageType, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, includeLinkage: includeLinkage?.compactMap { $0.toDynamicPagesAPIEnum() }, replaceMedia: replaceMedia)
+			DynamicPagesAPI.dynamicPagesGetWithRequestBuilder(clientVersion: clientVersion, deviceType: deviceType.toDynamicPagesAPIEnum(), filterPageType: filterPageType, systemType: systemType.toDynamicPagesAPIEnum(), countryCode: countryCode, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage?.compactMap { $0.toDynamicPagesAPIEnum() }, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -134,9 +134,9 @@ public enum DynamicPagesAPITidal {
      
      - returns: DynamicPagesModulesMultiRelationshipDataDocument
      */
-	public static func dynamicPagesIdRelationshipsModulesGet(id: String, deviceType: DynamicPagesAPITidal.DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: DynamicPagesAPITidal.SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesModulesMultiRelationshipDataDocument {
+	public static func dynamicPagesIdRelationshipsModulesGet(clientVersion: String, deviceType: DynamicPagesAPITidal.DeviceType_dynamicPagesIdRelationshipsModulesGet, id: String, systemType: DynamicPagesAPITidal.SystemType_dynamicPagesIdRelationshipsModulesGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesModulesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			DynamicPagesAPI.dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(id: id, deviceType: deviceType.toDynamicPagesAPIEnum(), systemType: systemType.toDynamicPagesAPIEnum(), clientVersion: clientVersion, refreshSeed: refreshSeed, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include, replaceMedia: replaceMedia)
+			DynamicPagesAPI.dynamicPagesIdRelationshipsModulesGetWithRequestBuilder(clientVersion: clientVersion, deviceType: deviceType.toDynamicPagesAPIEnum(), id: id, systemType: systemType.toDynamicPagesAPIEnum(), countryCode: countryCode, include: include, locale: locale, pageCursor: pageCursor, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
 		}
 	}
 

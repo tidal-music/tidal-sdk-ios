@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;dynamicModules&#x60;. */
 public struct DynamicPagesModulesMultiRelationshipDataDocument: Codable, Hashable {
 
     public var data: [ResourceIdentifier]?

@@ -49,9 +49,9 @@ public enum PurchasesAPITidal {
      
      - returns: PurchasesMultiResourceDataDocument
      */
-	public static func purchasesGet(filterOwnersId: [String], filterSubjectType: [PurchasesAPITidal.FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [PurchasesAPITidal.IncludeLinkage_purchasesGet]? = nil, replaceMedia: String? = nil) async throws -> PurchasesMultiResourceDataDocument {
+	public static func purchasesGet(filterOwnersId: [String], filterSubjectType: [PurchasesAPITidal.FilterSubjectType_purchasesGet], include: [String]? = nil, includeLinkage: [PurchasesAPITidal.IncludeLinkage_purchasesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PurchasesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			PurchasesAPI.purchasesGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType.compactMap { $0.toPurchasesAPIEnum() }, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPurchasesAPIEnum() }, replaceMedia: replaceMedia)
+			PurchasesAPI.purchasesGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType.compactMap { $0.toPurchasesAPIEnum() }, include: include, includeLinkage: includeLinkage?.compactMap { $0.toPurchasesAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

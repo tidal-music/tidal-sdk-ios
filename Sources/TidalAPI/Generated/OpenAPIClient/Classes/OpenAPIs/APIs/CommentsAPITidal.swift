@@ -15,33 +15,6 @@ public enum CommentsAPITidal {
 
 
 	/**
-	 * enum for parameter sort
-	 */
-	public enum Sort_commentsGet: String, CaseIterable {
-		case CreatedAtAsc = "createdAt"
-		case CreatedAtDesc = "-createdAt"
-		case LikeCountAsc = "likeCount"
-		case LikeCountDesc = "-likeCount"
-		case ReplyCountAsc = "replyCount"
-		case ReplyCountDesc = "-replyCount"
-		case StartTimeAsc = "startTime"
-		case StartTimeDesc = "-startTime"
-
-		func toCommentsAPIEnum() -> CommentsAPI.Sort_commentsGet {
-			switch self {
-			case .CreatedAtAsc: return .CreatedAtAsc
-			case .CreatedAtDesc: return .CreatedAtDesc
-			case .LikeCountAsc: return .LikeCountAsc
-			case .LikeCountDesc: return .LikeCountDesc
-			case .ReplyCountAsc: return .ReplyCountAsc
-			case .ReplyCountDesc: return .ReplyCountDesc
-			case .StartTimeAsc: return .StartTimeAsc
-			case .StartTimeDesc: return .StartTimeDesc
-			}
-		}
-	}
-
-	/**
 	 * enum for parameter filterSubjectType
 	 */
 	public enum FilterSubjectType_commentsGet: String, CaseIterable {
@@ -76,13 +49,40 @@ public enum CommentsAPITidal {
 	}
 
 	/**
+	 * enum for parameter sort
+	 */
+	public enum Sort_commentsGet: String, CaseIterable {
+		case CreatedAtAsc = "createdAt"
+		case CreatedAtDesc = "-createdAt"
+		case LikeCountAsc = "likeCount"
+		case LikeCountDesc = "-likeCount"
+		case ReplyCountAsc = "replyCount"
+		case ReplyCountDesc = "-replyCount"
+		case StartTimeAsc = "startTime"
+		case StartTimeDesc = "-startTime"
+
+		func toCommentsAPIEnum() -> CommentsAPI.Sort_commentsGet {
+			switch self {
+			case .CreatedAtAsc: return .CreatedAtAsc
+			case .CreatedAtDesc: return .CreatedAtDesc
+			case .LikeCountAsc: return .LikeCountAsc
+			case .LikeCountDesc: return .LikeCountDesc
+			case .ReplyCountAsc: return .ReplyCountAsc
+			case .ReplyCountDesc: return .ReplyCountDesc
+			case .StartTimeAsc: return .StartTimeAsc
+			case .StartTimeDesc: return .StartTimeDesc
+			}
+		}
+	}
+
+	/**
      Get multiple comments.
      
      - returns: CommentsMultiResourceDataDocument
      */
-	public static func commentsGet(pageCursor: String? = nil, sort: [CommentsAPITidal.Sort_commentsGet]? = nil, include: [String]? = nil, filterParentCommentId: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [CommentsAPITidal.FilterSubjectType_commentsGet]? = nil, includeLinkage: [CommentsAPITidal.IncludeLinkage_commentsGet]? = nil, replaceMedia: String? = nil) async throws -> CommentsMultiResourceDataDocument {
+	public static func commentsGet(filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [CommentsAPITidal.FilterSubjectType_commentsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [CommentsAPITidal.IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [CommentsAPITidal.Sort_commentsGet]? = nil) async throws -> CommentsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			CommentsAPI.commentsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toCommentsAPIEnum() }, include: include, filterParentCommentId: filterParentCommentId, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toCommentsAPIEnum() }, includeLinkage: includeLinkage?.compactMap { $0.toCommentsAPIEnum() }, replaceMedia: replaceMedia)
+			CommentsAPI.commentsGetWithRequestBuilder(filterParentCommentId: filterParentCommentId, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType?.compactMap { $0.toCommentsAPIEnum() }, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage?.compactMap { $0.toCommentsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toCommentsAPIEnum() })
 		}
 	}
 

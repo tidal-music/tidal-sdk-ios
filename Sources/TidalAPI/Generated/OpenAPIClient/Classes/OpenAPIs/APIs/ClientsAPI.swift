@@ -23,7 +23,7 @@ internal class ClientsAPI {
     /**
      Get multiple clients.
      
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter include: (query) Include related resources. Available relationships: certificates, owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: ClientsMultiResourceDataDocument
@@ -45,7 +45,7 @@ internal class ClientsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter include: (query) Include related resources. Available relationships: certificates, owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<ClientsMultiResourceDataDocument> 

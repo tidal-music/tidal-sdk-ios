@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **stripeConnectionsGet**
 ```swift
-    open class func stripeConnectionsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_stripeConnectionsGet]? = nil, completion: @escaping (_ data: StripeConnectionsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func stripeConnectionsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_stripeConnectionsGet]? = nil) async throws -> StripeConnectionsMultiResourceDataDocument
 ```
 
 Get multiple stripeConnections.
@@ -23,20 +23,16 @@ Retrieves multiple stripeConnections by available filters, or without if applica
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple stripeConnections.
-StripeConnectionsAPI.stripeConnectionsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await StripeConnectionsAPI.stripeConnectionsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -44,7 +40,7 @@ StripeConnectionsAPI.stripeConnectionsGet(filterOwnersId: filterOwnersId, includ
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
@@ -65,7 +61,7 @@ Name | Type | Description  | Notes
 
 # **stripeConnectionsIdRelationshipsOwnersGet**
 ```swift
-    open class func stripeConnectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: StripeConnectionsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func stripeConnectionsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> StripeConnectionsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -82,15 +78,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-StripeConnectionsAPI.stripeConnectionsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await StripeConnectionsAPI.stripeConnectionsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -119,7 +111,7 @@ Name | Type | Description  | Notes
 
 # **stripeConnectionsPost**
 ```swift
-    open class func stripeConnectionsPost(idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: StripeConnectionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func stripeConnectionsPost(idempotencyKey: String? = nil, stripeConnectionsCreateOperationPayload: StripeConnectionsCreateOperationPayload? = nil) async throws -> StripeConnectionsCreateSingleResourceDataDocument
 ```
 
 Create single stripeConnection.
@@ -135,15 +127,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let stripeConnectionsCreateOperationPayload = StripeConnectionsCreateOperation_Payload(data: StripeConnectionsCreateOperation_Payload_Data(attributes: StripeConnectionsCreateOperation_Payload_Data_Attributes(integrationType: "integrationType_example", refreshUrl: "refreshUrl_example", returnUrl: "returnUrl_example"), type: "type_example"), meta: StripeConnectionsCreateOperation_Payload_Meta(integrationType: "integrationType_example", refreshUrl: "refreshUrl_example", returnUrl: "returnUrl_example")) // StripeConnectionsCreateOperationPayload |  (optional)
 
 // Create single stripeConnection.
-StripeConnectionsAPI.stripeConnectionsPost(idempotencyKey: idempotencyKey, stripeConnectionsCreateOperationPayload: stripeConnectionsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await StripeConnectionsAPI.stripeConnectionsPost(idempotencyKey: idempotencyKey, stripeConnectionsCreateOperationPayload: stripeConnectionsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

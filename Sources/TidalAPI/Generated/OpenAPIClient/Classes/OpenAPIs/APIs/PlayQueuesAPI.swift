@@ -26,17 +26,17 @@ internal class PlayQueuesAPI {
     /**
      Get multiple playQueues.
      
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter include: (query) Include related resources. Available relationships: changeEventStream, current, future, owners, past (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: PlayQueuesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesGet]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
+    internal class func playQueuesGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesMultiResourceDataDocument {
         do {
-            return try await playQueuesGetWithRequestBuilder(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+            return try await playQueuesGetWithRequestBuilder(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -50,14 +50,14 @@ internal class PlayQueuesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter include: (query) Include related resources. Available relationships: changeEventStream, current, future, owners, past (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: current (optional)
      - returns: RequestBuilder<PlayQueuesMultiResourceDataDocument> 
      */
-    internal class func playQueuesGetWithRequestBuilder(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlayQueuesMultiResourceDataDocument> {
+    internal class func playQueuesGetWithRequestBuilder(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlayQueuesMultiResourceDataDocument> {
         let localVariablePath = "/playQueues"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -65,9 +65,9 @@ internal class PlayQueuesAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -467,15 +467,15 @@ internal class PlayQueuesAPI {
      Get future relationship (\"to-many\").
      
      - parameter id: (path) Play queue id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: future (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: future (optional)
      - returns: PlayQueuesFutureMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdRelationshipsFutureGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesFutureMultiRelationshipDataDocument {
+    internal class func playQueuesIdRelationshipsFutureGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesFutureMultiRelationshipDataDocument {
         do {
-            return try await playQueuesIdRelationshipsFutureGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
+            return try await playQueuesIdRelationshipsFutureGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -490,12 +490,12 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: future (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: future (optional)
      - returns: RequestBuilder<PlayQueuesFutureMultiRelationshipDataDocument> 
      */
-    internal class func playQueuesIdRelationshipsFutureGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlayQueuesFutureMultiRelationshipDataDocument> {
+    internal class func playQueuesIdRelationshipsFutureGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlayQueuesFutureMultiRelationshipDataDocument> {
         var localVariablePath = "/playQueues/{id}/relationships/future"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -505,8 +505,8 @@ internal class PlayQueuesAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -684,15 +684,15 @@ internal class PlayQueuesAPI {
      Get past relationship (\"to-many\").
      
      - parameter id: (path) Play queue id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: past (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: past (optional)
      - returns: PlayQueuesPastMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playQueuesIdRelationshipsPastGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesPastMultiRelationshipDataDocument {
+    internal class func playQueuesIdRelationshipsPastGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesPastMultiRelationshipDataDocument {
         do {
-            return try await playQueuesIdRelationshipsPastGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
+            return try await playQueuesIdRelationshipsPastGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -707,12 +707,12 @@ internal class PlayQueuesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Play queue id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: past (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: past (optional)
      - returns: RequestBuilder<PlayQueuesPastMultiRelationshipDataDocument> 
      */
-    internal class func playQueuesIdRelationshipsPastGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlayQueuesPastMultiRelationshipDataDocument> {
+    internal class func playQueuesIdRelationshipsPastGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlayQueuesPastMultiRelationshipDataDocument> {
         var localVariablePath = "/playQueues/{id}/relationships/past"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -722,8 +722,8 @@ internal class PlayQueuesAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 

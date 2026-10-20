@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **dynamicPagesGet**
 ```swift
-    open class func dynamicPagesGet(deviceType: DeviceType_dynamicPagesGet, systemType: SystemType_dynamicPagesGet, clientVersion: String, filterPageType: [String], refreshSeed: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicPagesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicPagesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesGet, filterPageType: [String], systemType: SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument
 ```
 
 Get multiple dynamicPages.
@@ -23,29 +23,24 @@ Retrieves multiple dynamicPages by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let deviceType = "deviceType_example" // String | The type of device making the request
-let systemType = "systemType_example" // String | The system type of the device making the request
 let clientVersion = "clientVersion_example" // String | Client version number
+let deviceType = "deviceType_example" // String | The type of device making the request
 let filterPageType = ["inner_example"] // [String] | type of the page (e.g. `ARTIST`)
-let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
+let systemType = "systemType_example" // String | The system type of the device making the request
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
+let filterSubject = "filterSubject_example" // String | The page subject. Its type must match pageType. Required except for HOME_FREE, where it must be omitted. Also accepts `users:me`. (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: modules, subject (optional)
-let filterSubject = "filterSubject_example" // String | The page subject. Its type must match pageType. Required unless subject.id is supplied; both must be omitted for HOME_FREE. Do not combine with subject.id. (optional)
-let filterSubjectId = ["inner_example"] // [String] | Deprecated alternative to filter[subject]. Omit when subject is supplied or pageType is HOME_FREE. (e.g. `67890`) (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
+let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: modules.items (optional)
 
 // Get multiple dynamicPages.
-DynamicPagesAPI.dynamicPagesGet(deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, filterPageType: filterPageType, refreshSeed: refreshSeed, countryCode: countryCode, locale: locale, include: include, filterSubject: filterSubject, filterSubjectId: filterSubjectId, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DynamicPagesAPI.dynamicPagesGet(clientVersion: clientVersion, deviceType: deviceType, filterPageType: filterPageType, systemType: systemType, countryCode: countryCode, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -53,17 +48,16 @@ DynamicPagesAPI.dynamicPagesGet(deviceType: deviceType, systemType: systemType, 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **deviceType** | **String** | The type of device making the request | 
- **systemType** | **String** | The system type of the device making the request | 
  **clientVersion** | **String** | Client version number | 
+ **deviceType** | **String** | The type of device making the request | 
  **filterPageType** | [**[String]**](String.md) | type of the page (e.g. &#x60;ARTIST&#x60;) | 
- **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
+ **systemType** | **String** | The system type of the device making the request | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
+ **filterSubject** | **String** | The page subject. Its type must match pageType. Required except for HOME_FREE, where it must be omitted. Also accepts &#x60;users:me&#x60;. | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: modules, subject | [optional] 
- **filterSubject** | **String** | The page subject. Its type must match pageType. Required unless subject.id is supplied; both must be omitted for HOME_FREE. Do not combine with subject.id. | [optional] 
- **filterSubjectId** | [**[String]**](String.md) | Deprecated alternative to filter[subject]. Omit when subject is supplied or pageType is HOME_FREE. (e.g. &#x60;67890&#x60;) | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
+ **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items | [optional] 
 
 ### Return type
@@ -83,7 +77,7 @@ Name | Type | Description  | Notes
 
 # **dynamicPagesIdRelationshipsModulesGet**
 ```swift
-    open class func dynamicPagesIdRelationshipsModulesGet(id: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, clientVersion: String, refreshSeed: String? = nil, pageCursor: String? = nil, countryCode: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicPagesModulesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicPagesIdRelationshipsModulesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, id: String, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesModulesMultiRelationshipDataDocument
 ```
 
 Get modules relationship (\"to-many\").
@@ -95,27 +89,23 @@ Retrieves modules relationship.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | DynamicPages Id
-let deviceType = "deviceType_example" // String | The type of device making the request
-let systemType = "systemType_example" // String | The system type of the device making the request
 let clientVersion = "clientVersion_example" // String | Client version number
-let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let deviceType = "deviceType_example" // String | The type of device making the request
+let id = "id_example" // String | DynamicPages Id
+let systemType = "systemType_example" // String | The system type of the device making the request
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: modules (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dynamic page and module results consistent across a client session. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: modules.items (optional)
 
 // Get modules relationship (\"to-many\").
-DynamicPagesAPI.dynamicPagesIdRelationshipsModulesGet(id: id, deviceType: deviceType, systemType: systemType, clientVersion: clientVersion, refreshSeed: refreshSeed, pageCursor: pageCursor, countryCode: countryCode, locale: locale, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DynamicPagesAPI.dynamicPagesIdRelationshipsModulesGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, locale: locale, pageCursor: pageCursor, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -123,15 +113,15 @@ DynamicPagesAPI.dynamicPagesIdRelationshipsModulesGet(id: id, deviceType: device
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | DynamicPages Id | 
- **deviceType** | **String** | The type of device making the request | 
- **systemType** | **String** | The system type of the device making the request | 
  **clientVersion** | **String** | Client version number | 
- **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **deviceType** | **String** | The type of device making the request | 
+ **id** | **String** | DynamicPages Id | 
+ **systemType** | **String** | The system type of the device making the request | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: modules | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **refreshSeed** | **String** | Stable seed used to keep dynamic page and module results consistent across a client session. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: modules.items | [optional] 
 
 ### Return type
@@ -151,7 +141,7 @@ Name | Type | Description  | Notes
 
 # **dynamicPagesIdRelationshipsSubjectGet**
 ```swift
-    open class func dynamicPagesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicPagesSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicPagesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesSubjectSingleRelationshipDataDocument
 ```
 
 Get subject relationship (\"to-one\").
@@ -168,15 +158,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-DynamicPagesAPI.dynamicPagesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DynamicPagesAPI.dynamicPagesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

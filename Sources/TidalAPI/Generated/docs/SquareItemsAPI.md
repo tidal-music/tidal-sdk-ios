@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **squareItemsGet**
 ```swift
-    open class func squareItemsGet(filterOwnersId: [String], pageCursor: String? = nil, include: [String]? = nil, filterOrigin: FilterOrigin_squareItemsGet? = nil, filterQuery: String? = nil, includeLinkage: [IncludeLinkage_squareItemsGet]? = nil, completion: @escaping (_ data: SquareItemsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func squareItemsGet(filterOwnersId: [String], filterOrigin: FilterOrigin_squareItemsGet? = nil, filterQuery: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareItemsGet]? = nil, pageCursor: String? = nil) async throws -> SquareItemsMultiResourceDataDocument
 ```
 
 Get multiple squareItems.
@@ -26,23 +26,19 @@ Retrieves multiple squareItems by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let filterOrigin = "filterOrigin_example" // String | Only items with this origin (e.g. `TIDAL`) (optional)
 let filterQuery = "filterQuery_example" // String | Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. `tee`) (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get multiple squareItems.
-SquareItemsAPI.squareItemsGet(filterOwnersId: filterOwnersId, pageCursor: pageCursor, include: include, filterOrigin: filterOrigin, filterQuery: filterQuery, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SquareItemsAPI.squareItemsGet(filterOwnersId: filterOwnersId, filterOrigin: filterOrigin, filterQuery: filterQuery, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -50,12 +46,12 @@ SquareItemsAPI.squareItemsGet(filterOwnersId: filterOwnersId, pageCursor: pageCu
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **filterOrigin** | **String** | Only items with this origin (e.g. &#x60;TIDAL&#x60;) | [optional] 
  **filterQuery** | **String** | Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
 ### Return type
 
@@ -74,7 +70,7 @@ Name | Type | Description  | Notes
 
 # **squareItemsIdDelete**
 ```swift
-    open class func squareItemsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func squareItemsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single squareItem.
@@ -90,15 +86,11 @@ let id = "id_example" // String | Square item id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single squareItem.
-SquareItemsAPI.squareItemsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SquareItemsAPI.squareItemsIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -126,7 +118,7 @@ Name | Type | Description  | Notes
 
 # **squareItemsIdGet**
 ```swift
-    open class func squareItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareItemsIdGet]? = nil, completion: @escaping (_ data: SquareItemsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func squareItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareItemsIdGet]? = nil) async throws -> SquareItemsSingleResourceDataDocument
 ```
 
 Get single squareItem.
@@ -143,15 +135,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single squareItem.
-SquareItemsAPI.squareItemsIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SquareItemsAPI.squareItemsIdGet(id: id, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -180,7 +168,7 @@ Name | Type | Description  | Notes
 
 # **squareItemsIdPatch**
 ```swift
-    open class func squareItemsIdPatch(id: String, idempotencyKey: String, squareItemsUpdateOperationPayload: SquareItemsUpdateOperationPayload? = nil, completion: @escaping (_ data: SquareItemsUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func squareItemsIdPatch(id: String, idempotencyKey: String, squareItemsUpdateOperationPayload: SquareItemsUpdateOperationPayload? = nil) async throws -> SquareItemsUpdateSingleResourceDataDocument
 ```
 
 Update single squareItem.
@@ -197,15 +185,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let squareItemsUpdateOperationPayload = SquareItemsUpdateOperation_Payload(data: SquareItemsUpdateOperation_Payload_Data(attributes: SquareItemsUpdateOperation_Payload_Data_Attributes(description: "description_example", title: "title_example", variations: [SquareItemsUpdateOperation_Payload_Data_Attributes_Variation(name: "name_example", price: "price_example", stockQuantity: 123, stockTracked: false, variationId: "variationId_example")]), id: "id_example", type: "type_example"), meta: SquareItemsUpdateOperation_Payload_Meta(expectedRevision: 123)) // SquareItemsUpdateOperationPayload |  (optional)
 
 // Update single squareItem.
-SquareItemsAPI.squareItemsIdPatch(id: id, idempotencyKey: idempotencyKey, squareItemsUpdateOperationPayload: squareItemsUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SquareItemsAPI.squareItemsIdPatch(id: id, idempotencyKey: idempotencyKey, squareItemsUpdateOperationPayload: squareItemsUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -234,7 +218,7 @@ Name | Type | Description  | Notes
 
 # **squareItemsIdRelationshipsOwnersGet**
 ```swift
-    open class func squareItemsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SquareItemsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func squareItemsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareItemsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -251,15 +235,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-SquareItemsAPI.squareItemsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SquareItemsAPI.squareItemsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -288,7 +268,7 @@ Name | Type | Description  | Notes
 
 # **squareItemsPost**
 ```swift
-    open class func squareItemsPost(idempotencyKey: String, squareItemsCreateOperationPayload: SquareItemsCreateOperationPayload? = nil, completion: @escaping (_ data: SquareItemsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func squareItemsPost(idempotencyKey: String, squareItemsCreateOperationPayload: SquareItemsCreateOperationPayload? = nil) async throws -> SquareItemsCreateSingleResourceDataDocument
 ```
 
 Create single squareItem.
@@ -304,15 +284,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let squareItemsCreateOperationPayload = SquareItemsCreateOperation_Payload(data: SquareItemsCreateOperation_Payload_Data(attributes: SquareItemsCreateOperation_Payload_Data_Attributes(description: "description_example", title: "title_example", variations: [SquareItemsCreateOperation_Payload_Data_Attributes_Variation(name: "name_example", price: "price_example", stockQuantity: 123, stockTracked: false)]), type: "type_example")) // SquareItemsCreateOperationPayload |  (optional)
 
 // Create single squareItem.
-SquareItemsAPI.squareItemsPost(idempotencyKey: idempotencyKey, squareItemsCreateOperationPayload: squareItemsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SquareItemsAPI.squareItemsPost(idempotencyKey: idempotencyKey, squareItemsCreateOperationPayload: squareItemsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

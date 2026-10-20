@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 # **userPlaybackStatesIdGet**
 ```swift
-    open class func userPlaybackStatesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userPlaybackStatesIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserPlaybackStatesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userPlaybackStatesIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesSingleResourceDataDocument
 ```
 
 Get single userPlaybackState.
@@ -36,15 +36,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: activePlayer.offlineInventory (optional)
 
 // Get single userPlaybackState.
-UserPlaybackStatesAPI.userPlaybackStatesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserPlaybackStatesAPI.userPlaybackStatesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -74,7 +70,7 @@ Name | Type | Description  | Notes
 
 # **userPlaybackStatesIdPatch**
 ```swift
-    open class func userPlaybackStatesIdPatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesUpdateOperationPayload: UserPlaybackStatesUpdateOperationPayload? = nil, completion: @escaping (_ data: UserPlaybackStatesUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdPatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesUpdateOperationPayload: UserPlaybackStatesUpdateOperationPayload? = nil) async throws -> UserPlaybackStatesUpdateSingleResourceDataDocument
 ```
 
 Update single userPlaybackState.
@@ -91,15 +87,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userPlaybackStatesUpdateOperationPayload = UserPlaybackStatesUpdateOperation_Payload(data: UserPlaybackStatesUpdateOperation_Payload_Data(attributes: UserPlaybackStatesUpdateOperation_Payload_Data_Attributes(playbackStatus: "playbackStatus_example"), id: "id_example", type: "type_example")) // UserPlaybackStatesUpdateOperationPayload |  (optional)
 
 // Update single userPlaybackState.
-UserPlaybackStatesAPI.userPlaybackStatesIdPatch(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesUpdateOperationPayload: userPlaybackStatesUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserPlaybackStatesAPI.userPlaybackStatesIdPatch(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesUpdateOperationPayload: userPlaybackStatesUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -128,7 +120,7 @@ Name | Type | Description  | Notes
 
 # **userPlaybackStatesIdRelationshipsActivePlayerGet**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsActivePlayerGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsActivePlayerGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesActivePlayerSingleRelationshipDataDocument
 ```
 
 Get activePlayer relationship (\"to-one\").
@@ -145,15 +137,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: activePlayer.offlineInventory (optional)
 
 // Get activePlayer relationship (\"to-one\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsActivePlayerGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsActivePlayerGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -182,7 +170,7 @@ Name | Type | Description  | Notes
 
 # **userPlaybackStatesIdRelationshipsActivePlayerPatch**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsActivePlayerPatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsActivePlayerPatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload? = nil) async throws -> UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument
 ```
 
 Update activePlayer relationship (\"to-one\").
@@ -199,15 +187,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload = UserPlaybackStatesActivePlayerRelationshipUpdateOperation_Payload(data: UserPlaybackStatesActivePlayerRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")) // UserPlaybackStatesActivePlayerRelationshipUpdateOperationPayload |  (optional)
 
 // Update activePlayer relationship (\"to-one\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsActivePlayerPatch(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsActivePlayerPatch(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -236,7 +220,7 @@ Name | Type | Description  | Notes
 
 # **userPlaybackStatesIdRelationshipsAvailablePlayersDelete**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsAvailablePlayersDelete(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsAvailablePlayersDelete(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from availablePlayers relationship (\"to-many\").
@@ -253,15 +237,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload = UserPlaybackStatesAvailablePlayersRelationshipRemoveOperation_Payload(data: [UserPlaybackStatesAvailablePlayersRelationshipOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from availablePlayers relationship (\"to-many\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersDelete(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersDelete(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -290,7 +270,7 @@ Name | Type | Description  | Notes
 
 # **userPlaybackStatesIdRelationshipsAvailablePlayersGet**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsAvailablePlayersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsAvailablePlayersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument
 ```
 
 Get availablePlayers relationship (\"to-many\").
@@ -308,15 +288,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: availablePlayers.offlineInventory (optional)
 
 // Get availablePlayers relationship (\"to-many\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -346,7 +322,7 @@ Name | Type | Description  | Notes
 
 # **userPlaybackStatesIdRelationshipsAvailablePlayersPost**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsAvailablePlayersPost(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsAvailablePlayersPost(id: String, idempotencyKey: String? = nil, userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload? = nil) async throws -> UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument
 ```
 
 Add to availablePlayers relationship (\"to-many\").
@@ -363,15 +339,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload = UserPlaybackStatesAvailablePlayersRelationshipAddOperation_Payload(data: [UserPlaybackStatesAvailablePlayersRelationshipOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserPlaybackStatesAvailablePlayersRelationshipAddOperationPayload |  (optional)
 
 // Add to availablePlayers relationship (\"to-many\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersPost(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsAvailablePlayersPost(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -400,7 +372,7 @@ Name | Type | Description  | Notes
 
 # **userPlaybackStatesIdRelationshipsChangeEventStreamGet**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsChangeEventStreamGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsChangeEventStreamGet(id: String, include: [String]? = nil) async throws -> UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument
 ```
 
 Get changeEventStream relationship (\"to-one\").
@@ -416,15 +388,11 @@ let id = "id_example" // String |
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: changeEventStream (optional)
 
 // Get changeEventStream relationship (\"to-one\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsChangeEventStreamGet(id: id, include: include) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsChangeEventStreamGet(id: id, include: include)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -452,7 +420,7 @@ Name | Type | Description  | Notes
 
 # **userPlaybackStatesIdRelationshipsPlayQueueGet**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsPlayQueueGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserPlaybackStatesPlayQueueSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsPlayQueueGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserPlaybackStatesPlayQueueSingleRelationshipDataDocument
 ```
 
 Get playQueue relationship (\"to-one\").
@@ -469,15 +437,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playQueue.current (optional)
 
 // Get playQueue relationship (\"to-one\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsPlayQueueGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsPlayQueueGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -506,7 +470,7 @@ Name | Type | Description  | Notes
 
 # **userPlaybackStatesIdRelationshipsPlayQueuePatch**
 ```swift
-    open class func userPlaybackStatesIdRelationshipsPlayQueuePatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload: UserPlaybackStatesPlayQueueRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: UserPlaybackStatesPlayQueueUpdateSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userPlaybackStatesIdRelationshipsPlayQueuePatch(id: String, idempotencyKey: String? = nil, userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload: UserPlaybackStatesPlayQueueRelationshipUpdateOperationPayload? = nil) async throws -> UserPlaybackStatesPlayQueueUpdateSingleRelationshipDataDocument
 ```
 
 Update playQueue relationship (\"to-one\").
@@ -523,15 +487,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload = UserPlaybackStatesPlayQueueRelationshipUpdateOperation_Payload(data: UserPlaybackStatesPlayQueueRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")) // UserPlaybackStatesPlayQueueRelationshipUpdateOperationPayload |  (optional)
 
 // Update playQueue relationship (\"to-one\").
-UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsPlayQueuePatch(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload: userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserPlaybackStatesAPI.userPlaybackStatesIdRelationshipsPlayQueuePatch(id: id, idempotencyKey: idempotencyKey, userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload: userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

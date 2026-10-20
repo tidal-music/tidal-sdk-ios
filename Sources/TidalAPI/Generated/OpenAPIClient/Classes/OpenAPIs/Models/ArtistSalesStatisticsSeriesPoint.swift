@@ -12,8 +12,8 @@ import AnyCodable
 
 public struct ArtistSalesStatisticsSeriesPoint: Codable, Hashable {
 
-    public static let downloadsAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])/")
-    public static let merchAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])/")
+    public static let downloadsAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])")
+    public static let merchAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])")
     /** First day of the bucket */
     public var date: Date
     /** Amount in the currency's major units */

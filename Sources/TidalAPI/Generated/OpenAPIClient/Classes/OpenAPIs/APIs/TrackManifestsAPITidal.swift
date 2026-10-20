@@ -15,21 +15,6 @@ public enum TrackManifestsAPITidal {
 
 
 	/**
-	 * enum for parameter manifestType
-	 */
-	public enum ManifestType_trackManifestsIdGet: String, CaseIterable {
-		case hls = "HLS"
-		case mpegDash = "MPEG_DASH"
-
-		func toTrackManifestsAPIEnum() -> TrackManifestsAPI.ManifestType_trackManifestsIdGet {
-			switch self {
-			case .hls: return .hls
-			case .mpegDash: return .mpegDash
-			}
-		}
-	}
-
-	/**
 	 * enum for parameter formats
 	 */
 	public enum Formats_trackManifestsIdGet: String, CaseIterable {
@@ -46,6 +31,21 @@ public enum TrackManifestsAPITidal {
 			case .flac: return .flac
 			case .flacHires: return .flacHires
 			case .eac3Joc: return .eac3Joc
+			}
+		}
+	}
+
+	/**
+	 * enum for parameter manifestType
+	 */
+	public enum ManifestType_trackManifestsIdGet: String, CaseIterable {
+		case hls = "HLS"
+		case mpegDash = "MPEG_DASH"
+
+		func toTrackManifestsAPIEnum() -> TrackManifestsAPI.ManifestType_trackManifestsIdGet {
+			switch self {
+			case .hls: return .hls
+			case .mpegDash: return .mpegDash
 			}
 		}
 	}
@@ -85,9 +85,9 @@ public enum TrackManifestsAPITidal {
      
      - returns: TrackManifestsSingleResourceDataDocument
      */
-	public static func trackManifestsIdGet(id: String, manifestType: TrackManifestsAPITidal.ManifestType_trackManifestsIdGet, formats: [TrackManifestsAPITidal.Formats_trackManifestsIdGet], uriScheme: TrackManifestsAPITidal.UriScheme_trackManifestsIdGet, usage: TrackManifestsAPITidal.Usage_trackManifestsIdGet, adaptive: Bool, shareCode: String? = nil) async throws -> TrackManifestsSingleResourceDataDocument {
+	public static func trackManifestsIdGet(adaptive: Bool, formats: [TrackManifestsAPITidal.Formats_trackManifestsIdGet], id: String, manifestType: TrackManifestsAPITidal.ManifestType_trackManifestsIdGet, uriScheme: TrackManifestsAPITidal.UriScheme_trackManifestsIdGet, usage: TrackManifestsAPITidal.Usage_trackManifestsIdGet, shareCode: String? = nil) async throws -> TrackManifestsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TrackManifestsAPI.trackManifestsIdGetWithRequestBuilder(id: id, manifestType: manifestType.toTrackManifestsAPIEnum(), formats: formats.compactMap { $0.toTrackManifestsAPIEnum() }, uriScheme: uriScheme.toTrackManifestsAPIEnum(), usage: usage.toTrackManifestsAPIEnum(), adaptive: adaptive, shareCode: shareCode)
+			TrackManifestsAPI.trackManifestsIdGetWithRequestBuilder(adaptive: adaptive, formats: formats.compactMap { $0.toTrackManifestsAPIEnum() }, id: id, manifestType: manifestType.toTrackManifestsAPIEnum(), uriScheme: uriScheme.toTrackManifestsAPIEnum(), usage: usage.toTrackManifestsAPIEnum(), shareCode: shareCode)
 		}
 	}
 }

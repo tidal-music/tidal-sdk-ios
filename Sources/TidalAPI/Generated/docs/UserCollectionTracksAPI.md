@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userCollectionTracksIdGet**
 ```swift
-    open class func userCollectionTracksIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionTracksIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionTracksSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionTracksIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionTracksIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionTracksSingleResourceDataDocument
 ```
 
 Get single userCollectionTrack.
@@ -26,21 +26,17 @@ Retrieves single userCollectionTrack by id.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection tracks id. Use `me` for the authenticated user's resource
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items, owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get single userCollectionTrack.
-UserCollectionTracksAPI.userCollectionTracksIdGet(id: id, locale: locale, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionTracksAPI.userCollectionTracksIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -49,9 +45,9 @@ UserCollectionTracksAPI.userCollectionTracksIdGet(id: id, locale: locale, includ
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection tracks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items, owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
 
 ### Return type
@@ -71,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionTracksIdRelationshipsItemsDelete**
 ```swift
-    open class func userCollectionTracksIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func userCollectionTracksIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from items relationship (\"to-many\").
@@ -88,15 +84,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionTracksItemsRelationshipRemoveOperationPayload = UserCollectionTracksItemsRelationshipRemoveOperation_Payload(data: [UserCollectionTracksItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionTracksItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipRemoveOperationPayload: userCollectionTracksItemsRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipRemoveOperationPayload: userCollectionTracksItemsRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -125,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionTracksIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionTracksIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil, locale: String? = nil, include: [String]? = nil, filterQuery: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionTracksItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionTracksIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -138,23 +130,19 @@ Retrieves items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection tracks id. Use `me` for the authenticated user's resource
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
-let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
 let filterQuery = "filterQuery_example" // String | Filter tracks by a free-text query matched against the track title, artist names and album title. Internal clients only (e.g. `love`) (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
+let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
+let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 
 // Get items relationship (\"to-many\").
-UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGet(id: id, pageCursor: pageCursor, sort: sort, locale: locale, include: include, filterQuery: filterQuery, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGet(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -163,12 +151,12 @@ UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGet(id: id, page
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection tracks id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
- **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
- **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
  **filterQuery** | **String** | Filter tracks by a free-text query matched against the track title, artist names and album title. Internal clients only (e.g. &#x60;love&#x60;) | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
+ **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 
+ **sort** | [**[String]**](String.md) | Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. | [optional] 
 
 ### Return type
 
@@ -187,7 +175,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionTracksIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionTracksIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionTracksItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionTracksIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionTracksItemsAddMultiRelationshipDataDocument
 ```
 
 Add to items relationship (\"to-many\").
@@ -204,15 +192,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionTracksItemsRelationshipAddOperationPayload = UserCollectionTracksItemsRelationshipAddOperation_Payload(data: [UserCollectionTracksItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionTracksItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionTracksItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -241,7 +225,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionTracksIdRelationshipsOwnersGet**
 ```swift
-    open class func userCollectionTracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionTracksOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userCollectionTracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionTracksOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -258,15 +242,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-UserCollectionTracksAPI.userCollectionTracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserCollectionTracksAPI.userCollectionTracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

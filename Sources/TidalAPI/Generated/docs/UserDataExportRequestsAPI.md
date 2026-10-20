@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **userDataExportRequestsPost**
 ```swift
-    open class func userDataExportRequestsPost(idempotencyKey: String? = nil, userDataExportRequestsCreateOperationPayload: UserDataExportRequestsCreateOperationPayload? = nil, completion: @escaping (_ data: UserDataExportRequestsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userDataExportRequestsPost(idempotencyKey: String? = nil, userDataExportRequestsCreateOperationPayload: UserDataExportRequestsCreateOperationPayload? = nil) async throws -> UserDataExportRequestsCreateSingleResourceDataDocument
 ```
 
 Create single userDataExportRequest.
@@ -25,15 +25,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userDataExportRequestsCreateOperationPayload = UserDataExportRequestsCreateOperation_Payload(data: UserDataExportRequestsCreateOperation_Payload_Data(attributes: UserDataExportRequestsCreateOperation_Payload_Data_Attributes(flowType: "flowType_example"), type: "type_example")) // UserDataExportRequestsCreateOperationPayload |  (optional)
 
 // Create single userDataExportRequest.
-UserDataExportRequestsAPI.userDataExportRequestsPost(idempotencyKey: idempotencyKey, userDataExportRequestsCreateOperationPayload: userDataExportRequestsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserDataExportRequestsAPI.userDataExportRequestsPost(idempotencyKey: idempotencyKey, userDataExportRequestsCreateOperationPayload: userDataExportRequestsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

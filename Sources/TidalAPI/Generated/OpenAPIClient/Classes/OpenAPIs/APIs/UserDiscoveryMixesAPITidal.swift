@@ -32,9 +32,9 @@ public enum UserDiscoveryMixesAPITidal {
      
      - returns: UserDiscoveryMixesSingleResourceDataDocument
      */
-	public static func userDiscoveryMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserDiscoveryMixesAPITidal.IncludeLinkage_userDiscoveryMixesIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesSingleResourceDataDocument {
+	public static func userDiscoveryMixesIdGet(id: String, include: [String]? = nil, includeLinkage: [UserDiscoveryMixesAPITidal.IncludeLinkage_userDiscoveryMixesIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserDiscoveryMixesAPI.userDiscoveryMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserDiscoveryMixesAPIEnum() }, replaceMedia: replaceMedia)
+			UserDiscoveryMixesAPI.userDiscoveryMixesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserDiscoveryMixesAPIEnum() }, locale: locale, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -44,9 +44,9 @@ public enum UserDiscoveryMixesAPITidal {
      
      - returns: UserDiscoveryMixesItemsMultiRelationshipDataDocument
      */
-	public static func userDiscoveryMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesItemsMultiRelationshipDataDocument {
+	public static func userDiscoveryMixesIdRelationshipsItemsGet(id: String, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserDiscoveryMixesAPI.userDiscoveryMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia)
+			UserDiscoveryMixesAPI.userDiscoveryMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 }

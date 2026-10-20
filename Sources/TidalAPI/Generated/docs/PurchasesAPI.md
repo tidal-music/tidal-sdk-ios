@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **purchasesGet**
 ```swift
-    open class func purchasesGet(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_purchasesGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PurchasesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func purchasesGet(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], include: [String]? = nil, includeLinkage: [IncludeLinkage_purchasesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PurchasesMultiResourceDataDocument
 ```
 
 Get multiple purchases.
@@ -23,23 +23,19 @@ Retrieves multiple purchases by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let filterSubjectType = ["filterSubjectType_example"] // [String] | The type of purchased content (e.g. `albums`)
-let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, subject (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get multiple purchases.
-PurchasesAPI.purchasesGet(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PurchasesAPI.purchasesGet(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -47,11 +43,11 @@ PurchasesAPI.purchasesGet(filterOwnersId: filterOwnersId, filterSubjectType: fil
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **filterSubjectType** | [**[String]**](String.md) | The type of purchased content (e.g. &#x60;albums&#x60;) | 
- **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, subject | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
 
 ### Return type
@@ -71,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **purchasesIdRelationshipsOwnersGet**
 ```swift
-    open class func purchasesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PurchasesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func purchasesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PurchasesOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -88,15 +84,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-PurchasesAPI.purchasesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PurchasesAPI.purchasesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -125,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **purchasesIdRelationshipsSubjectGet**
 ```swift
-    open class func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PurchasesSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PurchasesSubjectSingleRelationshipDataDocument
 ```
 
 Get subject relationship (\"to-one\").
@@ -142,15 +134,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-PurchasesAPI.purchasesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PurchasesAPI.purchasesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
