@@ -563,6 +563,42 @@ final class OfflineStore {
 		return (OfflineCollectionItemsPage(items: items, cursor: makeSortCursor(from: rows.last)), failures)
 	}
 
+	func observeCollectionItems(
+		collectionType: OfflineCollectionType,
+		resourceId: String,
+		limit: Int,
+		sort: OfflineCollectionItemSort?
+	) -> AsyncThrowingStream<OfflineCollectionItemsPage, Error> {
+		let observation = ValueObservation
+			.tracking { database in
+				try self.fetchCollectionItemRows(
+					from: database,
+					collectionType: collectionType,
+					resourceId: resourceId,
+					limit: limit,
+					sort: sort
+				)
+			}
+			.removeDuplicates()
+
+		return AsyncThrowingStream(bufferingPolicy: .bufferingNewest(1)) { continuation in
+			let task = Task {
+				do {
+					for try await rows in observation.values(
+						in: databaseQueue,
+						bufferingPolicy: .bufferingNewest(1)
+					) {
+						continuation.yield(self.makeCollectionItemsPage(from: rows, sort: sort))
+					}
+					continuation.finish()
+				} catch {
+					continuation.finish(throwing: error)
+				}
+			}
+			continuation.onTermination = { _ in task.cancel() }
+		}
+	}
+
 	func searchCollectionItems(
 		collectionType: OfflineCollectionType,
 		resourceId: String,
@@ -620,6 +656,64 @@ final class OfflineStore {
 		try await storeRenewedBookmarks(renewals)
 
 		return (OfflineCollectionSearchPage(hits: hits, cursor: hits.last?.cursor), failures)
+	}
+
+	private func fetchCollectionItemRows(
+		from database: Database,
+		collectionType: OfflineCollectionType,
+		resourceId: String,
+		limit: Int,
+		sort: OfflineCollectionItemSort?
+	) throws -> [Row] {
+		if let sort {
+			let (column, direction) = sort.columnAndDirection
+			return try Row.fetchAll(
+				database,
+				sql: """
+					SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
+					       i.artwork_bookmark,
+					       r.volume, r.position, r.id AS relationship_id, r.added_at AS relationship_added_at,
+					       r.\(column) AS sort_value
+					FROM offline_item_relationship r
+					JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
+					WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
+					  AND (r.member_resource_type != r.collection_resource_type OR r.member_resource_id != r.collection_resource_id)
+					ORDER BY r.\(column) \(direction.order), r.id \(direction.order)
+					LIMIT ?
+					""",
+				arguments: [collectionType.rawValue, resourceId, limit]
+			)
+		}
+
+		return try Row.fetchAll(
+			database,
+			sql: """
+				SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.playback_metadata,
+				       i.artwork_bookmark,
+				       r.volume, r.position, r.added_at AS relationship_added_at
+				FROM offline_item_relationship r
+				JOIN offline_item i ON r.member_resource_type = i.resource_type AND r.member_resource_id = i.resource_id
+				WHERE r.collection_resource_type = ? AND r.collection_resource_id = ?
+				  AND (r.member_resource_type != r.collection_resource_type OR r.member_resource_id != r.collection_resource_id)
+				ORDER BY r.volume, r.position
+				LIMIT ?
+				""",
+			arguments: [collectionType.rawValue, resourceId, limit]
+		)
+	}
+
+	private func makeCollectionItemsPage(
+		from rows: [Row],
+		sort: OfflineCollectionItemSort?
+	) -> OfflineCollectionItemsPage {
+		let (items, _, _) = collectItems(from: rows)
+		let cursor: String?
+		if sort == nil {
+			cursor = items.last.map { String(Int64($0.volume) * 1_000_000 + Int64($0.position)) }
+		} else {
+			cursor = makeSortCursor(from: rows.last)
+		}
+		return OfflineCollectionItemsPage(items: items, cursor: cursor)
 	}
 
 	private func likePattern(for query: String) -> String? {
@@ -750,6 +844,17 @@ final class OfflineStore {
 			position: row["position"],
 			addedAt: decodeRelationshipAddedAt(row["relationship_added_at"])
 		)
+	}
+}
+
+private extension OfflineCollectionItemSort {
+	var columnAndDirection: (column: String, direction: SortDirection) {
+		switch self {
+		case .title(let direction): ("title_sort", direction)
+		case .album(let direction): ("album_sort", direction)
+		case .artist(let direction): ("artist_sort", direction)
+		case .dateAdded(let direction): ("added_at_sort", direction)
+		}
 	}
 }
 
