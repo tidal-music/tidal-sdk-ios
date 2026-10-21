@@ -101,7 +101,7 @@ private final class BlockingTokensStore: TokensStore {
 		onFirstLoad: @escaping () -> Void
 	) {
 		self.credentialsKey = credentialsKey
-		self.storedTokens = initialTokens
+		storedTokens = initialTokens
 		self.onFirstLoad = onFirstLoad
 	}
 
@@ -457,7 +457,7 @@ final class TokenRepositoryTest: XCTestCase {
 		// then: shared refresh continues and only one refresh call is performed
 		XCTAssertEqual(blockingService.refreshCalls, 1, "The coalesced refresh should run only once")
 		switch firstResult {
-		case .failure(let error):
+		case let .failure(error):
 			XCTAssertTrue(error is CancellationError, "Unexpected error type: \(error)")
 		case .success:
 			break

@@ -22,7 +22,7 @@ final class TidalAPIRetryHandler<T> {
 		timeoutErrorManager: ErrorManager = TidalAPITimeoutErrorManager(),
 		authenticationErrorManager: TidalAPIAuthenticationErrorManager = TidalAPIAuthenticationErrorManager()
 	) {
-		self.retryable = TidalAPIRetryHandler.retryable(httpMethod: httpMethod)
+		retryable = TidalAPIRetryHandler.retryable(httpMethod: httpMethod)
 		self.executionBlock = executionBlock
 		self.responseErrorManager = responseErrorManager
 		self.networkErrorManager = networkErrorManager
@@ -36,21 +36,21 @@ final class TidalAPIRetryHandler<T> {
 		} catch let httpError as HTTPErrorResponse {
 			try Task.checkCancellation()
 
-            let strategy: RetryStrategy = switch httpError.statusCode {
-            case 401:
-                await authenticationErrorManager.handleAuthenticationError(httpError, attemptCount: attemptCount)
-            case 429, 500..<600:
+			let strategy: RetryStrategy = switch httpError.statusCode {
+			case 401:
+				await authenticationErrorManager.handleAuthenticationError(httpError, attemptCount: attemptCount)
+			case 429, 500 ..< 600:
 				retryable ? responseErrorManager.onError(httpError, attemptCount: attemptCount) : .NONE
-            default:
-                .NONE
-            }
+			default:
+				.NONE
+			}
 
-            if case .BACKOFF(let duration) = strategy {
-                try await Task.sleep(seconds: duration)
-                return try await execute(attemptCount: attemptCount + 1)
-            }
-            
-            throw httpError
+			if case let .BACKOFF(duration) = strategy {
+				try await Task.sleep(seconds: duration)
+				return try await execute(attemptCount: attemptCount + 1)
+			}
+
+			throw httpError
 		} catch {
 			try Task.checkCancellation()
 
@@ -62,12 +62,12 @@ final class TidalAPIRetryHandler<T> {
 				.NONE
 			}
 
-            if case .BACKOFF(let duration) = strategy, retryable {
-                try await Task.sleep(seconds: duration)
-                return try await execute(attemptCount: attemptCount + 1)
-            }
-            
-            throw error
+			if case let .BACKOFF(duration) = strategy, retryable {
+				try await Task.sleep(seconds: duration)
+				return try await execute(attemptCount: attemptCount + 1)
+			}
+
+			throw error
 		}
 	}
 
@@ -114,6 +114,6 @@ final class TidalAPIRetryHandler<T> {
 	}
 
 	private static func retryable(httpMethod: String) -> Bool {
-        return ["GET", "HEAD", "OPTIONS"].contains(httpMethod.uppercased())
-    }
+		["GET", "HEAD", "OPTIONS"].contains(httpMethod.uppercased())
+	}
 }

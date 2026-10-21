@@ -51,8 +51,8 @@ public final class Offliner {
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
 		self.trackManifestFetcher = trackManifestFetcher
-		self.audioFormats = configuration.audioFormats
-		self.taskRunner = TaskRunner(
+		audioFormats = configuration.audioFormats
+		taskRunner = TaskRunner(
 			configuration: configuration,
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
@@ -64,7 +64,9 @@ public final class Offliner {
 		)
 
 		mediaDownloader.orphanedTaskHandler = { [weak self] taskId in
-			guard let self, let taskId else { return }
+			guard let self, let taskId else {
+				return
+			}
 			Task {
 				try? await self.offlineApiClient.updateTask(taskId: taskId, state: .failed)
 				await self.run()
@@ -86,8 +88,8 @@ public final class Offliner {
 		self.offlineStore = offlineStore
 		self.mediaDownloader = mediaDownloader
 		self.trackManifestFetcher = trackManifestFetcher
-		self.audioFormats = configuration.audioFormats
-		self.taskRunner = TaskRunner(
+		audioFormats = configuration.audioFormats
+		taskRunner = TaskRunner(
 			configuration: configuration,
 			offlineApiClient: offlineApiClient,
 			offlineStore: offlineStore,
@@ -154,7 +156,7 @@ public final class Offliner {
 	) -> AsyncStream<Set<OfflineCollection>> {
 		AsyncStream { continuation in
 			let task = Task {
-				let local = (try? await offlineStore.getCollections(collectionType: collectionType)) ?? []
+				let local = await (try? offlineStore.getCollections(collectionType: collectionType)) ?? []
 				var collections = Set(local)
 				continuation.yield(collections)
 
@@ -237,7 +239,7 @@ public final class Offliner {
 				limit: limit,
 				after: cursor
 			)
-		case .title(let direction):
+		case let .title(direction):
 			(page, failures) = try await offlineStore.getCollectionItemsOrderByTitle(
 				collectionType: collectionType,
 				resourceId: resourceId,
@@ -245,7 +247,7 @@ public final class Offliner {
 				limit: limit,
 				after: cursor
 			)
-		case .album(let direction):
+		case let .album(direction):
 			(page, failures) = try await offlineStore.getCollectionItemsOrderByAlbum(
 				collectionType: collectionType,
 				resourceId: resourceId,
@@ -253,7 +255,7 @@ public final class Offliner {
 				limit: limit,
 				after: cursor
 			)
-		case .artist(let direction):
+		case let .artist(direction):
 			(page, failures) = try await offlineStore.getCollectionItemsOrderByArtist(
 				collectionType: collectionType,
 				resourceId: resourceId,
@@ -261,7 +263,7 @@ public final class Offliner {
 				limit: limit,
 				after: cursor
 			)
-		case .dateAdded(let direction):
+		case let .dateAdded(direction):
 			(page, failures) = try await offlineStore.getCollectionItemsOrderByDateAdded(
 				collectionType: collectionType,
 				resourceId: resourceId,
@@ -297,7 +299,9 @@ public final class Offliner {
 	}
 
 	private func scheduleRedownload(for failures: [FailedOfflineItem]) {
-		guard !failures.isEmpty else { return }
+		guard !failures.isEmpty else {
+			return
+		}
 		Task {
 			for failure in failures {
 				try? await download(mediaType: failure.mediaType, resourceId: .identifier(failure.resourceId))
@@ -386,7 +390,7 @@ public final class Offliner {
 	}
 }
 
-// MARK: - OfflineItemProvider
+// MARK: OfflineItemProvider
 
 extension Offliner: OfflineItemProvider {
 	public func get(productType: ProductType, productId: String) async -> OfflinePlaybackItem? {
@@ -413,8 +417,8 @@ extension Offliner: OfflineItemProvider {
 extension OfflineMediaItemType {
 	var toResourceType: ResourceType {
 		switch self {
-		case .tracks: return .track
-		case .videos: return .video
+		case .tracks: .track
+		case .videos: .video
 		}
 	}
 }
@@ -422,9 +426,9 @@ extension OfflineMediaItemType {
 extension OfflineCollectionType {
 	var toResourceType: ResourceType {
 		switch self {
-		case .albums: return .album
-		case .playlists: return .playlist
-		case .userCollectionTracks: return .userCollectionTracks
+		case .albums: .album
+		case .playlists: .playlist
+		case .userCollectionTracks: .userCollectionTracks
 		}
 	}
 }

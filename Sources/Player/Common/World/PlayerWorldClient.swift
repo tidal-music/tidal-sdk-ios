@@ -34,7 +34,7 @@ extension PlayerWorldClient {
 			isSimulator: false
 		)
 		#if targetEnvironment(simulator)
-		client.isSimulator = true
+			client.isSimulator = true
 		#endif
 		return client
 	}()
