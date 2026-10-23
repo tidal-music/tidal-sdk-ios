@@ -72,12 +72,17 @@ mkdir -p "$output_dir"
 # Step 4: Loop through all JSON files in the input folder
 for json_file in "$input_dir"/*.json; do
   echo "Generating Swift code for $(basename "$json_file")"
+  # Enrich a temporary copy with metadata needed by the Swift templates.
+  prepared_spec=$(mktemp)
+  python3 Config/prepare_spec.py "$json_file" "$prepared_spec" || exit 1
   openapi-generator generate \
-    -i "$json_file" \
+    -i "$prepared_spec" \
     -g swift5 \
     -o "$output_dir" \
     -c Config/openapi-config.yml \
-    --skip-validate-spec
+    --skip-validate-spec || { rm -f "$prepared_spec"; exit 1; }
+
+  rm -f "$prepared_spec"
 
   # Step 5: Remove the unwanted files
   rm -f "$output_dir/Package.swift"

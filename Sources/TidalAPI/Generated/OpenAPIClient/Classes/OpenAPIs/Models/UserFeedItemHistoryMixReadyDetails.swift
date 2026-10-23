@@ -20,7 +20,7 @@ public struct UserFeedItemHistoryMixReadyDetails: Codable, Hashable {
         case monthly = "MONTHLY"
         case yearly = "YEARLY"
     }
-    public static let periodRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[0-9]{4}(-(0[1-9]|1[0-2]))?$/")
+    public static let periodRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[0-9]{4}(-(0[1-9]|1[0-2]))?$/".replacingOccurrences(of: #"(?s)^/(.*)/$"#, with: "$1", options: .regularExpression))
     /** Type of activity represented by the group */
     public var activityType: ActivityType
     /** Recurrence frequency defined by RFC 5545 */

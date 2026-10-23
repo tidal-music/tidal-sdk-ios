@@ -13,7 +13,7 @@ import AnyCodable
 /** Refunds in the window. amount is the total refunded */
 public struct ArtistSalesStatisticsRefunds: Codable, Hashable {
 
-    public static let amountRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])/")
+    public static let amountRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])/".replacingOccurrences(of: #"(?s)^/(.*)/$"#, with: "$1", options: .regularExpression))
     public static let countRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Amount in the currency's major units */
     public var amount: String

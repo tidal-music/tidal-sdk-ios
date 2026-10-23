@@ -11,7 +11,7 @@
 {{#validatable}}
 {{#hasValidation}}
 {{#isString}}
-    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} static let {{{name}}}Rule = StringRule(minLength: {{#minLength}}{{{.}}}{{/minLength}}{{^minLength}}nil{{/minLength}}, maxLength: {{#maxLength}}{{{.}}}{{/maxLength}}{{^maxLength}}nil{{/maxLength}}, pattern: {{#pattern}}"{{{.}}}"{{/pattern}}{{^pattern}}nil{{/pattern}})
+    {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} static let {{{name}}}Rule = StringRule(minLength: {{#minLength}}{{{.}}}{{/minLength}}{{^minLength}}nil{{/minLength}}, maxLength: {{#maxLength}}{{{.}}}{{/maxLength}}{{^maxLength}}nil{{/maxLength}}, pattern: {{#pattern}}"{{{.}}}".replacingOccurrences(of: #"(?s)^/(.*)/$"#, with: "$1", options: .regularExpression){{/pattern}}{{^pattern}}nil{{/pattern}})
 {{/isString}}
 {{#isNumeric}}
     {{#nonPublicApi}}internal{{/nonPublicApi}}{{^nonPublicApi}}public{{/nonPublicApi}} static let {{{name}}}Rule = NumericRule<{{{dataType}}}>(minimum: {{#minimum}}{{{.}}}{{/minimum}}{{^minimum}}nil{{/minimum}}, exclusiveMinimum: {{#exclusiveMinimum}}true{{/exclusiveMinimum}}{{^exclusiveMinimum}}false{{/exclusiveMinimum}}, maximum: {{#maximum}}{{{.}}}{{/maximum}}{{^maximum}}nil{{/maximum}}, exclusiveMaximum: {{#exclusiveMaximum}}true{{/exclusiveMaximum}}{{^exclusiveMaximum}}false{{/exclusiveMaximum}}, multipleOf: {{#multipleOf}}{{{.}}}{{/multipleOf}}{{^multipleOf}}nil{{/multipleOf}})

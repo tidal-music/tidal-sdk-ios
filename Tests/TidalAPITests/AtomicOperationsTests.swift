@@ -43,4 +43,34 @@ final class AtomicOperationsTests: XCTestCase {
 		let builder = SquareItemsAPI.squareItemsIdPatchWithRequestBuilder(id: "item", idempotencyKey: "update-item")
 		XCTAssertEqual(builder.headers["Content-Type"], "application/vnd.api+json")
 	}
+
+	func testAtomicResultsDecodeByResourceTypeWithoutAttributes() throws {
+		let response = try JSONDecoder().decode(AtomicOperationsResponse.self, from: Data(#"""
+		{"atomic:results":[
+		  {"data":{"id":"item","type":"squareItems"}},
+		  {"data":{"id":"small","type":"squareItemVariations"}}
+		]}
+		"""#.utf8))
+		guard case let .atomicOperationsResponseAtomicResultsInnerOneOf1(item) = response.atomicResults[0],
+		      case let .atomicOperationsResponseAtomicResultsInnerOneOf(variation) = response.atomicResults[1]
+		else {
+			return XCTFail("Atomic result cases must match data.type")
+		}
+		XCTAssertEqual(item.data.id, "item")
+		XCTAssertEqual(variation.data.id, "small")
+		XCTAssertEqual(try JSONDecoder().decode(AtomicOperationsResponse.self, from: JSONEncoder().encode(response)), response)
+	}
+
+	func testAtomicResultsRejectUnknownResourceTypes() {
+		let json = #"{"atomic:results":[{"data":{"id":"unknown","type":"unknown"}}]}"#
+		XCTAssertThrowsError(try JSONDecoder().decode(AtomicOperationsResponse.self, from: Data(json.utf8)))
+	}
+
+	func testGeneratedPricePatternAcceptsValidPricesAndRejectsInvalidPrices() throws {
+		let rule = SquareItemVariationsCreateOperationPayloadDataAttributes.priceRule
+		XCTAssertEqual(try Validator.validate("12.34", against: rule), "12.34")
+		XCTAssertThrowsError(try Validator.validate("0", against: rule))
+		XCTAssertThrowsError(try Validator.validate("12.345", against: rule))
+		XCTAssertThrowsError(try Validator.validate("invalid", against: rule))
+	}
 }

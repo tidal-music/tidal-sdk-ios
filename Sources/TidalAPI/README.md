@@ -16,7 +16,7 @@ This module provides easy access to the TIDAL Open API. Read more about it [here
 
 The API client code is generated from the TIDAL OpenAPI specifications. A Github Action runs daily and creates a PR if there are changes to the specification.
 
-The generation can also be triggered manually by following the steps below.
+The generation can also be triggered manually by following the steps below. The generation script uses Python 3 to enrich a temporary copy of the specification with atomic-result decoding metadata; the committed input remains the API contract.
 
 ### Use Github Actions:
 1. Run [Regenerate TidalApi Code](https://github.com/tidal-music/tidal-sdk-ios/actions/workflows/generate-tidal-api.yml)

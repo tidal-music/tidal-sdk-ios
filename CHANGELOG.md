@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Quote the JSON:API atomic extension in generated request media types (TidalAPI)
+- Decode atomic result variants by resource type and preserve valid regular-expression validation rules (TidalAPI)
 - Honor generated-code exclusions in the SwiftLint pre-commit hooks (TidalAPI)
 - Handle artwork files without dimension metadata when selecting offline artwork (Offliner)
 

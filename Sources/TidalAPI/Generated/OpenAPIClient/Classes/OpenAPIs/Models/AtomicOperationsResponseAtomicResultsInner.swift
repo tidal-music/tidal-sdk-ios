@@ -24,18 +24,23 @@ public enum AtomicOperationsResponseAtomicResultsInner: Codable, JSONEncodable, 
         }
     }
     
+    private enum ResultKeys: String, CodingKey {
+        case data
+        case type
+    }
+
     public init(from decoder: Decoder) throws {
-        if let value = try? AtomicOperationsResponseAtomicResultsInnerOneOf(from: decoder) {
-            self = .atomicOperationsResponseAtomicResultsInnerOneOf(value)
-            return
+        let container = try decoder.container(keyedBy: ResultKeys.self)
+        let data = try container.nestedContainer(keyedBy: ResultKeys.self, forKey: .data)
+        let resourceType = try data.decode(String.self, forKey: .type)
+        switch resourceType {
+        case "squareItemVariations":
+            self = .atomicOperationsResponseAtomicResultsInnerOneOf(try AtomicOperationsResponseAtomicResultsInnerOneOf(from: decoder))
+        case "squareItems":
+            self = .atomicOperationsResponseAtomicResultsInnerOneOf1(try AtomicOperationsResponseAtomicResultsInnerOneOf1(from: decoder))
+        default:
+            throw DecodingError.dataCorruptedError(forKey: .type, in: data, debugDescription: "Unknown resource type: \(resourceType)")
         }
-        if let value = try? AtomicOperationsResponseAtomicResultsInnerOneOf1(from: decoder) {
-            self = .atomicOperationsResponseAtomicResultsInnerOneOf1(value)
-            return
-        }
-        
-        let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unable to decode AtomicOperationsResponseAtomicResultsInner")
-        throw DecodingError.dataCorrupted(context)
     }
 }
 

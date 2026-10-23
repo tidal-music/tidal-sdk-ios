@@ -13,7 +13,7 @@ import AnyCodable
 /** Inbox read state */
 public struct UserFeedsAttributesInbox: Codable, Hashable {
 
-    public static let seenThroughTokenRule = StringRule(minLength: 1, maxLength: 128, pattern: "/^[0-9A-Za-z]+$/")
+    public static let seenThroughTokenRule = StringRule(minLength: 1, maxLength: 128, pattern: "/^[0-9A-Za-z]+$/".replacingOccurrences(of: #"(?s)^/(.*)/$"#, with: "$1", options: .regularExpression))
     public static let unreadCountRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Opaque position through which the surface has been seen. Omitted when unavailable. */
     public var seenThroughToken: String?

@@ -56,6 +56,27 @@
     {{/propertyName}}
     {{/discriminator}}
     {{^discriminator}}
+    {{#vendorExtensions.x-swift-nested-resource-cases.0}}
+    private enum ResultKeys: String, CodingKey {
+        case data
+        case type
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ResultKeys.self)
+        let data = try container.nestedContainer(keyedBy: ResultKeys.self, forKey: .data)
+        let resourceType = try data.decode(String.self, forKey: .type)
+        switch resourceType {
+        {{#vendorExtensions.x-swift-nested-resource-cases}}
+        case "{{type}}":
+            self = .{{#lambda.camelcase}}{{model}}{{/lambda.camelcase}}(try {{model}}(from: decoder))
+        {{/vendorExtensions.x-swift-nested-resource-cases}}
+        default:
+            throw DecodingError.dataCorruptedError(forKey: .type, in: data, debugDescription: "Unknown resource type: \(resourceType)")
+        }
+    }
+    {{/vendorExtensions.x-swift-nested-resource-cases.0}}
+    {{^vendorExtensions.x-swift-nested-resource-cases.0}}
     public init(from decoder: Decoder) throws {
         {{#oneOf}}
         if let value = try? {{.}}(from: decoder) {
@@ -67,6 +88,7 @@
         let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unable to decode {{classname}}")
         throw DecodingError.dataCorrupted(context)
     }
+    {{/vendorExtensions.x-swift-nested-resource-cases.0}}
     {{/discriminator}}
 }
 

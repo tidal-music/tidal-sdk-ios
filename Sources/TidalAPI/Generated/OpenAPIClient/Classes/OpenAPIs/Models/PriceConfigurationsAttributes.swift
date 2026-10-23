@@ -15,7 +15,7 @@ public struct PriceConfigurationsAttributes: Codable, Hashable {
     public enum Currency: String, Codable, CaseIterable {
         case usd = "USD"
     }
-    public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^\\+?(?=[0-9.]*[1-9])(?:[0-9]+(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])/")
+    public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^\\+?(?=[0-9.]*[1-9])(?:[0-9]+(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])/".replacingOccurrences(of: #"(?s)^/(.*)/$"#, with: "$1", options: .regularExpression))
     /** Currency code (ISO 4217) */
     public var currency: Currency
     /** Amount in the currency's major units */

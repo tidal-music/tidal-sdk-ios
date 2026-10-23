@@ -13,7 +13,7 @@ import AnyCodable
 /** Inbox seen state */
 public struct UserFeedsUpdateOperationPayloadDataAttributesInbox: Codable, Hashable {
 
-    public static let seenThroughTokenRule = StringRule(minLength: 1, maxLength: 128, pattern: "/^[0-9A-Za-z]+$/")
+    public static let seenThroughTokenRule = StringRule(minLength: 1, maxLength: 128, pattern: "/^[0-9A-Za-z]+$/".replacingOccurrences(of: #"(?s)^/(.*)/$"#, with: "$1", options: .regularExpression))
     /** The seen position returned in `userFeedItems.meta.seenThroughToken` for this surface. */
     public var seenThroughToken: String
 
