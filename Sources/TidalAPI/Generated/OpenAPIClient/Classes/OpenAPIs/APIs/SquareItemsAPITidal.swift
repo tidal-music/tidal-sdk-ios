@@ -33,11 +33,13 @@ public enum SquareItemsAPITidal {
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_squareItemsGet: String, CaseIterable {
+		case artworks = "artworks"
 		case owners = "owners"
 		case variations = "variations"
 
 		func toSquareItemsAPIEnum() -> SquareItemsAPI.IncludeLinkage_squareItemsGet {
 			switch self {
+			case .artworks: return .artworks
 			case .owners: return .owners
 			case .variations: return .variations
 			}
@@ -72,11 +74,13 @@ public enum SquareItemsAPITidal {
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_squareItemsIdGet: String, CaseIterable {
+		case artworks = "artworks"
 		case owners = "owners"
 		case variations = "variations"
 
 		func toSquareItemsAPIEnum() -> SquareItemsAPI.IncludeLinkage_squareItemsIdGet {
 			switch self {
+			case .artworks: return .artworks
 			case .owners: return .owners
 			case .variations: return .variations
 			}
@@ -103,6 +107,18 @@ public enum SquareItemsAPITidal {
 	public static func squareItemsIdPatch(id: String, idempotencyKey: String, squareItemsUpdateOperationPayload: SquareItemsUpdateOperationPayload? = nil) async throws -> SquareItemsUpdateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			SquareItemsAPI.squareItemsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareItemsUpdateOperationPayload: squareItemsUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Get artworks relationship (\&quot;to-many\&quot;).
+     
+     - returns: SquareItemsArtworksMultiRelationshipDataDocument
+     */
+	public static func squareItemsIdRelationshipsArtworksGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareItemsArtworksMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			SquareItemsAPI.squareItemsIdRelationshipsArtworksGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
 		}
 	}
 

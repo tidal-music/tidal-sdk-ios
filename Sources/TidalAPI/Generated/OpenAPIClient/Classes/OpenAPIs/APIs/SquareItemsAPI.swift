@@ -24,6 +24,7 @@ internal class SquareItemsAPI {
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_squareItemsGet: String, CaseIterable {
+        case artworks = "artworks"
         case owners = "owners"
         case variations = "variations"
     }
@@ -34,7 +35,7 @@ internal class SquareItemsAPI {
      - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterOrigin: (query) Only items with this origin (e.g. &#x60;TIDAL&#x60;) (optional)
      - parameter filterQuery: (query) Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
-     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
+     - parameter include: (query) Include related resources. Available relationships: artworks, owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: SquareItemsMultiResourceDataDocument
@@ -59,7 +60,7 @@ internal class SquareItemsAPI {
      - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterOrigin: (query) Only items with this origin (e.g. &#x60;TIDAL&#x60;) (optional)
      - parameter filterQuery: (query) Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
-     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
+     - parameter include: (query) Include related resources. Available relationships: artworks, owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<SquareItemsMultiResourceDataDocument> 
@@ -143,6 +144,7 @@ internal class SquareItemsAPI {
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_squareItemsIdGet: String, CaseIterable {
+        case artworks = "artworks"
         case owners = "owners"
         case variations = "variations"
     }
@@ -151,7 +153,7 @@ internal class SquareItemsAPI {
      Get single squareItem.
      
      - parameter id: (path) Square item id 
-     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
+     - parameter include: (query) Include related resources. Available relationships: artworks, owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: SquareItemsSingleResourceDataDocument
      */
@@ -173,7 +175,7 @@ internal class SquareItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Square item id 
-     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
+     - parameter include: (query) Include related resources. Available relationships: artworks, owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<SquareItemsSingleResourceDataDocument> 
      */
@@ -252,6 +254,61 @@ internal class SquareItemsAPI {
         let localVariableRequestBuilder: RequestBuilder<SquareItemsUpdateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get artworks relationship (\"to-many\").
+     
+     - parameter id: (path) Square item id 
+     - parameter include: (query) Include related resources. Available relationships: artworks (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: SquareItemsArtworksMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func squareItemsIdRelationshipsArtworksGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareItemsArtworksMultiRelationshipDataDocument {
+        do {
+            return try await squareItemsIdRelationshipsArtworksGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get artworks relationship (\"to-many\").
+     - GET /squareItems/{id}/relationships/artworks
+     - A photo Square has no URL for stays in the list and its artwork has no files.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Square item id 
+     - parameter include: (query) Include related resources. Available relationships: artworks (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<SquareItemsArtworksMultiRelationshipDataDocument> 
+     */
+    internal class func squareItemsIdRelationshipsArtworksGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SquareItemsArtworksMultiRelationshipDataDocument> {
+        var localVariablePath = "/squareItems/{id}/relationships/artworks"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SquareItemsArtworksMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**

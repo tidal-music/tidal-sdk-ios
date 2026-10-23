@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**squareItemsIdDelete**](SquareItemsAPI.md#squareitemsiddelete) | **DELETE** /squareItems/{id} | Delete single squareItem.
 [**squareItemsIdGet**](SquareItemsAPI.md#squareitemsidget) | **GET** /squareItems/{id} | Get single squareItem.
 [**squareItemsIdPatch**](SquareItemsAPI.md#squareitemsidpatch) | **PATCH** /squareItems/{id} | Update single squareItem.
+[**squareItemsIdRelationshipsArtworksGet**](SquareItemsAPI.md#squareitemsidrelationshipsartworksget) | **GET** /squareItems/{id}/relationships/artworks | Get artworks relationship (\&quot;to-many\&quot;).
 [**squareItemsIdRelationshipsOwnersGet**](SquareItemsAPI.md#squareitemsidrelationshipsownersget) | **GET** /squareItems/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**squareItemsIdRelationshipsVariationsGet**](SquareItemsAPI.md#squareitemsidrelationshipsvariationsget) | **GET** /squareItems/{id}/relationships/variations | Get variations relationship (\&quot;to-many\&quot;).
 [**squareItemsIdRelationshipsVariationsPatch**](SquareItemsAPI.md#squareitemsidrelationshipsvariationspatch) | **PATCH** /squareItems/{id}/relationships/variations | Update variations relationship (\&quot;to-many\&quot;).
@@ -31,7 +32,7 @@ import OpenAPIClient
 let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let filterOrigin = "filterOrigin_example" // String | Only items with this origin (e.g. `TIDAL`) (optional)
 let filterQuery = "filterQuery_example" // String | Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. `tee`) (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, variations (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: artworks, owners, variations (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
@@ -51,7 +52,7 @@ Name | Type | Description  | Notes
  **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **filterOrigin** | **String** | Only items with this origin (e.g. &#x60;TIDAL&#x60;) | [optional] 
  **filterQuery** | **String** | Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, variations | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: artworks, owners, variations | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
 
@@ -133,7 +134,7 @@ Retrieves single squareItem by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Square item id
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, variations (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: artworks, owners, variations (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single squareItem.
@@ -150,7 +151,7 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Square item id | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, variations | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: artworks, owners, variations | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
@@ -214,6 +215,56 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **squareItemsIdRelationshipsArtworksGet**
+```swift
+    open class func squareItemsIdRelationshipsArtworksGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareItemsArtworksMultiRelationshipDataDocument
+```
+
+Get artworks relationship (\"to-many\").
+
+A photo Square has no URL for stays in the list and its artwork has no files.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Square item id
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: artworks (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get artworks relationship (\"to-many\").
+do {
+    let response = try await SquareItemsAPI.squareItemsIdRelationshipsArtworksGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Square item id | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: artworks | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**SquareItemsArtworksMultiRelationshipDataDocument**](SquareItemsArtworksMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
