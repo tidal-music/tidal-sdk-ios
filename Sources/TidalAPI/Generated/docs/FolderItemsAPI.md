@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 # **folderItemsGet**
 ```swift
-    open class func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FolderItemsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument
 ```
 
 Get multiple folderItems.
@@ -42,15 +42,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: breadcrumb.children.subject (optional)
 
 // Get multiple folderItems.
-FolderItemsAPI.folderItemsGet(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterQuery: filterQuery, filterSubjectAlbumsPublished: filterSubjectAlbumsPublished, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await FolderItemsAPI.folderItemsGet(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterQuery: filterQuery, filterSubjectAlbumsPublished: filterSubjectAlbumsPublished, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -87,7 +83,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdDelete**
 ```swift
-    open class func folderItemsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func folderItemsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single folderItem.
@@ -103,15 +99,11 @@ let id = "id_example" // String | Folder item id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single folderItem.
-FolderItemsAPI.folderItemsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await FolderItemsAPI.folderItemsIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -139,7 +131,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdGet**
 ```swift
-    open class func folderItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FolderItemsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func folderItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSingleResourceDataDocument
 ```
 
 Get single folderItem.
@@ -157,15 +149,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: breadcrumb.children.subject (optional)
 
 // Get single folderItem.
-FolderItemsAPI.folderItemsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await FolderItemsAPI.folderItemsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -195,7 +183,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdRelationshipsBreadcrumbGet**
 ```swift
-    open class func folderItemsIdRelationshipsBreadcrumbGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FolderItemsBreadcrumbMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func folderItemsIdRelationshipsBreadcrumbGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsBreadcrumbMultiRelationshipDataDocument
 ```
 
 Get breadcrumb relationship (\"to-many\").
@@ -213,15 +201,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: breadcrumb.children.subject (optional)
 
 // Get breadcrumb relationship (\"to-many\").
-FolderItemsAPI.folderItemsIdRelationshipsBreadcrumbGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsBreadcrumbGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -251,7 +235,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdRelationshipsOwnersGet**
 ```swift
-    open class func folderItemsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: FolderItemsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func folderItemsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> FolderItemsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -268,15 +252,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-FolderItemsAPI.folderItemsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -305,7 +285,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdRelationshipsParentGet**
 ```swift
-    open class func folderItemsIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FolderItemsParentSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func folderItemsIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsParentSingleRelationshipDataDocument
 ```
 
 Get parent relationship (\"to-one\").
@@ -322,15 +302,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: parent.children.subject (optional)
 
 // Get parent relationship (\"to-one\").
-FolderItemsAPI.folderItemsIdRelationshipsParentGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsParentGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -359,7 +335,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdRelationshipsParentPatch**
 ```swift
-    open class func folderItemsIdRelationshipsParentPatch(id: String, idempotencyKey: String? = nil, folderItemsParentRelationshipUpdateOperationPayload: FolderItemsParentRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: FolderItemsParentUpdateSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func folderItemsIdRelationshipsParentPatch(id: String, idempotencyKey: String? = nil, folderItemsParentRelationshipUpdateOperationPayload: FolderItemsParentRelationshipUpdateOperationPayload? = nil) async throws -> FolderItemsParentUpdateSingleRelationshipDataDocument
 ```
 
 Update parent relationship (\"to-one\").
@@ -376,15 +352,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let folderItemsParentRelationshipUpdateOperationPayload = FolderItemsParentRelationshipUpdateOperation_Payload(data: FolderItemsParentRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")) // FolderItemsParentRelationshipUpdateOperationPayload |  (optional)
 
 // Update parent relationship (\"to-one\").
-FolderItemsAPI.folderItemsIdRelationshipsParentPatch(id: id, idempotencyKey: idempotencyKey, folderItemsParentRelationshipUpdateOperationPayload: folderItemsParentRelationshipUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsParentPatch(id: id, idempotencyKey: idempotencyKey, folderItemsParentRelationshipUpdateOperationPayload: folderItemsParentRelationshipUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -413,7 +385,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdRelationshipsSubjectGet**
 ```swift
-    open class func folderItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: FolderItemsSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func folderItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSubjectSingleRelationshipDataDocument
 ```
 
 Get subject relationship (\"to-one\").
@@ -430,15 +402,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-FolderItemsAPI.folderItemsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -467,7 +435,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsPost**
 ```swift
-    open class func folderItemsPost(idempotencyKey: String? = nil, folderItemsCreateOperationPayload: FolderItemsCreateOperationPayload? = nil, completion: @escaping (_ data: FolderItemsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func folderItemsPost(idempotencyKey: String? = nil, folderItemsCreateOperationPayload: FolderItemsCreateOperationPayload? = nil) async throws -> FolderItemsCreateSingleResourceDataDocument
 ```
 
 Create single folderItem.
@@ -483,15 +451,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let folderItemsCreateOperationPayload = FolderItemsCreateOperation_Payload(data: FolderItemsCreateOperation_Payload_Data(relationships: FolderItemsCreateOperation_Payload_Data_Relationships(parent: FolderItemsCreateOperation_Payload_Data_Relationships_Parent(data: FolderItemsCreateOperation_Payload_Data_Relationships_Parent_Data(id: "id_example", type: "type_example")), subject: FolderItemsCreateOperation_Payload_Data_Relationships_Subject(data: FolderItemsCreateOperation_Payload_Data_Relationships_Subject_Data(id: "id_example", type: "type_example"))), type: "type_example")) // FolderItemsCreateOperationPayload |  (optional)
 
 // Create single folderItem.
-FolderItemsAPI.folderItemsPost(idempotencyKey: idempotencyKey, folderItemsCreateOperationPayload: folderItemsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await FolderItemsAPI.folderItemsPost(idempotencyKey: idempotencyKey, folderItemsCreateOperationPayload: folderItemsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **collaborationInviteRedemptionsPost**
 ```swift
-    open class func collaborationInviteRedemptionsPost(idempotencyKey: String? = nil, collaborationInviteRedemptionsCreateOperationPayload: CollaborationInviteRedemptionsCreateOperationPayload? = nil, completion: @escaping (_ data: CollaborationInviteRedemptionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func collaborationInviteRedemptionsPost(idempotencyKey: String? = nil, collaborationInviteRedemptionsCreateOperationPayload: CollaborationInviteRedemptionsCreateOperationPayload? = nil) async throws -> CollaborationInviteRedemptionsCreateSingleResourceDataDocument
 ```
 
 Create single collaborationInviteRedemption.
@@ -25,15 +25,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let collaborationInviteRedemptionsCreateOperationPayload = CollaborationInviteRedemptionsCreateOperation_Payload(data: CollaborationInviteRedemptionsCreateOperation_Payload_Data(relationships: CollaborationInviteRedemptionsCreateOperation_Payload_Data_Relationships(invite: CollaborationInviteRedemptionsCreateOperation_Payload_Data_Relationships_Invite(data: CollaborationInviteRedemptionsCreateOperation_Payload_Data_Relationships_Invite_Data(id: "id_example", type: "type_example"))), type: "type_example")) // CollaborationInviteRedemptionsCreateOperationPayload |  (optional)
 
 // Create single collaborationInviteRedemption.
-CollaborationInviteRedemptionsAPI.collaborationInviteRedemptionsPost(idempotencyKey: idempotencyKey, collaborationInviteRedemptionsCreateOperationPayload: collaborationInviteRedemptionsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CollaborationInviteRedemptionsAPI.collaborationInviteRedemptionsPost(idempotencyKey: idempotencyKey, collaborationInviteRedemptionsCreateOperationPayload: collaborationInviteRedemptionsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

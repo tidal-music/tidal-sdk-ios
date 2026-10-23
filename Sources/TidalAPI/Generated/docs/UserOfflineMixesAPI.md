@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **userOfflineMixesIdGet**
 ```swift
-    open class func userOfflineMixesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userOfflineMixesIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserOfflineMixesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func userOfflineMixesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userOfflineMixesIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserOfflineMixesSingleResourceDataDocument
 ```
 
 Get single userOfflineMixe.
@@ -29,15 +29,11 @@ let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get single userOfflineMixe.
-UserOfflineMixesAPI.userOfflineMixesIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserOfflineMixesAPI.userOfflineMixesIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -68,7 +64,7 @@ Name | Type | Description  | Notes
 
 # **userOfflineMixesIdRelationshipsItemsGet**
 ```swift
-    open class func userOfflineMixesIdRelationshipsItemsGet(id: String, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserOfflineMixesItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func userOfflineMixesIdRelationshipsItemsGet(id: String, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserOfflineMixesItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -87,15 +83,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get items relationship (\"to-many\").
-UserOfflineMixesAPI.userOfflineMixesIdRelationshipsItemsGet(id: id, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UserOfflineMixesAPI.userOfflineMixesIdRelationshipsItemsGet(id: id, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

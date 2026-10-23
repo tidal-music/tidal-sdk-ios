@@ -12,7 +12,7 @@ enum ResourceType {
 	case userCollectionTracks
 }
 
-// MARK: - StoreTrackTask
+// MARK: - Task Types
 
 struct StoreTrackTask {
 	let id: String
@@ -51,8 +51,6 @@ struct StoreTrackTask {
 	}
 }
 
-// MARK: - StoreVideoTask
-
 struct StoreVideoTask {
 	let id: String
 	let video: VideosResourceObject
@@ -87,8 +85,6 @@ struct StoreVideoTask {
 	}
 }
 
-// MARK: - StoreAlbumTask
-
 struct StoreAlbumTask {
 	let id: String
 	let album: AlbumsResourceObject
@@ -96,22 +92,16 @@ struct StoreAlbumTask {
 	let artwork: ArtworksResourceObject?
 }
 
-// MARK: - StorePlaylistTask
-
 struct StorePlaylistTask {
 	let id: String
 	let playlist: PlaylistsResourceObject
 	let artwork: ArtworksResourceObject?
 }
 
-// MARK: - StoreUserCollectionTracksTask
-
 struct StoreUserCollectionTracksTask {
 	let id: String
 	let resourceId: String
 }
-
-// MARK: - RemoveItemTask
 
 struct RemoveItemTask {
 	let id: String
@@ -120,8 +110,6 @@ struct RemoveItemTask {
 	let collectionResourceType: String
 	let collectionResourceId: String
 }
-
-// MARK: - RemoveCollectionTask
 
 struct RemoveCollectionTask {
 	let id: String
@@ -142,13 +130,13 @@ enum OfflineTask {
 
 	var id: String {
 		switch self {
-		case let .storeTrack(task): task.id
-		case let .storeVideo(task): task.id
-		case let .storeAlbum(task): task.id
-		case let .storePlaylist(task): task.id
-		case let .storeUserCollectionTracks(task): task.id
-		case let .removeItem(task): task.id
-		case let .removeCollection(task): task.id
+		case .storeTrack(let task): return task.id
+		case .storeVideo(let task): return task.id
+		case .storeAlbum(let task): return task.id
+		case .storePlaylist(let task): return task.id
+		case .storeUserCollectionTracks(let task): return task.id
+		case .removeItem(let task): return task.id
+		case .removeCollection(let task): return task.id
 		}
 	}
 }
@@ -169,9 +157,7 @@ struct OfflineCollectionReference: Hashable, Sendable {
 	}
 
 	init?(collectionResourceType: String, collectionResourceId: String) {
-		guard let collectionType = OfflineCollectionType(rawValue: collectionResourceType) else {
-			return nil
-		}
+		guard let collectionType = OfflineCollectionType(rawValue: collectionResourceType) else { return nil }
 		self.init(collectionType: collectionType, resourceId: collectionResourceId)
 	}
 }
@@ -281,26 +267,26 @@ private extension OfflineApiClient {
 	func mapResourceType(_ type: ResourceType) -> InstallationsOfflineInventoryItemIdentifier.ModelType {
 		switch type {
 		case .track:
-			.tracks
+			return .tracks
 		case .video:
-			.videos
+			return .videos
 		case .album:
-			.albums
+			return .albums
 		case .playlist:
-			.playlists
+			return .playlists
 		case .userCollectionTracks:
-			.usercollectiontracks
+			return .usercollectiontracks
 		}
 	}
 
 	func mapTaskState(_ state: Download.State) -> OfflineTasksUpdateOperationPayloadDataAttributes.State {
 		switch state {
 		case .pending, .inProgress:
-			.inProgress
+			return .inProgress
 		case .failed:
-			.failed
+			return .failed
 		case .completed:
-			.completed
+			return .completed
 		}
 	}
 
@@ -346,9 +332,9 @@ private extension OfflineApiClient {
 private extension OfflineCollectionType {
 	var toFilterType: InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet {
 		switch self {
-		case .albums: .albums
-		case .playlists: .playlists
-		case .userCollectionTracks: .usercollectiontracks
+		case .albums: return .albums
+		case .playlists: return .playlists
+		case .userCollectionTracks: return .usercollectiontracks
 		}
 	}
 }
@@ -365,8 +351,7 @@ private extension OfflineTasksMultiResourceDataDocument {
 private extension OfflineTasksResourceObject {
 	func createOfflineTask(includedItems: IncludedItemsMap) -> OfflineTask? {
 		guard let attributes,
-		      let itemData = relationships?.item?.data
-		else {
+			  let itemData = relationships?.item?.data else {
 			return nil
 		}
 
@@ -420,9 +405,7 @@ private final class IncludedItemsMap {
 	private var storage: [Key: IncludedItem] = [:]
 
 	init(from included: [IncludedInner]?) {
-		guard let included else {
-			return
-		}
+		guard let included else { return }
 		populateStorage(from: included)
 		wireAllRelationships(from: included)
 	}
@@ -430,17 +413,17 @@ private final class IncludedItemsMap {
 	private func populateStorage(from included: [IncludedInner]) {
 		for item in included {
 			switch item {
-			case let .tracksResourceObject(track):
+			case .tracksResourceObject(let track):
 				add(IncludedItem(resource: .track(track)), type: track.type, id: track.id)
-			case let .videosResourceObject(video):
+			case .videosResourceObject(let video):
 				add(IncludedItem(resource: .video(video)), type: video.type, id: video.id)
-			case let .albumsResourceObject(album):
+			case .albumsResourceObject(let album):
 				add(IncludedItem(resource: .album(album)), type: album.type, id: album.id)
-			case let .playlistsResourceObject(playlist):
+			case .playlistsResourceObject(let playlist):
 				add(IncludedItem(resource: .playlist(playlist)), type: playlist.type, id: playlist.id)
-			case let .artworksResourceObject(artwork):
+			case .artworksResourceObject(let artwork):
 				add(IncludedItem(resource: .artwork(artwork)), type: artwork.type, id: artwork.id)
-			case let .artistsResourceObject(artist):
+			case .artistsResourceObject(let artist):
 				add(IncludedItem(resource: .artist(artist)), type: artist.type, id: artist.id)
 			default:
 				break
@@ -451,38 +434,26 @@ private final class IncludedItemsMap {
 	private func wireAllRelationships(from included: [IncludedInner]) {
 		for item in included {
 			switch item {
-			case let .tracksResourceObject(track):
+			case .tracksResourceObject(let track):
 				guard let includedItem = get(type: track.type, id: track.id),
-				      let rels = track.relationships
-				else {
-					continue
-				}
+					  let rels = track.relationships else { continue }
 				let album = rels.albums?.data?.first.map { (type: $0.type, id: $0.id) }
 				wireRelationships(for: includedItem, album: album, artists: rels.artists?.data, coverArt: nil)
 
-			case let .videosResourceObject(video):
+			case .videosResourceObject(let video):
 				guard let includedItem = get(type: video.type, id: video.id),
-				      let rels = video.relationships
-				else {
-					continue
-				}
+					  let rels = video.relationships else { continue }
 				let album = rels.albums?.data?.first.map { (type: $0.type, id: $0.id) }
 				wireRelationships(for: includedItem, album: album, artists: rels.artists?.data, coverArt: rels.thumbnailArt?.data)
 
-			case let .albumsResourceObject(album):
+			case .albumsResourceObject(let album):
 				guard let includedItem = get(type: album.type, id: album.id),
-				      let rels = album.relationships
-				else {
-					continue
-				}
+					  let rels = album.relationships else { continue }
 				wireRelationships(for: includedItem, album: nil, artists: rels.artists?.data, coverArt: rels.coverArt?.data)
 
-			case let .playlistsResourceObject(playlist):
+			case .playlistsResourceObject(let playlist):
 				guard let includedItem = get(type: playlist.type, id: playlist.id),
-				      let rels = playlist.relationships
-				else {
-					continue
-				}
+					  let rels = playlist.relationships else { continue }
 				wireRelationships(for: includedItem, album: nil, artists: nil, coverArt: rels.coverArt?.data)
 
 			default:
@@ -546,9 +517,7 @@ private class IncludedItem {
 
 	var artistObjects: [ArtistsResourceObject] {
 		artists?.compactMap { item -> ArtistsResourceObject? in
-			if case let .artist(artist) = item.resource {
-				return artist
-			}
+			if case .artist(let artist) = item.resource { return artist }
 			return nil
 		} ?? []
 	}
@@ -561,21 +530,21 @@ private class IncludedItem {
 		case .playlist: coverArt
 		default: nil
 		}
-		guard let artworkItem, case let .artwork(artwork) = artworkItem.resource else {
+		guard let artworkItem, case .artwork(let artwork) = artworkItem.resource else {
 			return nil
 		}
 		return artwork
 	}
 
 	var albumObject: AlbumsResourceObject? {
-		guard let album, case let .album(albumObject) = album.resource else {
+		guard let album, case .album(let albumObject) = album.resource else {
 			return nil
 		}
 		return albumObject
 	}
 
 	func playlistItemAddedAt(for itemData: OfflineTasksItemResourceIdentifier) -> Date? {
-		guard case let .playlist(playlist) = resource else {
+		guard case .playlist(let playlist) = resource else {
 			return nil
 		}
 
@@ -591,7 +560,7 @@ private class IncludedItem {
 		let artwork = artworkObject
 		let artworkURL = artwork?.largestFileURL
 		switch resource {
-		case let .album(album):
+		case .album(let album):
 			let metadata = OfflineCollection.Metadata.album(OfflineCollection.AlbumMetadata(
 				id: album.id,
 				title: album.attributes?.title ?? "",
@@ -602,7 +571,7 @@ private class IncludedItem {
 				backgroundColorHex: artwork?.attributes?.visualMetadata?.selectedPaletteColor
 			))
 			return OfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, state: state, addedAt: addedAt)
-		case let .playlist(playlist):
+		case .playlist(let playlist):
 			let metadata = OfflineCollection.Metadata.playlist(OfflineCollection.PlaylistMetadata(
 				id: playlist.id,
 				title: playlist.attributes?.name ?? "",
@@ -633,9 +602,7 @@ private extension StoreTrackTask {
 		collectionData: OfflineTasksCollectionResourceIdentifier?,
 		addedAt: Date?
 	) {
-		guard let item, case let .track(track) = item.resource, let collectionData else {
-			return nil
-		}
+		guard let item, case .track(let track) = item.resource, let collectionData else { return nil }
 		self.init(
 			id: resourceObject.id,
 			track: track,
@@ -659,9 +626,7 @@ private extension StoreVideoTask {
 		collectionData: OfflineTasksCollectionResourceIdentifier?,
 		addedAt: Date?
 	) {
-		guard let item, case let .video(video) = item.resource, let collectionData else {
-			return nil
-		}
+		guard let item, case .video(let video) = item.resource, let collectionData else { return nil }
 		self.init(
 			id: resourceObject.id,
 			video: video,
@@ -678,18 +643,14 @@ private extension StoreVideoTask {
 
 private extension StoreAlbumTask {
 	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
-		guard let item, case let .album(album) = item.resource else {
-			return nil
-		}
+		guard let item, case .album(let album) = item.resource else { return nil }
 		self.init(id: resourceObject.id, album: album, artists: item.artistObjects, artwork: item.artworkObject)
 	}
 }
 
 private extension StorePlaylistTask {
 	init?(_ resourceObject: OfflineTasksResourceObject, item: IncludedItem?) {
-		guard let item, case let .playlist(playlist) = item.resource else {
-			return nil
-		}
+		guard let item, case .playlist(let playlist) = item.resource else { return nil }
 		self.init(id: resourceObject.id, playlist: playlist, artwork: item.artworkObject)
 	}
 }

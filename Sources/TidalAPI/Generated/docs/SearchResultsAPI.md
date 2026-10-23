@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **searchResultsGet**
 ```swift
-    open class func searchResultsGet(filterQuery: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsGet? = nil, explicitFilter: ExplicitFilter_searchResultsGet? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_searchResultsGet]? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsGet? = nil, completion: @escaping (_ data: SearchResultsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsGet(filterQuery: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsGet? = nil, explicitFilter: ExplicitFilter_searchResultsGet? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_searchResultsGet]? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsGet? = nil) async throws -> SearchResultsMultiResourceDataDocument
 ```
 
 Get search results by query.
@@ -38,15 +38,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 
 // Get search results by query.
-SearchResultsAPI.searchResultsGet(filterQuery: filterQuery, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, systemType: systemType) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SearchResultsAPI.searchResultsGet(filterQuery: filterQuery, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, systemType: systemType)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -81,7 +77,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsAlbumsGet**
 ```swift
-    open class func searchResultsIdRelationshipsAlbumsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsAlbumsGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsAlbumsGet? = nil, completion: @escaping (_ data: SearchResultsAlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsAlbumsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsAlbumsGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsAlbumsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsAlbumsGet? = nil) async throws -> SearchResultsAlbumsMultiRelationshipDataDocument
 ```
 
 Get albums relationship (\"to-many\").
@@ -104,15 +100,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 
 // Get albums relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsAlbumsGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SearchResultsAPI.searchResultsIdRelationshipsAlbumsGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -147,7 +139,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsArtistsGet**
 ```swift
-    open class func searchResultsIdRelationshipsArtistsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsArtistsGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsArtistsGet? = nil, completion: @escaping (_ data: SearchResultsArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsArtistsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsArtistsGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsArtistsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsArtistsGet? = nil) async throws -> SearchResultsArtistsMultiRelationshipDataDocument
 ```
 
 Get artists relationship (\"to-many\").
@@ -170,15 +162,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 
 // Get artists relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsArtistsGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SearchResultsAPI.searchResultsIdRelationshipsArtistsGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -213,7 +201,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsPlaylistsGet**
 ```swift
-    open class func searchResultsIdRelationshipsPlaylistsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsPlaylistsGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsPlaylistsGet? = nil, completion: @escaping (_ data: SearchResultsPlaylistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsPlaylistsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsPlaylistsGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsPlaylistsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsPlaylistsGet? = nil) async throws -> SearchResultsPlaylistsMultiRelationshipDataDocument
 ```
 
 Get playlists relationship (\"to-many\").
@@ -236,15 +224,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 
 // Get playlists relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SearchResultsAPI.searchResultsIdRelationshipsPlaylistsGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -279,7 +263,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsTopHitsGet**
 ```swift
-    open class func searchResultsIdRelationshipsTopHitsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTopHitsGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsTopHitsGet? = nil, completion: @escaping (_ data: SearchResultsTopHitsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsTopHitsGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTopHitsGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTopHitsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsTopHitsGet? = nil) async throws -> SearchResultsTopHitsMultiRelationshipDataDocument
 ```
 
 Get topHits relationship (\"to-many\").
@@ -302,15 +286,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 
 // Get topHits relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsTopHitsGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SearchResultsAPI.searchResultsIdRelationshipsTopHitsGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -345,7 +325,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsTracksGet**
 ```swift
-    open class func searchResultsIdRelationshipsTracksGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTracksGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsTracksGet? = nil, completion: @escaping (_ data: SearchResultsTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsTracksGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsTracksGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsTracksGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsTracksGet? = nil) async throws -> SearchResultsTracksMultiRelationshipDataDocument
 ```
 
 Get tracks relationship (\"to-many\").
@@ -368,15 +348,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 
 // Get tracks relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsTracksGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SearchResultsAPI.searchResultsIdRelationshipsTracksGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -411,7 +387,7 @@ Name | Type | Description  | Notes
 
 # **searchResultsIdRelationshipsVideosGet**
 ```swift
-    open class func searchResultsIdRelationshipsVideosGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsVideosGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsVideosGet? = nil, completion: @escaping (_ data: SearchResultsVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func searchResultsIdRelationshipsVideosGet(id: String, clientVersion: String? = nil, countryCode: String? = nil, deviceType: DeviceType_searchResultsIdRelationshipsVideosGet? = nil, explicitFilter: ExplicitFilter_searchResultsIdRelationshipsVideosGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, systemType: SystemType_searchResultsIdRelationshipsVideosGet? = nil) async throws -> SearchResultsVideosMultiRelationshipDataDocument
 ```
 
 Get videos relationship (\"to-many\").
@@ -434,15 +410,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let systemType = "systemType_example" // String | The system type of the device making the request (optional)
 
 // Get videos relationship (\"to-many\").
-SearchResultsAPI.searchResultsIdRelationshipsVideosGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SearchResultsAPI.searchResultsIdRelationshipsVideosGet(id: id, clientVersion: clientVersion, countryCode: countryCode, deviceType: deviceType, explicitFilter: explicitFilter, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, systemType: systemType)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

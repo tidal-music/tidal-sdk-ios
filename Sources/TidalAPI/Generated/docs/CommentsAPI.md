@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 # **commentsGet**
 ```swift
-    open class func commentsGet(filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_commentsGet]? = nil, completion: @escaping (_ data: CommentsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func commentsGet(filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_commentsGet]? = nil) async throws -> CommentsMultiResourceDataDocument
 ```
 
 Get multiple comments.
@@ -39,15 +39,11 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 
 // Get multiple comments.
-CommentsAPI.commentsGet(filterParentCommentId: filterParentCommentId, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CommentsAPI.commentsGet(filterParentCommentId: filterParentCommentId, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -82,7 +78,7 @@ Name | Type | Description  | Notes
 
 # **commentsIdDelete**
 ```swift
-    open class func commentsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func commentsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single comment.
@@ -98,15 +94,11 @@ let id = "id_example" // String | Comment Id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single comment.
-CommentsAPI.commentsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CommentsAPI.commentsIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -134,7 +126,7 @@ Name | Type | Description  | Notes
 
 # **commentsIdGet**
 ```swift
-    open class func commentsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CommentsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func commentsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsIdGet]? = nil, replaceMedia: String? = nil) async throws -> CommentsSingleResourceDataDocument
 ```
 
 Get single comment.
@@ -152,15 +144,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
 
 // Get single comment.
-CommentsAPI.commentsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CommentsAPI.commentsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -190,7 +178,7 @@ Name | Type | Description  | Notes
 
 # **commentsIdPatch**
 ```swift
-    open class func commentsIdPatch(id: String, idempotencyKey: String? = nil, commentsUpdateOperationPayload: CommentsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func commentsIdPatch(id: String, idempotencyKey: String? = nil, commentsUpdateOperationPayload: CommentsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update single comment.
@@ -207,15 +195,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let commentsUpdateOperationPayload = CommentsUpdateOperation_Payload(data: CommentsUpdateOperation_Payload_Data(attributes: CommentsUpdateOperation_Payload_Data_Attributes(endTime: "endTime_example", message: "message_example", startTime: "startTime_example"), id: "id_example", type: "type_example")) // CommentsUpdateOperationPayload |  (optional)
 
 // Update single comment.
-CommentsAPI.commentsIdPatch(id: id, idempotencyKey: idempotencyKey, commentsUpdateOperationPayload: commentsUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CommentsAPI.commentsIdPatch(id: id, idempotencyKey: idempotencyKey, commentsUpdateOperationPayload: commentsUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -244,7 +228,7 @@ Name | Type | Description  | Notes
 
 # **commentsIdRelationshipsAuthorGet**
 ```swift
-    open class func commentsIdRelationshipsAuthorGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CommentsAuthorSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func commentsIdRelationshipsAuthorGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CommentsAuthorSingleRelationshipDataDocument
 ```
 
 Get author relationship (\"to-one\").
@@ -261,15 +245,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
 
 // Get author relationship (\"to-one\").
-CommentsAPI.commentsIdRelationshipsAuthorGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CommentsAPI.commentsIdRelationshipsAuthorGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -298,7 +278,7 @@ Name | Type | Description  | Notes
 
 # **commentsIdRelationshipsOwnersGet**
 ```swift
-    open class func commentsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: CommentsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func commentsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -315,15 +295,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-CommentsAPI.commentsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CommentsAPI.commentsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -352,7 +328,7 @@ Name | Type | Description  | Notes
 
 # **commentsIdRelationshipsParentCommentGet**
 ```swift
-    open class func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CommentsParentCommentSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CommentsParentCommentSingleRelationshipDataDocument
 ```
 
 Get parentComment relationship (\"to-one\").
@@ -369,15 +345,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: parentComment.author.albums (optional)
 
 // Get parentComment relationship (\"to-one\").
-CommentsAPI.commentsIdRelationshipsParentCommentGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CommentsAPI.commentsIdRelationshipsParentCommentGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -406,7 +378,7 @@ Name | Type | Description  | Notes
 
 # **commentsPost**
 ```swift
-    open class func commentsPost(idempotencyKey: String? = nil, commentsCreateOperationPayload: CommentsCreateOperationPayload? = nil, completion: @escaping (_ data: CommentsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func commentsPost(idempotencyKey: String? = nil, commentsCreateOperationPayload: CommentsCreateOperationPayload? = nil) async throws -> CommentsCreateSingleResourceDataDocument
 ```
 
 Create single comment.
@@ -422,15 +394,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let commentsCreateOperationPayload = CommentsCreateOperation_Payload(data: CommentsCreateOperation_Payload_Data(attributes: CommentsCreateOperation_Payload_Data_Attributes(endTime: "endTime_example", message: "message_example", startTime: "startTime_example"), relationships: CommentsCreateOperation_Payload_Data_Relationships(parentComment: CommentsCreateOperation_Payload_Data_Relationships_ParentComment(data: CommentsCreateOperation_Payload_Data_Relationships_ParentComment_Data(id: "id_example", type: "type_example")), subject: CommentsCreateOperation_Payload_Data_Relationships_Subject(data: CommentsCreateOperation_Payload_Data_Relationships_Subject_Data(id: "id_example", type: "type_example"))), type: "type_example")) // CommentsCreateOperationPayload |  (optional)
 
 // Create single comment.
-CommentsAPI.commentsPost(idempotencyKey: idempotencyKey, commentsCreateOperationPayload: commentsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CommentsAPI.commentsPost(idempotencyKey: idempotencyKey, commentsCreateOperationPayload: commentsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

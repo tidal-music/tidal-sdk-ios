@@ -49,7 +49,7 @@ public struct TracksUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case pentatonicMinor = "PENTATONIC_MINOR"
     }
     public static let bpmRule = NumericRule<Float>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
-    public static let isrcRule = StringRule(minLength: nil, maxLength: 12, pattern: "/^$|^[A-Z]{2}[A-Z0-9]{3}[0-9]{2}[0-9]{5}$/".replacingOccurrences(of: #"(?s)^/(.*)/$"#, with: "$1", options: .regularExpression))
+    public static let isrcRule = StringRule(minLength: nil, maxLength: 12, pattern: "^$|^[A-Z]{2}[A-Z0-9]{3}[0-9]{2}[0-9]{5}$")
     public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     public static let toneTagsRule = ArrayRule(minItems: 0, maxItems: 5, uniqueItems: false)
     /** Access type */

@@ -18,7 +18,7 @@ public struct ArtistSalesStatisticsTopSellersResourceIdentifierMeta: Codable, Ha
         case merch = "MERCH"
         case unknown = "UNKNOWN"
     }
-    public static let netSalesAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])/".replacingOccurrences(of: #"(?s)^/(.*)/$"#, with: "$1", options: .regularExpression))
+    public static let netSalesAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])")
     public static let rankRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public static let unitsRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** What was sold. UNKNOWN: a kind this API does not know */

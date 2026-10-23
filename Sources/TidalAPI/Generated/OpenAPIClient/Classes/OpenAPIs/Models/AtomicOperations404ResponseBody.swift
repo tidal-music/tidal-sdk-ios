@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct AtomicOperations404ResponseBody: Codable, Hashable {
 
-    public var errors: [AtomicOperations400ResponseBodyErrorsInner]
+    public var errors: [AtomicOperations404ResponseBodyErrorsInner]
 
     public init(
-        errors: [AtomicOperations400ResponseBodyErrorsInner]
+        errors: [AtomicOperations404ResponseBodyErrorsInner]
     ) {
         self.errors = errors
     }

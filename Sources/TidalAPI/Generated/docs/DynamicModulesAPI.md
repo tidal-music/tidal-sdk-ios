@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **dynamicModulesGet**
 ```swift
-    open class func dynamicModulesGet(clientVersion: String, deviceType: DeviceType_dynamicModulesGet, filterId: [String], systemType: SystemType_dynamicModulesGet, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicModulesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicModulesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicModulesGet(clientVersion: String, deviceType: DeviceType_dynamicModulesGet, filterId: [String], systemType: SystemType_dynamicModulesGet, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicModulesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesMultiResourceDataDocument
 ```
 
 Get multiple dynamicModules.
@@ -36,15 +36,11 @@ let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dyn
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get multiple dynamicModules.
-DynamicModulesAPI.dynamicModulesGet(clientVersion: clientVersion, deviceType: deviceType, filterId: filterId, systemType: systemType, countryCode: countryCode, include: include, includeLinkage: includeLinkage, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DynamicModulesAPI.dynamicModulesGet(clientVersion: clientVersion, deviceType: deviceType, filterId: filterId, systemType: systemType, countryCode: countryCode, include: include, includeLinkage: includeLinkage, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -80,7 +76,7 @@ Name | Type | Description  | Notes
 
 # **dynamicModulesIdGet**
 ```swift
-    open class func dynamicModulesIdGet(clientVersion: String, deviceType: DeviceType_dynamicModulesIdGet, id: String, systemType: SystemType_dynamicModulesIdGet, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicModulesIdGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicModulesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicModulesIdGet(clientVersion: String, deviceType: DeviceType_dynamicModulesIdGet, id: String, systemType: SystemType_dynamicModulesIdGet, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicModulesIdGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesSingleResourceDataDocument
 ```
 
 Get single dynamicModule.
@@ -104,15 +100,11 @@ let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dyn
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get single dynamicModule.
-DynamicModulesAPI.dynamicModulesIdGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, includeLinkage: includeLinkage, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DynamicModulesAPI.dynamicModulesIdGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, includeLinkage: includeLinkage, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -148,7 +140,7 @@ Name | Type | Description  | Notes
 
 # **dynamicModulesIdRelationshipsItemsGet**
 ```swift
-    open class func dynamicModulesIdRelationshipsItemsGet(clientVersion: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, id: String, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicModulesItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicModulesIdRelationshipsItemsGet(clientVersion: String, deviceType: DeviceType_dynamicModulesIdRelationshipsItemsGet, id: String, systemType: SystemType_dynamicModulesIdRelationshipsItemsGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -172,15 +164,11 @@ let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dyn
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get items relationship (\"to-many\").
-DynamicModulesAPI.dynamicModulesIdRelationshipsItemsGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, locale: locale, pageCursor: pageCursor, refreshSeed: refreshSeed, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DynamicModulesAPI.dynamicModulesIdRelationshipsItemsGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, locale: locale, pageCursor: pageCursor, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -216,7 +204,7 @@ Name | Type | Description  | Notes
 
 # **dynamicModulesIdRelationshipsSeedItemGet**
 ```swift
-    open class func dynamicModulesIdRelationshipsSeedItemGet(clientVersion: String, deviceType: DeviceType_dynamicModulesIdRelationshipsSeedItemGet, id: String, systemType: SystemType_dynamicModulesIdRelationshipsSeedItemGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicModulesSeedItemSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicModulesIdRelationshipsSeedItemGet(clientVersion: String, deviceType: DeviceType_dynamicModulesIdRelationshipsSeedItemGet, id: String, systemType: SystemType_dynamicModulesIdRelationshipsSeedItemGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicModulesSeedItemSingleRelationshipDataDocument
 ```
 
 Get seedItem relationship (\"to-one\").
@@ -239,15 +227,11 @@ let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dyn
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: seedItem (optional)
 
 // Get seedItem relationship (\"to-one\").
-DynamicModulesAPI.dynamicModulesIdRelationshipsSeedItemGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DynamicModulesAPI.dynamicModulesIdRelationshipsSeedItemGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

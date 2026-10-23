@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **usageRulesIdGet**
 ```swift
-    open class func usageRulesIdGet(id: String, completion: @escaping (_ data: UsageRulesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func usageRulesIdGet(id: String) async throws -> UsageRulesSingleResourceDataDocument
 ```
 
 Get single usageRule.
@@ -25,15 +25,11 @@ import OpenAPIClient
 let id = "id_example" // String | Usage rules id
 
 // Get single usageRule.
-UsageRulesAPI.usageRulesIdGet(id: id) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UsageRulesAPI.usageRulesIdGet(id: id)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -60,7 +56,7 @@ Name | Type | Description  | Notes
 
 # **usageRulesPost**
 ```swift
-    open class func usageRulesPost(idempotencyKey: String? = nil, usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil, completion: @escaping (_ data: UsageRulesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func usageRulesPost(idempotencyKey: String? = nil, usageRulesCreateOperationPayload: UsageRulesCreateOperationPayload? = nil) async throws -> UsageRulesCreateSingleResourceDataDocument
 ```
 
 Create single usageRule.
@@ -76,15 +72,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let usageRulesCreateOperationPayload = UsageRulesCreateOperation_Payload(data: UsageRulesCreateOperation_Payload_Data(attributes: UsageRulesCreateOperation_Payload_Data_Attributes(countryCode: "countryCode_example", free: ["free_example"], inherited: false, paid: ["paid_example"], subscription: ["subscription_example"], validFrom: Date()), relationships: UsageRulesCreateOperation_Payload_Data_Relationships(subject: UsageRulesCreateOperation_Payload_Data_Relationships_Subject(data: UsageRulesCreateOperation_Payload_Subject(id: "id_example", type: "type_example"))), type: "type_example")) // UsageRulesCreateOperationPayload |  (optional)
 
 // Create single usageRule.
-UsageRulesAPI.usageRulesPost(idempotencyKey: idempotencyKey, usageRulesCreateOperationPayload: usageRulesCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UsageRulesAPI.usageRulesPost(idempotencyKey: idempotencyKey, usageRulesCreateOperationPayload: usageRulesCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **installationsGet**
 ```swift
-    open class func installationsGet(filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_installationsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: InstallationsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func installationsGet(filterClientProvidedInstallationId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_installationsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsMultiResourceDataDocument
 ```
 
 Get multiple installations.
@@ -35,15 +35,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: offlineInventory (optional)
 
 // Get multiple installations.
-InstallationsAPI.installationsGet(filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsGet(filterClientProvidedInstallationId: filterClientProvidedInstallationId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -75,7 +71,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdGet**
 ```swift
-    open class func installationsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_installationsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: InstallationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func installationsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_installationsIdGet]? = nil, replaceMedia: String? = nil) async throws -> InstallationsSingleResourceDataDocument
 ```
 
 Get single installation.
@@ -93,15 +89,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: offlineInventory (optional)
 
 // Get single installation.
-InstallationsAPI.installationsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -131,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryDelete**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryDelete(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryDelete(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipRemoveOperationPayload: InstallationsOfflineInventoryRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from offlineInventory relationship (\"to-many\").
@@ -148,15 +140,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let installationsOfflineInventoryRelationshipRemoveOperationPayload = InstallationsOfflineInventoryRelationshipRemoveOperation_Payload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryDelete(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsIdRelationshipsOfflineInventoryDelete(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipRemoveOperationPayload: installationsOfflineInventoryRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -185,7 +173,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryGet**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryGet(filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: InstallationsOfflineInventoryMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryGet(filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument
 ```
 
 Get offlineInventory relationship (\"to-many\").
@@ -206,15 +194,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: offlineInventory (optional)
 
 // Get offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(filterType: filterType, id: id, filterId: filterId, filterState: filterState, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(filterType: filterType, id: id, filterId: filterId, filterState: filterState, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -247,7 +231,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryPost**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryPost(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOfflineInventoryPost(id: String, idempotencyKey: String? = nil, installationsOfflineInventoryRelationshipAddOperationPayload: InstallationsOfflineInventoryRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Add to offlineInventory relationship (\"to-many\").
@@ -264,15 +248,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let installationsOfflineInventoryRelationshipAddOperationPayload = InstallationsOfflineInventoryRelationshipAddOperation_Payload(data: [InstallationsOfflineInventory_ItemIdentifier(id: "id_example", type: "type_example")]) // InstallationsOfflineInventoryRelationshipAddOperationPayload |  (optional)
 
 // Add to offlineInventory relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOfflineInventoryPost(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsIdRelationshipsOfflineInventoryPost(id: id, idempotencyKey: idempotencyKey, installationsOfflineInventoryRelationshipAddOperationPayload: installationsOfflineInventoryRelationshipAddOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -301,7 +281,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOwnersGet**
 ```swift
-    open class func installationsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: InstallationsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func installationsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> InstallationsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -318,15 +298,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-InstallationsAPI.installationsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -355,7 +331,7 @@ Name | Type | Description  | Notes
 
 # **installationsPost**
 ```swift
-    open class func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil, completion: @escaping (_ data: InstallationsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func installationsPost(idempotencyKey: String? = nil, installationsCreateOperationPayload: InstallationsCreateOperationPayload? = nil) async throws -> InstallationsCreateSingleResourceDataDocument
 ```
 
 Create single installation.
@@ -371,15 +347,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let installationsCreateOperationPayload = InstallationsCreateOperation_Payload(data: InstallationsCreateOperation_Payload_Data(attributes: InstallationsCreateOperation_Payload_Data_Attributes(clientProvidedInstallationId: "clientProvidedInstallationId_example", name: "name_example"), type: "type_example")) // InstallationsCreateOperationPayload |  (optional)
 
 // Create single installation.
-InstallationsAPI.installationsPost(idempotencyKey: idempotencyKey, installationsCreateOperationPayload: installationsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await InstallationsAPI.installationsPost(idempotencyKey: idempotencyKey, installationsCreateOperationPayload: installationsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

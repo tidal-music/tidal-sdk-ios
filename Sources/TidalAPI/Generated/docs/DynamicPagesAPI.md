@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **dynamicPagesGet**
 ```swift
-    open class func dynamicPagesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesGet, filterPageType: [FilterPageType_dynamicPagesGet], systemType: SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicPagesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicPagesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesGet, filterPageType: [FilterPageType_dynamicPagesGet], systemType: SystemType_dynamicPagesGet, countryCode: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dynamicPagesGet]? = nil, locale: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesMultiResourceDataDocument
 ```
 
 Get multiple dynamicPages.
@@ -36,15 +36,11 @@ let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dyn
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: modules.items (optional)
 
 // Get multiple dynamicPages.
-DynamicPagesAPI.dynamicPagesGet(clientVersion: clientVersion, deviceType: deviceType, filterPageType: filterPageType, systemType: systemType, countryCode: countryCode, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DynamicPagesAPI.dynamicPagesGet(clientVersion: clientVersion, deviceType: deviceType, filterPageType: filterPageType, systemType: systemType, countryCode: countryCode, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, locale: locale, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -81,7 +77,7 @@ Name | Type | Description  | Notes
 
 # **dynamicPagesIdRelationshipsModulesGet**
 ```swift
-    open class func dynamicPagesIdRelationshipsModulesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, id: String, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicPagesModulesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicPagesIdRelationshipsModulesGet(clientVersion: String, deviceType: DeviceType_dynamicPagesIdRelationshipsModulesGet, id: String, systemType: SystemType_dynamicPagesIdRelationshipsModulesGet, countryCode: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, refreshSeed: String? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesModulesMultiRelationshipDataDocument
 ```
 
 Get modules relationship (\"to-many\").
@@ -105,15 +101,11 @@ let refreshSeed = "refreshSeed_example" // String | Stable seed used to keep dyn
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: modules.items (optional)
 
 // Get modules relationship (\"to-many\").
-DynamicPagesAPI.dynamicPagesIdRelationshipsModulesGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, locale: locale, pageCursor: pageCursor, refreshSeed: refreshSeed, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DynamicPagesAPI.dynamicPagesIdRelationshipsModulesGet(clientVersion: clientVersion, deviceType: deviceType, id: id, systemType: systemType, countryCode: countryCode, include: include, locale: locale, pageCursor: pageCursor, refreshSeed: refreshSeed, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -149,7 +141,7 @@ Name | Type | Description  | Notes
 
 # **dynamicPagesIdRelationshipsSubjectGet**
 ```swift
-    open class func dynamicPagesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DynamicPagesSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func dynamicPagesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DynamicPagesSubjectSingleRelationshipDataDocument
 ```
 
 Get subject relationship (\"to-one\").
@@ -166,15 +158,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-DynamicPagesAPI.dynamicPagesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DynamicPagesAPI.dynamicPagesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

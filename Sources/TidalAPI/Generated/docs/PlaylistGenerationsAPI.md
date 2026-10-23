@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 # **playlistGenerationsGet**
 ```swift
-    open class func playlistGenerationsGet(filterPlaylistId: [String], generationView: GenerationView_playlistGenerationsGet? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsGet(filterPlaylistId: [String], generationView: GenerationView_playlistGenerationsGet? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsMultiResourceDataDocument
 ```
 
 Get multiple playlistGenerations.
@@ -36,15 +36,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: baseGeneration.trackPreferences (optional)
 
 // Get multiple playlistGenerations.
-PlaylistGenerationsAPI.playlistGenerationsGet(filterPlaylistId: filterPlaylistId, generationView: generationView, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationsAPI.playlistGenerationsGet(filterPlaylistId: filterPlaylistId, generationView: generationView, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -75,7 +71,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationsIdGet**
 ```swift
-    open class func playlistGenerationsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsIdGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsSingleResourceDataDocument
 ```
 
 Get single playlistGeneration.
@@ -93,15 +89,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: baseGeneration.trackPreferences (optional)
 
 // Get single playlistGeneration.
-PlaylistGenerationsAPI.playlistGenerationsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationsAPI.playlistGenerationsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -131,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationsIdRelationshipsBaseGenerationGet**
 ```swift
-    open class func playlistGenerationsIdRelationshipsBaseGenerationGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsIdRelationshipsBaseGenerationGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument
 ```
 
 Get baseGeneration relationship (\"to-one\").
@@ -148,15 +140,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: baseGeneration.trackPreferences (optional)
 
 // Get baseGeneration relationship (\"to-one\").
-PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsBaseGenerationGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsBaseGenerationGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -185,7 +173,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationsIdRelationshipsPlaylistGet**
 ```swift
-    open class func playlistGenerationsIdRelationshipsPlaylistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsPlaylistSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsIdRelationshipsPlaylistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsPlaylistSingleRelationshipDataDocument
 ```
 
 Get playlist relationship (\"to-one\").
@@ -202,15 +190,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: playlist.items (optional)
 
 // Get playlist relationship (\"to-one\").
-PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsPlaylistGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsPlaylistGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -239,7 +223,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationsIdRelationshipsTrackPreferencesDelete**
 ```swift
-    open class func playlistGenerationsIdRelationshipsTrackPreferencesDelete(id: String, idempotencyKey: String? = nil, playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload: PlaylistGenerationsTrackPreferencesRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsIdRelationshipsTrackPreferencesDelete(id: String, idempotencyKey: String? = nil, playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload: PlaylistGenerationsTrackPreferencesRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete from trackPreferences relationship (\"to-many\").
@@ -256,15 +240,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload = PlaylistGenerationsTrackPreferencesRelationshipRemoveOperation_Payload(data: [PlaylistGenerationsTrackPreferencesRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlaylistGenerationsTrackPreferencesRelationship_Payload_Meta(expectedPreferenceVersion: 123)) // PlaylistGenerationsTrackPreferencesRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from trackPreferences relationship (\"to-many\").
-PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesDelete(id: id, idempotencyKey: idempotencyKey, playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload: playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesDelete(id: id, idempotencyKey: idempotencyKey, playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload: playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -293,7 +273,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationsIdRelationshipsTrackPreferencesGet**
 ```swift
-    open class func playlistGenerationsIdRelationshipsTrackPreferencesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsIdRelationshipsTrackPreferencesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument
 ```
 
 Get trackPreferences relationship (\"to-many\").
@@ -311,15 +291,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: trackPreferences (optional)
 
 // Get trackPreferences relationship (\"to-many\").
-PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -349,7 +325,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationsIdRelationshipsTrackPreferencesPatch**
 ```swift
-    open class func playlistGenerationsIdRelationshipsTrackPreferencesPatch(id: String, idempotencyKey: String? = nil, playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload: PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: PlaylistGenerationsTrackPreferencesUpdateMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsIdRelationshipsTrackPreferencesPatch(id: String, idempotencyKey: String? = nil, playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload: PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayload? = nil) async throws -> PlaylistGenerationsTrackPreferencesUpdateMultiRelationshipDataDocument
 ```
 
 Update trackPreferences relationship (\"to-many\").
@@ -366,15 +342,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload = PlaylistGenerationsTrackPreferencesRelationshipUpdateOperation_Payload(data: [PlaylistGenerationsTrackPreferencesRelationship_Payload_Data(id: "id_example", meta: PlaylistGenerationsTrackPreferencesRelationship_Payload_Data_Meta(preference: "preference_example"), type: "type_example")], meta: PlaylistGenerationsTrackPreferencesRelationship_Payload_Meta(expectedPreferenceVersion: 123)) // PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayload |  (optional)
 
 // Update trackPreferences relationship (\"to-many\").
-PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesPatch(id: id, idempotencyKey: idempotencyKey, playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload: playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesPatch(id: id, idempotencyKey: idempotencyKey, playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload: playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -403,7 +375,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationsIdRelationshipsTrackPreferencesPost**
 ```swift
-    open class func playlistGenerationsIdRelationshipsTrackPreferencesPost(id: String, idempotencyKey: String? = nil, playlistGenerationsTrackPreferencesRelationshipAddOperationPayload: PlaylistGenerationsTrackPreferencesRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsIdRelationshipsTrackPreferencesPost(id: String, idempotencyKey: String? = nil, playlistGenerationsTrackPreferencesRelationshipAddOperationPayload: PlaylistGenerationsTrackPreferencesRelationshipAddOperationPayload? = nil) async throws -> PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocument
 ```
 
 Add to trackPreferences relationship (\"to-many\").
@@ -420,15 +392,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistGenerationsTrackPreferencesRelationshipAddOperationPayload = PlaylistGenerationsTrackPreferencesRelationshipAddOperation_Payload(data: [PlaylistGenerationsTrackPreferencesRelationship_Payload_Data(id: "id_example", meta: PlaylistGenerationsTrackPreferencesRelationship_Payload_Data_Meta(preference: "preference_example"), type: "type_example")], meta: PlaylistGenerationsTrackPreferencesRelationship_Payload_Meta(expectedPreferenceVersion: 123)) // PlaylistGenerationsTrackPreferencesRelationshipAddOperationPayload |  (optional)
 
 // Add to trackPreferences relationship (\"to-many\").
-PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesPost(id: id, idempotencyKey: idempotencyKey, playlistGenerationsTrackPreferencesRelationshipAddOperationPayload: playlistGenerationsTrackPreferencesRelationshipAddOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationsAPI.playlistGenerationsIdRelationshipsTrackPreferencesPost(id: id, idempotencyKey: idempotencyKey, playlistGenerationsTrackPreferencesRelationshipAddOperationPayload: playlistGenerationsTrackPreferencesRelationshipAddOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -457,7 +425,7 @@ Name | Type | Description  | Notes
 
 # **playlistGenerationsPost**
 ```swift
-    open class func playlistGenerationsPost(idempotencyKey: String? = nil, playlistGenerationsCreateOperationPayload: PlaylistGenerationsCreateOperationPayload? = nil, completion: @escaping (_ data: PlaylistGenerationsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func playlistGenerationsPost(idempotencyKey: String? = nil, playlistGenerationsCreateOperationPayload: PlaylistGenerationsCreateOperationPayload? = nil) async throws -> PlaylistGenerationsCreateSingleResourceDataDocument
 ```
 
 Create single playlistGeneration.
@@ -473,15 +441,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playlistGenerationsCreateOperationPayload = PlaylistGenerationsCreateOperation_Payload(data: PlaylistGenerationsCreateOperation_Payload_Data(attributes: PlaylistGenerationsCreateOperation_Payload_Data_Attributes(preferenceVersion: 123, prompt: "prompt_example"), relationships: PlaylistGenerationsCreateOperation_Payload_Data_Relationships(baseGeneration: PlaylistGenerationsCreateOperation_Payload_Data_Relationships_BaseGeneration(data: PlaylistGenerationsCreateOperation_Payload_Data_Relationships_BaseGeneration_Data(id: "id_example", type: "type_example")), playlist: PlaylistGenerationsCreateOperation_Payload_Data_Relationships_Playlist(data: PlaylistGenerationsCreateOperation_Payload_Data_Relationships_Playlist_Data(id: "id_example", type: "type_example"))), type: "type_example")) // PlaylistGenerationsCreateOperationPayload |  (optional)
 
 // Create single playlistGeneration.
-PlaylistGenerationsAPI.playlistGenerationsPost(idempotencyKey: idempotencyKey, playlistGenerationsCreateOperationPayload: playlistGenerationsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PlaylistGenerationsAPI.playlistGenerationsPost(idempotencyKey: idempotencyKey, playlistGenerationsCreateOperationPayload: playlistGenerationsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

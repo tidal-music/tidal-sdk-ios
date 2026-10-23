@@ -20,7 +20,7 @@ public struct SquareItemVariationsAttributes: Codable, Hashable {
         case variable = "VARIABLE"
     }
     public static let currencyRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
-    public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^[+-]?(?:0*[0-9]{1,17}(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])/".replacingOccurrences(of: #"(?s)^/(.*)/$"#, with: "$1", options: .regularExpression))
+    public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[+-]?(?:0*[0-9]{1,17}(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])")
     public static let revisionRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: 9007199254740991, exclusiveMaximum: false, multipleOf: nil)
     public var currency: Currency
     /** Variation name; may be empty */

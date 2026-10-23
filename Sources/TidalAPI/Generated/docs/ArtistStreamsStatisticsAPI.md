@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **artistStreamsStatisticsGet**
 ```swift
-    open class func artistStreamsStatisticsGet(filterArtistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_artistStreamsStatisticsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistStreamsStatisticsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistStreamsStatisticsGet(filterArtistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_artistStreamsStatisticsGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistStreamsStatisticsMultiResourceDataDocument
 ```
 
 Get multiple artistStreamsStatistics.
@@ -29,15 +29,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artist.albums (optional)
 
 // Get multiple artistStreamsStatistics.
-ArtistStreamsStatisticsAPI.artistStreamsStatisticsGet(filterArtistId: filterArtistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ArtistStreamsStatisticsAPI.artistStreamsStatisticsGet(filterArtistId: filterArtistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -67,7 +63,7 @@ Name | Type | Description  | Notes
 
 # **artistStreamsStatisticsIdRelationshipsArtistGet**
 ```swift
-    open class func artistStreamsStatisticsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistStreamsStatisticsArtistSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistStreamsStatisticsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistStreamsStatisticsArtistSingleRelationshipDataDocument
 ```
 
 Get artist relationship (\"to-one\").
@@ -84,15 +80,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artist.albums (optional)
 
 // Get artist relationship (\"to-one\").
-ArtistStreamsStatisticsAPI.artistStreamsStatisticsIdRelationshipsArtistGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ArtistStreamsStatisticsAPI.artistStreamsStatisticsIdRelationshipsArtistGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -121,7 +113,7 @@ Name | Type | Description  | Notes
 
 # **artistStreamsStatisticsIdRelationshipsTopTracksGet**
 ```swift
-    open class func artistStreamsStatisticsIdRelationshipsTopTracksGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistStreamsStatisticsTopTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistStreamsStatisticsIdRelationshipsTopTracksGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistStreamsStatisticsTopTracksMultiRelationshipDataDocument
 ```
 
 Get topTracks relationship (\"to-many\").
@@ -139,15 +131,11 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: topTracks (optional)
 
 // Get topTracks relationship (\"to-many\").
-ArtistStreamsStatisticsAPI.artistStreamsStatisticsIdRelationshipsTopTracksGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ArtistStreamsStatisticsAPI.artistStreamsStatisticsIdRelationshipsTopTracksGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

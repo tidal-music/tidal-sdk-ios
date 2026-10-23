@@ -13,7 +13,7 @@ import AnyCodable
 public struct SquareItemVariationsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public static let nameRule = StringRule(minLength: nil, maxLength: 255, pattern: nil)
-    public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^\\+?(?=[0-9.]*[1-9])(?:0*[0-9]{1,16}(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])/".replacingOccurrences(of: #"(?s)^/(.*)/$"#, with: "$1", options: .regularExpression))
+    public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "^\\+?(?=[0-9.]*[1-9])(?:0*[0-9]{1,16}(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])")
     public var name: String?
     /** Amount in the currency's major units */
     public var price: String

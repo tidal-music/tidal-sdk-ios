@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **usersIdGet**
 ```swift
-    open class func usersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_usersIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UsersSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func usersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_usersIdGet]? = nil, replaceMedia: String? = nil) async throws -> UsersSingleResourceDataDocument
 ```
 
 Get single user.
@@ -28,15 +28,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artist.albums (optional)
 
 // Get single user.
-UsersAPI.usersIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UsersAPI.usersIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -66,7 +62,7 @@ Name | Type | Description  | Notes
 
 # **usersIdRelationshipsArtistGet**
 ```swift
-    open class func usersIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UsersArtistSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func usersIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UsersArtistSingleRelationshipDataDocument
 ```
 
 Get artist relationship (\"to-one\").
@@ -83,15 +79,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artist.albums (optional)
 
 // Get artist relationship (\"to-one\").
-UsersAPI.usersIdRelationshipsArtistGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await UsersAPI.usersIdRelationshipsArtistGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

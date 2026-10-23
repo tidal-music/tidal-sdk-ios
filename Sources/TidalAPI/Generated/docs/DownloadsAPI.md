@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **downloadsGet**
 ```swift
-    open class func downloadsGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_downloadsGet]? = nil, completion: @escaping (_ data: DownloadsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func downloadsGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_downloadsGet]? = nil) async throws -> DownloadsMultiResourceDataDocument
 ```
 
 Get multiple downloads.
@@ -28,15 +28,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple downloads.
-DownloadsAPI.downloadsGet(filterId: filterId, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DownloadsAPI.downloadsGet(filterId: filterId, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -65,7 +61,7 @@ Name | Type | Description  | Notes
 
 # **downloadsIdGet**
 ```swift
-    open class func downloadsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_downloadsIdGet]? = nil, completion: @escaping (_ data: DownloadsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func downloadsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_downloadsIdGet]? = nil) async throws -> DownloadsSingleResourceDataDocument
 ```
 
 Get single download.
@@ -82,15 +78,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single download.
-DownloadsAPI.downloadsIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DownloadsAPI.downloadsIdGet(id: id, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -119,7 +111,7 @@ Name | Type | Description  | Notes
 
 # **downloadsIdRelationshipsOwnersGet**
 ```swift
-    open class func downloadsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: DownloadsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func downloadsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> DownloadsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -136,15 +128,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-DownloadsAPI.downloadsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await DownloadsAPI.downloadsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

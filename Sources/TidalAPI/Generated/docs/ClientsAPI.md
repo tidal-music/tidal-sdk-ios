@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **clientsGet**
 ```swift
-    open class func clientsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_clientsGet]? = nil, completion: @escaping (_ data: ClientsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_clientsGet]? = nil) async throws -> ClientsMultiResourceDataDocument
 ```
 
 Get multiple clients.
@@ -32,15 +32,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple clients.
-ClientsAPI.clientsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -69,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdDelete**
 ```swift
-    open class func clientsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func clientsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single client.
@@ -85,15 +81,11 @@ let id = "id_example" // String | OAuth client identifier
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single client.
-ClientsAPI.clientsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -121,7 +113,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdGet**
 ```swift
-    open class func clientsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_clientsIdGet]? = nil, completion: @escaping (_ data: ClientsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_clientsIdGet]? = nil) async throws -> ClientsSingleResourceDataDocument
 ```
 
 Get single client.
@@ -138,15 +130,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single client.
-ClientsAPI.clientsIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsIdGet(id: id, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -175,7 +163,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdPatch**
 ```swift
-    open class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil, completion: @escaping (_ data: ClientsUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) async throws -> ClientsUpdateSingleResourceDataDocument
 ```
 
 Update single client.
@@ -192,15 +180,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let clientsUpdateOperationPayload = ClientsUpdateOperation_Payload(data: ClientsUpdateOperation_Payload_Data(attributes: ClientsUpdateOperation_Payload_Data_Attributes(description: "description_example", name: "name_example", redirectUris: ["redirectUris_example"], scopes: ["scopes_example"]), id: "id_example", type: "type_example")) // ClientsUpdateOperationPayload |  (optional)
 
 // Update single client.
-ClientsAPI.clientsIdPatch(id: id, idempotencyKey: idempotencyKey, clientsUpdateOperationPayload: clientsUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsIdPatch(id: id, idempotencyKey: idempotencyKey, clientsUpdateOperationPayload: clientsUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -229,7 +213,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdRelationshipsCertificatesGet**
 ```swift
-    open class func clientsIdRelationshipsCertificatesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ClientsCertificatesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func clientsIdRelationshipsCertificatesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ClientsCertificatesMultiRelationshipDataDocument
 ```
 
 Get certificates relationship (\"to-many\").
@@ -246,15 +230,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get certificates relationship (\"to-many\").
-ClientsAPI.clientsIdRelationshipsCertificatesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsIdRelationshipsCertificatesGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -283,7 +263,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdRelationshipsOwnersGet**
 ```swift
-    open class func clientsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ClientsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func clientsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ClientsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -300,15 +280,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-ClientsAPI.clientsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -337,7 +313,7 @@ Name | Type | Description  | Notes
 
 # **clientsPost**
 ```swift
-    open class func clientsPost(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil, completion: @escaping (_ data: ClientsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsPost(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil) async throws -> ClientsCreateSingleResourceDataDocument
 ```
 
 Create single client.
@@ -353,15 +329,11 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let clientsCreateOperationPayload = ClientsCreateOperation_Payload(data: ClientsCreateOperation_Payload_Data(attributes: ClientsCreateOperation_Payload_Data_Attributes(description: "description_example", name: "name_example"), type: "type_example")) // ClientsCreateOperationPayload |  (optional)
 
 // Create single client.
-ClientsAPI.clientsPost(idempotencyKey: idempotencyKey, clientsCreateOperationPayload: clientsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsPost(idempotencyKey: idempotencyKey, clientsCreateOperationPayload: clientsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
