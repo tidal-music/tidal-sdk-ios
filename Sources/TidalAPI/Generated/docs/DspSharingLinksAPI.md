@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **dspSharingLinksGet**
 ```swift
-    open class func dspSharingLinksGet(filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dspSharingLinksGet]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksMultiResourceDataDocument
+    open class func dspSharingLinksGet(filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_dspSharingLinksGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_dspSharingLinksGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DspSharingLinksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple dspSharingLinks.
@@ -30,11 +30,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get multiple dspSharingLinks.
-do {
-    let response = try await DspSharingLinksAPI.dspSharingLinksGet(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+DspSharingLinksAPI.dspSharingLinksGet(filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -66,7 +70,7 @@ Name | Type | Description  | Notes
 
 # **dspSharingLinksIdRelationshipsSubjectGet**
 ```swift
-    open class func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> DspSharingLinksSubjectSingleRelationshipDataDocument
+    open class func dspSharingLinksIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: DspSharingLinksSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -83,11 +87,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-do {
-    let response = try await DspSharingLinksAPI.dspSharingLinksIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+DspSharingLinksAPI.dspSharingLinksIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

@@ -98,7 +98,7 @@ internal class UsageRulesAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 

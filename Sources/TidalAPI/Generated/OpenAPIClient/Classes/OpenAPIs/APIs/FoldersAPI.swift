@@ -90,12 +90,13 @@ internal class FoldersAPI {
      
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func foldersIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+    internal class func foldersIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument {
         do {
-            return try await foldersIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey).execute().body
+            return try await foldersIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -111,9 +112,10 @@ internal class FoldersAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func foldersIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
+    internal class func foldersIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/folders/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -121,7 +123,10 @@ internal class FoldersAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
@@ -214,13 +219,14 @@ internal class FoldersAPI {
      
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - parameter foldersUpdateOperationPayload: (body)  (optional)
      - returns: FoldersUpdateSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func foldersIdPatch(id: String, idempotencyKey: String? = nil, foldersUpdateOperationPayload: FoldersUpdateOperationPayload? = nil) async throws -> FoldersUpdateSingleResourceDataDocument {
+    internal class func foldersIdPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, foldersUpdateOperationPayload: FoldersUpdateOperationPayload? = nil) async throws -> FoldersUpdateSingleResourceDataDocument {
         do {
-            return try await foldersIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, foldersUpdateOperationPayload: foldersUpdateOperationPayload).execute().body
+            return try await foldersIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, foldersUpdateOperationPayload: foldersUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -236,10 +242,11 @@ internal class FoldersAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - parameter foldersUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<FoldersUpdateSingleResourceDataDocument> 
      */
-    internal class func foldersIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, foldersUpdateOperationPayload: FoldersUpdateOperationPayload? = nil) -> RequestBuilder<FoldersUpdateSingleResourceDataDocument> {
+    internal class func foldersIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, foldersUpdateOperationPayload: FoldersUpdateOperationPayload? = nil) -> RequestBuilder<FoldersUpdateSingleResourceDataDocument> {
         var localVariablePath = "/folders/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -247,10 +254,13 @@ internal class FoldersAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: foldersUpdateOperationPayload)
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -599,7 +609,7 @@ internal class FoldersAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 

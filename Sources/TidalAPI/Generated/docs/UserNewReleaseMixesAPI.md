@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **userNewReleaseMixesIdGet**
 ```swift
-    open class func userNewReleaseMixesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userNewReleaseMixesIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserNewReleaseMixesSingleResourceDataDocument
+    open class func userNewReleaseMixesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userNewReleaseMixesIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserNewReleaseMixesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userNewReleaseMixe.
@@ -29,11 +29,15 @@ let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get single userNewReleaseMixe.
-do {
-    let response = try await UserNewReleaseMixesAPI.userNewReleaseMixesIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+UserNewReleaseMixesAPI.userNewReleaseMixesIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -64,7 +68,7 @@ Name | Type | Description  | Notes
 
 # **userNewReleaseMixesIdRelationshipsItemsGet**
 ```swift
-    open class func userNewReleaseMixesIdRelationshipsItemsGet(id: String, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserNewReleaseMixesItemsMultiRelationshipDataDocument
+    open class func userNewReleaseMixesIdRelationshipsItemsGet(id: String, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserNewReleaseMixesItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -83,11 +87,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get items relationship (\"to-many\").
-do {
-    let response = try await UserNewReleaseMixesAPI.userNewReleaseMixesIdRelationshipsItemsGet(id: id, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+UserNewReleaseMixesAPI.userNewReleaseMixesIdRelationshipsItemsGet(id: id, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

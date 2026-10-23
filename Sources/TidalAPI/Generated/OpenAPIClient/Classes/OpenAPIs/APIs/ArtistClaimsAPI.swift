@@ -234,7 +234,7 @@ internal class ArtistClaimsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -324,7 +324,7 @@ internal class ArtistClaimsAPI {
     /**
      Update acceptedArtists relationship (\"to-many\").
      - PATCH /artistClaims/{id}/relationships/acceptedArtists
-     - Updates acceptedArtists relationship.
+     - Accepts one recommended artist and processes the claim, merging profile metadata or moving claimed albums according to the recommendation. Empty data cancels the claim; it does not delete any artist. Returns an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -344,7 +344,7 @@ internal class ArtistClaimsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -504,7 +504,7 @@ internal class ArtistClaimsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 

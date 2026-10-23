@@ -13,7 +13,7 @@ import AnyCodable
 /** Feed read state */
 public struct UserFeedsAttributesFeed: Codable, Hashable {
 
-    public static let seenThroughTokenRule = StringRule(minLength: 1, maxLength: 128, pattern: "^[0-9A-Za-z]+$")
+    public static let seenThroughTokenRule = StringRule(minLength: 1, maxLength: 128, pattern: "/^[0-9A-Za-z]+$/")
     /** Whether the feed contains unread activity */
     public var hasUnread: Bool
     /** Opaque position through which the surface has been seen. Omitted when unavailable. */

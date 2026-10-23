@@ -9,12 +9,12 @@ Method | HTTP request | Description
 
 # **savedSharesPost**
 ```swift
-    open class func savedSharesPost(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil) async throws -> SavedSharesCreateSingleResourceDataDocument
+    open class func savedSharesPost(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil, completion: @escaping (_ data: SavedSharesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single savedShare.
 
-Creates a new savedShare.
+Redeem an active share with VOUCHER access mode for its offered role. A share without VOUCHER mode returns 403.
 
 ### Example
 ```swift
@@ -25,11 +25,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let savedSharesCreateOperationPayload = SavedSharesCreateOperation_Payload(data: SavedSharesCreateOperation_Payload_Data(relationships: SavedSharesCreateOperation_Payload_Data_Relationships(share: SavedSharesCreateOperation_Payload_Data_Relationships_Share(data: SavedSharesCreateOperation_Payload_Data_Relationships_Share_Data(id: "id_example", type: "type_example"))), type: "type_example")) // SavedSharesCreateOperationPayload |  (optional)
 
 // Create single savedShare.
-do {
-    let response = try await SavedSharesAPI.savedSharesPost(idempotencyKey: idempotencyKey, savedSharesCreateOperationPayload: savedSharesCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+SavedSharesAPI.savedSharesPost(idempotencyKey: idempotencyKey, savedSharesCreateOperationPayload: savedSharesCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

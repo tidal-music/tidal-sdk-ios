@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **squareItemVariationPhysicalCountsPost**
 ```swift
-    open class func squareItemVariationPhysicalCountsPost(idempotencyKey: String, squareItemVariationPhysicalCountsCreateOperationPayload: SquareItemVariationPhysicalCountsCreateOperationPayload? = nil) async throws -> SquareItemVariationPhysicalCountsCreateSingleResourceDataDocument
+    open class func squareItemVariationPhysicalCountsPost(idempotencyKey: String, squareItemVariationPhysicalCountsCreateOperationPayload: SquareItemVariationPhysicalCountsCreateOperationPayload? = nil, completion: @escaping (_ data: SquareItemVariationPhysicalCountsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single squareItemVariationPhysicalCount.
@@ -25,11 +25,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let squareItemVariationPhysicalCountsCreateOperationPayload = SquareItemVariationPhysicalCountsCreateOperation_Payload(data: SquareItemVariationPhysicalCountsCreateOperation_Payload_Data(attributes: SquareItemVariationPhysicalCountsCreateOperation_Payload_Data_Attributes(occurredAt: Date(), quantity: 123), relationships: SquareItemVariationPhysicalCountsCreateOperation_Payload_Data_Relationships(variations: SquareItemVariationPhysicalCountsCreateOperation_Payload_Data_Relationships_Variations(data: [Variation(id: "id_example", type: "type_example")])), type: "type_example")) // SquareItemVariationPhysicalCountsCreateOperationPayload |  (optional)
 
 // Create single squareItemVariationPhysicalCount.
-do {
-    let response = try await SquareItemVariationPhysicalCountsAPI.squareItemVariationPhysicalCountsPost(idempotencyKey: idempotencyKey, squareItemVariationPhysicalCountsCreateOperationPayload: squareItemVariationPhysicalCountsCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+SquareItemVariationPhysicalCountsAPI.squareItemVariationPhysicalCountsPost(idempotencyKey: idempotencyKey, squareItemVariationPhysicalCountsCreateOperationPayload: squareItemVariationPhysicalCountsCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

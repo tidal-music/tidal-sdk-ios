@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userCollectionTracksIdGet**
 ```swift
-    open class func userCollectionTracksIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionTracksIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionTracksSingleResourceDataDocument
+    open class func userCollectionTracksIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionTracksIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionTracksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollectionTrack.
@@ -32,11 +32,15 @@ let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get single userCollectionTrack.
-do {
-    let response = try await UserCollectionTracksAPI.userCollectionTracksIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+UserCollectionTracksAPI.userCollectionTracksIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -67,7 +71,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionTracksIdRelationshipsItemsDelete**
 ```swift
-    open class func userCollectionTracksIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func userCollectionTracksIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipRemoveOperationPayload: UserCollectionTracksItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from items relationship (\"to-many\").
@@ -84,11 +88,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionTracksItemsRelationshipRemoveOperationPayload = UserCollectionTracksItemsRelationshipRemoveOperation_Payload(data: [UserCollectionTracksItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionTracksItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-do {
-    let response = try await UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipRemoveOperationPayload: userCollectionTracksItemsRelationshipRemoveOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipRemoveOperationPayload: userCollectionTracksItemsRelationshipRemoveOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -117,7 +125,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionTracksIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionTracksIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument
+    open class func userCollectionTracksIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil, completion: @escaping (_ data: UserCollectionTracksItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -138,11 +146,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 
 // Get items relationship (\"to-many\").
-do {
-    let response = try await UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGet(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
-    dump(response)
-} catch {
-    print(error)
+UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGet(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -175,7 +187,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionTracksIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionTracksIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionTracksItemsAddMultiRelationshipDataDocument
+    open class func userCollectionTracksIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionTracksItemsRelationshipAddOperationPayload: UserCollectionTracksItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionTracksItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -192,11 +204,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionTracksItemsRelationshipAddOperationPayload = UserCollectionTracksItemsRelationshipAddOperation_Payload(data: [UserCollectionTracksItemsRelationshipAddOperation_Payload_Data(id: "id_example", meta: UserCollectionTracksItemsRelationshipAddOperation_Payload_Data_Meta(addedAt: Date()), type: "type_example")]) // UserCollectionTracksItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-do {
-    let response = try await UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionTracksItemsRelationshipAddOperationPayload: userCollectionTracksItemsRelationshipAddOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -225,7 +241,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionTracksIdRelationshipsOwnersGet**
 ```swift
-    open class func userCollectionTracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionTracksOwnersMultiRelationshipDataDocument
+    open class func userCollectionTracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionTracksOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -242,11 +258,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await UserCollectionTracksAPI.userCollectionTracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+UserCollectionTracksAPI.userCollectionTracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

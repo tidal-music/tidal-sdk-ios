@@ -32,7 +32,7 @@ Method | HTTP request | Description
 
 # **artistsGet**
 ```swift
-    open class func artistsGet(countryCode: String? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistsGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistsMultiResourceDataDocument
+    open class func artistsGet(countryCode: String? = nil, filterHandle: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artists.
@@ -53,11 +53,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get multiple artists.
-do {
-    let response = try await ArtistsAPI.artistsGet(countryCode: countryCode, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsGet(countryCode: countryCode, filterHandle: filterHandle, filterId: filterId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -90,7 +94,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdGet**
 ```swift
-    open class func artistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistsIdGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistsSingleResourceDataDocument
+    open class func artistsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artist.
@@ -109,11 +113,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get single artist.
-do {
-    let response = try await ArtistsAPI.artistsIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -144,7 +152,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdPatch**
 ```swift
-    open class func artistsIdPatch(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func artistsIdPatch(id: String, idempotencyKey: String? = nil, artistsUpdateOperationPayload: ArtistsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single artist.
@@ -161,11 +169,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let artistsUpdateOperationPayload = ArtistsUpdateOperation_Payload(data: ArtistsUpdateOperation_Payload_Data(attributes: ArtistsUpdateOperation_Payload_Data_Attributes(backgroundColor: "backgroundColor_example", contributionsEnabled: false, contributionsSalesPitch: "contributionsSalesPitch_example", externalLinks: [External_Link_Payload(href: "href_example", meta: External_Link_Meta(type: "type_example"))], foregroundColor: "foregroundColor_example", handle: "handle_example", name: "name_example"), id: "id_example", type: "type_example"), meta: ArtistsUpdateOperation_Payload_Meta(dryRun: false)) // ArtistsUpdateOperationPayload |  (optional)
 
 // Update single artist.
-do {
-    let response = try await ArtistsAPI.artistsIdPatch(id: id, idempotencyKey: idempotencyKey, artistsUpdateOperationPayload: artistsUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdPatch(id: id, idempotencyKey: idempotencyKey, artistsUpdateOperationPayload: artistsUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -194,7 +206,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsAlbumsGet**
 ```swift
-    open class func artistsIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistsAlbumsMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistsAlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -213,11 +225,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get albums relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -248,7 +264,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsBannerArtGet**
 ```swift
-    open class func artistsIdRelationshipsBannerArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsBannerArtMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsBannerArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsBannerArtMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get bannerArt relationship (\"to-many\").
@@ -266,11 +282,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get bannerArt relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsBannerArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsBannerArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -300,12 +320,12 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsBannerArtPatch**
 ```swift
-    open class func artistsIdRelationshipsBannerArtPatch(id: String, idempotencyKey: String? = nil, artistsBannerArtRelationshipUpdateOperationPayload: ArtistsBannerArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func artistsIdRelationshipsBannerArtPatch(id: String, idempotencyKey: String? = nil, artistsBannerArtRelationshipUpdateOperationPayload: ArtistsBannerArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update bannerArt relationship (\"to-many\").
 
-Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears the selection; null data and more than one entry are rejected. Returns an acknowledgement.
+Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears the selection; null data and more than one entry are rejected. Previous artwork no longer selected by profileArt, bannerArt or logoArt is soft-deleted unless system-managed. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -317,11 +337,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let artistsBannerArtRelationshipUpdateOperationPayload = ArtistsBannerArtRelationshipUpdateOperation_Payload(data: [ArtistsBannerArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsBannerArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update bannerArt relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsBannerArtPatch(id: id, idempotencyKey: idempotencyKey, artistsBannerArtRelationshipUpdateOperationPayload: artistsBannerArtRelationshipUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsBannerArtPatch(id: id, idempotencyKey: idempotencyKey, artistsBannerArtRelationshipUpdateOperationPayload: artistsBannerArtRelationshipUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -350,7 +374,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsBiographyGet**
 ```swift
-    open class func artistsIdRelationshipsBiographyGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> ArtistsBiographySingleRelationshipDataDocument
+    open class func artistsIdRelationshipsBiographyGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: ArtistsBiographySingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get biography relationship (\"to-one\").
@@ -367,11 +391,15 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: biography (optional)
 
 // Get biography relationship (\"to-one\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsBiographyGet(id: id, countryCode: countryCode, include: include)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsBiographyGet(id: id, countryCode: countryCode, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -400,7 +428,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsClaimStatusGet**
 ```swift
-    open class func artistsIdRelationshipsClaimStatusGet(id: String, include: [String]? = nil) async throws -> ArtistsClaimStatusSingleRelationshipDataDocument
+    open class func artistsIdRelationshipsClaimStatusGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ArtistsClaimStatusSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get claimStatus relationship (\"to-one\").
@@ -416,11 +444,15 @@ let id = "id_example" // String | Artist id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: claimStatus (optional)
 
 // Get claimStatus relationship (\"to-one\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsClaimStatusGet(id: id, include: include)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsClaimStatusGet(id: id, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -448,7 +480,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowersGet**
 ```swift
-    open class func artistsIdRelationshipsFollowersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, viewerContext: String? = nil) async throws -> ArtistsFollowersMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsFollowersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, viewerContext: String? = nil, completion: @escaping (_ data: ArtistsFollowersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get followers relationship (\"to-many\").
@@ -467,11 +499,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let viewerContext = "viewerContext_example" // String |  (optional)
 
 // Get followers relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsFollowersGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, viewerContext: viewerContext)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsFollowersGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, viewerContext: viewerContext) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -502,7 +538,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowingDelete**
 ```swift
-    open class func artistsIdRelationshipsFollowingDelete(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func artistsIdRelationshipsFollowingDelete(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipRemoveOperationPayload: ArtistsFollowingRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from following relationship (\"to-many\").
@@ -519,11 +555,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let artistsFollowingRelationshipRemoveOperationPayload = ArtistsFollowingRelationshipRemoveOperation_Payload(data: [ArtistsFollowingRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsFollowingRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from following relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsFollowingDelete(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipRemoveOperationPayload: artistsFollowingRelationshipRemoveOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsFollowingDelete(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipRemoveOperationPayload: artistsFollowingRelationshipRemoveOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -552,7 +592,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowingGet**
 ```swift
-    open class func artistsIdRelationshipsFollowingGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, viewerContext: String? = nil) async throws -> ArtistsFollowingMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsFollowingGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, viewerContext: String? = nil, completion: @escaping (_ data: ArtistsFollowingMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get following relationship (\"to-many\").
@@ -571,11 +611,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let viewerContext = "viewerContext_example" // String |  (optional)
 
 // Get following relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsFollowingGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, viewerContext: viewerContext)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsFollowingGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, viewerContext: viewerContext) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -606,7 +650,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsFollowingPost**
 ```swift
-    open class func artistsIdRelationshipsFollowingPost(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func artistsIdRelationshipsFollowingPost(id: String, idempotencyKey: String? = nil, artistsFollowingRelationshipAddOperationPayload: ArtistsFollowingRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Add to following relationship (\"to-many\").
@@ -623,11 +667,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let artistsFollowingRelationshipAddOperationPayload = ArtistsFollowingRelationshipAddOperation_Payload(data: [ArtistsFollowingRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsFollowingRelationshipAddOperationPayload |  (optional)
 
 // Add to following relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsFollowingPost(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsFollowingPost(id: id, idempotencyKey: idempotencyKey, artistsFollowingRelationshipAddOperationPayload: artistsFollowingRelationshipAddOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -656,7 +704,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsLogoArtGet**
 ```swift
-    open class func artistsIdRelationshipsLogoArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsLogoArtMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsLogoArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsLogoArtMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get logoArt relationship (\"to-many\").
@@ -674,11 +722,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get logoArt relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsLogoArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsLogoArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -708,12 +760,12 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsLogoArtPatch**
 ```swift
-    open class func artistsIdRelationshipsLogoArtPatch(id: String, idempotencyKey: String? = nil, artistsLogoArtRelationshipUpdateOperationPayload: ArtistsLogoArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func artistsIdRelationshipsLogoArtPatch(id: String, idempotencyKey: String? = nil, artistsLogoArtRelationshipUpdateOperationPayload: ArtistsLogoArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update logoArt relationship (\"to-many\").
 
-Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears the selection; null data and more than one entry are rejected. Returns an acknowledgement.
+Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears the selection; null data and more than one entry are rejected. Previous artwork no longer selected by profileArt, bannerArt or logoArt is soft-deleted unless system-managed. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -725,11 +777,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let artistsLogoArtRelationshipUpdateOperationPayload = ArtistsLogoArtRelationshipUpdateOperation_Payload(data: [ArtistsLogoArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsLogoArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update logoArt relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsLogoArtPatch(id: id, idempotencyKey: idempotencyKey, artistsLogoArtRelationshipUpdateOperationPayload: artistsLogoArtRelationshipUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsLogoArtPatch(id: id, idempotencyKey: idempotencyKey, artistsLogoArtRelationshipUpdateOperationPayload: artistsLogoArtRelationshipUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -758,7 +814,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsOwnersGet**
 ```swift
-    open class func artistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsOwnersMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -775,11 +831,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -808,7 +868,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsProfileArtGet**
 ```swift
-    open class func artistsIdRelationshipsProfileArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsProfileArtMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsProfileArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsProfileArtMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get profileArt relationship (\"to-many\").
@@ -826,11 +886,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get profileArt relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsProfileArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsProfileArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -860,12 +924,12 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsProfileArtPatch**
 ```swift
-    open class func artistsIdRelationshipsProfileArtPatch(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func artistsIdRelationshipsProfileArtPatch(id: String, idempotencyKey: String? = nil, artistsProfileArtRelationshipUpdateOperationPayload: ArtistsProfileArtRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update profileArt relationship (\"to-many\").
 
-Updates the artist's avatar artwork.
+Replaces the artist's uploaded avatar selection with one owned, attachable artwork. Empty data clears the uploaded selection; legacy pictures or album fallback artwork may still appear in profileArt. Previous artwork no longer selected by profileArt, bannerArt or logoArt is soft-deleted unless system-managed. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -877,11 +941,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let artistsProfileArtRelationshipUpdateOperationPayload = ArtistsProfileArtRelationshipUpdateOperation_Payload(data: [ArtistsProfileArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsProfileArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update profileArt relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsProfileArtPatch(id: id, idempotencyKey: idempotencyKey, artistsProfileArtRelationshipUpdateOperationPayload: artistsProfileArtRelationshipUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsProfileArtPatch(id: id, idempotencyKey: idempotencyKey, artistsProfileArtRelationshipUpdateOperationPayload: artistsProfileArtRelationshipUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -910,7 +978,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsRadioGet**
 ```swift
-    open class func artistsIdRelationshipsRadioGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistsRadioMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsRadioGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistsRadioMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get radio relationship (\"to-many\").
@@ -929,11 +997,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: radio.items (optional)
 
 // Get radio relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsRadioGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsRadioGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -964,7 +1036,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsRolesGet**
 ```swift
-    open class func artistsIdRelationshipsRolesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsRolesMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsRolesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsRolesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get roles relationship (\"to-many\").
@@ -981,11 +1053,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get roles relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsRolesGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsRolesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -1014,7 +1090,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsSimilarArtistsGet**
 ```swift
-    open class func artistsIdRelationshipsSimilarArtistsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistsSimilarArtistsMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsSimilarArtistsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistsSimilarArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarArtists relationship (\"to-many\").
@@ -1033,11 +1109,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: similarArtists.albums (optional)
 
 // Get similarArtists relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsSimilarArtistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsSimilarArtistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -1068,7 +1148,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsTrackProvidersGet**
 ```swift
-    open class func artistsIdRelationshipsTrackProvidersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistsTrackProvidersMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsTrackProvidersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistsTrackProvidersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get trackProviders relationship (\"to-many\").
@@ -1085,11 +1165,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get trackProviders relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsTrackProvidersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsTrackProvidersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -1118,7 +1202,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsTracksGet**
 ```swift
-    open class func artistsIdRelationshipsTracksGet(collapseBy: CollapseBy_artistsIdRelationshipsTracksGet, id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistsTracksMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsTracksGet(collapseBy: CollapseBy_artistsIdRelationshipsTracksGet, id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistsTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get tracks relationship (\"to-many\").
@@ -1138,11 +1222,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: tracks (optional)
 
 // Get tracks relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsTracksGet(collapseBy: collapseBy, id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsTracksGet(collapseBy: collapseBy, id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -1174,7 +1262,7 @@ Name | Type | Description  | Notes
 
 # **artistsIdRelationshipsVideosGet**
 ```swift
-    open class func artistsIdRelationshipsVideosGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistsVideosMultiRelationshipDataDocument
+    open class func artistsIdRelationshipsVideosGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistsVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get videos relationship (\"to-many\").
@@ -1193,11 +1281,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: videos (optional)
 
 // Get videos relationship (\"to-many\").
-do {
-    let response = try await ArtistsAPI.artistsIdRelationshipsVideosGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsIdRelationshipsVideosGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -1228,7 +1320,7 @@ Name | Type | Description  | Notes
 
 # **artistsPost**
 ```swift
-    open class func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func artistsPost(idempotencyKey: String? = nil, artistsCreateOperationPayload: ArtistsCreateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artist.
@@ -1244,11 +1336,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let artistsCreateOperationPayload = ArtistsCreateOperation_Payload(data: ArtistsCreateOperation_Payload_Data(attributes: ArtistsCreateOperation_Payload_Data_Attributes(handle: "handle_example", name: "name_example"), type: "type_example"), meta: ArtistsCreateOperation_Payload_Meta(dryRun: false)) // ArtistsCreateOperationPayload |  (optional)
 
 // Create single artist.
-do {
-    let response = try await ArtistsAPI.artistsPost(idempotencyKey: idempotencyKey, artistsCreateOperationPayload: artistsCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ArtistsAPI.artistsPost(idempotencyKey: idempotencyKey, artistsCreateOperationPayload: artistsCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

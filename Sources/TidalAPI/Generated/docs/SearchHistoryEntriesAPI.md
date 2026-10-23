@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **searchHistoryEntriesIdDelete**
 ```swift
-    open class func searchHistoryEntriesIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func searchHistoryEntriesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single searchHistoryEntrie.
@@ -25,11 +25,15 @@ let id = "id_example" // String | Canonical opaque identifier for a user's exact
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single searchHistoryEntrie.
-do {
-    let response = try await SearchHistoryEntriesAPI.searchHistoryEntriesIdDelete(id: id, idempotencyKey: idempotencyKey)
-    dump(response)
-} catch {
-    print(error)
+SearchHistoryEntriesAPI.searchHistoryEntriesIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

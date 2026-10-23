@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **squareSitesIdRelationshipsItemsDelete**
 ```swift
-    open class func squareSitesIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, squareSitesItemsRelationshipRemoveOperationPayload: SquareSitesItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func squareSitesIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, squareSitesItemsRelationshipRemoveOperationPayload: SquareSitesItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from items relationship (\"to-many\").
@@ -28,11 +28,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let squareSitesItemsRelationshipRemoveOperationPayload = SquareSitesItemsRelationshipRemoveOperation_Payload(data: [SquareSitesItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // SquareSitesItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-do {
-    let response = try await SquareSitesAPI.squareSitesIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, squareSitesItemsRelationshipRemoveOperationPayload: squareSitesItemsRelationshipRemoveOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+SquareSitesAPI.squareSitesIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, squareSitesItemsRelationshipRemoveOperationPayload: squareSitesItemsRelationshipRemoveOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -61,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **squareSitesIdRelationshipsItemsGet**
 ```swift
-    open class func squareSitesIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareSitesItemsMultiRelationshipDataDocument
+    open class func squareSitesIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SquareSitesItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -78,11 +82,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get items relationship (\"to-many\").
-do {
-    let response = try await SquareSitesAPI.squareSitesIdRelationshipsItemsGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+SquareSitesAPI.squareSitesIdRelationshipsItemsGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -111,7 +119,7 @@ Name | Type | Description  | Notes
 
 # **squareSitesIdRelationshipsItemsPost**
 ```swift
-    open class func squareSitesIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, squareSitesItemsRelationshipAddOperationPayload: SquareSitesItemsRelationshipAddOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func squareSitesIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, squareSitesItemsRelationshipAddOperationPayload: SquareSitesItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -128,11 +136,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let squareSitesItemsRelationshipAddOperationPayload = SquareSitesItemsRelationshipAddOperation_Payload(data: [SquareSitesItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // SquareSitesItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-do {
-    let response = try await SquareSitesAPI.squareSitesIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, squareSitesItemsRelationshipAddOperationPayload: squareSitesItemsRelationshipAddOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+SquareSitesAPI.squareSitesIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, squareSitesItemsRelationshipAddOperationPayload: squareSitesItemsRelationshipAddOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

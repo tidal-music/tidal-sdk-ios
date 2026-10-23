@@ -306,7 +306,7 @@ internal class PlaylistGenerationsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -396,7 +396,7 @@ internal class PlaylistGenerationsAPI {
     /**
      Update trackPreferences relationship (\"to-many\").
      - PATCH /playlistGenerations/{id}/relationships/trackPreferences
-     - Updates feedback for one existing track preference, leaving other entries unchanged. A missing entry returns 409. Returns the complete preference snapshot. Requires the current meta.preferenceVersion as meta.expectedPreferenceVersion; stale versions return 409.
+     - Incrementally updates feedback for one existing track preference, leaving other entries unchanged. Empty data is rejected; a missing entry returns 409. Returns the complete preference snapshot. Requires the current meta.preferenceVersion as meta.expectedPreferenceVersion; stale versions return 409.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -416,7 +416,7 @@ internal class PlaylistGenerationsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -468,7 +468,7 @@ internal class PlaylistGenerationsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -515,7 +515,7 @@ internal class PlaylistGenerationsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 

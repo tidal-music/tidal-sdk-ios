@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **purchasesGet**
 ```swift
-    open class func purchasesGet(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], include: [String]? = nil, includeLinkage: [IncludeLinkage_purchasesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PurchasesMultiResourceDataDocument
+    open class func purchasesGet(filterOwnersId: [String], filterSubjectType: [FilterSubjectType_purchasesGet], include: [String]? = nil, includeLinkage: [IncludeLinkage_purchasesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PurchasesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple purchases.
@@ -31,11 +31,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get multiple purchases.
-do {
-    let response = try await PurchasesAPI.purchasesGet(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+PurchasesAPI.purchasesGet(filterOwnersId: filterOwnersId, filterSubjectType: filterSubjectType, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -67,7 +71,7 @@ Name | Type | Description  | Notes
 
 # **purchasesIdRelationshipsOwnersGet**
 ```swift
-    open class func purchasesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PurchasesOwnersMultiRelationshipDataDocument
+    open class func purchasesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PurchasesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -84,11 +88,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await PurchasesAPI.purchasesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+PurchasesAPI.purchasesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -117,7 +125,7 @@ Name | Type | Description  | Notes
 
 # **purchasesIdRelationshipsSubjectGet**
 ```swift
-    open class func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PurchasesSubjectSingleRelationshipDataDocument
+    open class func purchasesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PurchasesSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -134,11 +142,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-do {
-    let response = try await PurchasesAPI.purchasesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+PurchasesAPI.purchasesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

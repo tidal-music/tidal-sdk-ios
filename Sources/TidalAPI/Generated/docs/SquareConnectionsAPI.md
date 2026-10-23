@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **squareConnectionsIdGet**
 ```swift
-    open class func squareConnectionsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareConnectionsIdGet]? = nil) async throws -> SquareConnectionsSingleResourceDataDocument
+    open class func squareConnectionsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareConnectionsIdGet]? = nil, completion: @escaping (_ data: SquareConnectionsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single squareConnection.
@@ -30,11 +30,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single squareConnection.
-do {
-    let response = try await SquareConnectionsAPI.squareConnectionsIdGet(id: id, include: include, includeLinkage: includeLinkage)
-    dump(response)
-} catch {
-    print(error)
+SquareConnectionsAPI.squareConnectionsIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -63,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsIdRelationshipsSelectedSiteGet**
 ```swift
-    open class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil) async throws -> SquareConnectionsSelectedSiteSingleRelationshipDataDocument
+    open class func squareConnectionsIdRelationshipsSelectedSiteGet(id: String, include: [String]? = nil, completion: @escaping (_ data: SquareConnectionsSelectedSiteSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get selectedSite relationship (\"to-one\").
@@ -79,11 +83,15 @@ let id = "id_example" // String | Square connection id. Use `me` for the authent
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: selectedSite (optional)
 
 // Get selectedSite relationship (\"to-one\").
-do {
-    let response = try await SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSiteGet(id: id, include: include)
-    dump(response)
-} catch {
-    print(error)
+SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSiteGet(id: id, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -111,12 +119,12 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsIdRelationshipsSelectedSitePatch**
 ```swift
-    open class func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil) async throws -> SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument
+    open class func squareConnectionsIdRelationshipsSelectedSitePatch(id: String, idempotencyKey: String? = nil, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update selectedSite relationship (\"to-one\").
 
-Updates selectedSite relationship.
+Replaces the selected Square site. Explicit null data clears the selection without deleting the site. Returns the selected site linkage, or null data when cleared.
 
 ### Example
 ```swift
@@ -128,11 +136,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let squareConnectionsSelectedSiteRelationshipUpdateOperationPayload = SquareConnectionsSelectedSiteRelationshipUpdateOperation_Payload(data: SquareConnectionsSelectedSiteRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")) // SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload |  (optional)
 
 // Update selectedSite relationship (\"to-one\").
-do {
-    let response = try await SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSitePatch(id: id, idempotencyKey: idempotencyKey, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: squareConnectionsSelectedSiteRelationshipUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+SquareConnectionsAPI.squareConnectionsIdRelationshipsSelectedSitePatch(id: id, idempotencyKey: idempotencyKey, squareConnectionsSelectedSiteRelationshipUpdateOperationPayload: squareConnectionsSelectedSiteRelationshipUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -161,7 +173,7 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsIdRelationshipsSitesGet**
 ```swift
-    open class func squareConnectionsIdRelationshipsSitesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareConnectionsSitesMultiRelationshipDataDocument
+    open class func squareConnectionsIdRelationshipsSitesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SquareConnectionsSitesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get sites relationship (\"to-many\").
@@ -178,11 +190,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get sites relationship (\"to-many\").
-do {
-    let response = try await SquareConnectionsAPI.squareConnectionsIdRelationshipsSitesGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+SquareConnectionsAPI.squareConnectionsIdRelationshipsSitesGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -211,7 +227,7 @@ Name | Type | Description  | Notes
 
 # **squareConnectionsPost**
 ```swift
-    open class func squareConnectionsPost(idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil) async throws -> SquareConnectionsCreateSingleResourceDataDocument
+    open class func squareConnectionsPost(idempotencyKey: String? = nil, squareConnectionsCreateOperationPayload: SquareConnectionsCreateOperationPayload? = nil, completion: @escaping (_ data: SquareConnectionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single squareConnection.
@@ -227,11 +243,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let squareConnectionsCreateOperationPayload = SquareConnectionsCreateOperation_Payload(data: SquareConnectionsCreateOperation_Payload_Data(type: "type_example"), meta: SquareConnectionsCreateOperation_Payload_Meta(platform: "platform_example", redirectUrl: "redirectUrl_example")) // SquareConnectionsCreateOperationPayload |  (optional)
 
 // Create single squareConnection.
-do {
-    let response = try await SquareConnectionsAPI.squareConnectionsPost(idempotencyKey: idempotencyKey, squareConnectionsCreateOperationPayload: squareConnectionsCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+SquareConnectionsAPI.squareConnectionsPost(idempotencyKey: idempotencyKey, squareConnectionsCreateOperationPayload: squareConnectionsCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

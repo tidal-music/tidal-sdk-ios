@@ -32,7 +32,7 @@ internal class SavedSharesAPI {
     /**
      Create single savedShare.
      - POST /savedShares
-     - Creates a new savedShare.
+     - Redeem an active share with VOUCHER access mode for its offered role. A share without VOUCHER mode returns 403.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -48,7 +48,7 @@ internal class SavedSharesAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 

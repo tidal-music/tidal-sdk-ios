@@ -16,13 +16,13 @@ public struct ArtworkFile: Codable, Hashable {
     public static let hrefRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Artwork file href */
     public var href: String
-    public var meta: ArtworkFileMeta
+    public var meta: ArtworkFileMeta?
     /** Media type hint for the artwork file */
     public var type: String?
 
     public init(
         href: String,
-        meta: ArtworkFileMeta,
+        meta: ArtworkFileMeta? = nil,
         type: String? = nil
     ) {
         self.href = href
@@ -41,7 +41,7 @@ public struct ArtworkFile: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(href, forKey: .href)
-        try container.encode(meta, forKey: .meta)
+        try container.encodeIfPresent(meta, forKey: .meta)
         try container.encodeIfPresent(type, forKey: .type)
     }
 }

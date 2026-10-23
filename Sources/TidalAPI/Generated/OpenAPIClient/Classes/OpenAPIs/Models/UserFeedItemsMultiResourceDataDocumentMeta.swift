@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct UserFeedItemsMultiResourceDataDocumentMeta: Codable, Hashable {
 
-    public static let seenThroughTokenRule = StringRule(minLength: 1, maxLength: 128, pattern: "^[0-9A-Za-z]+$")
+    public static let seenThroughTokenRule = StringRule(minLength: 1, maxLength: 128, pattern: "/^[0-9A-Za-z]+$/")
     /** Opaque position for marking the surface seen, issued with its first page. */
     public var seenThroughToken: String
 

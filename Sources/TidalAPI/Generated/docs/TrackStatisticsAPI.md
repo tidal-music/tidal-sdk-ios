@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **trackStatisticsIdGet**
 ```swift
-    open class func trackStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackStatisticsIdGet]? = nil) async throws -> TrackStatisticsSingleResourceDataDocument
+    open class func trackStatisticsIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackStatisticsIdGet]? = nil, completion: @escaping (_ data: TrackStatisticsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single trackStatistic.
@@ -28,11 +28,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single trackStatistic.
-do {
-    let response = try await TrackStatisticsAPI.trackStatisticsIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage)
-    dump(response)
-} catch {
-    print(error)
+TrackStatisticsAPI.trackStatisticsIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -62,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **trackStatisticsIdRelationshipsOwnersGet**
 ```swift
-    open class func trackStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackStatisticsOwnersMultiRelationshipDataDocument
+    open class func trackStatisticsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TrackStatisticsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -79,11 +83,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await TrackStatisticsAPI.trackStatisticsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+TrackStatisticsAPI.trackStatisticsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

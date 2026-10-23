@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **artistSalesStatisticsGet**
 ```swift
-    open class func artistSalesStatisticsGet(filterArtistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_artistSalesStatisticsGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistSalesStatisticsMultiResourceDataDocument
+    open class func artistSalesStatisticsGet(filterArtistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_artistSalesStatisticsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistSalesStatisticsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artistSalesStatistics.
@@ -29,11 +29,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artist.albums (optional)
 
 // Get multiple artistSalesStatistics.
-do {
-    let response = try await ArtistSalesStatisticsAPI.artistSalesStatisticsGet(filterArtistId: filterArtistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistSalesStatisticsAPI.artistSalesStatisticsGet(filterArtistId: filterArtistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -63,7 +67,7 @@ Name | Type | Description  | Notes
 
 # **artistSalesStatisticsIdRelationshipsArtistGet**
 ```swift
-    open class func artistSalesStatisticsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ArtistSalesStatisticsArtistSingleRelationshipDataDocument
+    open class func artistSalesStatisticsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistSalesStatisticsArtistSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artist relationship (\"to-one\").
@@ -80,11 +84,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artist.albums (optional)
 
 // Get artist relationship (\"to-one\").
-do {
-    let response = try await ArtistSalesStatisticsAPI.artistSalesStatisticsIdRelationshipsArtistGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistSalesStatisticsAPI.artistSalesStatisticsIdRelationshipsArtistGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -113,7 +121,7 @@ Name | Type | Description  | Notes
 
 # **artistSalesStatisticsIdRelationshipsTopSellersGet**
 ```swift
-    open class func artistSalesStatisticsIdRelationshipsTopSellersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistSalesStatisticsTopSellersMultiRelationshipDataDocument
+    open class func artistSalesStatisticsIdRelationshipsTopSellersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistSalesStatisticsTopSellersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get topSellers relationship (\"to-many\").
@@ -131,11 +139,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: topSellers (optional)
 
 // Get topSellers relationship (\"to-many\").
-do {
-    let response = try await ArtistSalesStatisticsAPI.artistSalesStatisticsIdRelationshipsTopSellersGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistSalesStatisticsAPI.artistSalesStatisticsIdRelationshipsTopSellersGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

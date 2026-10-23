@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **acceptedTermsGet**
 ```swift
-    open class func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], filterTermsIsLatestVersion: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_acceptedTermsGet]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument
+    open class func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [FilterTermsTermsType_acceptedTermsGet], filterTermsIsLatestVersion: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_acceptedTermsGet]? = nil, completion: @escaping (_ data: AcceptedTermsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple acceptedTerms.
@@ -31,11 +31,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple acceptedTerms.
-do {
-    let response = try await AcceptedTermsAPI.acceptedTermsGet(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType, filterTermsIsLatestVersion: filterTermsIsLatestVersion, include: include, includeLinkage: includeLinkage)
-    dump(response)
-} catch {
-    print(error)
+AcceptedTermsAPI.acceptedTermsGet(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType, filterTermsIsLatestVersion: filterTermsIsLatestVersion, include: include, includeLinkage: includeLinkage) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -66,7 +70,7 @@ Name | Type | Description  | Notes
 
 # **acceptedTermsIdRelationshipsOwnersGet**
 ```swift
-    open class func acceptedTermsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> AcceptedTermsOwnersMultiRelationshipDataDocument
+    open class func acceptedTermsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: AcceptedTermsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -83,11 +87,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await AcceptedTermsAPI.acceptedTermsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+AcceptedTermsAPI.acceptedTermsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -116,7 +124,7 @@ Name | Type | Description  | Notes
 
 # **acceptedTermsIdRelationshipsTermsGet**
 ```swift
-    open class func acceptedTermsIdRelationshipsTermsGet(id: String, include: [String]? = nil) async throws -> AcceptedTermsTermsSingleRelationshipDataDocument
+    open class func acceptedTermsIdRelationshipsTermsGet(id: String, include: [String]? = nil, completion: @escaping (_ data: AcceptedTermsTermsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get terms relationship (\"to-one\").
@@ -132,11 +140,15 @@ let id = "id_example" // String | Accepted terms id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: terms (optional)
 
 // Get terms relationship (\"to-one\").
-do {
-    let response = try await AcceptedTermsAPI.acceptedTermsIdRelationshipsTermsGet(id: id, include: include)
-    dump(response)
-} catch {
-    print(error)
+AcceptedTermsAPI.acceptedTermsIdRelationshipsTermsGet(id: id, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -164,7 +176,7 @@ Name | Type | Description  | Notes
 
 # **acceptedTermsPost**
 ```swift
-    open class func acceptedTermsPost(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil) async throws -> AcceptedTermsCreateSingleResourceDataDocument
+    open class func acceptedTermsPost(idempotencyKey: String? = nil, acceptedTermsCreateOperationPayload: AcceptedTermsCreateOperationPayload? = nil, completion: @escaping (_ data: AcceptedTermsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single acceptedTerm.
@@ -180,11 +192,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let acceptedTermsCreateOperationPayload = AcceptedTermsCreateOperation_Payload(data: AcceptedTermsCreateOperation_Payload_Data(relationships: AcceptedTermsCreateOperation_Payload_Data_Relationships(terms: AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms(data: AcceptedTermsCreateOperation_Payload_Data_Relationships_Terms_Data(id: "id_example", type: "type_example"))), type: "type_example")) // AcceptedTermsCreateOperationPayload |  (optional)
 
 // Create single acceptedTerm.
-do {
-    let response = try await AcceptedTermsAPI.acceptedTermsPost(idempotencyKey: idempotencyKey, acceptedTermsCreateOperationPayload: acceptedTermsCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+AcceptedTermsAPI.acceptedTermsPost(idempotencyKey: idempotencyKey, acceptedTermsCreateOperationPayload: acceptedTermsCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

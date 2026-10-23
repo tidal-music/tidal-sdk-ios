@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 # **videosGet**
 ```swift
-    open class func videosGet(countryCode: String? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_videosGet]? = nil, replaceMedia: String? = nil) async throws -> VideosMultiResourceDataDocument
+    open class func videosGet(countryCode: String? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_videosGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple videos.
@@ -39,11 +39,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get multiple videos.
-do {
-    let response = try await VideosAPI.videosGet(countryCode: countryCode, filterId: filterId, filterIsrc: filterIsrc, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+VideosAPI.videosGet(countryCode: countryCode, filterId: filterId, filterIsrc: filterIsrc, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -75,7 +79,7 @@ Name | Type | Description  | Notes
 
 # **videosIdGet**
 ```swift
-    open class func videosIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_videosIdGet]? = nil, replaceMedia: String? = nil) async throws -> VideosSingleResourceDataDocument
+    open class func videosIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_videosIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single video.
@@ -94,11 +98,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get single video.
-do {
-    let response = try await VideosAPI.videosIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+VideosAPI.videosIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -129,7 +137,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsAlbumsGet**
 ```swift
-    open class func videosIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> VideosAlbumsMultiRelationshipDataDocument
+    open class func videosIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosAlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -148,11 +156,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: albums (optional)
 
 // Get albums relationship (\"to-many\").
-do {
-    let response = try await VideosAPI.videosIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+VideosAPI.videosIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -183,7 +195,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsArtistsGet**
 ```swift
-    open class func videosIdRelationshipsArtistsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> VideosArtistsMultiRelationshipDataDocument
+    open class func videosIdRelationshipsArtistsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -202,11 +214,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
 
 // Get artists relationship (\"to-many\").
-do {
-    let response = try await VideosAPI.videosIdRelationshipsArtistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+VideosAPI.videosIdRelationshipsArtistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -237,7 +253,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsCreditsGet**
 ```swift
-    open class func videosIdRelationshipsCreditsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> VideosCreditsMultiRelationshipDataDocument
+    open class func videosIdRelationshipsCreditsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosCreditsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get credits relationship (\"to-many\").
@@ -255,11 +271,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: credits.artist.albums (optional)
 
 // Get credits relationship (\"to-many\").
-do {
-    let response = try await VideosAPI.videosIdRelationshipsCreditsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+VideosAPI.videosIdRelationshipsCreditsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -289,7 +309,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsProvidersGet**
 ```swift
-    open class func videosIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosProvidersMultiRelationshipDataDocument
+    open class func videosIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosProvidersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get providers relationship (\"to-many\").
@@ -307,11 +327,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get providers relationship (\"to-many\").
-do {
-    let response = try await VideosAPI.videosIdRelationshipsProvidersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+VideosAPI.videosIdRelationshipsProvidersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -341,7 +365,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsReplacementGet**
 ```swift
-    open class func videosIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> VideosReplacementSingleRelationshipDataDocument
+    open class func videosIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosReplacementSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get replacement relationship (\"to-one\").
@@ -359,11 +383,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: replacement (optional)
 
 // Get replacement relationship (\"to-one\").
-do {
-    let response = try await VideosAPI.videosIdRelationshipsReplacementGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+VideosAPI.videosIdRelationshipsReplacementGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -393,7 +421,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsSimilarVideosGet**
 ```swift
-    open class func videosIdRelationshipsSimilarVideosGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> VideosSimilarVideosMultiRelationshipDataDocument
+    open class func videosIdRelationshipsSimilarVideosGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosSimilarVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarVideos relationship (\"to-many\").
@@ -412,11 +440,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: similarVideos (optional)
 
 // Get similarVideos relationship (\"to-many\").
-do {
-    let response = try await VideosAPI.videosIdRelationshipsSimilarVideosGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+VideosAPI.videosIdRelationshipsSimilarVideosGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -447,7 +479,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsSuggestedVideosGet**
 ```swift
-    open class func videosIdRelationshipsSuggestedVideosGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> VideosSuggestedVideosMultiRelationshipDataDocument
+    open class func videosIdRelationshipsSuggestedVideosGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: VideosSuggestedVideosMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get suggestedVideos relationship (\"to-many\").
@@ -466,11 +498,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: suggestedVideos (optional)
 
 // Get suggestedVideos relationship (\"to-many\").
-do {
-    let response = try await VideosAPI.videosIdRelationshipsSuggestedVideosGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+VideosAPI.videosIdRelationshipsSuggestedVideosGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -501,7 +537,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsThumbnailArtGet**
 ```swift
-    open class func videosIdRelationshipsThumbnailArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> VideosThumbnailArtMultiRelationshipDataDocument
+    open class func videosIdRelationshipsThumbnailArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: VideosThumbnailArtMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get thumbnailArt relationship (\"to-many\").
@@ -519,11 +555,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get thumbnailArt relationship (\"to-many\").
-do {
-    let response = try await VideosAPI.videosIdRelationshipsThumbnailArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+VideosAPI.videosIdRelationshipsThumbnailArtGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -553,7 +593,7 @@ Name | Type | Description  | Notes
 
 # **videosIdRelationshipsUsageRulesGet**
 ```swift
-    open class func videosIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil) async throws -> VideosUsageRulesSingleRelationshipDataDocument
+    open class func videosIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, completion: @escaping (_ data: VideosUsageRulesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get usageRules relationship (\"to-one\").
@@ -570,11 +610,15 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: usageRules (optional)
 
 // Get usageRules relationship (\"to-one\").
-do {
-    let response = try await VideosAPI.videosIdRelationshipsUsageRulesGet(id: id, countryCode: countryCode, include: include)
-    dump(response)
-} catch {
-    print(error)
+VideosAPI.videosIdRelationshipsUsageRulesGet(id: id, countryCode: countryCode, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

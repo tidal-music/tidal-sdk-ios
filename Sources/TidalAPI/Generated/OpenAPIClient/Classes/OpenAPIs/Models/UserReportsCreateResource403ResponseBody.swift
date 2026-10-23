@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct UserReportsCreateResource403ResponseBody: Codable, Hashable {
 
-    public var errors: [UserReportsCreateResource403ResponseBodyErrorsInner]
+    public var errors: [PlaylistGenerationSchedulesCreateResource403ResponseBodyErrorsInner]
 
     public init(
-        errors: [UserReportsCreateResource403ResponseBodyErrorsInner]
+        errors: [PlaylistGenerationSchedulesCreateResource403ResponseBodyErrorsInner]
     ) {
         self.errors = errors
     }

@@ -12,8 +12,8 @@ import AnyCodable
 
 public struct UserSubscriptionPriceChangesAttributes: Codable, Hashable {
 
-    public static let currentPriceRule = StringRule(minLength: nil, maxLength: nil, pattern: "^\\+?(?=[0-9.]*[1-9])(?:[0-9]+(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])")
-    public static let newPriceRule = StringRule(minLength: nil, maxLength: nil, pattern: "^\\+?(?=[0-9.]*[1-9])(?:[0-9]+(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])")
+    public static let currentPriceRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^\\+?(?=[0-9.]*[1-9])(?:[0-9]+(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])/")
+    public static let newPriceRule = StringRule(minLength: nil, maxLength: nil, pattern: "/^\\+?(?=[0-9.]*[1-9])(?:[0-9]+(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])/")
     /** ISO 4217 currency code */
     public var currency: String
     /** Amount in the currency's major units */

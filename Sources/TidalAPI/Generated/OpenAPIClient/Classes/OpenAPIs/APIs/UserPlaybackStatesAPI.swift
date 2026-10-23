@@ -121,7 +121,7 @@ internal class UserPlaybackStatesAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -208,7 +208,7 @@ internal class UserPlaybackStatesAPI {
     /**
      Update activePlayer relationship (\"to-one\").
      - PATCH /userPlaybackStates/{id}/relationships/activePlayer
-     - Updates activePlayer relationship.
+     - Replaces the active-player selection with the supplied owned installation. Explicit null data releases the player without deleting the installation. Returns null linkage when released or when the selected installation has no live attachment. An unavailable selection is retained and becomes visible again when its attachment is refreshed.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -228,7 +228,7 @@ internal class UserPlaybackStatesAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -260,7 +260,7 @@ internal class UserPlaybackStatesAPI {
     /**
      Delete from availablePlayers relationship (\"to-many\").
      - DELETE /userPlaybackStates/{id}/relationships/availablePlayers
-     - Deletes item(s) from availablePlayers relationship.
+     - Detaches one installation without deleting it. Also releases the active player when it is that installation. Returns an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -280,7 +280,7 @@ internal class UserPlaybackStatesAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -370,7 +370,7 @@ internal class UserPlaybackStatesAPI {
     /**
      Add to availablePlayers relationship (\"to-many\").
      - POST /userPlaybackStates/{id}/relationships/availablePlayers
-     - Adds item(s) to availablePlayers relationship.
+     - Attaches or refreshes one owned installation as an available player, preserving other attachments. Returns all currently available player linkage.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -390,7 +390,7 @@ internal class UserPlaybackStatesAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -529,7 +529,7 @@ internal class UserPlaybackStatesAPI {
     /**
      Update playQueue relationship (\"to-one\").
      - PATCH /userPlaybackStates/{id}/relationships/playQueue
-     - Updates playQueue relationship.
+     - Replaces the selected play queue. Explicit null data clears the selection without deleting the queue. Returns the selected queue linkage, or null data when cleared.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -549,7 +549,7 @@ internal class UserPlaybackStatesAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 

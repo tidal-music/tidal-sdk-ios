@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **tracksMetadataStatusIdGet**
 ```swift
-    open class func tracksMetadataStatusIdGet(id: String) async throws -> TracksMetadataStatusSingleResourceDataDocument
+    open class func tracksMetadataStatusIdGet(id: String, completion: @escaping (_ data: TracksMetadataStatusSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single tracksMetadataStatu.
@@ -24,11 +24,15 @@ import OpenAPIClient
 let id = "id_example" // String | Tracks metadata status id
 
 // Get single tracksMetadataStatu.
-do {
-    let response = try await TracksMetadataStatusAPI.tracksMetadataStatusIdGet(id: id)
-    dump(response)
-} catch {
-    print(error)
+TracksMetadataStatusAPI.tracksMetadataStatusIdGet(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

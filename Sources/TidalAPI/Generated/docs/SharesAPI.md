@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **sharesGet**
 ```swift
-    open class func sharesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument
+    open class func sharesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SharesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple shares.
@@ -32,11 +32,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: sharedResources (optional)
 
 // Get multiple shares.
-do {
-    let response = try await SharesAPI.sharesGet(filterCode: filterCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+SharesAPI.sharesGet(filterCode: filterCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -66,7 +70,7 @@ Name | Type | Description  | Notes
 
 # **sharesIdDelete**
 ```swift
-    open class func sharesIdDelete(id: String, idempotencyKey: String? = nil, revokeGrants: Bool? = nil) async throws -> MutationResponseDocument
+    open class func sharesIdDelete(id: String, idempotencyKey: String? = nil, revokeGrants: Bool? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single share.
@@ -83,11 +87,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let revokeGrants = true // Bool | Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
 
 // Delete single share.
-do {
-    let response = try await SharesAPI.sharesIdDelete(id: id, idempotencyKey: idempotencyKey, revokeGrants: revokeGrants)
-    dump(response)
-} catch {
-    print(error)
+SharesAPI.sharesIdDelete(id: id, idempotencyKey: idempotencyKey, revokeGrants: revokeGrants) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -116,7 +124,7 @@ Name | Type | Description  | Notes
 
 # **sharesIdGet**
 ```swift
-    open class func sharesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesIdGet]? = nil, replaceMedia: String? = nil) async throws -> SharesSingleResourceDataDocument
+    open class func sharesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SharesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single share.
@@ -134,11 +142,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: sharedResources (optional)
 
 // Get single share.
-do {
-    let response = try await SharesAPI.sharesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+SharesAPI.sharesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -168,7 +180,7 @@ Name | Type | Description  | Notes
 
 # **sharesIdRelationshipsOwnersGet**
 ```swift
-    open class func sharesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SharesOwnersMultiRelationshipDataDocument
+    open class func sharesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: SharesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -185,11 +197,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await SharesAPI.sharesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+SharesAPI.sharesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -218,7 +234,7 @@ Name | Type | Description  | Notes
 
 # **sharesIdRelationshipsSharedResourcesGet**
 ```swift
-    open class func sharesIdRelationshipsSharedResourcesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SharesSharedResourcesMultiRelationshipDataDocument
+    open class func sharesIdRelationshipsSharedResourcesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: SharesSharedResourcesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get sharedResources relationship (\"to-many\").
@@ -236,11 +252,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: sharedResources (optional)
 
 // Get sharedResources relationship (\"to-many\").
-do {
-    let response = try await SharesAPI.sharesIdRelationshipsSharedResourcesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+SharesAPI.sharesIdRelationshipsSharedResourcesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -270,7 +290,7 @@ Name | Type | Description  | Notes
 
 # **sharesPost**
 ```swift
-    open class func sharesPost(idempotencyKey: String? = nil, sharesCreateOperationPayload: SharesCreateOperationPayload? = nil) async throws -> SharesCreateSingleResourceDataDocument
+    open class func sharesPost(idempotencyKey: String? = nil, sharesCreateOperationPayload: SharesCreateOperationPayload? = nil, completion: @escaping (_ data: SharesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single share.
@@ -283,14 +303,18 @@ Creates a new share.
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let sharesCreateOperationPayload = SharesCreateOperation_Payload(data: SharesCreateOperation_Payload_Data(attributes: SharesCreateOperation_Payload_Data_Attributes(role: "role_example"), relationships: SharesCreateOperation_Payload_Data_Relationships(sharedResources: SharesCreateOperation_Payload_Data_Relationships_SharedResources(data: [SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // SharesCreateOperationPayload |  (optional)
+let sharesCreateOperationPayload = SharesCreateOperation_Payload(data: SharesCreateOperation_Payload_Data(attributes: SharesCreateOperation_Payload_Data_Attributes(accessModes: ["accessModes_example"], role: "role_example"), relationships: SharesCreateOperation_Payload_Data_Relationships(sharedResources: SharesCreateOperation_Payload_Data_Relationships_SharedResources(data: [SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // SharesCreateOperationPayload |  (optional)
 
 // Create single share.
-do {
-    let response = try await SharesAPI.sharesPost(idempotencyKey: idempotencyKey, sharesCreateOperationPayload: sharesCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+SharesAPI.sharesPost(idempotencyKey: idempotencyKey, sharesCreateOperationPayload: sharesCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

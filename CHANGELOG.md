@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Generated API code using spec version 1.10.204, including atomic Square item and variation creation (TidalAPI)
+
+### Fixed
+- Quote the JSON:API atomic extension in generated request media types (TidalAPI)
+- Honor generated-code exclusions in the SwiftLint pre-commit hooks (TidalAPI)
+- Handle artwork files without dimension metadata when selecting offline artwork (Offliner)
+
 ## [0.12.12] - 2026-10-20
 
 ### Changed

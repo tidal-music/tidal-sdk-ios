@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **temporaryUserTokensIdGet**
 ```swift
-    open class func temporaryUserTokensIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_temporaryUserTokensIdGet]? = nil) async throws -> TemporaryUserTokensSingleResourceDataDocument
+    open class func temporaryUserTokensIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_temporaryUserTokensIdGet]? = nil, completion: @escaping (_ data: TemporaryUserTokensSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single temporaryUserToken.
@@ -28,11 +28,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single temporaryUserToken.
-do {
-    let response = try await TemporaryUserTokensAPI.temporaryUserTokensIdGet(id: id, include: include, includeLinkage: includeLinkage)
-    dump(response)
-} catch {
-    print(error)
+TemporaryUserTokensAPI.temporaryUserTokensIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -61,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **temporaryUserTokensIdRelationshipsOwnersGet**
 ```swift
-    open class func temporaryUserTokensIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TemporaryUserTokensOwnersMultiRelationshipDataDocument
+    open class func temporaryUserTokensIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TemporaryUserTokensOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -78,11 +82,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await TemporaryUserTokensAPI.temporaryUserTokensIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+TemporaryUserTokensAPI.temporaryUserTokensIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -111,7 +119,7 @@ Name | Type | Description  | Notes
 
 # **temporaryUserTokensPost**
 ```swift
-    open class func temporaryUserTokensPost(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil) async throws -> TemporaryUserTokensCreateSingleResourceDataDocument
+    open class func temporaryUserTokensPost(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil, completion: @escaping (_ data: TemporaryUserTokensCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single temporaryUserToken.
@@ -127,11 +135,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let temporaryUserTokensCreateOperationPayload = TemporaryUserTokensCreateOperation_Payload(data: TemporaryUserTokensCreateOperation_Payload_Data(type: "type_example")) // TemporaryUserTokensCreateOperationPayload |  (optional)
 
 // Create single temporaryUserToken.
-do {
-    let response = try await TemporaryUserTokensAPI.temporaryUserTokensPost(idempotencyKey: idempotencyKey, temporaryUserTokensCreateOperationPayload: temporaryUserTokensCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+TemporaryUserTokensAPI.temporaryUserTokensPost(idempotencyKey: idempotencyKey, temporaryUserTokensCreateOperationPayload: temporaryUserTokensCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

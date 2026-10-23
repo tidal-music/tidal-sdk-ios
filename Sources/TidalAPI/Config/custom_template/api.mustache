@@ -443,8 +443,8 @@ extension {{projectName}}API {
 
         let localVariableNillableHeaders: [String: Any?] = [{{^headerParams}}{{^hasFormParams}}{{^hasConsumes}}
             :{{/hasConsumes}}{{/hasFormParams}}{{/headerParams}}{{#hasFormParams}}
-            "Content-Type": {{^consumes}}"multipart/form-data"{{/consumes}}{{#consumes.0}}"{{{mediaType}}}"{{/consumes.0}},{{/hasFormParams}}{{^hasFormParams}}{{#hasConsumes}}
-            "Content-Type": {{#consumes.0}}"{{{mediaType}}}"{{/consumes.0}},{{/hasConsumes}}{{/hasFormParams}}{{#headerParams}}
+            "Content-Type": {{^consumes}}"multipart/form-data"{{/consumes}}{{#consumes.0}}#"{{{mediaType}}}"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression){{/consumes.0}},{{/hasFormParams}}{{^hasFormParams}}{{#hasConsumes}}
+            "Content-Type": {{#consumes.0}}#"{{{mediaType}}}"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression){{/consumes.0}},{{/hasConsumes}}{{/hasFormParams}}{{#headerParams}}
             {{> _param}},{{/headerParams}}
         ]
 

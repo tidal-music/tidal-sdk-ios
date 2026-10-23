@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **stripeDashboardLinksGet**
 ```swift
-    open class func stripeDashboardLinksGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_stripeDashboardLinksGet]? = nil) async throws -> StripeDashboardLinksMultiResourceDataDocument
+    open class func stripeDashboardLinksGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_stripeDashboardLinksGet]? = nil, completion: @escaping (_ data: StripeDashboardLinksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple stripeDashboardLinks.
@@ -27,11 +27,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple stripeDashboardLinks.
-do {
-    let response = try await StripeDashboardLinksAPI.stripeDashboardLinksGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage)
-    dump(response)
-} catch {
-    print(error)
+StripeDashboardLinksAPI.stripeDashboardLinksGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -60,7 +64,7 @@ Name | Type | Description  | Notes
 
 # **stripeDashboardLinksIdRelationshipsOwnersGet**
 ```swift
-    open class func stripeDashboardLinksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> StripeDashboardLinksOwnersMultiRelationshipDataDocument
+    open class func stripeDashboardLinksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: StripeDashboardLinksOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -77,11 +81,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await StripeDashboardLinksAPI.stripeDashboardLinksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+StripeDashboardLinksAPI.stripeDashboardLinksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

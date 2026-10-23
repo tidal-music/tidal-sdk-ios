@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **userDiscoveryMixesIdGet**
 ```swift
-    open class func userDiscoveryMixesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userDiscoveryMixesIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesSingleResourceDataDocument
+    open class func userDiscoveryMixesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userDiscoveryMixesIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserDiscoveryMixesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userDiscoveryMixe.
@@ -29,11 +29,15 @@ let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get single userDiscoveryMixe.
-do {
-    let response = try await UserDiscoveryMixesAPI.userDiscoveryMixesIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+UserDiscoveryMixesAPI.userDiscoveryMixesIdGet(id: id, include: include, includeLinkage: includeLinkage, locale: locale, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -64,7 +68,7 @@ Name | Type | Description  | Notes
 
 # **userDiscoveryMixesIdRelationshipsItemsGet**
 ```swift
-    open class func userDiscoveryMixesIdRelationshipsItemsGet(id: String, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserDiscoveryMixesItemsMultiRelationshipDataDocument
+    open class func userDiscoveryMixesIdRelationshipsItemsGet(id: String, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserDiscoveryMixesItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -83,11 +87,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
 
 // Get items relationship (\"to-many\").
-do {
-    let response = try await UserDiscoveryMixesAPI.userDiscoveryMixesIdRelationshipsItemsGet(id: id, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+UserDiscoveryMixesAPI.userDiscoveryMixesIdRelationshipsItemsGet(id: id, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **providerOwnersGet**
 ```swift
-    open class func providerOwnersGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_providerOwnersGet]? = nil) async throws -> ProviderOwnersMultiResourceDataDocument
+    open class func providerOwnersGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_providerOwnersGet]? = nil, completion: @escaping (_ data: ProviderOwnersMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple providerOwners.
@@ -28,11 +28,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple providerOwners.
-do {
-    let response = try await ProviderOwnersAPI.providerOwnersGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage)
-    dump(response)
-} catch {
-    print(error)
+ProviderOwnersAPI.providerOwnersGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -61,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **providerOwnersIdRelationshipsOwnersGet**
 ```swift
-    open class func providerOwnersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ProviderOwnersOwnersMultiRelationshipDataDocument
+    open class func providerOwnersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ProviderOwnersOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -78,11 +82,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await ProviderOwnersAPI.providerOwnersIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+ProviderOwnersAPI.providerOwnersIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -111,7 +119,7 @@ Name | Type | Description  | Notes
 
 # **providerOwnersIdRelationshipsProviderGet**
 ```swift
-    open class func providerOwnersIdRelationshipsProviderGet(id: String, include: [String]? = nil) async throws -> ProviderOwnersProviderSingleRelationshipDataDocument
+    open class func providerOwnersIdRelationshipsProviderGet(id: String, include: [String]? = nil, completion: @escaping (_ data: ProviderOwnersProviderSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get provider relationship (\"to-one\").
@@ -127,11 +135,15 @@ let id = "id_example" // String | Provider owner id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: provider (optional)
 
 // Get provider relationship (\"to-one\").
-do {
-    let response = try await ProviderOwnersAPI.providerOwnersIdRelationshipsProviderGet(id: id, include: include)
-    dump(response)
-} catch {
-    print(error)
+ProviderOwnersAPI.providerOwnersIdRelationshipsProviderGet(id: id, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

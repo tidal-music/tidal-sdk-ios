@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 # **artistClaimsGet**
 ```swift
-    open class func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_artistClaimsGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsMultiResourceDataDocument
+    open class func artistClaimsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_artistClaimsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple artistClaims.
@@ -35,11 +35,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: acceptedArtists.albums (optional)
 
 // Get multiple artistClaims.
-do {
-    let response = try await ArtistClaimsAPI.artistClaimsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistClaimsAPI.artistClaimsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -69,7 +73,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdDelete**
 ```swift
-    open class func artistClaimsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func artistClaimsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single artistClaim.
@@ -85,11 +89,15 @@ let id = "id_example" // String | Artist claim id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single artistClaim.
-do {
-    let response = try await ArtistClaimsAPI.artistClaimsIdDelete(id: id, idempotencyKey: idempotencyKey)
-    dump(response)
-} catch {
-    print(error)
+ArtistClaimsAPI.artistClaimsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -117,7 +125,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdGet**
 ```swift
-    open class func artistClaimsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistClaimsIdGet]? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsSingleResourceDataDocument
+    open class func artistClaimsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistClaimsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artistClaim.
@@ -135,11 +143,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: acceptedArtists.albums (optional)
 
 // Get single artistClaim.
-do {
-    let response = try await ArtistClaimsAPI.artistClaimsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistClaimsAPI.artistClaimsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -169,7 +181,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdPatch**
 ```swift
-    open class func artistClaimsIdPatch(id: String, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func artistClaimsIdPatch(id: String, idempotencyKey: String? = nil, artistClaimsUpdateOperationPayload: ArtistClaimsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single artistClaim.
@@ -186,11 +198,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let artistClaimsUpdateOperationPayload = ArtistClaimsUpdateOperation_Payload(data: ArtistClaimsUpdateOperation_Payload_Data(attributes: 123, id: "id_example", type: "type_example"), meta: ArtistClaimsUpdateOperation_Payload_Meta(authorizationCode: "authorizationCode_example", redirectUri: "redirectUri_example")) // ArtistClaimsUpdateOperationPayload |  (optional)
 
 // Update single artistClaim.
-do {
-    let response = try await ArtistClaimsAPI.artistClaimsIdPatch(id: id, idempotencyKey: idempotencyKey, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ArtistClaimsAPI.artistClaimsIdPatch(id: id, idempotencyKey: idempotencyKey, artistClaimsUpdateOperationPayload: artistClaimsUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -219,7 +235,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsAcceptedArtistsGet**
 ```swift
-    open class func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument
+    open class func artistClaimsIdRelationshipsAcceptedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get acceptedArtists relationship (\"to-many\").
@@ -237,11 +253,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: acceptedArtists.albums (optional)
 
 // Get acceptedArtists relationship (\"to-many\").
-do {
-    let response = try await ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -271,12 +291,12 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsAcceptedArtistsPatch**
 ```swift
-    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func artistClaimsIdRelationshipsAcceptedArtistsPatch(id: String, idempotencyKey: String? = nil, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update acceptedArtists relationship (\"to-many\").
 
-Updates acceptedArtists relationship.
+Accepts one recommended artist and processes the claim, merging profile metadata or moving claimed albums according to the recommendation. Empty data cancels the claim; it does not delete any artist. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -288,11 +308,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload = ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload(data: [ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload |  (optional)
 
 // Update acceptedArtists relationship (\"to-many\").
-do {
-    let response = try await ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, idempotencyKey: idempotencyKey, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ArtistClaimsAPI.artistClaimsIdRelationshipsAcceptedArtistsPatch(id: id, idempotencyKey: idempotencyKey, artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload: artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -321,7 +345,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsOwnersGet**
 ```swift
-    open class func artistClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistClaimsOwnersMultiRelationshipDataDocument
+    open class func artistClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistClaimsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -338,11 +362,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await ArtistClaimsAPI.artistClaimsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+ArtistClaimsAPI.artistClaimsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -371,7 +399,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsIdRelationshipsRecommendedArtistsGet**
 ```swift
-    open class func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument
+    open class func artistClaimsIdRelationshipsRecommendedArtistsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get recommendedArtists relationship (\"to-many\").
@@ -389,11 +417,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: recommendedArtists.albums (optional)
 
 // Get recommendedArtists relationship (\"to-many\").
-do {
-    let response = try await ArtistClaimsAPI.artistClaimsIdRelationshipsRecommendedArtistsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ArtistClaimsAPI.artistClaimsIdRelationshipsRecommendedArtistsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -423,7 +455,7 @@ Name | Type | Description  | Notes
 
 # **artistClaimsPost**
 ```swift
-    open class func artistClaimsPost(idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil) async throws -> ArtistClaimsCreateSingleResourceDataDocument
+    open class func artistClaimsPost(idempotencyKey: String? = nil, artistClaimsCreateOperationPayload: ArtistClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ArtistClaimsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single artistClaim.
@@ -439,11 +471,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let artistClaimsCreateOperationPayload = ArtistClaimsCreateOperation_Payload(data: ArtistClaimsCreateOperation_Payload_Data(attributes: ArtistClaimsCreateOperation_Payload_Data_Attributes(artistId: "artistId_example", provider: "provider_example"), type: "type_example"), meta: ArtistClaimsCreateOperation_Payload_Meta(nonce: "nonce_example", redirectUrl: "redirectUrl_example")) // ArtistClaimsCreateOperationPayload |  (optional)
 
 // Create single artistClaim.
-do {
-    let response = try await ArtistClaimsAPI.artistClaimsPost(idempotencyKey: idempotencyKey, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ArtistClaimsAPI.artistClaimsPost(idempotencyKey: idempotencyKey, artistClaimsCreateOperationPayload: artistClaimsCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

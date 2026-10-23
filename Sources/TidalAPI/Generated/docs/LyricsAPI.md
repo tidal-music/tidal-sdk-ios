@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **lyricsIdDelete**
 ```swift
-    open class func lyricsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func lyricsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single lyric.
@@ -30,11 +30,15 @@ let id = "id_example" // String | Lyrics Id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single lyric.
-do {
-    let response = try await LyricsAPI.lyricsIdDelete(id: id, idempotencyKey: idempotencyKey)
-    dump(response)
-} catch {
-    print(error)
+LyricsAPI.lyricsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -62,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdGet**
 ```swift
-    open class func lyricsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_lyricsIdGet]? = nil, replaceMedia: String? = nil) async throws -> LyricsSingleResourceDataDocument
+    open class func lyricsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_lyricsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: LyricsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single lyric.
@@ -80,11 +84,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: track (optional)
 
 // Get single lyric.
-do {
-    let response = try await LyricsAPI.lyricsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+LyricsAPI.lyricsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -114,7 +122,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdPatch**
 ```swift
-    open class func lyricsIdPatch(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func lyricsIdPatch(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single lyric.
@@ -131,11 +139,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let lyricsUpdateOperationPayload = LyricsUpdateOperation_Payload(data: LyricsUpdateOperation_Payload_Data(attributes: LyricsUpdateOperation_Payload_Data_Attributes(lrcText: "lrcText_example", text: "text_example"), id: "id_example", type: "type_example")) // LyricsUpdateOperationPayload |  (optional)
 
 // Update single lyric.
-do {
-    let response = try await LyricsAPI.lyricsIdPatch(id: id, idempotencyKey: idempotencyKey, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+LyricsAPI.lyricsIdPatch(id: id, idempotencyKey: idempotencyKey, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -164,7 +176,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdRelationshipsOwnersGet**
 ```swift
-    open class func lyricsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsOwnersMultiRelationshipDataDocument
+    open class func lyricsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: LyricsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -181,11 +193,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await LyricsAPI.lyricsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+LyricsAPI.lyricsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -214,7 +230,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdRelationshipsTrackGet**
 ```swift
-    open class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> LyricsTrackSingleRelationshipDataDocument
+    open class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: LyricsTrackSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get track relationship (\"to-one\").
@@ -232,11 +248,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: track (optional)
 
 // Get track relationship (\"to-one\").
-do {
-    let response = try await LyricsAPI.lyricsIdRelationshipsTrackGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+LyricsAPI.lyricsIdRelationshipsTrackGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -266,7 +286,7 @@ Name | Type | Description  | Notes
 
 # **lyricsPost**
 ```swift
-    open class func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsCreateSingleResourceDataDocument
+    open class func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil, completion: @escaping (_ data: LyricsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single lyric.
@@ -282,11 +302,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let lyricsCreateOperationPayload = LyricsCreateOperation_Payload(data: LyricsCreateOperation_Payload_Data(attributes: LyricsCreateOperation_Payload_Data_Attributes(text: "text_example"), relationships: LyricsCreateOperation_Payload_Data_Relationships(track: LyricsCreateOperation_Payload_Data_Relationships_Track(data: LyricsCreateOperation_Payload_Data_Relationships_Track_Data(id: "id_example", type: "type_example"), id: "id_example", type: "type_example")), type: "type_example"), meta: LyricsCreateOperation_Payload_Meta(generate: false)) // LyricsCreateOperationPayload |  (optional)
 
 // Create single lyric.
-do {
-    let response = try await LyricsAPI.lyricsPost(idempotencyKey: idempotencyKey, lyricsCreateOperationPayload: lyricsCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+LyricsAPI.lyricsPost(idempotencyKey: idempotencyKey, lyricsCreateOperationPayload: lyricsCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **termsGet**
 ```swift
-    open class func termsGet(filterTermsType: [FilterTermsType_termsGet], filterCountryCode: [String]? = nil, filterIsLatestVersion: [String]? = nil) async throws -> TermsMultiResourceDataDocument
+    open class func termsGet(filterTermsType: [FilterTermsType_termsGet], filterCountryCode: [String]? = nil, filterIsLatestVersion: [String]? = nil, completion: @escaping (_ data: TermsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple terms.
@@ -27,11 +27,15 @@ let filterCountryCode = ["inner_example"] // [String] | Selects the country-spec
 let filterIsLatestVersion = ["inner_example"] // [String] | Filter by isLatestVersion (optional)
 
 // Get multiple terms.
-do {
-    let response = try await TermsAPI.termsGet(filterTermsType: filterTermsType, filterCountryCode: filterCountryCode, filterIsLatestVersion: filterIsLatestVersion)
-    dump(response)
-} catch {
-    print(error)
+TermsAPI.termsGet(filterTermsType: filterTermsType, filterCountryCode: filterCountryCode, filterIsLatestVersion: filterIsLatestVersion) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -60,7 +64,7 @@ Name | Type | Description  | Notes
 
 # **termsIdGet**
 ```swift
-    open class func termsIdGet(id: String) async throws -> TermsSingleResourceDataDocument
+    open class func termsIdGet(id: String, completion: @escaping (_ data: TermsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single term.
@@ -75,11 +79,15 @@ import OpenAPIClient
 let id = "id_example" // String | Terms id
 
 // Get single term.
-do {
-    let response = try await TermsAPI.termsIdGet(id: id)
-    dump(response)
-} catch {
-    print(error)
+TermsAPI.termsIdGet(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

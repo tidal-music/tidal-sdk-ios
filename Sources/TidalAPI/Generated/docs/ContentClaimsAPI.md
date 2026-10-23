@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **contentClaimsGet**
 ```swift
-    open class func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_contentClaimsGet]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsMultiResourceDataDocument
+    open class func contentClaimsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_contentClaimsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple contentClaims.
@@ -32,11 +32,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimedResource (optional)
 
 // Get multiple contentClaims.
-do {
-    let response = try await ContentClaimsAPI.contentClaimsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ContentClaimsAPI.contentClaimsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -66,7 +70,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsIdGet**
 ```swift
-    open class func contentClaimsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_contentClaimsIdGet]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsSingleResourceDataDocument
+    open class func contentClaimsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_contentClaimsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single contentClaim.
@@ -84,11 +88,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimedResource (optional)
 
 // Get single contentClaim.
-do {
-    let response = try await ContentClaimsAPI.contentClaimsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ContentClaimsAPI.contentClaimsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -118,7 +126,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsIdRelationshipsClaimedResourceGet**
 ```swift
-    open class func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsClaimedResourceSingleRelationshipDataDocument
+    open class func contentClaimsIdRelationshipsClaimedResourceGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsClaimedResourceSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get claimedResource relationship (\"to-one\").
@@ -135,11 +143,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimedResource (optional)
 
 // Get claimedResource relationship (\"to-one\").
-do {
-    let response = try await ContentClaimsAPI.contentClaimsIdRelationshipsClaimedResourceGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ContentClaimsAPI.contentClaimsIdRelationshipsClaimedResourceGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -168,7 +180,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsIdRelationshipsClaimingArtistGet**
 ```swift
-    open class func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ContentClaimsClaimingArtistSingleRelationshipDataDocument
+    open class func contentClaimsIdRelationshipsClaimingArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ContentClaimsClaimingArtistSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get claimingArtist relationship (\"to-one\").
@@ -185,11 +197,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: claimingArtist.albums (optional)
 
 // Get claimingArtist relationship (\"to-one\").
-do {
-    let response = try await ContentClaimsAPI.contentClaimsIdRelationshipsClaimingArtistGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ContentClaimsAPI.contentClaimsIdRelationshipsClaimingArtistGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -218,7 +234,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsIdRelationshipsOwnersGet**
 ```swift
-    open class func contentClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ContentClaimsOwnersMultiRelationshipDataDocument
+    open class func contentClaimsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ContentClaimsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -235,11 +251,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await ContentClaimsAPI.contentClaimsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+ContentClaimsAPI.contentClaimsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -268,7 +288,7 @@ Name | Type | Description  | Notes
 
 # **contentClaimsPost**
 ```swift
-    open class func contentClaimsPost(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil) async throws -> ContentClaimsCreateSingleResourceDataDocument
+    open class func contentClaimsPost(idempotencyKey: String? = nil, contentClaimsCreateOperationPayload: ContentClaimsCreateOperationPayload? = nil, completion: @escaping (_ data: ContentClaimsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single contentClaim.
@@ -284,11 +304,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let contentClaimsCreateOperationPayload = ContentClaimsCreateOperation_Payload(data: ContentClaimsCreateOperation_Payload_Data(attributes: ContentClaimsCreateOperation_Payload_Data_Attributes(assertion: "assertion_example"), relationships: ContentClaimsCreateOperation_Payload_Data_Relationships(claimedResource: ContentClaimsCreateOperation_Payload_Data_Relationships_ClaimedResource(data: ContentClaimsCreateOperation_Payload_Data_Relationships_ClaimedResource_Data(id: "id_example", type: "type_example")), claimingArtist: ContentClaimsCreateOperation_Payload_Data_Relationships_ClaimingArtist(data: ContentClaimsCreateOperation_Payload_Data_Relationships_ClaimingArtist_Data(id: "id_example", type: "type_example"))), type: "type_example")) // ContentClaimsCreateOperationPayload |  (optional)
 
 // Create single contentClaim.
-do {
-    let response = try await ContentClaimsAPI.contentClaimsPost(idempotencyKey: idempotencyKey, contentClaimsCreateOperationPayload: contentClaimsCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ContentClaimsAPI.contentClaimsPost(idempotencyKey: idempotencyKey, contentClaimsCreateOperationPayload: contentClaimsCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

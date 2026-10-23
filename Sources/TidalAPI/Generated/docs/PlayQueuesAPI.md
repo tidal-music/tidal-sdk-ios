@@ -22,7 +22,7 @@ Method | HTTP request | Description
 
 # **playQueuesGet**
 ```swift
-    open class func playQueuesGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesMultiResourceDataDocument
+    open class func playQueuesGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlayQueuesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple playQueues.
@@ -41,11 +41,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: current (optional)
 
 // Get multiple playQueues.
-do {
-    let response = try await PlayQueuesAPI.playQueuesGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -76,7 +80,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdDelete**
 ```swift
-    open class func playQueuesIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func playQueuesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single playQueue.
@@ -92,11 +96,15 @@ let id = "id_example" // String | Play queue id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single playQueue.
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdDelete(id: id, idempotencyKey: idempotencyKey)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -124,7 +132,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdGet**
 ```swift
-    open class func playQueuesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesIdGet]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesSingleResourceDataDocument
+    open class func playQueuesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_playQueuesIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlayQueuesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single playQueue.
@@ -142,11 +150,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: current (optional)
 
 // Get single playQueue.
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -176,7 +188,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdPatch**
 ```swift
-    open class func playQueuesIdPatch(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil) async throws -> PlayQueuesUpdateSingleResourceDataDocument
+    open class func playQueuesIdPatch(id: String, idempotencyKey: String? = nil, playQueuesUpdateOperationPayload: PlayQueuesUpdateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update single playQueue.
@@ -193,11 +205,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playQueuesUpdateOperationPayload = PlayQueuesUpdateOperation_Payload(data: PlayQueuesUpdateOperation_Payload_Data(attributes: PlayQueuesUpdateOperation_Payload_Data_Attributes(_repeat: "_repeat_example", shuffle: "shuffle_example", shuffled: false), id: "id_example", relationships: PlayQueuesUpdateOperation_Payload_Data_Relationships(current: PlayQueuesUpdateOperation_Current(meta: PlayQueuesUpdateOperation_Current_Meta(itemId: "itemId_example", mode: "mode_example")), future: PlayQueuesUpdateOperation_Future(data: [PlayQueuesUpdateOperation_Future_Data(id: "id_example", type: "type_example")], meta: PlayQueuesUpdateOperation_Future_Meta(mode: "mode_example", positionBefore: "positionBefore_example", source: PlayQueuesFutureRelationshipSource(href: "href_example", startIndex: 123)))), type: "type_example")) // PlayQueuesUpdateOperationPayload |  (optional)
 
 // Update single playQueue.
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdPatch(id: id, idempotencyKey: idempotencyKey, playQueuesUpdateOperationPayload: playQueuesUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdPatch(id: id, idempotencyKey: idempotencyKey, playQueuesUpdateOperationPayload: playQueuesUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -226,7 +242,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsChangeEventStreamGet**
 ```swift
-    open class func playQueuesIdRelationshipsChangeEventStreamGet(id: String, include: [String]? = nil) async throws -> PlayQueuesChangeEventStreamSingleRelationshipDataDocument
+    open class func playQueuesIdRelationshipsChangeEventStreamGet(id: String, include: [String]? = nil, completion: @escaping (_ data: PlayQueuesChangeEventStreamSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get changeEventStream relationship (\"to-one\").
@@ -242,11 +258,15 @@ let id = "id_example" // String |
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: changeEventStream (optional)
 
 // Get changeEventStream relationship (\"to-one\").
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsChangeEventStreamGet(id: id, include: include)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdRelationshipsChangeEventStreamGet(id: id, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -274,7 +294,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsCurrentGet**
 ```swift
-    open class func playQueuesIdRelationshipsCurrentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesCurrentSingleRelationshipDataDocument
+    open class func playQueuesIdRelationshipsCurrentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlayQueuesCurrentSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get current relationship (\"to-one\").
@@ -291,11 +311,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: current (optional)
 
 // Get current relationship (\"to-one\").
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsCurrentGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdRelationshipsCurrentGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -324,12 +348,12 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsCurrentPatch**
 ```swift
-    open class func playQueuesIdRelationshipsCurrentPatch(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil) async throws -> PlayQueuesCurrentUpdateSingleRelationshipDataDocument
+    open class func playQueuesIdRelationshipsCurrentPatch(id: String, idempotencyKey: String? = nil, playQueuesCurrentRelationshipUpdateOperationPayload: PlayQueuesCurrentRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesCurrentUpdateSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update current relationship (\"to-one\").
 
-Updates current relationship.
+Sets the current item to the existing queue occurrence identified by data.meta.itemId, changing which entries are past and future. Null data is rejected. Optional position and updatedByInstallationId must be supplied together. Returns the current item linkage and queue revision.
 
 ### Example
 ```swift
@@ -341,11 +365,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playQueuesCurrentRelationshipUpdateOperationPayload = PlayQueuesCurrentRelationshipUpdateOperation_Payload(data: PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlayQueuesCurrentRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example", position: "position_example", updatedByInstallationId: "updatedByInstallationId_example"), type: "type_example")) // PlayQueuesCurrentRelationshipUpdateOperationPayload |  (optional)
 
 // Update current relationship (\"to-one\").
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatch(id: id, idempotencyKey: idempotencyKey, playQueuesCurrentRelationshipUpdateOperationPayload: playQueuesCurrentRelationshipUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdRelationshipsCurrentPatch(id: id, idempotencyKey: idempotencyKey, playQueuesCurrentRelationshipUpdateOperationPayload: playQueuesCurrentRelationshipUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -374,12 +402,12 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsFutureDelete**
 ```swift
-    open class func playQueuesIdRelationshipsFutureDelete(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func playQueuesIdRelationshipsFutureDelete(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipRemoveOperationPayload: PlayQueuesFutureRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from future relationship (\"to-many\").
 
-Deletes item(s) from future relationship.
+Removes the future occurrences selected by data[].meta.itemId without deleting their tracks or videos. Other queue entries are preserved. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -391,11 +419,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playQueuesFutureRelationshipRemoveOperationPayload = PlayQueuesFutureRelationshipRemoveOperation_Payload(data: [PlayQueuesFutureRelationshipRemoveOperation_Payload_Data(id: "id_example", meta: PlayQueuesFutureRelationshipRemoveOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")]) // PlayQueuesFutureRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from future relationship (\"to-many\").
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsFutureDelete(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipRemoveOperationPayload: playQueuesFutureRelationshipRemoveOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdRelationshipsFutureDelete(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipRemoveOperationPayload: playQueuesFutureRelationshipRemoveOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -424,7 +456,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsFutureGet**
 ```swift
-    open class func playQueuesIdRelationshipsFutureGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesFutureMultiRelationshipDataDocument
+    open class func playQueuesIdRelationshipsFutureGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlayQueuesFutureMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get future relationship (\"to-many\").
@@ -442,11 +474,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: future (optional)
 
 // Get future relationship (\"to-many\").
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsFutureGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdRelationshipsFutureGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -476,12 +512,12 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsFuturePatch**
 ```swift
-    open class func playQueuesIdRelationshipsFuturePatch(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil) async throws -> PlayQueuesFutureUpdateMultiRelationshipDataDocument
+    open class func playQueuesIdRelationshipsFuturePatch(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipUpdateOperationPayload: PlayQueuesFutureRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesFutureUpdateMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update future relationship (\"to-many\").
 
-Returns empty data and meta.revision as an acknowledgement.
+Incrementally moves existing future occurrences selected by data[].meta.itemId, in their current queue order, before meta.positionBefore. Preserves memberships and unselected entries' metadata and relative order. Empty data is rejected. Returns empty data and meta.revision as an acknowledgement.
 
 ### Example
 ```swift
@@ -493,11 +529,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playQueuesFutureRelationshipUpdateOperationPayload = PlayQueuesFutureRelationshipUpdateOperation_Payload(data: [PlayQueuesFutureRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlayQueuesFutureRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlayQueuesFutureRelationshipUpdateOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlayQueuesFutureRelationshipUpdateOperationPayload |  (optional)
 
 // Update future relationship (\"to-many\").
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsFuturePatch(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipUpdateOperationPayload: playQueuesFutureRelationshipUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdRelationshipsFuturePatch(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipUpdateOperationPayload: playQueuesFutureRelationshipUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -526,12 +566,12 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsFuturePost**
 ```swift
-    open class func playQueuesIdRelationshipsFuturePost(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil) async throws -> PlayQueuesFutureAddMultiRelationshipDataDocument
+    open class func playQueuesIdRelationshipsFuturePost(id: String, idempotencyKey: String? = nil, playQueuesFutureRelationshipAddOperationPayload: PlayQueuesFutureRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesFutureAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to future relationship (\"to-many\").
 
-With meta.source, startIndex selects an entry in the first page's data before unsupported types are skipped. Tracks and videos are added in page order, retaining duplicates; other types are skipped without expansion. Reaching 1000 added items or 100 pages queues the collected prefix. Invalid sources or indexes, a suffix with no playable items, repeated pages, and read failures encountered before a cap leave the queue unchanged. Returns empty data and meta.revision as an acknowledgement.
+Omitting top-level meta or setting it to null defaults to REPLACE_ALL, replacing future entries. Use ADD_TO_FRONT, ADD_TO_BACK or ADD_BEFORE in meta.mode to add without replacing existing entries. ADD_BEFORE requires meta.positionBefore. REPLACE_ALL_AND_CURRENT replaces future entries; ADD_TO_FRONT_REPLACE_CURRENT prepends entries. Both select the first newly inserted entry in the active queue order as current, which may differ from request order when shuffled. With empty data and no source, replacement modes clear future entries; the current entry is unchanged when no entries are inserted. With meta.source, startIndex selects an entry in the first page's data before unsupported types are skipped. Tracks and videos are added in page order, retaining duplicates; other types are skipped without expansion. Reaching 1000 added items or 100 pages queues the collected prefix. Invalid sources or indexes, a suffix with no playable items, repeated pages, and read failures encountered before a cap leave the queue unchanged. Returns empty data and meta.revision as an acknowledgement.
 
 ### Example
 ```swift
@@ -543,11 +583,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playQueuesFutureRelationshipAddOperationPayload = PlayQueuesFutureRelationshipAddOperation_Payload(data: [PlayQueuesFutureRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")], meta: PlayQueuesFutureRelationshipAddOperation_Payload_Meta(batchId: 123, legacySource: LegacySource(id: "id_example", type: "type_example"), mode: "mode_example", positionBefore: "positionBefore_example", source: PlayQueuesFutureRelationshipSource(href: "href_example", startIndex: 123))) // PlayQueuesFutureRelationshipAddOperationPayload |  (optional)
 
 // Add to future relationship (\"to-many\").
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsFuturePost(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipAddOperationPayload: playQueuesFutureRelationshipAddOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdRelationshipsFuturePost(id: id, idempotencyKey: idempotencyKey, playQueuesFutureRelationshipAddOperationPayload: playQueuesFutureRelationshipAddOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -576,7 +620,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsOwnersGet**
 ```swift
-    open class func playQueuesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> PlayQueuesOwnersMultiRelationshipDataDocument
+    open class func playQueuesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: PlayQueuesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -593,11 +637,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -626,7 +674,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesIdRelationshipsPastGet**
 ```swift
-    open class func playQueuesIdRelationshipsPastGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlayQueuesPastMultiRelationshipDataDocument
+    open class func playQueuesIdRelationshipsPastGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: PlayQueuesPastMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get past relationship (\"to-many\").
@@ -644,11 +692,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: past (optional)
 
 // Get past relationship (\"to-many\").
-do {
-    let response = try await PlayQueuesAPI.playQueuesIdRelationshipsPastGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesIdRelationshipsPastGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -678,7 +730,7 @@ Name | Type | Description  | Notes
 
 # **playQueuesPost**
 ```swift
-    open class func playQueuesPost(idempotencyKey: String? = nil, playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil) async throws -> PlayQueuesCreateSingleResourceDataDocument
+    open class func playQueuesPost(idempotencyKey: String? = nil, playQueuesCreateOperationPayload: PlayQueuesCreateOperationPayload? = nil, completion: @escaping (_ data: PlayQueuesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single playQueue.
@@ -694,11 +746,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let playQueuesCreateOperationPayload = PlayQueuesCreateOperation_Payload(data: PlayQueuesCreateOperation_Payload_Data(type: "type_example")) // PlayQueuesCreateOperationPayload |  (optional)
 
 // Create single playQueue.
-do {
-    let response = try await PlayQueuesAPI.playQueuesPost(idempotencyKey: idempotencyKey, playQueuesCreateOperationPayload: playQueuesCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+PlayQueuesAPI.playQueuesPost(idempotencyKey: idempotencyKey, playQueuesCreateOperationPayload: playQueuesCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

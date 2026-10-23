@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 # **foldersGet**
 ```swift
-    open class func foldersGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_foldersGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersMultiResourceDataDocument
+    open class func foldersGet(filterId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_foldersGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple folders.
@@ -37,11 +37,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get multiple folders.
-do {
-    let response = try await FoldersAPI.foldersGet(filterId: filterId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+FoldersAPI.foldersGet(filterId: filterId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -72,7 +76,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdDelete**
 ```swift
-    open class func foldersIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func foldersIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single folder.
@@ -86,13 +90,18 @@ import OpenAPIClient
 
 let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Delete single folder.
-do {
-    let response = try await FoldersAPI.foldersIdDelete(id: id, idempotencyKey: idempotencyKey)
-    dump(response)
-} catch {
-    print(error)
+FoldersAPI.foldersIdDelete(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -102,6 +111,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -120,7 +130,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdGet**
 ```swift
-    open class func foldersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_foldersIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersSingleResourceDataDocument
+    open class func foldersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_foldersIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single folder.
@@ -139,11 +149,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get single folder.
-do {
-    let response = try await FoldersAPI.foldersIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+FoldersAPI.foldersIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -174,7 +188,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdPatch**
 ```swift
-    open class func foldersIdPatch(id: String, idempotencyKey: String? = nil, foldersUpdateOperationPayload: FoldersUpdateOperationPayload? = nil) async throws -> FoldersUpdateSingleResourceDataDocument
+    open class func foldersIdPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, foldersUpdateOperationPayload: FoldersUpdateOperationPayload? = nil, completion: @escaping (_ data: FoldersUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update single folder.
@@ -188,14 +202,19 @@ import OpenAPIClient
 
 let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 let foldersUpdateOperationPayload = FoldersUpdateOperation_Payload(data: FoldersUpdateOperation_Payload_Data(attributes: FoldersUpdateOperation_Payload_Data_Attributes(name: "name_example"), id: "id_example", type: "type_example")) // FoldersUpdateOperationPayload |  (optional)
 
 // Update single folder.
-do {
-    let response = try await FoldersAPI.foldersIdPatch(id: id, idempotencyKey: idempotencyKey, foldersUpdateOperationPayload: foldersUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+FoldersAPI.foldersIdPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, foldersUpdateOperationPayload: foldersUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -205,6 +224,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
  **foldersUpdateOperationPayload** | [**FoldersUpdateOperationPayload**](FoldersUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -224,7 +244,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdRelationshipsChildrenGet**
 ```swift
-    open class func foldersIdRelationshipsChildrenGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersChildrenMultiRelationshipDataDocument
+    open class func foldersIdRelationshipsChildrenGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersChildrenMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get children relationship (\"to-many\").
@@ -243,11 +263,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get children relationship (\"to-many\").
-do {
-    let response = try await FoldersAPI.foldersIdRelationshipsChildrenGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+FoldersAPI.foldersIdRelationshipsChildrenGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -278,7 +302,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdRelationshipsOwnersGet**
 ```swift
-    open class func foldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> FoldersOwnersMultiRelationshipDataDocument
+    open class func foldersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -296,11 +320,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await FoldersAPI.foldersIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+FoldersAPI.foldersIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -330,7 +358,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdRelationshipsParentGet**
 ```swift
-    open class func foldersIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersParentSingleRelationshipDataDocument
+    open class func foldersIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersParentSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get parent relationship (\"to-one\").
@@ -348,11 +376,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get parent relationship (\"to-one\").
-do {
-    let response = try await FoldersAPI.foldersIdRelationshipsParentGet(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+FoldersAPI.foldersIdRelationshipsParentGet(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -382,7 +414,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdRelationshipsPreviewGet**
 ```swift
-    open class func foldersIdRelationshipsPreviewGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersPreviewMultiRelationshipDataDocument
+    open class func foldersIdRelationshipsPreviewGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersPreviewMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get preview relationship (\"to-many\").
@@ -401,11 +433,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get preview relationship (\"to-many\").
-do {
-    let response = try await FoldersAPI.foldersIdRelationshipsPreviewGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+FoldersAPI.foldersIdRelationshipsPreviewGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -436,7 +472,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdRelationshipsSharesGet**
 ```swift
-    open class func foldersIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersSharesMultiRelationshipDataDocument
+    open class func foldersIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: FoldersSharesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get shares relationship (\"to-many\").
@@ -455,11 +491,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get shares relationship (\"to-many\").
-do {
-    let response = try await FoldersAPI.foldersIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+FoldersAPI.foldersIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -490,7 +530,7 @@ Name | Type | Description  | Notes
 
 # **foldersPost**
 ```swift
-    open class func foldersPost(idempotencyKey: String? = nil, foldersCreateOperationPayload: FoldersCreateOperationPayload? = nil) async throws -> FoldersCreateSingleResourceDataDocument
+    open class func foldersPost(idempotencyKey: String? = nil, foldersCreateOperationPayload: FoldersCreateOperationPayload? = nil, completion: @escaping (_ data: FoldersCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single folder.
@@ -506,11 +546,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let foldersCreateOperationPayload = FoldersCreateOperation_Payload(data: FoldersCreateOperation_Payload_Data(attributes: FoldersCreateOperation_Payload_Data_Attributes(name: "name_example"), relationships: FoldersCreateOperation_Payload_Data_Relationships(parent: FoldersCreateOperation_Payload_Data_Relationships_Parent(data: FoldersParentIdentifier(id: "id_example", type: "type_example"))), type: "type_example")) // FoldersCreateOperationPayload |  (optional)
 
 // Create single folder.
-do {
-    let response = try await FoldersAPI.foldersPost(idempotencyKey: idempotencyKey, foldersCreateOperationPayload: foldersCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+FoldersAPI.foldersPost(idempotencyKey: idempotencyKey, foldersCreateOperationPayload: foldersCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

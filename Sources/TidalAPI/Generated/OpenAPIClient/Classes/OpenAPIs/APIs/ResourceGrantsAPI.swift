@@ -54,7 +54,7 @@ internal class ResourceGrantsAPI {
     /**
      Get multiple resourceGrants.
      - GET /resourceGrants
-     - Lists the owner's explicit direct grants, selected by subject or grantee, optionally restricted by assigned role. Requires subject or grantee.
+     - Lists stored grants from every source visible to the subject's owner or named user grantee, selected by subject or grantee, optionally restricted by assigned role. Requires subject or grantee.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -250,7 +250,7 @@ internal class ResourceGrantsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -407,7 +407,7 @@ internal class ResourceGrantsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 

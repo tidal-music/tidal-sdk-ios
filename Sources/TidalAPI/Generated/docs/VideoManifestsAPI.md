@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **videoManifestsIdGet**
 ```swift
-    open class func videoManifestsIdGet(id: String, uriScheme: UriScheme_videoManifestsIdGet, usage: Usage_videoManifestsIdGet) async throws -> VideoManifestsSingleResourceDataDocument
+    open class func videoManifestsIdGet(id: String, uriScheme: UriScheme_videoManifestsIdGet, usage: Usage_videoManifestsIdGet, completion: @escaping (_ data: VideoManifestsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single videoManifest.
@@ -26,11 +26,15 @@ let uriScheme = "uriScheme_example" // String |
 let usage = "usage_example" // String | 
 
 // Get single videoManifest.
-do {
-    let response = try await VideoManifestsAPI.videoManifestsIdGet(id: id, uriScheme: uriScheme, usage: usage)
-    dump(response)
-} catch {
-    print(error)
+VideoManifestsAPI.videoManifestsIdGet(id: id, uriScheme: uriScheme, usage: usage) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

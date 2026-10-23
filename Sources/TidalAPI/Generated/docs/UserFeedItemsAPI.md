@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **userFeedItemsGet**
 ```swift
-    open class func userFeedItemsGet(filterOwnersId: [String], filterSurface: FilterSurface_userFeedItemsGet, include: [String]? = nil, includeLinkage: [IncludeLinkage_userFeedItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsMultiResourceDataDocument
+    open class func userFeedItemsGet(filterOwnersId: [String], filterSurface: FilterSurface_userFeedItemsGet, include: [String]? = nil, includeLinkage: [IncludeLinkage_userFeedItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserFeedItemsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple userFeedItems.
@@ -31,11 +31,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: actors.albums (optional)
 
 // Get multiple userFeedItems.
-do {
-    let response = try await UserFeedItemsAPI.userFeedItemsGet(filterOwnersId: filterOwnersId, filterSurface: filterSurface, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+UserFeedItemsAPI.userFeedItemsGet(filterOwnersId: filterOwnersId, filterSurface: filterSurface, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -67,7 +71,7 @@ Name | Type | Description  | Notes
 
 # **userFeedItemsIdRelationshipsActorsGet**
 ```swift
-    open class func userFeedItemsIdRelationshipsActorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsActorsMultiRelationshipDataDocument
+    open class func userFeedItemsIdRelationshipsActorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserFeedItemsActorsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get actors relationship (\"to-many\").
@@ -85,11 +89,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: actors.albums (optional)
 
 // Get actors relationship (\"to-many\").
-do {
-    let response = try await UserFeedItemsAPI.userFeedItemsIdRelationshipsActorsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+UserFeedItemsAPI.userFeedItemsIdRelationshipsActorsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -119,7 +127,7 @@ Name | Type | Description  | Notes
 
 # **userFeedItemsIdRelationshipsSubjectGet**
 ```swift
-    open class func userFeedItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsSubjectSingleRelationshipDataDocument
+    open class func userFeedItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserFeedItemsSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -136,11 +144,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-do {
-    let response = try await UserFeedItemsAPI.userFeedItemsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+UserFeedItemsAPI.userFeedItemsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

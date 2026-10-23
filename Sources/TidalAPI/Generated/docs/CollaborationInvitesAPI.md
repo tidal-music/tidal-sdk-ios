@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **collaborationInvitesGet**
 ```swift
-    open class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesGet]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesMultiResourceDataDocument
+    open class func collaborationInvitesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple collaborationInvites.
@@ -32,11 +32,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject.items (optional)
 
 // Get multiple collaborationInvites.
-do {
-    let response = try await CollaborationInvitesAPI.collaborationInvitesGet(filterCode: filterCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+CollaborationInvitesAPI.collaborationInvitesGet(filterCode: filterCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -66,7 +70,7 @@ Name | Type | Description  | Notes
 
 # **collaborationInvitesIdDelete**
 ```swift
-    open class func collaborationInvitesIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func collaborationInvitesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single collaborationInvite.
@@ -82,11 +86,15 @@ let id = "id_example" // String | Collaboration invite id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single collaborationInvite.
-do {
-    let response = try await CollaborationInvitesAPI.collaborationInvitesIdDelete(id: id, idempotencyKey: idempotencyKey)
-    dump(response)
-} catch {
-    print(error)
+CollaborationInvitesAPI.collaborationInvitesIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -114,7 +122,7 @@ Name | Type | Description  | Notes
 
 # **collaborationInvitesIdGet**
 ```swift
-    open class func collaborationInvitesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesIdGet]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSingleResourceDataDocument
+    open class func collaborationInvitesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_collaborationInvitesIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single collaborationInvite.
@@ -132,11 +140,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject.items (optional)
 
 // Get single collaborationInvite.
-do {
-    let response = try await CollaborationInvitesAPI.collaborationInvitesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+CollaborationInvitesAPI.collaborationInvitesIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -166,7 +178,7 @@ Name | Type | Description  | Notes
 
 # **collaborationInvitesIdRelationshipsOwnersGet**
 ```swift
-    open class func collaborationInvitesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CollaborationInvitesOwnersMultiRelationshipDataDocument
+    open class func collaborationInvitesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: CollaborationInvitesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -183,11 +195,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await CollaborationInvitesAPI.collaborationInvitesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+CollaborationInvitesAPI.collaborationInvitesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -216,7 +232,7 @@ Name | Type | Description  | Notes
 
 # **collaborationInvitesIdRelationshipsSubjectGet**
 ```swift
-    open class func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CollaborationInvitesSubjectSingleRelationshipDataDocument
+    open class func collaborationInvitesIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CollaborationInvitesSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -233,11 +249,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject.items (optional)
 
 // Get subject relationship (\"to-one\").
-do {
-    let response = try await CollaborationInvitesAPI.collaborationInvitesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+CollaborationInvitesAPI.collaborationInvitesIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -266,7 +286,7 @@ Name | Type | Description  | Notes
 
 # **collaborationInvitesPost**
 ```swift
-    open class func collaborationInvitesPost(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil) async throws -> CollaborationInvitesCreateSingleResourceDataDocument
+    open class func collaborationInvitesPost(idempotencyKey: String? = nil, collaborationInvitesCreateOperationPayload: CollaborationInvitesCreateOperationPayload? = nil, completion: @escaping (_ data: CollaborationInvitesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single collaborationInvite.
@@ -282,11 +302,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let collaborationInvitesCreateOperationPayload = CollaborationInvitesCreateOperation_Payload(data: CollaborationInvitesCreateOperation_Payload_Data(relationships: CollaborationInvitesCreateOperation_Payload_Data_Relationships(subject: CollaborationInvitesCreateOperation_Payload_Data_Relationships_Subject(data: CollaborationInvitesCreateOperation_Payload_Data_Relationships_Subject_Data(id: "id_example", type: "type_example"))), type: "type_example")) // CollaborationInvitesCreateOperationPayload |  (optional)
 
 // Create single collaborationInvite.
-do {
-    let response = try await CollaborationInvitesAPI.collaborationInvitesPost(idempotencyKey: idempotencyKey, collaborationInvitesCreateOperationPayload: collaborationInvitesCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+CollaborationInvitesAPI.collaborationInvitesPost(idempotencyKey: idempotencyKey, collaborationInvitesCreateOperationPayload: collaborationInvitesCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

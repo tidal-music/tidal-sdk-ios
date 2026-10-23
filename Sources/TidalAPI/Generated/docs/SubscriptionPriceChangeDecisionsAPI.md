@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **subscriptionPriceChangeDecisionsGet**
 ```swift
-    open class func subscriptionPriceChangeDecisionsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_subscriptionPriceChangeDecisionsGet]? = nil) async throws -> SubscriptionPriceChangeDecisionsMultiResourceDataDocument
+    open class func subscriptionPriceChangeDecisionsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_subscriptionPriceChangeDecisionsGet]? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple subscriptionPriceChangeDecisions.
@@ -29,11 +29,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple subscriptionPriceChangeDecisions.
-do {
-    let response = try await SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage)
-    dump(response)
-} catch {
-    print(error)
+SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -62,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **subscriptionPriceChangeDecisionsIdPatch**
 ```swift
-    open class func subscriptionPriceChangeDecisionsIdPatch(id: String, idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsUpdateOperationPayload: SubscriptionPriceChangeDecisionsUpdateOperationPayload? = nil) async throws -> SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument
+    open class func subscriptionPriceChangeDecisionsIdPatch(id: String, idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsUpdateOperationPayload: SubscriptionPriceChangeDecisionsUpdateOperationPayload? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update single subscriptionPriceChangeDecision.
@@ -79,11 +83,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let subscriptionPriceChangeDecisionsUpdateOperationPayload = SubscriptionPriceChangeDecisionsUpdateOperation_Payload(data: SubscriptionPriceChangeDecisionsUpdateOperation_Payload_Data(attributes: SubscriptionPriceChangeDecisionsUpdateOperation_Payload_Data_Attributes(status: "status_example"), id: "id_example", type: "type_example")) // SubscriptionPriceChangeDecisionsUpdateOperationPayload |  (optional)
 
 // Update single subscriptionPriceChangeDecision.
-do {
-    let response = try await SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsIdPatch(id: id, idempotencyKey: idempotencyKey, subscriptionPriceChangeDecisionsUpdateOperationPayload: subscriptionPriceChangeDecisionsUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsIdPatch(id: id, idempotencyKey: idempotencyKey, subscriptionPriceChangeDecisionsUpdateOperationPayload: subscriptionPriceChangeDecisionsUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -112,7 +120,7 @@ Name | Type | Description  | Notes
 
 # **subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet**
 ```swift
-    open class func subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet(id: String, include: [String]? = nil) async throws -> SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument
+    open class func subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet(id: String, include: [String]? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsPriceChangeSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get priceChange relationship (\"to-one\").
@@ -128,11 +136,15 @@ let id = "id_example" // String | Price change decision id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: priceChange (optional)
 
 // Get priceChange relationship (\"to-one\").
-do {
-    let response = try await SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet(id: id, include: include)
-    dump(response)
-} catch {
-    print(error)
+SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsIdRelationshipsPriceChangeGet(id: id, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -160,7 +172,7 @@ Name | Type | Description  | Notes
 
 # **subscriptionPriceChangeDecisionsPost**
 ```swift
-    open class func subscriptionPriceChangeDecisionsPost(idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsCreateOperationPayload: SubscriptionPriceChangeDecisionsCreateOperationPayload? = nil) async throws -> SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument
+    open class func subscriptionPriceChangeDecisionsPost(idempotencyKey: String? = nil, subscriptionPriceChangeDecisionsCreateOperationPayload: SubscriptionPriceChangeDecisionsCreateOperationPayload? = nil, completion: @escaping (_ data: SubscriptionPriceChangeDecisionsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single subscriptionPriceChangeDecision.
@@ -176,11 +188,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let subscriptionPriceChangeDecisionsCreateOperationPayload = SubscriptionPriceChangeDecisionsCreateOperation_Payload(data: SubscriptionPriceChangeDecisionsCreateOperation_Payload_Data(attributes: SubscriptionPriceChangeDecisionsCreateOperation_Payload_Data_Attributes(status: "status_example"), relationships: SubscriptionPriceChangeDecisionsCreateOperation_Payload_Data_Relationships(priceChange: SubscriptionPriceChangeDecisionsCreateOperation_Payload_Data_Relationships_PriceChange(data: SubscriptionPriceChangeDecisionsCreateOperation_Payload_Data_Relationships_PriceChange_Data(id: "id_example", type: "type_example"))), type: "type_example")) // SubscriptionPriceChangeDecisionsCreateOperationPayload |  (optional)
 
 // Create single subscriptionPriceChangeDecision.
-do {
-    let response = try await SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsPost(idempotencyKey: idempotencyKey, subscriptionPriceChangeDecisionsCreateOperationPayload: subscriptionPriceChangeDecisionsCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+SubscriptionPriceChangeDecisionsAPI.subscriptionPriceChangeDecisionsPost(idempotencyKey: idempotencyKey, subscriptionPriceChangeDecisionsCreateOperationPayload: subscriptionPriceChangeDecisionsCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

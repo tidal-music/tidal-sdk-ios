@@ -32,7 +32,7 @@ Method | HTTP request | Description
 
 # **tracksGet**
 ```swift
-    open class func tracksGet(countryCode: String? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_tracksGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, sort: [Sort_tracksGet]? = nil) async throws -> TracksMultiResourceDataDocument
+    open class func tracksGet(countryCode: String? = nil, filterId: [String]? = nil, filterIsrc: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_tracksGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, sort: [Sort_tracksGet]? = nil, completion: @escaping (_ data: TracksMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple tracks.
@@ -56,11 +56,15 @@ let shareCode = "shareCode_example" // String | Share code used as a bearer cred
 let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted descending; values without it are sorted ascending. (optional)
 
 // Get multiple tracks.
-do {
-    let response = try await TracksAPI.tracksGet(countryCode: countryCode, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode, sort: sort)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksGet(countryCode: countryCode, filterId: filterId, filterIsrc: filterIsrc, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode, sort: sort) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -96,7 +100,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdDelete**
 ```swift
-    open class func tracksIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func tracksIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single track.
@@ -110,13 +114,18 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Delete single track.
-do {
-    let response = try await TracksAPI.tracksIdDelete(id: id, idempotencyKey: idempotencyKey)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdDelete(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -126,6 +135,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -144,7 +154,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdGet**
 ```swift
-    open class func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_tracksIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSingleResourceDataDocument
+    open class func tracksIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_tracksIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single track.
@@ -164,11 +174,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get single track.
-do {
-    let response = try await TracksAPI.tracksIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -200,7 +214,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdPatch**
 ```swift
-    open class func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func tracksIdPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update single track.
@@ -214,14 +228,19 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 let tracksUpdateOperationPayload = TracksUpdateOperation_Payload(data: TracksUpdateOperation_Payload_Data(attributes: TracksUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, isrc: "isrc_example", key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TracksUpdateOperation_Payload_Data_Relationships(genres: TracksUpdateOperation_Payload_Data_Relationships_Genres(data: [TracksUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TracksUpdateOperationPayload |  (optional)
 
 // Update single track.
-do {
-    let response = try await TracksAPI.tracksIdPatch(id: id, idempotencyKey: idempotencyKey, tracksUpdateOperationPayload: tracksUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, tracksUpdateOperationPayload: tracksUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -231,6 +250,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
  **tracksUpdateOperationPayload** | [**TracksUpdateOperationPayload**](TracksUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -250,7 +270,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsAlbumsGet**
 ```swift
-    open class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksAlbumsMultiRelationshipDataDocument
+    open class func tracksIdRelationshipsAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksAlbumsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get albums relationship (\"to-many\").
@@ -270,11 +290,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get albums relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsAlbumsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -306,12 +330,12 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsAlbumsPatch**
 ```swift
-    open class func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Update albums relationship (\"to-many\").
 
-Updates albums relationship.
+Moves the uploaded track to the supplied album, replacing its previous album association. Exactly one album is required; empty data cannot clear it. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -320,14 +344,19 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 let tracksAlbumsRelationshipUpdateOperationPayload = TracksAlbumsRelationshipUpdateOperation_Payload(data: [TracksAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // TracksAlbumsRelationshipUpdateOperationPayload |  (optional)
 
 // Update albums relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, idempotencyKey: idempotencyKey, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -337,6 +366,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
  **tracksAlbumsRelationshipUpdateOperationPayload** | [**TracksAlbumsRelationshipUpdateOperationPayload**](TracksAlbumsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -356,7 +386,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsArtistsGet**
 ```swift
-    open class func tracksIdRelationshipsArtistsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksArtistsMultiRelationshipDataDocument
+    open class func tracksIdRelationshipsArtistsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksArtistsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get artists relationship (\"to-many\").
@@ -376,11 +406,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get artists relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsArtistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsArtistsGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -412,7 +446,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsCreditsGet**
 ```swift
-    open class func tracksIdRelationshipsCreditsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksCreditsMultiRelationshipDataDocument
+    open class func tracksIdRelationshipsCreditsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksCreditsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get credits relationship (\"to-many\").
@@ -431,11 +465,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get credits relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsCreditsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsCreditsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -466,7 +504,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsDownloadGet**
 ```swift
-    open class func tracksIdRelationshipsDownloadGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksDownloadSingleRelationshipDataDocument
+    open class func tracksIdRelationshipsDownloadGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksDownloadSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get download relationship (\"to-one\").
@@ -483,11 +521,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get download relationship (\"to-one\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsDownloadGet(id: id, include: include, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsDownloadGet(id: id, include: include, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -516,7 +558,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsGenresGet**
 ```swift
-    open class func tracksIdRelationshipsGenresGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksGenresMultiRelationshipDataDocument
+    open class func tracksIdRelationshipsGenresGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksGenresMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get genres relationship (\"to-many\").
@@ -535,11 +577,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get genres relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsGenresGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsGenresGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -570,7 +616,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsLyricsGet**
 ```swift
-    open class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksLyricsMultiRelationshipDataDocument
+    open class func tracksIdRelationshipsLyricsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksLyricsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get lyrics relationship (\"to-many\").
@@ -589,11 +635,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get lyrics relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsLyricsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsLyricsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -624,7 +674,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsMetadataStatusGet**
 ```swift
-    open class func tracksIdRelationshipsMetadataStatusGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksMetadataStatusSingleRelationshipDataDocument
+    open class func tracksIdRelationshipsMetadataStatusGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksMetadataStatusSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get metadataStatus relationship (\"to-one\").
@@ -641,11 +691,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get metadataStatus relationship (\"to-one\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsMetadataStatusGet(id: id, include: include, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsMetadataStatusGet(id: id, include: include, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -674,7 +728,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsOwnersGet**
 ```swift
-    open class func tracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksOwnersMultiRelationshipDataDocument
+    open class func tracksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -692,11 +746,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -726,7 +784,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsPriceConfigGet**
 ```swift
-    open class func tracksIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksPriceConfigSingleRelationshipDataDocument
+    open class func tracksIdRelationshipsPriceConfigGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksPriceConfigSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get priceConfig relationship (\"to-one\").
@@ -744,11 +802,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get priceConfig relationship (\"to-one\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsPriceConfigGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsPriceConfigGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -778,7 +840,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsProvidersGet**
 ```swift
-    open class func tracksIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TracksProvidersMultiRelationshipDataDocument
+    open class func tracksIdRelationshipsProvidersGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksProvidersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get providers relationship (\"to-many\").
@@ -797,11 +859,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get providers relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsProvidersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsProvidersGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -832,7 +898,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsRadioGet**
 ```swift
-    open class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksRadioMultiRelationshipDataDocument
+    open class func tracksIdRelationshipsRadioGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksRadioMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get radio relationship (\"to-many\").
@@ -851,11 +917,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get radio relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsRadioGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsRadioGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -886,7 +956,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsReplacementGet**
 ```swift
-    open class func tracksIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksReplacementSingleRelationshipDataDocument
+    open class func tracksIdRelationshipsReplacementGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksReplacementSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get replacement relationship (\"to-one\").
@@ -905,11 +975,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get replacement relationship (\"to-one\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsReplacementGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsReplacementGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -940,7 +1014,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSharesGet**
 ```swift
-    open class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSharesMultiRelationshipDataDocument
+    open class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSharesMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get shares relationship (\"to-many\").
@@ -959,11 +1033,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get shares relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsSharesGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -994,7 +1072,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSimilarTracksGet**
 ```swift
-    open class func tracksIdRelationshipsSimilarTracksGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSimilarTracksMultiRelationshipDataDocument
+    open class func tracksIdRelationshipsSimilarTracksGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSimilarTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get similarTracks relationship (\"to-many\").
@@ -1014,11 +1092,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get similarTracks relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsSimilarTracksGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsSimilarTracksGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -1050,7 +1132,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSourceFileGet**
 ```swift
-    open class func tracksIdRelationshipsSourceFileGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksSourceFileSingleRelationshipDataDocument
+    open class func tracksIdRelationshipsSourceFileGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSourceFileSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get sourceFile relationship (\"to-one\").
@@ -1067,11 +1149,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get sourceFile relationship (\"to-one\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsSourceFileGet(id: id, include: include, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsSourceFileGet(id: id, include: include, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -1100,7 +1186,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsSuggestedTracksGet**
 ```swift
-    open class func tracksIdRelationshipsSuggestedTracksGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSuggestedTracksMultiRelationshipDataDocument
+    open class func tracksIdRelationshipsSuggestedTracksGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksSuggestedTracksMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get suggestedTracks relationship (\"to-many\").
@@ -1120,11 +1206,15 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get suggestedTracks relationship (\"to-many\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsSuggestedTracksGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsSuggestedTracksGet(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -1156,7 +1246,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsTrackStatisticsGet**
 ```swift
-    open class func tracksIdRelationshipsTrackStatisticsGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksTrackStatisticsSingleRelationshipDataDocument
+    open class func tracksIdRelationshipsTrackStatisticsGet(id: String, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksTrackStatisticsSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get trackStatistics relationship (\"to-one\").
@@ -1173,11 +1263,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get trackStatistics relationship (\"to-one\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsTrackStatisticsGet(id: id, include: include, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsTrackStatisticsGet(id: id, include: include, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -1206,7 +1300,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsUsageRulesGet**
 ```swift
-    open class func tracksIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> TracksUsageRulesSingleRelationshipDataDocument
+    open class func tracksIdRelationshipsUsageRulesGet(id: String, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil, completion: @escaping (_ data: TracksUsageRulesSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get usageRules relationship (\"to-one\").
@@ -1224,11 +1318,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get usageRules relationship (\"to-one\").
-do {
-    let response = try await TracksAPI.tracksIdRelationshipsUsageRulesGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksIdRelationshipsUsageRulesGet(id: id, countryCode: countryCode, include: include, shareCode: shareCode) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -1258,7 +1356,7 @@ Name | Type | Description  | Notes
 
 # **tracksPost**
 ```swift
-    open class func tracksPost(idempotencyKey: String? = nil, tracksCreateOperationPayload: TracksCreateOperationPayload? = nil) async throws -> TracksCreateSingleResourceDataDocument
+    open class func tracksPost(idempotencyKey: String? = nil, tracksCreateOperationPayload: TracksCreateOperationPayload? = nil, completion: @escaping (_ data: TracksCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single track.
@@ -1274,11 +1372,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let tracksCreateOperationPayload = TracksCreateOperation_Payload(data: TracksCreateOperation_Payload_Data(attributes: TracksCreateOperation_Payload_Data_Attributes(accessType: "accessType_example", explicit: false, title: "title_example"), relationships: TracksCreateOperation_Payload_Data_Relationships(albums: TracksCreateOperation_Payload_Data_Relationships_Albums(data: [TracksCreateOperation_Payload_Data_Relationships_Albums_Data(id: "id_example", type: "type_example")]), artists: TracksCreateOperation_Payload_Data_Relationships_Artists(data: [TracksCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: TracksCreateOperation_Payload_Data_Relationships_Genres(data: [TracksCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TracksCreateOperationPayload |  (optional)
 
 // Create single track.
-do {
-    let response = try await TracksAPI.tracksPost(idempotencyKey: idempotencyKey, tracksCreateOperationPayload: tracksCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+TracksAPI.tracksPost(idempotencyKey: idempotencyKey, tracksCreateOperationPayload: tracksCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

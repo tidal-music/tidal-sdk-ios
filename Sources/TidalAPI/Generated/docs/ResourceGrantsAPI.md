@@ -15,12 +15,12 @@ Method | HTTP request | Description
 
 # **resourceGrantsGet**
 ```swift
-    open class func resourceGrantsGet(filterGrantee: String? = nil, filterRole: FilterRole_resourceGrantsGet? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsMultiResourceDataDocument
+    open class func resourceGrantsGet(filterGrantee: String? = nil, filterRole: FilterRole_resourceGrantsGet? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ResourceGrantsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple resourceGrants.
 
-Lists the owner's explicit direct grants, selected by subject or grantee, optionally restricted by assigned role. Requires subject or grantee.
+Lists stored grants from every source visible to the subject's owner or named user grantee, selected by subject or grantee, optionally restricted by assigned role. Requires subject or grantee.
 
 ### Example
 ```swift
@@ -36,11 +36,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: grantee.artist.albums (optional)
 
 // Get multiple resourceGrants.
-do {
-    let response = try await ResourceGrantsAPI.resourceGrantsGet(filterGrantee: filterGrantee, filterRole: filterRole, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ResourceGrantsAPI.resourceGrantsGet(filterGrantee: filterGrantee, filterRole: filterRole, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -73,7 +77,7 @@ Name | Type | Description  | Notes
 
 # **resourceGrantsIdDelete**
 ```swift
-    open class func resourceGrantsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func resourceGrantsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete single resourceGrant.
@@ -89,11 +93,15 @@ let id = "id_example" // String | Opaque resource grant ID
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single resourceGrant.
-do {
-    let response = try await ResourceGrantsAPI.resourceGrantsIdDelete(id: id, idempotencyKey: idempotencyKey)
-    dump(response)
-} catch {
-    print(error)
+ResourceGrantsAPI.resourceGrantsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -121,7 +129,7 @@ Name | Type | Description  | Notes
 
 # **resourceGrantsIdGet**
 ```swift
-    open class func resourceGrantsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantsIdGet]? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsSingleResourceDataDocument
+    open class func resourceGrantsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ResourceGrantsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single resourceGrant.
@@ -139,11 +147,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: grantee.artist.albums (optional)
 
 // Get single resourceGrant.
-do {
-    let response = try await ResourceGrantsAPI.resourceGrantsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ResourceGrantsAPI.resourceGrantsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -173,7 +185,7 @@ Name | Type | Description  | Notes
 
 # **resourceGrantsIdPatch**
 ```swift
-    open class func resourceGrantsIdPatch(id: String, idempotencyKey: String? = nil, resourceGrantsUpdateOperationPayload: ResourceGrantsUpdateOperationPayload? = nil) async throws -> ResourceGrantsUpdateSingleResourceDataDocument
+    open class func resourceGrantsIdPatch(id: String, idempotencyKey: String? = nil, resourceGrantsUpdateOperationPayload: ResourceGrantsUpdateOperationPayload? = nil, completion: @escaping (_ data: ResourceGrantsUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update single resourceGrant.
@@ -190,11 +202,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let resourceGrantsUpdateOperationPayload = ResourceGrantsUpdateOperation_Payload(data: ResourceGrantsUpdateOperation_Payload_Data(attributes: ResourceGrantsUpdateOperation_Payload_Data_Attributes(role: "role_example"), id: "id_example", type: "type_example")) // ResourceGrantsUpdateOperationPayload |  (optional)
 
 // Update single resourceGrant.
-do {
-    let response = try await ResourceGrantsAPI.resourceGrantsIdPatch(id: id, idempotencyKey: idempotencyKey, resourceGrantsUpdateOperationPayload: resourceGrantsUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ResourceGrantsAPI.resourceGrantsIdPatch(id: id, idempotencyKey: idempotencyKey, resourceGrantsUpdateOperationPayload: resourceGrantsUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -223,7 +239,7 @@ Name | Type | Description  | Notes
 
 # **resourceGrantsIdRelationshipsGranteeGet**
 ```swift
-    open class func resourceGrantsIdRelationshipsGranteeGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsGranteeSingleRelationshipDataDocument
+    open class func resourceGrantsIdRelationshipsGranteeGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ResourceGrantsGranteeSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get grantee relationship (\"to-one\").
@@ -240,11 +256,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: grantee.artist.albums (optional)
 
 // Get grantee relationship (\"to-one\").
-do {
-    let response = try await ResourceGrantsAPI.resourceGrantsIdRelationshipsGranteeGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ResourceGrantsAPI.resourceGrantsIdRelationshipsGranteeGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -273,7 +293,7 @@ Name | Type | Description  | Notes
 
 # **resourceGrantsIdRelationshipsSubjectGet**
 ```swift
-    open class func resourceGrantsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsSubjectSingleRelationshipDataDocument
+    open class func resourceGrantsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ResourceGrantsSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -290,11 +310,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-do {
-    let response = try await ResourceGrantsAPI.resourceGrantsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ResourceGrantsAPI.resourceGrantsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -323,7 +347,7 @@ Name | Type | Description  | Notes
 
 # **resourceGrantsPost**
 ```swift
-    open class func resourceGrantsPost(idempotencyKey: String? = nil, resourceGrantsCreateOperationPayload: ResourceGrantsCreateOperationPayload? = nil) async throws -> ResourceGrantsCreateSingleResourceDataDocument
+    open class func resourceGrantsPost(idempotencyKey: String? = nil, resourceGrantsCreateOperationPayload: ResourceGrantsCreateOperationPayload? = nil, completion: @escaping (_ data: ResourceGrantsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single resourceGrant.
@@ -339,11 +363,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let resourceGrantsCreateOperationPayload = ResourceGrantsCreateOperation_Payload(data: ResourceGrantsCreateOperation_Payload_Data(attributes: ResourceGrantsCreateOperation_Payload_Data_Attributes(role: "role_example"), relationships: ResourceGrantsCreateOperation_Payload_Data_Relationships(grantee: ResourceGrantsGranteeLinkage(data: ResourceGrantsGrantee(id: "id_example", type: "type_example")), subject: ResourceGrantsSubjectLinkage(data: ResourceGrantsSubject(id: "id_example", type: "type_example"))), type: "type_example")) // ResourceGrantsCreateOperationPayload |  (optional)
 
 // Create single resourceGrant.
-do {
-    let response = try await ResourceGrantsAPI.resourceGrantsPost(idempotencyKey: idempotencyKey, resourceGrantsCreateOperationPayload: resourceGrantsCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+ResourceGrantsAPI.resourceGrantsPost(idempotencyKey: idempotencyKey, resourceGrantsCreateOperationPayload: resourceGrantsCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

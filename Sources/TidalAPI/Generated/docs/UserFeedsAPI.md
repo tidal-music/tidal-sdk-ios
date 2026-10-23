@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **userFeedsIdGet**
 ```swift
-    open class func userFeedsIdGet(id: String) async throws -> UserFeedsSingleResourceDataDocument
+    open class func userFeedsIdGet(id: String, completion: @escaping (_ data: UserFeedsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userFeed.
@@ -25,11 +25,15 @@ import OpenAPIClient
 let id = "id_example" // String | Opaque identifier of a user's feed state. Use `me` for the authenticated user's resource
 
 // Get single userFeed.
-do {
-    let response = try await UserFeedsAPI.userFeedsIdGet(id: id)
-    dump(response)
-} catch {
-    print(error)
+UserFeedsAPI.userFeedsIdGet(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -56,7 +60,7 @@ Name | Type | Description  | Notes
 
 # **userFeedsIdPatch**
 ```swift
-    open class func userFeedsIdPatch(id: String, idempotencyKey: String? = nil, userFeedsUpdateOperationPayload: UserFeedsUpdateOperationPayload? = nil) async throws -> UserFeedsUpdateSingleResourceDataDocument
+    open class func userFeedsIdPatch(id: String, idempotencyKey: String? = nil, userFeedsUpdateOperationPayload: UserFeedsUpdateOperationPayload? = nil, completion: @escaping (_ data: UserFeedsUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Update single userFeed.
@@ -73,11 +77,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userFeedsUpdateOperationPayload = UserFeedsUpdateOperation_Payload(data: UserFeedsUpdateOperation_Payload_Data(attributes: UserFeedsUpdateOperation_Payload_Data_Attributes(feed: UserFeedsUpdateOperation_Payload_Data_Attributes_Feed(seenThroughToken: "seenThroughToken_example"), inbox: UserFeedsUpdateOperation_Payload_Data_Attributes_Inbox(seenThroughToken: "seenThroughToken_example")), id: "id_example", type: "type_example")) // UserFeedsUpdateOperationPayload |  (optional)
 
 // Update single userFeed.
-do {
-    let response = try await UserFeedsAPI.userFeedsIdPatch(id: id, idempotencyKey: idempotencyKey, userFeedsUpdateOperationPayload: userFeedsUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+UserFeedsAPI.userFeedsIdPatch(id: id, idempotencyKey: idempotencyKey, userFeedsUpdateOperationPayload: userFeedsUpdateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

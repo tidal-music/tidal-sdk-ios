@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **userSubscriptionPriceChangesGet**
 ```swift
-    open class func userSubscriptionPriceChangesGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_userSubscriptionPriceChangesGet]? = nil) async throws -> UserSubscriptionPriceChangesMultiResourceDataDocument
+    open class func userSubscriptionPriceChangesGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_userSubscriptionPriceChangesGet]? = nil, completion: @escaping (_ data: UserSubscriptionPriceChangesMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple userSubscriptionPriceChanges.
@@ -27,11 +27,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple userSubscriptionPriceChanges.
-do {
-    let response = try await UserSubscriptionPriceChangesAPI.userSubscriptionPriceChangesGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage)
-    dump(response)
-} catch {
-    print(error)
+UserSubscriptionPriceChangesAPI.userSubscriptionPriceChangesGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -60,7 +64,7 @@ Name | Type | Description  | Notes
 
 # **userSubscriptionPriceChangesIdRelationshipsDecisionGet**
 ```swift
-    open class func userSubscriptionPriceChangesIdRelationshipsDecisionGet(id: String, include: [String]? = nil) async throws -> UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument
+    open class func userSubscriptionPriceChangesIdRelationshipsDecisionGet(id: String, include: [String]? = nil, completion: @escaping (_ data: UserSubscriptionPriceChangesDecisionSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get decision relationship (\"to-one\").
@@ -76,11 +80,15 @@ let id = "id_example" // String | Price change id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: decision (optional)
 
 // Get decision relationship (\"to-one\").
-do {
-    let response = try await UserSubscriptionPriceChangesAPI.userSubscriptionPriceChangesIdRelationshipsDecisionGet(id: id, include: include)
-    dump(response)
-} catch {
-    print(error)
+UserSubscriptionPriceChangesAPI.userSubscriptionPriceChangesIdRelationshipsDecisionGet(id: id, include: include) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

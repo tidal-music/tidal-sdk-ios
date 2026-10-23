@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **userReportsPost**
 ```swift
-    open class func userReportsPost(idempotencyKey: String? = nil, userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = nil) async throws -> UserReportsCreateSingleResourceDataDocument
+    open class func userReportsPost(idempotencyKey: String? = nil, userReportsCreateOperationPayload: UserReportsCreateOperationPayload? = nil, completion: @escaping (_ data: UserReportsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Create single userReport.
@@ -25,11 +25,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userReportsCreateOperationPayload = UserReportsCreateOperation_Payload(data: UserReportsCreateOperation_Payload_Data(attributes: UserReportsCreateOperation_Payload_Data_Attributes(description: "description_example", reason: "reason_example"), relationships: UserReportsCreateOperation_Payload_Data_Relationships(reportedResources: UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources(data: [UserReportsCreateOperation_Payload_Data_Relationships_ReportedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // UserReportsCreateOperationPayload |  (optional)
 
 // Create single userReport.
-do {
-    let response = try await UserReportsAPI.userReportsPost(idempotencyKey: idempotencyKey, userReportsCreateOperationPayload: userReportsCreateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+UserReportsAPI.userReportsPost(idempotencyKey: idempotencyKey, userReportsCreateOperationPayload: userReportsCreateOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

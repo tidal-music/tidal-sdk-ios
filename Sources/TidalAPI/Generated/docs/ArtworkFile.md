@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **href** | **String** | Artwork file href | 
-**meta** | [**ArtworkFileMeta**](ArtworkFileMeta.md) |  | 
+**meta** | [**ArtworkFileMeta**](ArtworkFileMeta.md) |  | [optional] 
 **type** | **String** | Media type hint for the artwork file | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

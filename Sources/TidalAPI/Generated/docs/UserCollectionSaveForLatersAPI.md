@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 # **userCollectionSaveForLatersIdGet**
 ```swift
-    open class func userCollectionSaveForLatersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionSaveForLatersIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersSingleResourceDataDocument
+    open class func userCollectionSaveForLatersIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_userCollectionSaveForLatersIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single userCollectionSaveForLater.
@@ -31,11 +31,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get single userCollectionSaveForLater.
-do {
-    let response = try await UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -65,7 +69,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionSaveForLatersIdRelationshipsItemsDelete**
 ```swift
-    open class func userCollectionSaveForLatersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload: UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func userCollectionSaveForLatersIdRelationshipsItemsDelete(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload: UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
 ```
 
 Delete from items relationship (\"to-many\").
@@ -82,11 +86,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload = UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload(data: [UserCollectionSaveForLatersItemsRelationshipRemoveOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionSaveForLatersItemsRelationshipRemoveOperationPayload |  (optional)
 
 // Delete from items relationship (\"to-many\").
-do {
-    let response = try await UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload: userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsDelete(id: id, idempotencyKey: idempotencyKey, userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload: userCollectionSaveForLatersItemsRelationshipRemoveOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -115,7 +123,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionSaveForLatersIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersItemsMultiRelationshipDataDocument
+    open class func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get items relationship (\"to-many\").
@@ -133,11 +141,15 @@ let pageCursor = "pageCursor_example" // String | Server-generated cursor value 
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
 
 // Get items relationship (\"to-many\").
-do {
-    let response = try await UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -167,7 +179,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionSaveForLatersIdRelationshipsItemsPost**
 ```swift
-    open class func userCollectionSaveForLatersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? = nil) async throws -> UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument
+    open class func userCollectionSaveForLatersIdRelationshipsItemsPost(id: String, idempotencyKey: String? = nil, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: UserCollectionSaveForLatersItemsRelationshipAddOperationPayload? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Add to items relationship (\"to-many\").
@@ -184,11 +196,15 @@ let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key
 let userCollectionSaveForLatersItemsRelationshipAddOperationPayload = UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload(data: [UserCollectionSaveForLatersItemsRelationshipAddOperation_Payload_Data(id: "id_example", type: "type_example")]) // UserCollectionSaveForLatersItemsRelationshipAddOperationPayload |  (optional)
 
 // Add to items relationship (\"to-many\").
-do {
-    let response = try await UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: userCollectionSaveForLatersItemsRelationshipAddOperationPayload)
-    dump(response)
-} catch {
-    print(error)
+UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsPost(id: id, idempotencyKey: idempotencyKey, userCollectionSaveForLatersItemsRelationshipAddOperationPayload: userCollectionSaveForLatersItemsRelationshipAddOperationPayload) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -217,7 +233,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionSaveForLatersIdRelationshipsOwnersGet**
 ```swift
-    open class func userCollectionSaveForLatersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument
+    open class func userCollectionSaveForLatersIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: UserCollectionSaveForLatersOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get owners relationship (\"to-many\").
@@ -234,11 +250,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-do {
-    let response = try await UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
-    dump(response)
-} catch {
-    print(error)
+UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

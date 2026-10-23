@@ -128,12 +128,13 @@ internal class TracksAPI {
      
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+    internal class func tracksIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument {
         do {
-            return try await tracksIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey).execute().body
+            return try await tracksIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -149,9 +150,10 @@ internal class TracksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func tracksIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
+    internal class func tracksIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/tracks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -159,7 +161,10 @@ internal class TracksAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
@@ -268,13 +273,14 @@ internal class TracksAPI {
      
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - parameter tracksUpdateOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+    internal class func tracksIdPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
-            return try await tracksIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, tracksUpdateOperationPayload: tracksUpdateOperationPayload).execute().body
+            return try await tracksIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, tracksUpdateOperationPayload: tracksUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -290,10 +296,11 @@ internal class TracksAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - parameter tracksUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func tracksIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
+    internal class func tracksIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/tracks/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -301,10 +308,13 @@ internal class TracksAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: tracksUpdateOperationPayload)
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -387,13 +397,14 @@ internal class TracksAPI {
      
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - parameter tracksAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+    internal class func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
         do {
-            return try await tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload).execute().body
+            return try await tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -403,16 +414,17 @@ internal class TracksAPI {
     /**
      Update albums relationship (\"to-many\").
      - PATCH /tracks/{id}/relationships/albums
-     - Updates albums relationship.
+     - Moves the uploaded track to the supplied album, replacing its previous album association. Exactly one album is required; empty data cannot clear it. Returns an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - parameter tracksAlbumsRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
+    internal class func tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/tracks/{id}/relationships/albums"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -420,10 +432,13 @@ internal class TracksAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: tracksAlbumsRelationshipUpdateOperationPayload)
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 
@@ -1522,7 +1537,7 @@ internal class TracksAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
+            "Content-Type": #"application/vnd.api+json"#.replacingOccurrences(of: #"ext=([^";]+)"#, with: #"ext="$1""#, options: .regularExpression),
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
         ]
 

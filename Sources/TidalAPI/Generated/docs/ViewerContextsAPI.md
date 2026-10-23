@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 # **viewerContextsGet**
 ```swift
-    open class func viewerContextsGet(filterSubject: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_viewerContextsGet]? = nil, replaceMedia: String? = nil) async throws -> ViewerContextsMultiResourceDataDocument
+    open class func viewerContextsGet(filterSubject: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_viewerContextsGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ViewerContextsMultiResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get multiple viewerContexts.
@@ -30,11 +30,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get multiple viewerContexts.
-do {
-    let response = try await ViewerContextsAPI.viewerContextsGet(filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ViewerContextsAPI.viewerContextsGet(filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -64,7 +68,7 @@ Name | Type | Description  | Notes
 
 # **viewerContextsIdGet**
 ```swift
-    open class func viewerContextsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_viewerContextsIdGet]? = nil, replaceMedia: String? = nil) async throws -> ViewerContextsSingleResourceDataDocument
+    open class func viewerContextsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_viewerContextsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ViewerContextsSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single viewerContext.
@@ -82,11 +86,15 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get single viewerContext.
-do {
-    let response = try await ViewerContextsAPI.viewerContextsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ViewerContextsAPI.viewerContextsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -116,7 +124,7 @@ Name | Type | Description  | Notes
 
 # **viewerContextsIdRelationshipsSubjectGet**
 ```swift
-    open class func viewerContextsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ViewerContextsSubjectSingleRelationshipDataDocument
+    open class func viewerContextsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ViewerContextsSubjectSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get subject relationship (\"to-one\").
@@ -133,11 +141,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
 
 // Get subject relationship (\"to-one\").
-do {
-    let response = try await ViewerContextsAPI.viewerContextsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ViewerContextsAPI.viewerContextsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 
@@ -166,7 +178,7 @@ Name | Type | Description  | Notes
 
 # **viewerContextsIdRelationshipsViewerGet**
 ```swift
-    open class func viewerContextsIdRelationshipsViewerGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ViewerContextsViewerSingleRelationshipDataDocument
+    open class func viewerContextsIdRelationshipsViewerGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: ViewerContextsViewerSingleRelationshipDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get viewer relationship (\"to-one\").
@@ -183,11 +195,15 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: viewer.artist.albums (optional)
 
 // Get viewer relationship (\"to-one\").
-do {
-    let response = try await ViewerContextsAPI.viewerContextsIdRelationshipsViewerGet(id: id, include: include, replaceMedia: replaceMedia)
-    dump(response)
-} catch {
-    print(error)
+ViewerContextsAPI.viewerContextsIdRelationshipsViewerGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **artistRolesIdGet**
 ```swift
-    open class func artistRolesIdGet(id: String) async throws -> ArtistRolesSingleResourceDataDocument
+    open class func artistRolesIdGet(id: String, completion: @escaping (_ data: ArtistRolesSingleResourceDataDocument?, _ error: Error?) -> Void)
 ```
 
 Get single artistRole.
@@ -24,11 +24,15 @@ import OpenAPIClient
 let id = "id_example" // String | Artist role id
 
 // Get single artistRole.
-do {
-    let response = try await ArtistRolesAPI.artistRolesIdGet(id: id)
-    dump(response)
-} catch {
-    print(error)
+ArtistRolesAPI.artistRolesIdGet(id: id) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
 }
 ```
 

@@ -22,7 +22,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case ep = "EP"
         case single = "SINGLE"
     }
-    public static let barcodeIdRule = StringRule(minLength: nil, maxLength: 13, pattern: "^$|^[0-9]{12,13}$")
+    public static let barcodeIdRule = StringRule(minLength: nil, maxLength: 13, pattern: "/^$|^[0-9]{12,13}$/")
     public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     public static let versionRule = StringRule(minLength: nil, maxLength: 255, pattern: nil)
     /** Access type */
