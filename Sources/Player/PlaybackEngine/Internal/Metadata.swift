@@ -14,4 +14,5 @@ struct Metadata: Equatable {
 	let playbackSource: PlaybackSource
 	let isAdaptivePlaybackEnabled: Bool
 	let previewReason: PreviewReason?
+	var sourceFileId: String?
 }

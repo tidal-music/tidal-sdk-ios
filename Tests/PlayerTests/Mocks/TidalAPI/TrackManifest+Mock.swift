@@ -10,26 +10,28 @@ extension TrackManifestsSingleResourceDataDocument {
 		hash: String = "abc123",
 		drmData: DrmData? = nil,
 		trackAudioNormalizationData: AudioNormalizationData? = AudioNormalizationData.mock(),
-		albumAudioNormalizationData: AudioNormalizationData? = AudioNormalizationData.mock()
+		albumAudioNormalizationData: AudioNormalizationData? = AudioNormalizationData.mock(),
+		sourceFileId: String? = nil
 	) -> TrackManifestsSingleResourceDataDocument {
 		let attributes = TrackManifestsAttributes(
 			albumAudioNormalizationData: albumAudioNormalizationData,
 			drmData: drmData,
 			formats: formats,
 			hash: hash,
+			sourceFileId: sourceFileId,
 			trackAudioNormalizationData: trackAudioNormalizationData,
 			trackPresentation: trackPresentation,
 			uri: uri
 		)
-		
+
 		let data = TrackManifestsResourceObject(
 			attributes: attributes,
 			id: trackId,
 			type: "trackManifests"
 		)
-		
+
 		let links = Links(_self: "")
-		
+
 		return TrackManifestsSingleResourceDataDocument(
 			data: data,
 			included: nil,

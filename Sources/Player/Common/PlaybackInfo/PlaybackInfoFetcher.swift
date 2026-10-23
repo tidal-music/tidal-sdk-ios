@@ -101,6 +101,7 @@ private extension PlaybackInfoFetcher {
 	}
 
 	/// With a `sourceFileId`, fetches that source file's manifest instead and reports it as `TRACK_SOURCE_FILE`.
+	/// The info's `sourceFileId` is the one the manifest says it was served from, else the requested one.
 	func getTrackPlaybackInfo(
 		trackId: String,
 		sourceFileId: String? = nil,
@@ -187,7 +188,8 @@ private extension PlaybackInfoFetcher {
 				offlineRevalidateAt: nil, // May need to be derived from DRM data
 				offlineValidUntil: nil, // May need to be derived from DRM data
 				isAdaptivePlaybackEnabled: isAdaptivePlaybackEnabled,
-				previewReason: convertPreviewReason(attributes?.previewReason)
+				previewReason: convertPreviewReason(attributes?.previewReason),
+				sourceFileId: attributes?.sourceFileId ?? sourceFileId
 			)
 
 		} catch {

@@ -397,7 +397,7 @@ private extension PlayerItem {
 			tags: tags,
 			errorMessage: endInfo.message,
 			errorCode: endInfo.code,
-			sourceFileId: mediaProduct.sourceFileIdentifier
+			sourceFileId: playedSourceFileId
 		))
 	}
 
@@ -431,8 +431,13 @@ private extension PlayerItem {
 			actions: metrics.actions,
 			endTimestamp: endTimestamp,
 			endAssetPosition: endAssetPosition,
-			sourceFileId: mediaProduct.sourceFileIdentifier
+			sourceFileId: playedSourceFileId
 		), extras: mediaProduct.extras)
+	}
+
+	/// The source file the manifest was served from, else the requested one; nil when neither is known.
+	var playedSourceFileId: String? {
+		metadata?.sourceFileId ?? mediaProduct.sourceFileIdentifier
 	}
 
 	func emitOfflinePlay() {

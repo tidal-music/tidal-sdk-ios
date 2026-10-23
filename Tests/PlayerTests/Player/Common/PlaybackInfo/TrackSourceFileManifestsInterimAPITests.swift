@@ -30,4 +30,13 @@ struct TrackSourceFileManifestsInterimAPITests {
 			URLQueryItem(name: "usage", value: "PLAYBACK"),
 		])
 	}
+
+	@Test
+	func test_trackManifestAttributes_decodeOptionalSourceFileId() throws {
+		let withId = try JSONDecoder().decode(TrackManifestsAttributes.self, from: Data(#"{"sourceFileId":"id"}"#.utf8))
+		let withoutId = try JSONDecoder().decode(TrackManifestsAttributes.self, from: Data(#"{"sourceFileId":null}"#.utf8))
+
+		#expect(withId.sourceFileId == "id")
+		#expect(withoutId.sourceFileId == nil)
+	}
 }

@@ -15,6 +15,7 @@ private enum Constants {
 @Suite(.serialized)
 final class PlaybackInfoFetcherTrackSourceFileTests {
 	private var requests = [(sourceFileId: String, formats: [String], adaptive: Bool)]()
+	private var servedSourceFileId: String?
 	private let playerEventSender = PlayerEventSenderMock()
 
 	private var fetcher: PlaybackInfoFetcher {
@@ -32,7 +33,11 @@ final class PlaybackInfoFetcherTrackSourceFileTests {
 			playerEventSender: playerEventSender,
 			trackSourceFileManifestFetch: { sourceFileId, formats, adaptive in
 				self.requests.append((sourceFileId, formats.map(\.rawValue), adaptive))
-				return .mock(trackId: Constants.sourceFileId.uuidString.lowercased(), formats: [.heaacv1, .aaclc, .flac])
+				return .mock(
+					trackId: Constants.sourceFileId.uuidString.lowercased(),
+					formats: [.heaacv1, .aaclc, .flac],
+					sourceFileId: self.servedSourceFileId
+				)
 			}
 		)
 	}
@@ -59,11 +64,25 @@ final class PlaybackInfoFetcherTrackSourceFileTests {
 		#expect(requests.first?.adaptive == false)
 		#expect(playbackInfo.productType == .TRACK_SOURCE_FILE)
 		#expect(playbackInfo.productId == Constants.trackId)
+		#expect(playbackInfo.sourceFileId == "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11")
 		#expect(playbackInfo.assetPresentation == .FULL)
 		#expect(playbackInfo.audioQuality == .LOSSLESS)
 		#expect(playbackInfo.streamingSessionId == Constants.streamingSessionId)
 		#expect(playerEventSender.streamingMetricsEvents.count == 1)
 		#expect(playerEventSender.streamingMetricsEvents.first is PlaybackInfoFetch)
+	}
+
+	@Test
+	func test_streaming_prefersSourceFileIdFromManifest() async throws {
+		servedSourceFileId = "served-source-file-id"
+
+		let playbackInfo = try await fetcher.getPlaybackInfo(
+			streamingSessionId: Constants.streamingSessionId,
+			mediaProduct: sourceFile,
+			playbackMode: .STREAM
+		)
+
+		#expect(playbackInfo.sourceFileId == "served-source-file-id")
 	}
 
 	@Test

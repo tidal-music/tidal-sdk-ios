@@ -164,7 +164,8 @@ private extension PlayerItemLoader {
 			adaptiveAudioQualities: playbackInfo.adaptiveAudioQualities,
 			playbackSource: .INTERNET,
 			isAdaptivePlaybackEnabled: playbackInfo.isAdaptivePlaybackEnabled,
-			previewReason: playbackInfo.previewReason
+			previewReason: playbackInfo.previewReason,
+			sourceFileId: playbackInfo.sourceFileId
 		)
 	}
 }

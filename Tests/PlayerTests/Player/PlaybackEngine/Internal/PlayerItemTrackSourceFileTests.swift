@@ -61,6 +61,35 @@ final class PlayerItemTrackSourceFileTests {
 		#expect(playerEventSender.playLogEvents.first?.sourceFileId == nil)
 	}
 
+	@Test
+	func test_streamingPlay_trackReportsSourceFileIdFromManifest() {
+		play(
+			MediaProduct.mock(productType: .TRACK, productId: Constants.trackId),
+			playbackSource: .INTERNET,
+			servedSourceFileId: Constants.reportedSourceFileId
+		)
+
+		// Sent before the manifest is fetched, so it can't know the served source file of a track.
+		let streamingSessionStart = playerEventSender.streamingMetricsEvents.first as? StreamingSessionStart
+		#expect(streamingSessionStart?.sessionSourceFileId == nil)
+		let playbackStatistics = playerEventSender.streamingMetricsEvents.compactMap { $0 as? PlaybackStatistics }
+		#expect(playbackStatistics.first?.productType == "TRACK")
+		#expect(playbackStatistics.first?.sourceFileId == Constants.reportedSourceFileId)
+		#expect(playerEventSender.playLogEvents.first?.productType == "TRACK")
+		#expect(playerEventSender.playLogEvents.first?.sourceFileId == Constants.reportedSourceFileId)
+	}
+
+	@Test
+	func test_streamingPlay_sourceFilePrefersSourceFileIdFromManifest() {
+		let mediaProduct = TrackSourceFileMediaProduct(sourceFileId: Constants.sourceFileId, trackId: Constants.trackId)
+
+		play(mediaProduct, playbackSource: .INTERNET, servedSourceFileId: "served-source-file-id")
+
+		let playbackStatistics = playerEventSender.streamingMetricsEvents.compactMap { $0 as? PlaybackStatistics }
+		#expect(playbackStatistics.first?.sourceFileId == "served-source-file-id")
+		#expect(playerEventSender.playLogEvents.first?.sourceFileId == "served-source-file-id")
+	}
+
 	// MARK: - Payloads
 
 	@Test
@@ -97,7 +126,7 @@ final class PlayerItemTrackSourceFileTests {
 
 private extension PlayerItemTrackSourceFileTests {
 	/// Drives an item through load, play and completion, then emits its events, like `PlayerItemTests` does.
-	func play(_ mediaProduct: MediaProduct, playbackSource: PlaybackSource) {
+	func play(_ mediaProduct: MediaProduct, playbackSource: PlaybackSource, servedSourceFileId: String? = nil) {
 		var playerItem: PlayerItem? = PlayerItem.mock(
 			mediaProduct: mediaProduct,
 			playerItemMonitor: monitor,
@@ -107,7 +136,9 @@ private extension PlayerItemTrackSourceFileTests {
 
 		let asset = AssetMock(with: player, loudnessNormalizationConfiguration: LoudnessNormalizationConfiguration.mock())
 		playerItem?.set(asset)
-		playerItem?.set(Metadata.mock(productId: mediaProduct.productId, playbackSource: playbackSource))
+		var metadata = Metadata.mock(productId: mediaProduct.productId, playbackSource: playbackSource)
+		metadata.sourceFileId = servedSourceFileId
+		playerItem?.set(metadata)
 
 		timestamp = 2
 		playerItem?.loaded(asset: asset, with: 2)
