@@ -15,6 +15,18 @@ public enum SquareItemVariationsAPITidal {
 
 
 	/**
+     Commit atomic resource operations
+     
+     - returns: AtomicOperationsResponse
+     */
+	public static func operationsPost(idempotencyKey: String, atomicOperationsRequest: AtomicOperationsRequest) async throws -> AtomicOperationsResponse {
+		return try await RequestHelper.createRequest {
+			SquareItemVariationsAPI.operationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, atomicOperationsRequest: atomicOperationsRequest)
+		}
+	}
+
+
+	/**
      Delete single squareItemVariation.
      
      - returns: MutationResponseDocument

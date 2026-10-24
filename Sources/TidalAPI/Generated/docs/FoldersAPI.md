@@ -72,7 +72,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdDelete**
 ```swift
-    open class func foldersIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func foldersIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single folder.
@@ -86,10 +86,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Delete single folder.
 do {
-    let response = try await FoldersAPI.foldersIdDelete(id: id, idempotencyKey: idempotencyKey)
+    let response = try await FoldersAPI.foldersIdDelete(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -102,6 +103,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -174,7 +176,7 @@ Name | Type | Description  | Notes
 
 # **foldersIdPatch**
 ```swift
-    open class func foldersIdPatch(id: String, idempotencyKey: String? = nil, foldersUpdateOperationPayload: FoldersUpdateOperationPayload? = nil) async throws -> FoldersUpdateSingleResourceDataDocument
+    open class func foldersIdPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, foldersUpdateOperationPayload: FoldersUpdateOperationPayload? = nil) async throws -> FoldersUpdateSingleResourceDataDocument
 ```
 
 Update single folder.
@@ -188,11 +190,12 @@ import OpenAPIClient
 
 let id = "id_example" // String | Folder id. Use `me` for the authenticated user's resource
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 let foldersUpdateOperationPayload = FoldersUpdateOperation_Payload(data: FoldersUpdateOperation_Payload_Data(attributes: FoldersUpdateOperation_Payload_Data_Attributes(name: "name_example"), id: "id_example", type: "type_example")) // FoldersUpdateOperationPayload |  (optional)
 
 // Update single folder.
 do {
-    let response = try await FoldersAPI.foldersIdPatch(id: id, idempotencyKey: idempotencyKey, foldersUpdateOperationPayload: foldersUpdateOperationPayload)
+    let response = try await FoldersAPI.foldersIdPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, foldersUpdateOperationPayload: foldersUpdateOperationPayload)
     dump(response)
 } catch {
     print(error)
@@ -205,6 +208,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
  **foldersUpdateOperationPayload** | [**FoldersUpdateOperationPayload**](FoldersUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type

@@ -12,21 +12,29 @@ import AnyCodable
 
 public struct SquareItemsVariationsRelationshipUpdateOperationPayloadMeta: Codable, Hashable {
 
+    public enum Mode: String, Codable, CaseIterable {
+        case incremental = "INCREMENTAL"
+    }
     public static let expectedRevisionRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: 9007199254740991, exclusiveMaximum: false, multipleOf: nil)
     public var expectedRevision: Int64
+    /** Relationship mutation mode. INCREMENTAL updates selected existing entries without adding or removing memberships; REPLACE_ALL replaces the complete membership and its order where applicable. Omission defaults to INCREMENTAL. */
+    public var mode: Mode? = .incremental
     /** Variation before which the selected block is placed; omission appends */
     public var positionBefore: String?
 
     public init(
         expectedRevision: Int64,
+        mode: Mode? = .incremental,
         positionBefore: String? = nil
     ) {
         self.expectedRevision = expectedRevision
+        self.mode = mode
         self.positionBefore = positionBefore
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case expectedRevision
+        case mode
         case positionBefore
     }
 
@@ -35,6 +43,7 @@ public struct SquareItemsVariationsRelationshipUpdateOperationPayloadMeta: Codab
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(expectedRevision, forKey: .expectedRevision)
+        try container.encodeIfPresent(mode, forKey: .mode)
         try container.encodeIfPresent(positionBefore, forKey: .positionBefore)
     }
 }

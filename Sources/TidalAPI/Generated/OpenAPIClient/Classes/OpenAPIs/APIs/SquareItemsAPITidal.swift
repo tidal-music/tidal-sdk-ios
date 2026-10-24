@@ -15,6 +15,18 @@ public enum SquareItemsAPITidal {
 
 
 	/**
+     Commit atomic resource operations
+     
+     - returns: AtomicOperationsResponse
+     */
+	public static func operationsPost(idempotencyKey: String, atomicOperationsRequest: AtomicOperationsRequest) async throws -> AtomicOperationsResponse {
+		return try await RequestHelper.createRequest {
+			SquareItemsAPI.operationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, atomicOperationsRequest: atomicOperationsRequest)
+		}
+	}
+
+
+	/**
 	 * enum for parameter filterOrigin
 	 */
 	public enum FilterOrigin_squareItemsGet: String, CaseIterable {
@@ -124,6 +136,18 @@ public enum SquareItemsAPITidal {
 
 
 	/**
+     Update artworks relationship (\&quot;to-many\&quot;).
+     
+     - returns: SquareItemsArtworksUpdateMultiRelationshipDataDocument
+     */
+	public static func squareItemsIdRelationshipsArtworksPatch(id: String, idempotencyKey: String, squareItemsArtworksRelationshipUpdateOperationPayload: SquareItemsArtworksRelationshipUpdateOperationPayload? = nil) async throws -> SquareItemsArtworksUpdateMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			SquareItemsAPI.squareItemsIdRelationshipsArtworksPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareItemsArtworksRelationshipUpdateOperationPayload: squareItemsArtworksRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: SquareItemsOwnersMultiRelationshipDataDocument
@@ -155,18 +179,6 @@ public enum SquareItemsAPITidal {
 	public static func squareItemsIdRelationshipsVariationsPatch(id: String, idempotencyKey: String, squareItemsVariationsRelationshipUpdateOperationPayload: SquareItemsVariationsRelationshipUpdateOperationPayload? = nil) async throws -> SquareItemsVariationsUpdateMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SquareItemsAPI.squareItemsIdRelationshipsVariationsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareItemsVariationsRelationshipUpdateOperationPayload: squareItemsVariationsRelationshipUpdateOperationPayload)
-		}
-	}
-
-
-	/**
-     Create single squareItem.
-     
-     - returns: SquareItemsCreateSingleResourceDataDocument
-     */
-	public static func squareItemsPost(idempotencyKey: String, squareItemsCreateOperationPayload: SquareItemsCreateOperationPayload? = nil) async throws -> SquareItemsCreateSingleResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			SquareItemsAPI.squareItemsPostWithRequestBuilder(idempotencyKey: idempotencyKey, squareItemsCreateOperationPayload: squareItemsCreateOperationPayload)
 		}
 	}
 }

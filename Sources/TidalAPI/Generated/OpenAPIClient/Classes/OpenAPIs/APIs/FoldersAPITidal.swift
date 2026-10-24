@@ -52,9 +52,9 @@ public enum FoldersAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func foldersIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+	public static func foldersIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			FoldersAPI.foldersIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
+			FoldersAPI.foldersIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode)
 		}
 	}
 
@@ -97,9 +97,9 @@ public enum FoldersAPITidal {
      
      - returns: FoldersUpdateSingleResourceDataDocument
      */
-	public static func foldersIdPatch(id: String, idempotencyKey: String? = nil, foldersUpdateOperationPayload: FoldersUpdateOperationPayload? = nil) async throws -> FoldersUpdateSingleResourceDataDocument {
+	public static func foldersIdPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, foldersUpdateOperationPayload: FoldersUpdateOperationPayload? = nil) async throws -> FoldersUpdateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			FoldersAPI.foldersIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, foldersUpdateOperationPayload: foldersUpdateOperationPayload)
+			FoldersAPI.foldersIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, foldersUpdateOperationPayload: foldersUpdateOperationPayload)
 		}
 	}
 

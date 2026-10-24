@@ -175,7 +175,7 @@ Name | Type | Description  | Notes
 
 Update activePlayer relationship (\"to-one\").
 
-Updates activePlayer relationship.
+Replaces the active-player selection with the supplied owned installation. Explicit null data releases the player without deleting the installation. Returns null linkage when released or when the selected installation has no live attachment. An unavailable selection is retained and becomes visible again when its attachment is refreshed.
 
 ### Example
 ```swift
@@ -225,7 +225,7 @@ Name | Type | Description  | Notes
 
 Delete from availablePlayers relationship (\"to-many\").
 
-Deletes item(s) from availablePlayers relationship.
+Detaches one installation without deleting it. Also releases the active player when it is that installation. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -327,7 +327,7 @@ Name | Type | Description  | Notes
 
 Add to availablePlayers relationship (\"to-many\").
 
-Adds item(s) to availablePlayers relationship.
+Attaches or refreshes one owned installation as an available player, preserving other attachments. Returns all currently available player linkage.
 
 ### Example
 ```swift
@@ -475,7 +475,7 @@ Name | Type | Description  | Notes
 
 Update playQueue relationship (\"to-one\").
 
-Updates playQueue relationship.
+Replaces the selected play queue. Explicit null data clears the selection without deleting the queue. Returns the selected queue linkage, or null data when cleared.
 
 ### Example
 ```swift

@@ -305,7 +305,7 @@ Name | Type | Description  | Notes
 
 Update bannerArt relationship (\"to-many\").
 
-Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears the selection; null data and more than one entry are rejected. Returns an acknowledgement.
+Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears the selection; null data and more than one entry are rejected. Previous artwork no longer selected by profileArt, bannerArt or logoArt is soft-deleted unless system-managed. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -314,7 +314,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let artistsBannerArtRelationshipUpdateOperationPayload = ArtistsBannerArtRelationshipUpdateOperation_Payload(data: [ArtistsBannerArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsBannerArtRelationshipUpdateOperationPayload |  (optional)
+let artistsBannerArtRelationshipUpdateOperationPayload = ArtistsBannerArtRelationshipUpdateOperation_Payload(data: [ArtistsBannerArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsCoverArtRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // ArtistsBannerArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update bannerArt relationship (\"to-many\").
 do {
@@ -713,7 +713,7 @@ Name | Type | Description  | Notes
 
 Update logoArt relationship (\"to-many\").
 
-Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears the selection; null data and more than one entry are rejected. Returns an acknowledgement.
+Selects one owned, attachable IMAGE artwork by ID, replacing the selection. Empty data clears the selection; null data and more than one entry are rejected. Previous artwork no longer selected by profileArt, bannerArt or logoArt is soft-deleted unless system-managed. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -722,7 +722,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let artistsLogoArtRelationshipUpdateOperationPayload = ArtistsLogoArtRelationshipUpdateOperation_Payload(data: [ArtistsLogoArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsLogoArtRelationshipUpdateOperationPayload |  (optional)
+let artistsLogoArtRelationshipUpdateOperationPayload = ArtistsLogoArtRelationshipUpdateOperation_Payload(data: [ArtistsLogoArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsCoverArtRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // ArtistsLogoArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update logoArt relationship (\"to-many\").
 do {
@@ -865,7 +865,7 @@ Name | Type | Description  | Notes
 
 Update profileArt relationship (\"to-many\").
 
-Updates the artist's avatar artwork.
+Replaces the artist's uploaded avatar selection with one owned, attachable artwork. Empty data clears the uploaded selection; legacy pictures or album fallback artwork may still appear in profileArt. Previous artwork no longer selected by profileArt, bannerArt or logoArt is soft-deleted unless system-managed. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -874,7 +874,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let artistsProfileArtRelationshipUpdateOperationPayload = ArtistsProfileArtRelationshipUpdateOperation_Payload(data: [ArtistsProfileArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistsProfileArtRelationshipUpdateOperationPayload |  (optional)
+let artistsProfileArtRelationshipUpdateOperationPayload = ArtistsProfileArtRelationshipUpdateOperation_Payload(data: [ArtistsProfileArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsCoverArtRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // ArtistsProfileArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update profileArt relationship (\"to-many\").
 do {

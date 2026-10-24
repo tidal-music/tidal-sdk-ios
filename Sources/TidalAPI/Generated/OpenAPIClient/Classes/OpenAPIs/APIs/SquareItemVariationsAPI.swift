@@ -13,6 +13,53 @@ import AnyCodable
 internal class SquareItemVariationsAPI {
 
     /**
+     Commit atomic resource operations
+     
+     - parameter idempotencyKey: (header) Retry an unchanged request with the original key after a timeout or server error. Replay is bounded by downstream receipt and idempotency retention. 
+     - parameter atomicOperationsRequest: (body)  
+     - returns: AtomicOperationsResponse
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func operationsPost(idempotencyKey: String, atomicOperationsRequest: AtomicOperationsRequest) async throws -> AtomicOperationsResponse {
+        do {
+            return try await operationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, atomicOperationsRequest: atomicOperationsRequest).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Commit atomic resource operations
+     - POST /operations
+     - Commits a supported group of resource creations together. Only add operations without ref or href are supported. Local linkage must reference an earlier creation. Each resource's mutation policy applies. After a timeout or server error, retry unchanged with the original Idempotency-Key. Replay is bounded by downstream receipt and idempotency retention.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Retry an unchanged request with the original key after a timeout or server error. Replay is bounded by downstream receipt and idempotency retention. 
+     - parameter atomicOperationsRequest: (body)  
+     - returns: RequestBuilder<AtomicOperationsResponse> 
+     */
+    internal class func operationsPostWithRequestBuilder(idempotencyKey: String, atomicOperationsRequest: AtomicOperationsRequest) -> RequestBuilder<AtomicOperationsResponse> {
+        let localVariablePath = "/operations"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: atomicOperationsRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json;ext=https://jsonapi.org/ext/atomic",
+            "Idempotency-Key": idempotencyKey.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<AtomicOperationsResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Delete single squareItemVariation.
      
      - parameter id: (path) Square variation id 

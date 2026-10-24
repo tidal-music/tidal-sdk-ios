@@ -15,19 +15,25 @@ public struct SquareItemsCreateOperationPayloadData: Codable, Hashable {
     public enum ModelType: String, Codable, CaseIterable {
         case squareitems = "squareItems"
     }
+    public static let lidRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var attributes: SquareItemsCreateOperationPayloadDataAttributes
+    /** Local identity available to later operations in this request */
+    public var lid: String?
     public var type: ModelType
 
     public init(
         attributes: SquareItemsCreateOperationPayloadDataAttributes,
+        lid: String? = nil,
         type: ModelType
     ) {
         self.attributes = attributes
+        self.lid = lid
         self.type = type
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case attributes
+        case lid
         case type
     }
 
@@ -36,6 +42,7 @@ public struct SquareItemsCreateOperationPayloadData: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(attributes, forKey: .attributes)
+        try container.encodeIfPresent(lid, forKey: .lid)
         try container.encode(type, forKey: .type)
     }
 }

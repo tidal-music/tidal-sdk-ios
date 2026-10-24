@@ -340,7 +340,7 @@ Name | Type | Description  | Notes
 
 Update parent relationship (\"to-one\").
 
-Updates parent relationship.
+Moves the item to the supplied parent folder, replacing its previous parent. To move to the top level, supply the root folder explicitly; null data is rejected. Returns the new parent linkage.
 
 ### Example
 ```swift

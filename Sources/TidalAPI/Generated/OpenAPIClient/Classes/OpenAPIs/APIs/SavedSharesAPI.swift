@@ -32,7 +32,7 @@ internal class SavedSharesAPI {
     /**
      Create single savedShare.
      - POST /savedShares
-     - Creates a new savedShare.
+     - Redeem an active share with VOUCHER access mode for its offered role. A share without VOUCHER mode returns 403.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

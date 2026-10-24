@@ -545,7 +545,7 @@ internal class PlaylistsAPI {
     /**
      Update coverArt relationship (\"to-many\").
      - PATCH /playlists/{id}/relationships/coverArt
-     - Updates coverArt relationship.
+     - Replaces the custom cover artwork selection with one attachable artwork. Empty data clears the custom selection. Previously attached uploaded artwork is soft-deleted unless system-managed. Returns an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -798,7 +798,7 @@ internal class PlaylistsAPI {
     /**
      Update items relationship (\"to-many\").
      - PATCH /playlists/{id}/relationships/items
-     - Updates items relationship.
+     - Incrementally moves the occurrences selected by data[].meta.itemId before meta.positionBefore, or to the end when meta is omitted. Preserves unselected memberships, their metadata and relative order; no items are added or removed. Empty data is rejected. Returns an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

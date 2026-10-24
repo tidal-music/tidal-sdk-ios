@@ -12,20 +12,30 @@ import AnyCodable
 
 public struct SharesCreateOperationPayloadDataAttributes: Codable, Hashable {
 
+    public enum AccessModes: String, Codable, CaseIterable {
+        case bearer = "BEARER"
+        case voucher = "VOUCHER"
+    }
     public enum Role: String, Codable, CaseIterable {
         case viewer = "VIEWER"
         case collaborator = "COLLABORATOR"
     }
+    public static let accessModesRule = ArrayRule(minItems: 1, maxItems: nil, uniqueItems: true)
+    /** Ways this share may be used to obtain access. BEARER permits access by presenting its code while active. VOUCHER permits redemption for a stored grant. Defaults to both modes for every role. Playlist shares must include VOUCHER; bearer-only playlist shares are rejected with 400. */
+    public var accessModes: Set<AccessModes>?
     /** Role offered by the share. */
     public var role: Role
 
     public init(
+        accessModes: Set<AccessModes>? = nil,
         role: Role
     ) {
+        self.accessModes = accessModes
         self.role = role
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case accessModes
         case role
     }
 
@@ -33,6 +43,7 @@ public struct SharesCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(accessModes, forKey: .accessModes)
         try container.encode(role, forKey: .role)
     }
 }
