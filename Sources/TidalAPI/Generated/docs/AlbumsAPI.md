@@ -92,7 +92,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdDelete**
 ```swift
-    open class func albumsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func albumsIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single album.
@@ -106,10 +106,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Delete single album.
 do {
-    let response = try await AlbumsAPI.albumsIdDelete(id: id, idempotencyKey: idempotencyKey)
+    let response = try await AlbumsAPI.albumsIdDelete(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -122,6 +123,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -196,7 +198,7 @@ Name | Type | Description  | Notes
 
 # **albumsIdPatch**
 ```swift
-    open class func albumsIdPatch(id: String, idempotencyKey: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func albumsIdPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update single album.
@@ -210,11 +212,12 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 let albumsUpdateOperationPayload = AlbumsUpdateOperation_Payload(data: AlbumsUpdateOperation_Payload_Data(attributes: AlbumsUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", albumType: "albumType_example", barcodeId: "barcodeId_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumsUpdateOperation_Payload_Data_Relationships(genres: AlbumsUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumsUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsUpdateOperationPayload |  (optional)
 
 // Update single album.
 do {
-    let response = try await AlbumsAPI.albumsIdPatch(id: id, idempotencyKey: idempotencyKey, albumsUpdateOperationPayload: albumsUpdateOperationPayload)
+    let response = try await AlbumsAPI.albumsIdPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsUpdateOperationPayload: albumsUpdateOperationPayload)
     dump(response)
 } catch {
     print(error)
@@ -227,6 +230,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
  **albumsUpdateOperationPayload** | [**AlbumsUpdateOperationPayload**](AlbumsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -406,12 +410,12 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsCoverArtPatch**
 ```swift
-    open class func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update coverArt relationship (\"to-many\").
 
-Updates coverArt relationship.
+Replaces the uploaded cover artwork selection with one attachable artwork. Empty data clears the selection. Previously attached uploaded artwork is soft-deleted unless system-managed. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -420,11 +424,12 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let albumsCoverArtRelationshipUpdateOperationPayload = AlbumsCoverArtRelationshipUpdateOperation_Payload(data: [AlbumsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // AlbumsCoverArtRelationshipUpdateOperationPayload |  (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
+let albumsCoverArtRelationshipUpdateOperationPayload = AlbumsCoverArtRelationshipUpdateOperation_Payload(data: [AlbumsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsCoverArtRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // AlbumsCoverArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update coverArt relationship (\"to-many\").
 do {
-    let response = try await AlbumsAPI.albumsIdRelationshipsCoverArtPatch(id: id, idempotencyKey: idempotencyKey, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload)
+    let response = try await AlbumsAPI.albumsIdRelationshipsCoverArtPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload)
     dump(response)
 } catch {
     print(error)
@@ -437,6 +442,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
  **albumsCoverArtRelationshipUpdateOperationPayload** | [**AlbumsCoverArtRelationshipUpdateOperationPayload**](AlbumsCoverArtRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -566,12 +572,12 @@ Name | Type | Description  | Notes
 
 # **albumsIdRelationshipsItemsPatch**
 ```swift
-    open class func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update items relationship (\"to-many\").
 
-Updates items relationship.
+Incrementally updates one existing track's 1-based track number to meta.positionIndex. Does not replace the album's items or add or remove tracks. Empty data is rejected. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -580,11 +586,12 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let albumsItemsRelationshipUpdateOperationPayload = AlbumsItemsRelationshipUpdateOperation_Payload(data: [AlbumsItemsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsItemsRelationshipUpdateOperation_Payload_Meta(positionIndex: 123)) // AlbumsItemsRelationshipUpdateOperationPayload |  (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
+let albumsItemsRelationshipUpdateOperationPayload = AlbumsItemsRelationshipUpdateOperation_Payload(data: [AlbumsItemsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsItemsRelationshipUpdateOperation_Payload_meta(mode: "mode_example", positionIndex: 123)) // AlbumsItemsRelationshipUpdateOperationPayload |  (optional)
 
 // Update items relationship (\"to-many\").
 do {
-    let response = try await AlbumsAPI.albumsIdRelationshipsItemsPatch(id: id, idempotencyKey: idempotencyKey, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload)
+    let response = try await AlbumsAPI.albumsIdRelationshipsItemsPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload)
     dump(response)
 } catch {
     print(error)
@@ -597,6 +604,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
  **albumsItemsRelationshipUpdateOperationPayload** | [**AlbumsItemsRelationshipUpdateOperationPayload**](AlbumsItemsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type

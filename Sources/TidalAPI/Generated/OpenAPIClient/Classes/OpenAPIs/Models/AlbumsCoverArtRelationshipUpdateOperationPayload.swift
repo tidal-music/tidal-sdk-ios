@@ -14,15 +14,19 @@ public struct AlbumsCoverArtRelationshipUpdateOperationPayload: Codable, Hashabl
 
     public static let dataRule = ArrayRule(minItems: 0, maxItems: 1, uniqueItems: false)
     public var data: [AlbumsCoverArtRelationshipUpdateOperationPayloadData]
+    public var meta: AlbumsCoverArtRelationshipUpdateOperationPayloadMeta?
 
     public init(
-        data: [AlbumsCoverArtRelationshipUpdateOperationPayloadData]
+        data: [AlbumsCoverArtRelationshipUpdateOperationPayloadData],
+        meta: AlbumsCoverArtRelationshipUpdateOperationPayloadMeta? = nil
     ) {
         self.data = data
+        self.meta = meta
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case data
+        case meta
     }
 
     // Encodable protocol methods
@@ -30,5 +34,6 @@ public struct AlbumsCoverArtRelationshipUpdateOperationPayload: Codable, Hashabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(data, forKey: .data)
+        try container.encodeIfPresent(meta, forKey: .meta)
     }
 }

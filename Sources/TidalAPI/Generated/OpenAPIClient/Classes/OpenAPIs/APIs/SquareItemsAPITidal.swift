@@ -15,6 +15,18 @@ public enum SquareItemsAPITidal {
 
 
 	/**
+     Commit atomic resource operations
+     
+     - returns: AtomicOperationsResponse
+     */
+	public static func operationsPost(idempotencyKey: String, atomicOperationsRequest: AtomicOperationsRequest) async throws -> AtomicOperationsResponse {
+		return try await RequestHelper.createRequest {
+			SquareItemsAPI.operationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, atomicOperationsRequest: atomicOperationsRequest)
+		}
+	}
+
+
+	/**
 	 * enum for parameter filterOrigin
 	 */
 	public enum FilterOrigin_squareItemsGet: String, CaseIterable {
@@ -33,11 +45,13 @@ public enum SquareItemsAPITidal {
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_squareItemsGet: String, CaseIterable {
+		case artworks = "artworks"
 		case owners = "owners"
 		case variations = "variations"
 
 		func toSquareItemsAPIEnum() -> SquareItemsAPI.IncludeLinkage_squareItemsGet {
 			switch self {
+			case .artworks: return .artworks
 			case .owners: return .owners
 			case .variations: return .variations
 			}
@@ -72,11 +86,13 @@ public enum SquareItemsAPITidal {
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_squareItemsIdGet: String, CaseIterable {
+		case artworks = "artworks"
 		case owners = "owners"
 		case variations = "variations"
 
 		func toSquareItemsAPIEnum() -> SquareItemsAPI.IncludeLinkage_squareItemsIdGet {
 			switch self {
+			case .artworks: return .artworks
 			case .owners: return .owners
 			case .variations: return .variations
 			}
@@ -103,6 +119,30 @@ public enum SquareItemsAPITidal {
 	public static func squareItemsIdPatch(id: String, idempotencyKey: String, squareItemsUpdateOperationPayload: SquareItemsUpdateOperationPayload? = nil) async throws -> SquareItemsUpdateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			SquareItemsAPI.squareItemsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareItemsUpdateOperationPayload: squareItemsUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Get artworks relationship (\&quot;to-many\&quot;).
+     
+     - returns: SquareItemsArtworksMultiRelationshipDataDocument
+     */
+	public static func squareItemsIdRelationshipsArtworksGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareItemsArtworksMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			SquareItemsAPI.squareItemsIdRelationshipsArtworksGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Update artworks relationship (\&quot;to-many\&quot;).
+     
+     - returns: SquareItemsArtworksUpdateMultiRelationshipDataDocument
+     */
+	public static func squareItemsIdRelationshipsArtworksPatch(id: String, idempotencyKey: String, squareItemsArtworksRelationshipUpdateOperationPayload: SquareItemsArtworksRelationshipUpdateOperationPayload? = nil) async throws -> SquareItemsArtworksUpdateMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			SquareItemsAPI.squareItemsIdRelationshipsArtworksPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareItemsArtworksRelationshipUpdateOperationPayload: squareItemsArtworksRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -139,18 +179,6 @@ public enum SquareItemsAPITidal {
 	public static func squareItemsIdRelationshipsVariationsPatch(id: String, idempotencyKey: String, squareItemsVariationsRelationshipUpdateOperationPayload: SquareItemsVariationsRelationshipUpdateOperationPayload? = nil) async throws -> SquareItemsVariationsUpdateMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			SquareItemsAPI.squareItemsIdRelationshipsVariationsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareItemsVariationsRelationshipUpdateOperationPayload: squareItemsVariationsRelationshipUpdateOperationPayload)
-		}
-	}
-
-
-	/**
-     Create single squareItem.
-     
-     - returns: SquareItemsCreateSingleResourceDataDocument
-     */
-	public static func squareItemsPost(idempotencyKey: String, squareItemsCreateOperationPayload: SquareItemsCreateOperationPayload? = nil) async throws -> SquareItemsCreateSingleResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			SquareItemsAPI.squareItemsPostWithRequestBuilder(idempotencyKey: idempotencyKey, squareItemsCreateOperationPayload: squareItemsCreateOperationPayload)
 		}
 	}
 }

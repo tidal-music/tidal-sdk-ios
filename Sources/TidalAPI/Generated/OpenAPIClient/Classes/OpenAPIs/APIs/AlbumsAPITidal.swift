@@ -87,9 +87,9 @@ public enum AlbumsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func albumsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+	public static func albumsIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
+			AlbumsAPI.albumsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode)
 		}
 	}
 
@@ -148,9 +148,9 @@ public enum AlbumsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func albumsIdPatch(id: String, idempotencyKey: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func albumsIdPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, albumsUpdateOperationPayload: albumsUpdateOperationPayload)
+			AlbumsAPI.albumsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsUpdateOperationPayload: albumsUpdateOperationPayload)
 		}
 	}
 
@@ -196,9 +196,9 @@ public enum AlbumsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload)
+			AlbumsAPI.albumsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -232,9 +232,9 @@ public enum AlbumsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload)
+			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload)
 		}
 	}
 

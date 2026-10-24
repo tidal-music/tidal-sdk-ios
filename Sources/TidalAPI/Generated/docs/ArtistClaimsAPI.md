@@ -276,7 +276,7 @@ Name | Type | Description  | Notes
 
 Update acceptedArtists relationship (\"to-many\").
 
-Updates acceptedArtists relationship.
+Accepts one recommended artist and processes the claim, merging profile metadata or moving claimed albums according to the recommendation. Empty data cancels the claim; it does not delete any artist. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -285,7 +285,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Artist claim id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload = ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload(data: [ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload |  (optional)
+let artistClaimsAcceptedArtistsRelationshipUpdateOperationPayload = ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload(data: [ArtistClaimsAcceptedArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsCoverArtRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // ArtistClaimsAcceptedArtistsRelationshipUpdateOperationPayload |  (optional)
 
 // Update acceptedArtists relationship (\"to-many\").
 do {

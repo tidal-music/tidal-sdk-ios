@@ -12,11 +12,18 @@ import AnyCodable
 
 public struct SharesAttributes: Codable, Hashable {
 
+    public enum AccessModes: String, Codable, CaseIterable {
+        case bearer = "BEARER"
+        case voucher = "VOUCHER"
+    }
     public enum Role: String, Codable, CaseIterable {
         case viewer = "VIEWER"
         case collaborator = "COLLABORATOR"
     }
+    public static let accessModesRule = ArrayRule(minItems: 1, maxItems: nil, uniqueItems: true)
     public static let codeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    /** Ways this share may be used to obtain access. BEARER permits access by presenting its code while active. VOUCHER permits an authenticated user to redeem it for a stored grant. Multiple modes may be enabled. */
+    public var accessModes: Set<AccessModes>
     /** Share code */
     public var code: String
     /** Time the share was created. */
@@ -29,12 +36,14 @@ public struct SharesAttributes: Codable, Hashable {
     public var role: Role
 
     public init(
+        accessModes: Set<AccessModes>,
         code: String,
         createdAt: Date,
         expiresAt: Date,
         externalLinks: [ExternalLink]? = nil,
         role: Role
     ) {
+        self.accessModes = accessModes
         self.code = code
         self.createdAt = createdAt
         self.expiresAt = expiresAt
@@ -43,6 +52,7 @@ public struct SharesAttributes: Codable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case accessModes
         case code
         case createdAt
         case expiresAt
@@ -54,6 +64,7 @@ public struct SharesAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(accessModes, forKey: .accessModes)
         try container.encode(code, forKey: .code)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(expiresAt, forKey: .expiresAt)

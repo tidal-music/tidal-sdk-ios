@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**artworks** | [**SquareItemsArtworksMultiRelationshipDataDocument**](SquareItemsArtworksMultiRelationshipDataDocument.md) |  | [optional] 
 **owners** | [**SquareItemsOwnersMultiRelationshipDataDocument**](SquareItemsOwnersMultiRelationshipDataDocument.md) |  | [optional] 
 **variations** | [**SquareItemsVariationsMultiRelationshipDataDocument**](SquareItemsVariationsMultiRelationshipDataDocument.md) |  | [optional] 
 

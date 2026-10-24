@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 Get multiple resourceGrants.
 
-Lists the owner's explicit direct grants, selected by subject or grantee, optionally restricted by assigned role. Requires subject or grantee.
+Lists stored grants from every source visible to the subject's owner or named user grantee, selected by subject or grantee, optionally restricted by assigned role. Requires subject or grantee.
 
 ### Example
 ```swift

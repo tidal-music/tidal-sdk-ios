@@ -10,7 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Target resource types: &#x60;albums&#x60;, &#x60;artists&#x60;, &#x60;playlists&#x60;, &#x60;tracks&#x60;, &#x60;videos&#x60;. */
+/** Target resource types: &#x60;albums&#x60;, &#x60;artistStreamsStatistics&#x60;, &#x60;artists&#x60;, &#x60;playlists&#x60;, &#x60;tracks&#x60;, &#x60;videos&#x60;. */
 public struct DynamicModulesItemsMultiRelationshipDataDocument: Codable, Hashable {
 
     public var data: [DynamicModulesItemsResourceIdentifier]?
