@@ -42,10 +42,12 @@ public enum SquareItemVariationsAPITidal {
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_squareItemVariationsIdGet: String, CaseIterable {
+		case artworks = "artworks"
 		case owners = "owners"
 
 		func toSquareItemVariationsAPIEnum() -> SquareItemVariationsAPI.IncludeLinkage_squareItemVariationsIdGet {
 			switch self {
+			case .artworks: return .artworks
 			case .owners: return .owners
 			}
 		}
@@ -71,6 +73,30 @@ public enum SquareItemVariationsAPITidal {
 	public static func squareItemVariationsIdPatch(id: String, idempotencyKey: String, squareItemVariationsUpdateOperationPayload: SquareItemVariationsUpdateOperationPayload? = nil) async throws -> SquareItemVariationsUpdateSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			SquareItemVariationsAPI.squareItemVariationsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareItemVariationsUpdateOperationPayload: squareItemVariationsUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Get artworks relationship (\&quot;to-many\&quot;).
+     
+     - returns: SquareItemVariationsArtworksMultiRelationshipDataDocument
+     */
+	public static func squareItemVariationsIdRelationshipsArtworksGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareItemVariationsArtworksMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			SquareItemVariationsAPI.squareItemVariationsIdRelationshipsArtworksGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Update artworks relationship (\&quot;to-many\&quot;).
+     
+     - returns: SquareItemVariationsArtworksUpdateMultiRelationshipDataDocument
+     */
+	public static func squareItemVariationsIdRelationshipsArtworksPatch(id: String, idempotencyKey: String, squareItemVariationsArtworksRelationshipUpdateOperationPayload: SquareItemVariationsArtworksRelationshipUpdateOperationPayload? = nil) async throws -> SquareItemVariationsArtworksUpdateMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			SquareItemVariationsAPI.squareItemVariationsIdRelationshipsArtworksPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareItemVariationsArtworksRelationshipUpdateOperationPayload: squareItemVariationsArtworksRelationshipUpdateOperationPayload)
 		}
 	}
 
