@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 Create single savedShare.
 
-Creates a new savedShare.
+Redeem an active share with VOUCHER access mode for its offered role. A share without VOUCHER mode returns 403.
 
 ### Example
 ```swift

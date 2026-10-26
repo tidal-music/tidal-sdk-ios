@@ -96,7 +96,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdDelete**
 ```swift
-    open class func tracksIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func tracksIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single track.
@@ -110,10 +110,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Delete single track.
 do {
-    let response = try await TracksAPI.tracksIdDelete(id: id, idempotencyKey: idempotencyKey)
+    let response = try await TracksAPI.tracksIdDelete(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -126,6 +127,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -200,7 +202,7 @@ Name | Type | Description  | Notes
 
 # **tracksIdPatch**
 ```swift
-    open class func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func tracksIdPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update single track.
@@ -214,11 +216,12 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 let tracksUpdateOperationPayload = TracksUpdateOperation_Payload(data: TracksUpdateOperation_Payload_Data(attributes: TracksUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", bpm: 123, explicit: false, isrc: "isrc_example", key: "key_example", keyScale: "keyScale_example", title: "title_example", toneTags: ["toneTags_example"]), id: "id_example", relationships: TracksUpdateOperation_Payload_Data_Relationships(genres: TracksUpdateOperation_Payload_Data_Relationships_Genres(data: [TracksUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // TracksUpdateOperationPayload |  (optional)
 
 // Update single track.
 do {
-    let response = try await TracksAPI.tracksIdPatch(id: id, idempotencyKey: idempotencyKey, tracksUpdateOperationPayload: tracksUpdateOperationPayload)
+    let response = try await TracksAPI.tracksIdPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, tracksUpdateOperationPayload: tracksUpdateOperationPayload)
     dump(response)
 } catch {
     print(error)
@@ -231,6 +234,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
  **tracksUpdateOperationPayload** | [**TracksUpdateOperationPayload**](TracksUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -306,12 +310,12 @@ Name | Type | Description  | Notes
 
 # **tracksIdRelationshipsAlbumsPatch**
 ```swift
-    open class func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+    open class func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update albums relationship (\"to-many\").
 
-Updates albums relationship.
+Moves the uploaded track to the supplied album, replacing its previous album association. Exactly one album is required; empty data cannot clear it. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -320,11 +324,12 @@ import OpenAPIClient
 
 let id = "id_example" // String | Track id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let tracksAlbumsRelationshipUpdateOperationPayload = TracksAlbumsRelationshipUpdateOperation_Payload(data: [TracksAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // TracksAlbumsRelationshipUpdateOperationPayload |  (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
+let tracksAlbumsRelationshipUpdateOperationPayload = TracksAlbumsRelationshipUpdateOperation_Payload(data: [TracksAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsCoverArtRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // TracksAlbumsRelationshipUpdateOperationPayload |  (optional)
 
 // Update albums relationship (\"to-many\").
 do {
-    let response = try await TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, idempotencyKey: idempotencyKey, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload)
+    let response = try await TracksAPI.tracksIdRelationshipsAlbumsPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload)
     dump(response)
 } catch {
     print(error)
@@ -337,6 +342,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
  **tracksAlbumsRelationshipUpdateOperationPayload** | [**TracksAlbumsRelationshipUpdateOperationPayload**](TracksAlbumsRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type

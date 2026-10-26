@@ -4,12 +4,61 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**operationsPost**](SquareItemVariationsAPI.md#operationspost) | **POST** /operations | Commit atomic resource operations
 [**squareItemVariationsIdDelete**](SquareItemVariationsAPI.md#squareitemvariationsiddelete) | **DELETE** /squareItemVariations/{id} | Delete single squareItemVariation.
 [**squareItemVariationsIdGet**](SquareItemVariationsAPI.md#squareitemvariationsidget) | **GET** /squareItemVariations/{id} | Get single squareItemVariation.
 [**squareItemVariationsIdPatch**](SquareItemVariationsAPI.md#squareitemvariationsidpatch) | **PATCH** /squareItemVariations/{id} | Update single squareItemVariation.
 [**squareItemVariationsIdRelationshipsOwnersGet**](SquareItemVariationsAPI.md#squareitemvariationsidrelationshipsownersget) | **GET** /squareItemVariations/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**squareItemVariationsPost**](SquareItemVariationsAPI.md#squareitemvariationspost) | **POST** /squareItemVariations | Create single squareItemVariation.
 
+
+# **operationsPost**
+```swift
+    open class func operationsPost(idempotencyKey: String, atomicOperationsRequest: AtomicOperationsRequest) async throws -> AtomicOperationsResponse
+```
+
+Commit atomic resource operations
+
+Commits a supported group of resource creations together. Only add operations without ref or href are supported. Local linkage must reference an earlier creation. Each resource's mutation policy applies. After a timeout or server error, retry unchanged with the original Idempotency-Key. Replay is bounded by downstream receipt and idempotency retention.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let idempotencyKey = "idempotencyKey_example" // String | Retry an unchanged request with the original key after a timeout or server error. Replay is bounded by downstream receipt and idempotency retention.
+let atomicOperationsRequest = Atomic_Operations_Request(atomicOperations: [Atomic_Operations_Request_atomic_operations_inner(data: SquareItemsCreateOperation_Payload_Data(attributes: SquareItemsCreateOperation_Payload_Data_Attributes(description: "description_example", title: "title_example"), lid: "lid_example", type: "type_example"), op: "op_example")]) // AtomicOperationsRequest | 
+
+// Commit atomic resource operations
+do {
+    let response = try await SquareItemVariationsAPI.operationsPost(idempotencyKey: idempotencyKey, atomicOperationsRequest: atomicOperationsRequest)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idempotencyKey** | **String** | Retry an unchanged request with the original key after a timeout or server error. Replay is bounded by downstream receipt and idempotency retention. | 
+ **atomicOperationsRequest** | [**AtomicOperationsRequest**](AtomicOperationsRequest.md) |  | 
+
+### Return type
+
+[**AtomicOperationsResponse**](AtomicOperationsResponse.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json;ext=https://jsonapi.org/ext/atomic
+ - **Accept**: application/vnd.api+json;ext=https://jsonapi.org/ext/atomic
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **squareItemVariationsIdDelete**
 ```swift

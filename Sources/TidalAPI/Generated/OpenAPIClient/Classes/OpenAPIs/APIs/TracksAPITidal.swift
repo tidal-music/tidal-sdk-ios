@@ -97,9 +97,9 @@ public enum TracksAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func tracksIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+	public static func tracksIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
+			TracksAPI.tracksIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode)
 		}
 	}
 
@@ -168,9 +168,9 @@ public enum TracksAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func tracksIdPatch(id: String, idempotencyKey: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func tracksIdPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksUpdateOperationPayload: TracksUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, tracksUpdateOperationPayload: tracksUpdateOperationPayload)
+			TracksAPI.tracksIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, tracksUpdateOperationPayload: tracksUpdateOperationPayload)
 		}
 	}
 
@@ -192,9 +192,9 @@ public enum TracksAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func tracksIdRelationshipsAlbumsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksAlbumsRelationshipUpdateOperationPayload: TracksAlbumsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			TracksAPI.tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload)
+			TracksAPI.tracksIdRelationshipsAlbumsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, tracksAlbumsRelationshipUpdateOperationPayload: tracksAlbumsRelationshipUpdateOperationPayload)
 		}
 	}
 

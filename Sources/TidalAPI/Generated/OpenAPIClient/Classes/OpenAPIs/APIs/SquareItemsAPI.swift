@@ -13,6 +13,53 @@ import AnyCodable
 internal class SquareItemsAPI {
 
     /**
+     Commit atomic resource operations
+     
+     - parameter idempotencyKey: (header) Retry an unchanged request with the original key after a timeout or server error. Replay is bounded by downstream receipt and idempotency retention. 
+     - parameter atomicOperationsRequest: (body)  
+     - returns: AtomicOperationsResponse
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func operationsPost(idempotencyKey: String, atomicOperationsRequest: AtomicOperationsRequest) async throws -> AtomicOperationsResponse {
+        do {
+            return try await operationsPostWithRequestBuilder(idempotencyKey: idempotencyKey, atomicOperationsRequest: atomicOperationsRequest).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Commit atomic resource operations
+     - POST /operations
+     - Commits a supported group of resource creations together. Only add operations without ref or href are supported. Local linkage must reference an earlier creation. Each resource's mutation policy applies. After a timeout or server error, retry unchanged with the original Idempotency-Key. Replay is bounded by downstream receipt and idempotency retention.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter idempotencyKey: (header) Retry an unchanged request with the original key after a timeout or server error. Replay is bounded by downstream receipt and idempotency retention. 
+     - parameter atomicOperationsRequest: (body)  
+     - returns: RequestBuilder<AtomicOperationsResponse> 
+     */
+    internal class func operationsPostWithRequestBuilder(idempotencyKey: String, atomicOperationsRequest: AtomicOperationsRequest) -> RequestBuilder<AtomicOperationsResponse> {
+        let localVariablePath = "/operations"
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: atomicOperationsRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json;ext=https://jsonapi.org/ext/atomic",
+            "Idempotency-Key": idempotencyKey.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<AtomicOperationsResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      * enum for parameter filterOrigin
      */
     public enum FilterOrigin_squareItemsGet: String, CaseIterable {
@@ -24,6 +71,7 @@ internal class SquareItemsAPI {
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_squareItemsGet: String, CaseIterable {
+        case artworks = "artworks"
         case owners = "owners"
         case variations = "variations"
     }
@@ -34,7 +82,7 @@ internal class SquareItemsAPI {
      - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterOrigin: (query) Only items with this origin (e.g. &#x60;TIDAL&#x60;) (optional)
      - parameter filterQuery: (query) Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
-     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
+     - parameter include: (query) Include related resources. Available relationships: artworks, owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: SquareItemsMultiResourceDataDocument
@@ -59,7 +107,7 @@ internal class SquareItemsAPI {
      - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterOrigin: (query) Only items with this origin (e.g. &#x60;TIDAL&#x60;) (optional)
      - parameter filterQuery: (query) Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
-     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
+     - parameter include: (query) Include related resources. Available relationships: artworks, owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<SquareItemsMultiResourceDataDocument> 
@@ -143,6 +191,7 @@ internal class SquareItemsAPI {
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_squareItemsIdGet: String, CaseIterable {
+        case artworks = "artworks"
         case owners = "owners"
         case variations = "variations"
     }
@@ -151,7 +200,7 @@ internal class SquareItemsAPI {
      Get single squareItem.
      
      - parameter id: (path) Square item id 
-     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
+     - parameter include: (query) Include related resources. Available relationships: artworks, owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: SquareItemsSingleResourceDataDocument
      */
@@ -173,7 +222,7 @@ internal class SquareItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Square item id 
-     - parameter include: (query) Include related resources. Available relationships: owners, variations (optional)
+     - parameter include: (query) Include related resources. Available relationships: artworks, owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<SquareItemsSingleResourceDataDocument> 
      */
@@ -250,6 +299,113 @@ internal class SquareItemsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<SquareItemsUpdateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get artworks relationship (\"to-many\").
+     
+     - parameter id: (path) Square item id 
+     - parameter include: (query) Include related resources. Available relationships: artworks (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: SquareItemsArtworksMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func squareItemsIdRelationshipsArtworksGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareItemsArtworksMultiRelationshipDataDocument {
+        do {
+            return try await squareItemsIdRelationshipsArtworksGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get artworks relationship (\"to-many\").
+     - GET /squareItems/{id}/relationships/artworks
+     - A photo Square has no URL for stays in the list and its artwork has no files.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Square item id 
+     - parameter include: (query) Include related resources. Available relationships: artworks (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<SquareItemsArtworksMultiRelationshipDataDocument> 
+     */
+    internal class func squareItemsIdRelationshipsArtworksGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<SquareItemsArtworksMultiRelationshipDataDocument> {
+        var localVariablePath = "/squareItems/{id}/relationships/artworks"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SquareItemsArtworksMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Update artworks relationship (\"to-many\").
+     
+     - parameter id: (path) Square item id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. 
+     - parameter squareItemsArtworksRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: SquareItemsArtworksUpdateMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func squareItemsIdRelationshipsArtworksPatch(id: String, idempotencyKey: String, squareItemsArtworksRelationshipUpdateOperationPayload: SquareItemsArtworksRelationshipUpdateOperationPayload? = nil) async throws -> SquareItemsArtworksUpdateMultiRelationshipDataDocument {
+        do {
+            return try await squareItemsIdRelationshipsArtworksPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, squareItemsArtworksRelationshipUpdateOperationPayload: squareItemsArtworksRelationshipUpdateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Update artworks relationship (\"to-many\").
+     - PATCH /squareItems/{id}/relationships/artworks
+     - Replaces the item's photos with the complete ordered list. Omitted photos are detached and stay in the seller's Square catalog; an empty list clears them. The first artwork is the primary photo. Duplicate artwork IDs are rejected. Uploaded TIDAL JPEG artworks, at most 15,000,000 bytes, are copied to Square and attached under new artwork IDs; their originals stay unchanged. Existing Square artworks must belong to this seller and are attached directly. Returns the complete resulting linkage in display order and the committed item revision. Copies may remain in Square if the replacement fails. Retry unchanged with the original Idempotency-Key after a timeout or 5xx. Recovery is bounded by Marketplace receipts and Square's idempotency retention, and can be blocked if the item is deleted or a source becomes unavailable or ineligible. Read the item again to reconcile its current state.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Square item id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. 
+     - parameter squareItemsArtworksRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<SquareItemsArtworksUpdateMultiRelationshipDataDocument> 
+     */
+    internal class func squareItemsIdRelationshipsArtworksPatchWithRequestBuilder(id: String, idempotencyKey: String, squareItemsArtworksRelationshipUpdateOperationPayload: SquareItemsArtworksRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<SquareItemsArtworksUpdateMultiRelationshipDataDocument> {
+        var localVariablePath = "/squareItems/{id}/relationships/artworks"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: squareItemsArtworksRelationshipUpdateOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SquareItemsArtworksUpdateMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -385,7 +541,7 @@ internal class SquareItemsAPI {
     /**
      Update variations relationship (\"to-many\").
      - PATCH /squareItems/{id}/relationships/variations
-     - Moves the selected variations as an ordered block before positionBefore, or to the end when omitted. Unselected variations retain their relative order. Returns the affected linkage only and the updated item revision. After a timeout or `5xx`, retry unchanged with the original Idempotency-Key. Replay protection is bounded by receipt availability and Square's idempotency retention.
+     - Incrementally moves the selected variations as an ordered block before positionBefore, or to the end when omitted. Memberships are preserved; unselected variations retain their metadata and relative order. Empty data is rejected. Returns the affected linkage only and the updated item revision. After a timeout or `5xx`, retry unchanged with the original Idempotency-Key. Replay protection is bounded by receipt availability and Square's idempotency retention.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -414,52 +570,5 @@ internal class SquareItemsAPI {
         let localVariableRequestBuilder: RequestBuilder<SquareItemsVariationsUpdateMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
-     Create single squareItem.
-     
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. 
-     - parameter squareItemsCreateOperationPayload: (body)  (optional)
-     - returns: SquareItemsCreateSingleResourceDataDocument
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func squareItemsPost(idempotencyKey: String, squareItemsCreateOperationPayload: SquareItemsCreateOperationPayload? = nil) async throws -> SquareItemsCreateSingleResourceDataDocument {
-        do {
-            return try await squareItemsPostWithRequestBuilder(idempotencyKey: idempotencyKey, squareItemsCreateOperationPayload: squareItemsCreateOperationPayload).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Create single squareItem.
-     - POST /squareItems
-     - Creates a new squareItem.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. 
-     - parameter squareItemsCreateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<SquareItemsCreateSingleResourceDataDocument> 
-     */
-    internal class func squareItemsPostWithRequestBuilder(idempotencyKey: String, squareItemsCreateOperationPayload: SquareItemsCreateOperationPayload? = nil) -> RequestBuilder<SquareItemsCreateSingleResourceDataDocument> {
-        let localVariablePath = "/squareItems"
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: squareItemsCreateOperationPayload)
-
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
-            "Idempotency-Key": idempotencyKey.encodeToJSON(),
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<SquareItemsCreateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 }

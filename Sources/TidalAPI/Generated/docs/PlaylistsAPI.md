@@ -447,7 +447,7 @@ Name | Type | Description  | Notes
 
 Update coverArt relationship (\"to-many\").
 
-Updates coverArt relationship.
+Replaces the custom cover artwork selection with one attachable artwork. Empty data clears the custom selection. Previously attached uploaded artwork is soft-deleted unless system-managed. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -456,7 +456,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let playlistsCoverArtRelationshipUpdateOperationPayload = PlaylistsCoverArtRelationshipUpdateOperation_Payload(data: [PlaylistsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")]) // PlaylistsCoverArtRelationshipUpdateOperationPayload |  (optional)
+let playlistsCoverArtRelationshipUpdateOperationPayload = PlaylistsCoverArtRelationshipUpdateOperation_Payload(data: [PlaylistsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsCoverArtRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // PlaylistsCoverArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update coverArt relationship (\"to-many\").
 do {
@@ -657,7 +657,7 @@ Name | Type | Description  | Notes
 
 Update items relationship (\"to-many\").
 
-Updates items relationship.
+Incrementally moves the occurrences selected by data[].meta.itemId before meta.positionBefore, or to the end when meta is omitted. Preserves unselected memberships, their metadata and relative order; no items are added or removed. Empty data is rejected. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -666,7 +666,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let playlistsItemsRelationshipUpdateOperationPayload = PlaylistsItemsRelationshipUpdateOperation_Payload(data: [PlaylistsItemsRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlaylistsItemsRelationshipUpdateOperation_Payload_Meta(positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipUpdateOperationPayload |  (optional)
+let playlistsItemsRelationshipUpdateOperationPayload = PlaylistsItemsRelationshipUpdateOperation_Payload(data: [PlaylistsItemsRelationshipUpdateOperation_Payload_Data(id: "id_example", meta: PlaylistsItemsRelationshipUpdateOperation_Payload_Data_Meta(itemId: "itemId_example"), type: "type_example")], meta: PlaylistsItemsRelationshipUpdateOperation_Payload_meta(mode: "mode_example", positionBefore: "positionBefore_example")) // PlaylistsItemsRelationshipUpdateOperationPayload |  (optional)
 
 // Update items relationship (\"to-many\").
 do {

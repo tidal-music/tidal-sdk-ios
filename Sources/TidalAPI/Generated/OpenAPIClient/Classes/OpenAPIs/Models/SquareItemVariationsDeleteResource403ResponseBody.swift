@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct SquareItemVariationsDeleteResource403ResponseBody: Codable, Hashable {
 
-    public var errors: [SquareConnectionsReadById403ResponseBodyErrorsInner]
+    public var errors: [AtomicOperations403ResponseBodyErrorsInner]
 
     public init(
-        errors: [SquareConnectionsReadById403ResponseBodyErrorsInner]
+        errors: [AtomicOperations403ResponseBodyErrorsInner]
     ) {
         self.errors = errors
     }

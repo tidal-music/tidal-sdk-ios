@@ -116,7 +116,7 @@ Name | Type | Description  | Notes
 
 Update selectedSite relationship (\"to-one\").
 
-Updates selectedSite relationship.
+Replaces the selected Square site. Explicit null data clears the selection without deleting the site. Returns the selected site linkage, or null data when cleared.
 
 ### Example
 ```swift

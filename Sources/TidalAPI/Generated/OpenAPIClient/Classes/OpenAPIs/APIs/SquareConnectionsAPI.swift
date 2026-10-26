@@ -148,7 +148,7 @@ internal class SquareConnectionsAPI {
     /**
      Update selectedSite relationship (\"to-one\").
      - PATCH /squareConnections/{id}/relationships/selectedSite
-     - Updates selectedSite relationship.
+     - Replaces the selected Square site. Explicit null data clears the selection without deleting the site. Returns the selected site linkage, or null data when cleared.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
