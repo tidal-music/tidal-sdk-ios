@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct SquareItemsArtworksRelationshipUpdateOperationPayload: Codable, Hashable {
 
-    public static let dataRule = ArrayRule(minItems: 1, maxItems: 20, uniqueItems: false)
+    public static let dataRule = ArrayRule(minItems: 0, maxItems: 50, uniqueItems: false)
     public var data: [ItemArtwork]
     public var meta: SquareItemsArtworksRelationshipUpdateOperationPayloadMeta
 

@@ -16,7 +16,6 @@ public struct SquareItemsArtworksUpdateMultiDataRelationship409ResponseBodyError
         case catalogVersionMismatch = "CATALOG_VERSION_MISMATCH"
         case conflict = "CONFLICT"
         case idempotentRequestInProgress = "IDEMPOTENT_REQUEST_IN_PROGRESS"
-        case imageLimitExceeded = "IMAGE_LIMIT_EXCEEDED"
         case missingItemsScope = "MISSING_ITEMS_SCOPE"
     }
     public var code: Code
