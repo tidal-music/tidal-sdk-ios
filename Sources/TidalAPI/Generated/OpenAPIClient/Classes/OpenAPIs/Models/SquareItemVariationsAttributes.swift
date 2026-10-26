@@ -29,7 +29,7 @@ public struct SquareItemVariationsAttributes: Codable, Hashable {
     public var price: String?
     /** Effective pricing mode at the selected site's shipping location (merchant-main fallback). Price is present only for FIXED when its amount is available */
     public var pricingType: PricingType
-    /** Square variation revision covering its catalog fields, including name, pricing and stock tracking; excludes inventory quantity and other variations */
+    /** Square variation revision covering its catalog fields, including name, pricing, stock tracking and attached artworks; excludes inventory quantity and other variations */
     public var revision: Int64
     /** Units at the selected site's shipping location (merchant-main fallback); present only when tracked and available; may be negative */
     public var stockQuantity: Int64?

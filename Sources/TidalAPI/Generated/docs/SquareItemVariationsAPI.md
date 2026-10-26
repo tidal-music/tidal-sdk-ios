@@ -8,6 +8,8 @@ Method | HTTP request | Description
 [**squareItemVariationsIdDelete**](SquareItemVariationsAPI.md#squareitemvariationsiddelete) | **DELETE** /squareItemVariations/{id} | Delete single squareItemVariation.
 [**squareItemVariationsIdGet**](SquareItemVariationsAPI.md#squareitemvariationsidget) | **GET** /squareItemVariations/{id} | Get single squareItemVariation.
 [**squareItemVariationsIdPatch**](SquareItemVariationsAPI.md#squareitemvariationsidpatch) | **PATCH** /squareItemVariations/{id} | Update single squareItemVariation.
+[**squareItemVariationsIdRelationshipsArtworksGet**](SquareItemVariationsAPI.md#squareitemvariationsidrelationshipsartworksget) | **GET** /squareItemVariations/{id}/relationships/artworks | Get artworks relationship (\&quot;to-many\&quot;).
+[**squareItemVariationsIdRelationshipsArtworksPatch**](SquareItemVariationsAPI.md#squareitemvariationsidrelationshipsartworkspatch) | **PATCH** /squareItemVariations/{id}/relationships/artworks | Update artworks relationship (\&quot;to-many\&quot;).
 [**squareItemVariationsIdRelationshipsOwnersGet**](SquareItemVariationsAPI.md#squareitemvariationsidrelationshipsownersget) | **GET** /squareItemVariations/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**squareItemVariationsPost**](SquareItemVariationsAPI.md#squareitemvariationspost) | **POST** /squareItemVariations | Create single squareItemVariation.
 
@@ -123,7 +125,7 @@ Retrieves single squareItemVariation by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Square variation id
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: artworks, owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single squareItemVariation.
@@ -140,7 +142,7 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Square variation id | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: artworks, owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
@@ -196,6 +198,106 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**SquareItemVariationsUpdateSingleResourceDataDocument**](SquareItemVariationsUpdateSingleResourceDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **squareItemVariationsIdRelationshipsArtworksGet**
+```swift
+    open class func squareItemVariationsIdRelationshipsArtworksGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SquareItemVariationsArtworksMultiRelationshipDataDocument
+```
+
+Get artworks relationship (\"to-many\").
+
+Artworks of the variation's Square catalog images in Square's display order. An image Square has no URL for stays in the list and its artwork has no files. Returns the variation revision the list was read at.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Square variation id
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: artworks (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get artworks relationship (\"to-many\").
+do {
+    let response = try await SquareItemVariationsAPI.squareItemVariationsIdRelationshipsArtworksGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Square variation id | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: artworks | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**SquareItemVariationsArtworksMultiRelationshipDataDocument**](SquareItemVariationsArtworksMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **squareItemVariationsIdRelationshipsArtworksPatch**
+```swift
+    open class func squareItemVariationsIdRelationshipsArtworksPatch(id: String, idempotencyKey: String, squareItemVariationsArtworksRelationshipUpdateOperationPayload: SquareItemVariationsArtworksRelationshipUpdateOperationPayload? = nil) async throws -> SquareItemVariationsArtworksUpdateMultiRelationshipDataDocument
+```
+
+Update artworks relationship (\"to-many\").
+
+Replaces the variation's photos with the complete ordered list. Omitted photos are detached and stay in the seller's Square catalog; an empty list clears them. The first artwork is the primary photo. Duplicate artwork IDs are rejected. Uploaded TIDAL JPEG artworks, at most 15,000,000 bytes, are copied to Square and attached under new artwork IDs; their originals stay unchanged. Existing Square artworks must belong to this seller and are attached directly; they need not be the item's photos. Returns the complete resulting linkage in display order and the committed variation revision. Copies may remain in Square if the replacement fails. Retry unchanged with the original Idempotency-Key after a timeout or 5xx. Recovery is bounded by Marketplace receipts and Square's idempotency retention, and can be blocked if the variation is deleted or a source becomes unavailable or ineligible. Read the variation again to reconcile its current state.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Square variation id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned.
+let squareItemVariationsArtworksRelationshipUpdateOperationPayload = SquareItemVariationsArtworksRelationshipUpdateOperation_Payload(data: [Artwork(id: "id_example", type: "type_example")], meta: SquareItemVariationsArtworksRelationshipUpdateOperation_Payload_meta(expectedRevision: 123, mode: "mode_example")) // SquareItemVariationsArtworksRelationshipUpdateOperationPayload |  (optional)
+
+// Update artworks relationship (\"to-many\").
+do {
+    let response = try await SquareItemVariationsAPI.squareItemVariationsIdRelationshipsArtworksPatch(id: id, idempotencyKey: idempotencyKey, squareItemVariationsArtworksRelationshipUpdateOperationPayload: squareItemVariationsArtworksRelationshipUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Square variation id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | 
+ **squareItemVariationsArtworksRelationshipUpdateOperationPayload** | [**SquareItemVariationsArtworksRelationshipUpdateOperationPayload**](SquareItemVariationsArtworksRelationshipUpdateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+[**SquareItemVariationsArtworksUpdateMultiRelationshipDataDocument**](SquareItemVariationsArtworksUpdateMultiRelationshipDataDocument.md)
 
 ### Authorization
 

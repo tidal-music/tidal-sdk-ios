@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **itemId** | **String** |  | 
 **legacySource** | [**LegacySource**](LegacySource.md) |  | [optional] 
 **position** | **String** |  | [optional] 
+**positionRevision** | **Int64** | Position revision for this itemId; advances only on explicit position writes. | [optional] 
 **positionUpdatedAt** | **Date** |  | [optional] 
 **updatedByInstallationId** | **String** |  | [optional] 
 
