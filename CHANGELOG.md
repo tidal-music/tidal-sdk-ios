@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.16] - 2026-10-27
+
+### Fixed
+- Preserve quoted media-type parameters so atomic Square item creation is accepted by the API (TidalAPI)
+
 ## [0.12.15] - 2026-10-26
 
 ### Changed
