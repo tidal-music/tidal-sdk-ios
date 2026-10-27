@@ -27,7 +27,7 @@ jobs:
         elif [ "${{ github.event_name }}" = "merge_group" ]; then
             echo "BASE_BRANCH=${{ github.event.merge_group.base_ref }}" >> $GITHUB_OUTPUT
             echo "FEATURE_BRANCH=" >> $GITHUB_OUTPUT  # Leave empty; already checked out
-        elif [ "${{ github.event_name }}" = "push" ]; then
+        elif [ "$GITHUB_EVENT_NAME" = "push" ] || [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
             echo "BASE_BRANCH=${{ github.ref_name }}" >> $GITHUB_OUTPUT
             echo "FEATURE_BRANCH=" >> $GITHUB_OUTPUT
         else
@@ -44,6 +44,12 @@ jobs:
 
     - name: Find modified Swift files and lint them
       run: |
+        if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+          # A release retry must lint the current checkout even without a new diff.
+          ./bin/swiftlint/run-swiftlint.sh
+          exit $?
+        fi
+
         RAW_BASE_BRANCH="${{ steps.vars.outputs.BASE_BRANCH }}"
         RAW_FEATURE_BRANCH="${{ steps.vars.outputs.FEATURE_BRANCH }}"
 
