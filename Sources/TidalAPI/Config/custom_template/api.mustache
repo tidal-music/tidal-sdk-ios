@@ -444,7 +444,7 @@ extension {{projectName}}API {
         let localVariableNillableHeaders: [String: Any?] = [{{^headerParams}}{{^hasFormParams}}{{^hasConsumes}}
             :{{/hasConsumes}}{{/hasFormParams}}{{/headerParams}}{{#hasFormParams}}
             "Content-Type": {{^consumes}}"multipart/form-data"{{/consumes}}{{#consumes.0}}"{{{mediaType}}}"{{/consumes.0}},{{/hasFormParams}}{{^hasFormParams}}{{#hasConsumes}}
-            "Content-Type": {{#consumes.0}}"{{{mediaType}}}"{{/consumes.0}},{{/hasConsumes}}{{/hasFormParams}}{{#headerParams}}
+            "Content-Type": {{#vendorExtensions.x-swift-content-type}}{{{vendorExtensions.x-swift-content-type}}}{{/vendorExtensions.x-swift-content-type}}{{^vendorExtensions.x-swift-content-type}}{{#consumes.0}}"{{{mediaType}}}"{{/consumes.0}}{{/vendorExtensions.x-swift-content-type}},{{/hasConsumes}}{{/hasFormParams}}{{#headerParams}}
             {{> _param}},{{/headerParams}}
         ]
 

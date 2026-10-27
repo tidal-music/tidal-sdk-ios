@@ -48,7 +48,7 @@ internal class SquareItemVariationsAPI {
         let localVariableUrlComponents = URLComponents(string: localVariableURLString)
 
         let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json;ext=https://jsonapi.org/ext/atomic",
+            "Content-Type": "application/vnd.api+json;ext=\"https://jsonapi.org/ext/atomic\"",
             "Idempotency-Key": idempotencyKey.encodeToJSON(),
         ]
 
