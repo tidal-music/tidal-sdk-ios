@@ -212,6 +212,18 @@ public enum TracksAPITidal {
 
 
 	/**
+     Update artists relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func tracksIdRelationshipsArtistsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksArtistsRelationshipUpdateOperationPayload: TracksArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			TracksAPI.tracksIdRelationshipsArtistsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, tracksArtistsRelationshipUpdateOperationPayload: tracksArtistsRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Get credits relationship (\&quot;to-many\&quot;).
      
      - returns: TracksCreditsMultiRelationshipDataDocument

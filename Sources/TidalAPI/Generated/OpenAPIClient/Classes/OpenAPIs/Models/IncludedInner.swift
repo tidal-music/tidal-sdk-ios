@@ -22,6 +22,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artistSalesStatisticsResourceObject(ArtistSalesStatisticsResourceObject)
     case artistStreamsStatisticsResourceObject(ArtistStreamsStatisticsResourceObject)
     case artistsResourceObject(ArtistsResourceObject)
+    case artworkLibrariesResourceObject(ArtworkLibrariesResourceObject)
     case artworksResourceObject(ArtworksResourceObject)
     case changeEventStreamsResourceObject(ChangeEventStreamsResourceObject)
     case clientCertificatesResourceObject(ClientCertificatesResourceObject)
@@ -54,6 +55,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case purchasesResourceObject(PurchasesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
     case resourceGrantsResourceObject(ResourceGrantsResourceObject)
+    case resourceSharingSettingsResourceObject(ResourceSharingSettingsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
     case scopesResourceObject(ScopesResourceObject)
     case searchHistoryEntriesResourceObject(SearchHistoryEntriesResourceObject)
@@ -125,6 +127,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .artistsResourceObject(let value):
             try container.encode(value)
+        case .artworkLibrariesResourceObject(let value):
+            try container.encode(value)
         case .artworksResourceObject(let value):
             try container.encode(value)
         case .changeEventStreamsResourceObject(let value):
@@ -188,6 +192,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .reactionsResourceObject(let value):
             try container.encode(value)
         case .resourceGrantsResourceObject(let value):
+            try container.encode(value)
+        case .resourceSharingSettingsResourceObject(let value):
             try container.encode(value)
         case .savedSharesResourceObject(let value):
             try container.encode(value)
@@ -324,6 +330,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "artists":
             let value = try ArtistsResourceObject(from: decoder)
             self = .artistsResourceObject(value)
+        case "artworkLibraries":
+            let value = try ArtworkLibrariesResourceObject(from: decoder)
+            self = .artworkLibrariesResourceObject(value)
         case "artworks":
             let value = try ArtworksResourceObject(from: decoder)
             self = .artworksResourceObject(value)
@@ -420,6 +429,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "resourceGrants":
             let value = try ResourceGrantsResourceObject(from: decoder)
             self = .resourceGrantsResourceObject(value)
+        case "resourceSharingSettings":
+            let value = try ResourceSharingSettingsResourceObject(from: decoder)
+            self = .resourceSharingSettingsResourceObject(value)
         case "savedShares":
             let value = try SavedSharesResourceObject(from: decoder)
             self = .savedSharesResourceObject(value)
@@ -576,6 +588,7 @@ extension IncludedInner: Identifiable {
         case .artistSalesStatisticsResourceObject(let value): return value.id
         case .artistStreamsStatisticsResourceObject(let value): return value.id
         case .artistsResourceObject(let value): return value.id
+        case .artworkLibrariesResourceObject(let value): return value.id
         case .artworksResourceObject(let value): return value.id
         case .changeEventStreamsResourceObject(let value): return value.id
         case .clientCertificatesResourceObject(let value): return value.id
@@ -608,6 +621,7 @@ extension IncludedInner: Identifiable {
         case .purchasesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
         case .resourceGrantsResourceObject(let value): return value.id
+        case .resourceSharingSettingsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
         case .scopesResourceObject(let value): return value.id
         case .searchHistoryEntriesResourceObject(let value): return value.id

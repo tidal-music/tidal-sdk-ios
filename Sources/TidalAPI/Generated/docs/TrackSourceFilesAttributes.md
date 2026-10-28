@@ -5,6 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **downloadLink** | [**LinkObject**](LinkObject.md) |  | [optional] 
 **md5Hash** | **String** | MD5 hash of file to be uploaded | 
+**processing** | [**SourceProcessing**](SourceProcessing.md) |  | [optional] 
 **size** | **Int64** | File size of the track in bytes | 
 **status** | [**FileStatus**](FileStatus.md) |  | 
 **uploadLink** | [**FileUploadLink**](FileUploadLink.md) |  | [optional] 

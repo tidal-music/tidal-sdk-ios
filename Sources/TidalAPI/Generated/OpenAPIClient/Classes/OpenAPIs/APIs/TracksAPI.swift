@@ -517,6 +517,63 @@ internal class TracksAPI {
     }
 
     /**
+     Update artists relationship (\"to-many\").
+     
+     - parameter id: (path) Track id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - parameter tracksArtistsRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: MutationResponseDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func tracksIdRelationshipsArtistsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksArtistsRelationshipUpdateOperationPayload: TracksArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+        do {
+            return try await tracksIdRelationshipsArtistsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, tracksArtistsRelationshipUpdateOperationPayload: tracksArtistsRelationshipUpdateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Update artists relationship (\"to-many\").
+     - PATCH /tracks/{id}/relationships/artists
+     - Sets the track's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the track or its album. Only the track's owner can change its artists. Returns an acknowledgement.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Track id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - parameter tracksArtistsRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<MutationResponseDocument> 
+     */
+    internal class func tracksIdRelationshipsArtistsPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksArtistsRelationshipUpdateOperationPayload: TracksArtistsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
+        var localVariablePath = "/tracks/{id}/relationships/artists"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: tracksArtistsRelationshipUpdateOperationPayload)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get credits relationship (\"to-many\").
      
      - parameter id: (path) Track id 

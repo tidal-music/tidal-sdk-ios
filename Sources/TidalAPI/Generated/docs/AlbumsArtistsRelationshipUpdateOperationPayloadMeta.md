@@ -1,4 +1,4 @@
-# AlbumsCoverArtRelationshipUpdateOperationPayloadMeta
+# AlbumsArtistsRelationshipUpdateOperationPayloadMeta
 
 ## Properties
 Name | Type | Description | Notes

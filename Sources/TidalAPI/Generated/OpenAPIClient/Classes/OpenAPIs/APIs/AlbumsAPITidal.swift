@@ -180,6 +180,18 @@ public enum AlbumsAPITidal {
 
 
 	/**
+     Update artists relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func albumsIdRelationshipsArtistsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsArtistsRelationshipUpdateOperationPayload: AlbumsArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsArtistsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsArtistsRelationshipUpdateOperationPayload: albumsArtistsRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Get coverArt relationship (\&quot;to-many\&quot;).
      
      - returns: AlbumsCoverArtMultiRelationshipDataDocument

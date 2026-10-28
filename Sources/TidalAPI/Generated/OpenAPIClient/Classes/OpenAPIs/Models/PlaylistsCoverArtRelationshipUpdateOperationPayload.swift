@@ -14,11 +14,11 @@ public struct PlaylistsCoverArtRelationshipUpdateOperationPayload: Codable, Hash
 
     public static let dataRule = ArrayRule(minItems: 0, maxItems: 1, uniqueItems: false)
     public var data: [PlaylistsCoverArtRelationshipUpdateOperationPayloadData]
-    public var meta: AlbumsCoverArtRelationshipUpdateOperationPayloadMeta?
+    public var meta: AlbumsArtistsRelationshipUpdateOperationPayloadMeta?
 
     public init(
         data: [PlaylistsCoverArtRelationshipUpdateOperationPayloadData],
-        meta: AlbumsCoverArtRelationshipUpdateOperationPayloadMeta? = nil
+        meta: AlbumsArtistsRelationshipUpdateOperationPayloadMeta? = nil
     ) {
         self.data = data
         self.meta = meta

@@ -11,6 +11,7 @@ Method | HTTP request | Description
 [**tracksIdRelationshipsAlbumsGet**](TracksAPI.md#tracksidrelationshipsalbumsget) | **GET** /tracks/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsAlbumsPatch**](TracksAPI.md#tracksidrelationshipsalbumspatch) | **PATCH** /tracks/{id}/relationships/albums | Update albums relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsArtistsGet**](TracksAPI.md#tracksidrelationshipsartistsget) | **GET** /tracks/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
+[**tracksIdRelationshipsArtistsPatch**](TracksAPI.md#tracksidrelationshipsartistspatch) | **PATCH** /tracks/{id}/relationships/artists | Update artists relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsCreditsGet**](TracksAPI.md#tracksidrelationshipscreditsget) | **GET** /tracks/{id}/relationships/credits | Get credits relationship (\&quot;to-many\&quot;).
 [**tracksIdRelationshipsDownloadGet**](TracksAPI.md#tracksidrelationshipsdownloadget) | **GET** /tracks/{id}/relationships/download | Get download relationship (\&quot;to-one\&quot;).
 [**tracksIdRelationshipsGenresGet**](TracksAPI.md#tracksidrelationshipsgenresget) | **GET** /tracks/{id}/relationships/genres | Get genres relationship (\&quot;to-many\&quot;).
@@ -325,7 +326,7 @@ import OpenAPIClient
 let id = "id_example" // String | Track id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
-let tracksAlbumsRelationshipUpdateOperationPayload = TracksAlbumsRelationshipUpdateOperation_Payload(data: [TracksAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsCoverArtRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // TracksAlbumsRelationshipUpdateOperationPayload |  (optional)
+let tracksAlbumsRelationshipUpdateOperationPayload = TracksAlbumsRelationshipUpdateOperation_Payload(data: [TracksAlbumsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsArtistsRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // TracksAlbumsRelationshipUpdateOperationPayload |  (optional)
 
 // Update albums relationship (\"to-many\").
 do {
@@ -412,6 +413,58 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **tracksIdRelationshipsArtistsPatch**
+```swift
+    open class func tracksIdRelationshipsArtistsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, tracksArtistsRelationshipUpdateOperationPayload: TracksArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+```
+
+Update artists relationship (\"to-many\").
+
+Sets the track's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the track or its album. Only the track's owner can change its artists. Returns an acknowledgement.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Track id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
+let tracksArtistsRelationshipUpdateOperationPayload = TracksArtistsRelationshipUpdateOperation_Payload(data: [TracksArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsArtistsRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // TracksArtistsRelationshipUpdateOperationPayload |  (optional)
+
+// Update artists relationship (\"to-many\").
+do {
+    let response = try await TracksAPI.tracksIdRelationshipsArtistsPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, tracksArtistsRelationshipUpdateOperationPayload: tracksArtistsRelationshipUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Track id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
+ **tracksArtistsRelationshipUpdateOperationPayload** | [**TracksArtistsRelationshipUpdateOperationPayload**](TracksArtistsRelationshipUpdateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+[**MutationResponseDocument**](MutationResponseDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
