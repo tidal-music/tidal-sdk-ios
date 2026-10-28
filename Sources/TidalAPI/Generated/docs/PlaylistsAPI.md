@@ -456,7 +456,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let playlistsCoverArtRelationshipUpdateOperationPayload = PlaylistsCoverArtRelationshipUpdateOperation_Payload(data: [PlaylistsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsCoverArtRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // PlaylistsCoverArtRelationshipUpdateOperationPayload |  (optional)
+let playlistsCoverArtRelationshipUpdateOperationPayload = PlaylistsCoverArtRelationshipUpdateOperation_Payload(data: [PlaylistsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsArtistsRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // PlaylistsCoverArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update coverArt relationship (\"to-many\").
 do {

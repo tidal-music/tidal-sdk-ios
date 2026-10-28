@@ -17,6 +17,7 @@ public struct TrackSourceFilesAttributes: Codable, Hashable {
     public var downloadLink: LinkObject?
     /** MD5 hash of file to be uploaded */
     public var md5Hash: String
+    public var processing: SourceProcessing?
     /** File size of the track in bytes */
     public var size: Int64
     public var status: FileStatus
@@ -25,12 +26,14 @@ public struct TrackSourceFilesAttributes: Codable, Hashable {
     public init(
         downloadLink: LinkObject? = nil,
         md5Hash: String,
+        processing: SourceProcessing? = nil,
         size: Int64,
         status: FileStatus,
         uploadLink: FileUploadLink? = nil
     ) {
         self.downloadLink = downloadLink
         self.md5Hash = md5Hash
+        self.processing = processing
         self.size = size
         self.status = status
         self.uploadLink = uploadLink
@@ -39,6 +42,7 @@ public struct TrackSourceFilesAttributes: Codable, Hashable {
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case downloadLink
         case md5Hash
+        case processing
         case size
         case status
         case uploadLink
@@ -50,6 +54,7 @@ public struct TrackSourceFilesAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(downloadLink, forKey: .downloadLink)
         try container.encode(md5Hash, forKey: .md5Hash)
+        try container.encodeIfPresent(processing, forKey: .processing)
         try container.encode(size, forKey: .size)
         try container.encode(status, forKey: .status)
         try container.encodeIfPresent(uploadLink, forKey: .uploadLink)

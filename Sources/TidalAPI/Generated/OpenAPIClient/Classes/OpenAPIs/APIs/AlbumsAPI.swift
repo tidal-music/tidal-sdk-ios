@@ -438,6 +438,63 @@ internal class AlbumsAPI {
     }
 
     /**
+     Update artists relationship (\"to-many\").
+     
+     - parameter id: (path) Album id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - parameter albumsArtistsRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: MutationResponseDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func albumsIdRelationshipsArtistsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsArtistsRelationshipUpdateOperationPayload: AlbumsArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+        do {
+            return try await albumsIdRelationshipsArtistsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsArtistsRelationshipUpdateOperationPayload: albumsArtistsRelationshipUpdateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Update artists relationship (\"to-many\").
+     - PATCH /albums/{id}/relationships/artists
+     - Sets the album's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the album. Only the album's owner can change its artists. Returns an acknowledgement.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Album id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - parameter albumsArtistsRelationshipUpdateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<MutationResponseDocument> 
+     */
+    internal class func albumsIdRelationshipsArtistsPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsArtistsRelationshipUpdateOperationPayload: AlbumsArtistsRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<MutationResponseDocument> {
+        var localVariablePath = "/albums/{id}/relationships/artists"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: albumsArtistsRelationshipUpdateOperationPayload)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get coverArt relationship (\"to-many\").
      
      - parameter id: (path) Album id 
@@ -1263,7 +1320,7 @@ internal class AlbumsAPI {
     /**
      Create single album.
      - POST /albums
-     - Creates a new album.
+     - Creates an uploaded album. Album creation is not atomic with its artist assignment, so every listed artist must be owned by the caller; a collaborator or album-level grant is not enough until the album exists.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

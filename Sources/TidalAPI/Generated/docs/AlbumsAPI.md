@@ -10,6 +10,7 @@ Method | HTTP request | Description
 [**albumsIdPatch**](AlbumsAPI.md#albumsidpatch) | **PATCH** /albums/{id} | Update single album.
 [**albumsIdRelationshipsAlbumStatisticsGet**](AlbumsAPI.md#albumsidrelationshipsalbumstatisticsget) | **GET** /albums/{id}/relationships/albumStatistics | Get albumStatistics relationship (\&quot;to-one\&quot;).
 [**albumsIdRelationshipsArtistsGet**](AlbumsAPI.md#albumsidrelationshipsartistsget) | **GET** /albums/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
+[**albumsIdRelationshipsArtistsPatch**](AlbumsAPI.md#albumsidrelationshipsartistspatch) | **PATCH** /albums/{id}/relationships/artists | Update artists relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsCoverArtGet**](AlbumsAPI.md#albumsidrelationshipscoverartget) | **GET** /albums/{id}/relationships/coverArt | Get coverArt relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsCoverArtPatch**](AlbumsAPI.md#albumsidrelationshipscoverartpatch) | **PATCH** /albums/{id}/relationships/coverArt | Update coverArt relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsGenresGet**](AlbumsAPI.md#albumsidrelationshipsgenresget) | **GET** /albums/{id}/relationships/genres | Get genres relationship (\&quot;to-many\&quot;).
@@ -354,6 +355,58 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **albumsIdRelationshipsArtistsPatch**
+```swift
+    open class func albumsIdRelationshipsArtistsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsArtistsRelationshipUpdateOperationPayload: AlbumsArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
+```
+
+Update artists relationship (\"to-many\").
+
+Sets the album's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the album. Only the album's owner can change its artists. Returns an acknowledgement.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Album id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
+let albumsArtistsRelationshipUpdateOperationPayload = AlbumsArtistsRelationshipUpdateOperation_Payload(data: [AlbumsArtistsRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsArtistsRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // AlbumsArtistsRelationshipUpdateOperationPayload |  (optional)
+
+// Update artists relationship (\"to-many\").
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsArtistsPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsArtistsRelationshipUpdateOperationPayload: albumsArtistsRelationshipUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Album id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
+ **albumsArtistsRelationshipUpdateOperationPayload** | [**AlbumsArtistsRelationshipUpdateOperationPayload**](AlbumsArtistsRelationshipUpdateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+[**MutationResponseDocument**](MutationResponseDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **albumsIdRelationshipsCoverArtGet**
 ```swift
     open class func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsCoverArtMultiRelationshipDataDocument
@@ -425,7 +478,7 @@ import OpenAPIClient
 let id = "id_example" // String | Album id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
-let albumsCoverArtRelationshipUpdateOperationPayload = AlbumsCoverArtRelationshipUpdateOperation_Payload(data: [AlbumsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsCoverArtRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // AlbumsCoverArtRelationshipUpdateOperationPayload |  (optional)
+let albumsCoverArtRelationshipUpdateOperationPayload = AlbumsCoverArtRelationshipUpdateOperation_Payload(data: [AlbumsCoverArtRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")], meta: AlbumsArtistsRelationshipUpdateOperation_Payload_meta(mode: "mode_example")) // AlbumsCoverArtRelationshipUpdateOperationPayload |  (optional)
 
 // Update coverArt relationship (\"to-many\").
 do {
@@ -1055,7 +1108,7 @@ Name | Type | Description  | Notes
 
 Create single album.
 
-Creates a new album.
+Creates an uploaded album. Album creation is not atomic with its artist assignment, so every listed artist must be owned by the caller; a collaborator or album-level grant is not enough until the album exists.
 
 ### Example
 ```swift

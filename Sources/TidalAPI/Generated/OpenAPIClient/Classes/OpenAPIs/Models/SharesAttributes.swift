@@ -22,18 +22,24 @@ public struct SharesAttributes: Codable, Hashable {
     }
     public static let accessModesRule = ArrayRule(minItems: 1, maxItems: nil, uniqueItems: true)
     public static let codeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let maxUsesRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: 100, exclusiveMaximum: false, multipleOf: nil)
+    public static let useCountRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: 100, exclusiveMaximum: false, multipleOf: nil)
     /** Ways this share may be used to obtain access. BEARER permits access by presenting its code while active. VOUCHER permits an authenticated user to redeem it for a stored grant. Multiple modes may be enabled. */
     public var accessModes: Set<AccessModes>
     /** Share code */
     public var code: String
     /** Time the share was created. */
     public var createdAt: Date
-    /** Time bearer access and acceptance expire. New shares expire seven days after creation; accepted grants remain valid. */
+    /** Time bearer access and acceptance expire; accepted grants remain valid. */
     public var expiresAt: Date
     /** Links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
+    /** Number of users other than the owner who may save the share. Absent when unlimited. */
+    public var maxUses: Int?
     /** Role offered on the shared resource. */
     public var role: Role
+    /** Number of users other than the owner who have saved the share. Once it reaches maxUses, bearer access and acceptance end. Absent when maxUses is. */
+    public var useCount: Int?
 
     public init(
         accessModes: Set<AccessModes>,
@@ -41,14 +47,18 @@ public struct SharesAttributes: Codable, Hashable {
         createdAt: Date,
         expiresAt: Date,
         externalLinks: [ExternalLink]? = nil,
-        role: Role
+        maxUses: Int? = nil,
+        role: Role,
+        useCount: Int? = nil
     ) {
         self.accessModes = accessModes
         self.code = code
         self.createdAt = createdAt
         self.expiresAt = expiresAt
         self.externalLinks = externalLinks
+        self.maxUses = maxUses
         self.role = role
+        self.useCount = useCount
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -57,7 +67,9 @@ public struct SharesAttributes: Codable, Hashable {
         case createdAt
         case expiresAt
         case externalLinks
+        case maxUses
         case role
+        case useCount
     }
 
     // Encodable protocol methods
@@ -69,6 +81,8 @@ public struct SharesAttributes: Codable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(expiresAt, forKey: .expiresAt)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encodeIfPresent(maxUses, forKey: .maxUses)
         try container.encode(role, forKey: .role)
+        try container.encodeIfPresent(useCount, forKey: .useCount)
     }
 }
