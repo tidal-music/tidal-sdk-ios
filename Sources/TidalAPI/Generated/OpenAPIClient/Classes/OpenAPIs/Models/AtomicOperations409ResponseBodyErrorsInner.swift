@@ -16,6 +16,7 @@ public struct AtomicOperations409ResponseBodyErrorsInner: Codable, Hashable {
         case conflict = "CONFLICT"
         case idempotentRequestInProgress = "IDEMPOTENT_REQUEST_IN_PROGRESS"
         case missingItemsScope = "MISSING_ITEMS_SCOPE"
+        case siteNotSelected = "SITE_NOT_SELECTED"
     }
     public var code: Code
     public var detail: String?

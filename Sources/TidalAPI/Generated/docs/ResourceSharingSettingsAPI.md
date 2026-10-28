@@ -13,19 +13,19 @@ Method | HTTP request | Description
 
 # **resourceSharingSettingsGet**
 ```swift
-    open class func resourceSharingSettingsGet(filterSubject: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceSharingSettingsGet]? = nil, replaceMedia: String? = nil) async throws -> ResourceSharingSettingsMultiResourceDataDocument
+    open class func resourceSharingSettingsGet(filterSubject: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceSharingSettingsGet]? = nil, replaceMedia: String? = nil) async throws -> ResourceSharingSettingsMultiResourceDataDocument
 ```
 
 Get multiple resourceSharingSettings.
 
-Returns the sharing settings of a live access-core subject, or none when it has no node.
+Returns the sharing settings of up to 20 live access-core subjects. Subjects without a node, or that the caller does not own, return none.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterSubject = "filterSubject_example" // String | Filter by subject. Also accepts `folders:me`.
+let filterSubject = ["inner_example"] // [String] | Filter by subject. Also accepts `folders:me`.
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: grants, shares, subject (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: grants.subject (optional)
@@ -43,7 +43,7 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterSubject** | **String** | Filter by subject. Also accepts &#x60;folders:me&#x60;. | 
+ **filterSubject** | [**[String]**](String.md) | Filter by subject. Also accepts &#x60;folders:me&#x60;. | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: grants, shares, subject | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: grants.subject | [optional] 

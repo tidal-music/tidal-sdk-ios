@@ -29,7 +29,7 @@ Commits a supported group of resource creations together. Only add operations wi
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Retry an unchanged request with the original key after a timeout or server error. Replay is bounded by downstream receipt and idempotency retention.
-let atomicOperationsRequest = Atomic_Operations_Request(atomicOperations: [Atomic_Operations_Request_atomic_operations_inner(data: SquareItemsCreateOperation_Payload_Data(attributes: SquareItemsCreateOperation_Payload_Data_Attributes(description: "description_example", title: "title_example"), lid: "lid_example", type: "type_example"), op: "op_example")]) // AtomicOperationsRequest | 
+let atomicOperationsRequest = Atomic_Operations_Request(atomicOperations: [Atomic_Operations_Request_atomic_operations_inner(data: SquareItemsCreateOperation_Payload_Data(attributes: SquareItemsCreateOperation_Payload_Data_Attributes(description: "description_example", title: "title_example"), lid: "lid_example", relationships: SquareItemsCreateOperation_Payload_Data_Relationships(sites: SquareItemsCreateOperation_Payload_Data_Relationships_Sites(data: [Site(id: "id_example", type: "type_example")])), type: "type_example"), op: "op_example")]) // AtomicOperationsRequest | 
 
 // Commit atomic resource operations
 do {

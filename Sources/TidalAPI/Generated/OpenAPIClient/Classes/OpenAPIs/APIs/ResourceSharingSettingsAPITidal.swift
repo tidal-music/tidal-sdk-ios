@@ -36,7 +36,7 @@ public enum ResourceSharingSettingsAPITidal {
      
      - returns: ResourceSharingSettingsMultiResourceDataDocument
      */
-	public static func resourceSharingSettingsGet(filterSubject: String, include: [String]? = nil, includeLinkage: [ResourceSharingSettingsAPITidal.IncludeLinkage_resourceSharingSettingsGet]? = nil, replaceMedia: String? = nil) async throws -> ResourceSharingSettingsMultiResourceDataDocument {
+	public static func resourceSharingSettingsGet(filterSubject: [String], include: [String]? = nil, includeLinkage: [ResourceSharingSettingsAPITidal.IncludeLinkage_resourceSharingSettingsGet]? = nil, replaceMedia: String? = nil) async throws -> ResourceSharingSettingsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ResourceSharingSettingsAPI.resourceSharingSettingsGetWithRequestBuilder(filterSubject: filterSubject, include: include, includeLinkage: includeLinkage?.compactMap { $0.toResourceSharingSettingsAPIEnum() }, replaceMedia: replaceMedia)
 		}

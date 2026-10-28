@@ -10,7 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Creates an item together with 1–100 variation add operations in one atomic request. The item must precede its variations and have a local ID. Inventory counts are submitted separately. */
+/** Creates an item together with 1–100 variation add operations in one atomic request. The item must precede its variations and have a local ID. Inventory counts are submitted separately. Optional sites linkage publishes the item and every variation in that site in the same catalog batch. Only the seller&#39;s selected site is supported; another site returns SITE_NOT_SELECTED. Omission leaves Square&#39;s default publication behavior unchanged. */
 public struct AtomicOperationsRequestAtomicOperationsInnerOneOf1: Codable, Hashable {
 
     public enum Op: String, Codable, CaseIterable {
