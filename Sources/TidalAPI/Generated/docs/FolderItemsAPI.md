@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**folderItemsIdRelationshipsParentGet**](FolderItemsAPI.md#folderitemsidrelationshipsparentget) | **GET** /folderItems/{id}/relationships/parent | Get parent relationship (\&quot;to-one\&quot;).
 [**folderItemsIdRelationshipsParentPatch**](FolderItemsAPI.md#folderitemsidrelationshipsparentpatch) | **PATCH** /folderItems/{id}/relationships/parent | Update parent relationship (\&quot;to-one\&quot;).
 [**folderItemsIdRelationshipsSubjectGet**](FolderItemsAPI.md#folderitemsidrelationshipssubjectget) | **GET** /folderItems/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
+[**folderItemsIdRelationshipsSubjectSharingSettingsGet**](FolderItemsAPI.md#folderitemsidrelationshipssubjectsharingsettingsget) | **GET** /folderItems/{id}/relationships/subjectSharingSettings | Get subjectSharingSettings relationship (\&quot;to-one\&quot;).
 [**folderItemsPost**](FolderItemsAPI.md#folderitemspost) | **POST** /folderItems | Create single folderItem.
 
 
@@ -36,7 +37,7 @@ let filterQuery = "filterQuery_example" // String | Searches every folder in you
 let filterSubjectAlbumsPublished = "filterSubjectAlbumsPublished_example" // String | Searches every folder in your tree, selected with parent.owners.id=me, for albums that are (true) or are not (false) published, and lists them in one flat list. Other items never match. Combines with query. (e.g. `true`) (optional)
 let filterSubjectOwnersId = "filterSubjectOwnersId_example" // String | In your folders, `=me` selects owned placements and `[ne]=me` selects shared placements. In someone else's folder, `=me` returns no items and `[ne]=me` returns all items. Accepts only `me` or your own user ID. (optional)
 let filterSubjectOwnersIdNe = "filterSubjectOwnersIdNe_example" // String | In your folders, `=me` selects owned placements and `[ne]=me` selects shared placements. In someone else's folder, `=me` returns no items and `[ne]=me` returns all items. Accepts only `me` or your own user ID. (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: breadcrumb, owners, parent, subject, subjectSharingSettings (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: breadcrumb.children.subject (optional)
@@ -61,7 +62,7 @@ Name | Type | Description  | Notes
  **filterSubjectAlbumsPublished** | **String** | Searches every folder in your tree, selected with parent.owners.id&#x3D;me, for albums that are (true) or are not (false) published, and lists them in one flat list. Other items never match. Combines with query. (e.g. &#x60;true&#x60;) | [optional] 
  **filterSubjectOwnersId** | **String** | In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. | [optional] 
  **filterSubjectOwnersIdNe** | **String** | In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: breadcrumb, owners, parent, subject | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: breadcrumb, owners, parent, subject, subjectSharingSettings | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject | [optional] 
@@ -144,7 +145,7 @@ Retrieves single folderItem by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Folder item id
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: breadcrumb, owners, parent, subject, subjectSharingSettings (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: breadcrumb.children.subject (optional)
 
@@ -162,7 +163,7 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder item id | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: breadcrumb, owners, parent, subject | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: breadcrumb, owners, parent, subject, subjectSharingSettings | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject | [optional] 
 
@@ -421,6 +422,56 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**FolderItemsSubjectSingleRelationshipDataDocument**](FolderItemsSubjectSingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **folderItemsIdRelationshipsSubjectSharingSettingsGet**
+```swift
+    open class func folderItemsIdRelationshipsSubjectSharingSettingsGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument
+```
+
+Get subjectSharingSettings relationship (\"to-one\").
+
+Retrieves subjectSharingSettings relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Folder item id
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: subjectSharingSettings (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subjectSharingSettings.subject (optional)
+
+// Get subjectSharingSettings relationship (\"to-one\").
+do {
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsSubjectSharingSettingsGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Folder item id | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: subjectSharingSettings | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subjectSharingSettings.subject | [optional] 
+
+### Return type
+
+[**FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument**](FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument.md)
 
 ### Authorization
 

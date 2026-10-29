@@ -31,7 +31,7 @@ internal class ResourceSharingSettingsAPI {
      - returns: ResourceSharingSettingsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func resourceSharingSettingsGet(filterSubject: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceSharingSettingsGet]? = nil, replaceMedia: String? = nil) async throws -> ResourceSharingSettingsMultiResourceDataDocument {
+    internal class func resourceSharingSettingsGet(filterSubject: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceSharingSettingsGet]? = nil, replaceMedia: String? = nil) async throws -> ResourceSharingSettingsMultiResourceDataDocument {
         do {
             return try await resourceSharingSettingsGetWithRequestBuilder(filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
@@ -43,7 +43,7 @@ internal class ResourceSharingSettingsAPI {
     /**
      Get multiple resourceSharingSettings.
      - GET /resourceSharingSettings
-     - Returns the sharing settings of a live access-core subject, or none when it has no node.
+     - Returns the sharing settings of up to 20 live access-core subjects. Subjects without a node, or that the caller does not own, return none.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -53,7 +53,7 @@ internal class ResourceSharingSettingsAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: grants.subject (optional)
      - returns: RequestBuilder<ResourceSharingSettingsMultiResourceDataDocument> 
      */
-    internal class func resourceSharingSettingsGetWithRequestBuilder(filterSubject: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceSharingSettingsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ResourceSharingSettingsMultiResourceDataDocument> {
+    internal class func resourceSharingSettingsGetWithRequestBuilder(filterSubject: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceSharingSettingsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ResourceSharingSettingsMultiResourceDataDocument> {
         let localVariablePath = "/resourceSharingSettings"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
