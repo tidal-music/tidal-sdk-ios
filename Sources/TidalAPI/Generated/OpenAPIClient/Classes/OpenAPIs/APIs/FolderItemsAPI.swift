@@ -20,6 +20,7 @@ internal class FolderItemsAPI {
         case owners = "owners"
         case parent = "parent"
         case subject = "subject"
+        case subjectsharingsettings = "subjectSharingSettings"
     }
 
     /**
@@ -32,7 +33,7 @@ internal class FolderItemsAPI {
      - parameter filterSubjectAlbumsPublished: (query) Searches every folder in your tree, selected with parent.owners.id&#x3D;me, for albums that are (true) or are not (false) published, and lists them in one flat list. Other items never match. Combines with query. (e.g. &#x60;true&#x60;) (optional)
      - parameter filterSubjectOwnersId: (query) In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. (optional)
      - parameter filterSubjectOwnersIdNe: (query) In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. (optional)
-     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject, subjectSharingSettings (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
@@ -62,7 +63,7 @@ internal class FolderItemsAPI {
      - parameter filterSubjectAlbumsPublished: (query) Searches every folder in your tree, selected with parent.owners.id&#x3D;me, for albums that are (true) or are not (false) published, and lists them in one flat list. Other items never match. Combines with query. (e.g. &#x60;true&#x60;) (optional)
      - parameter filterSubjectOwnersId: (query) In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. (optional)
      - parameter filterSubjectOwnersIdNe: (query) In your folders, &#x60;&#x3D;me&#x60; selects owned placements and &#x60;[ne]&#x3D;me&#x60; selects shared placements. In someone else&#39;s folder, &#x60;&#x3D;me&#x60; returns no items and &#x60;[ne]&#x3D;me&#x60; returns all items. Accepts only &#x60;me&#x60; or your own user ID. (optional)
-     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject, subjectSharingSettings (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
@@ -156,13 +157,14 @@ internal class FolderItemsAPI {
         case owners = "owners"
         case parent = "parent"
         case subject = "subject"
+        case subjectsharingsettings = "subjectSharingSettings"
     }
 
     /**
      Get single folderItem.
      
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject, subjectSharingSettings (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
      - returns: FolderItemsSingleResourceDataDocument
@@ -185,7 +187,7 @@ internal class FolderItemsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder item id 
-     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, subject, subjectSharingSettings (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
      - returns: RequestBuilder<FolderItemsSingleResourceDataDocument> 
@@ -487,6 +489,61 @@ internal class FolderItemsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<FolderItemsSubjectSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get subjectSharingSettings relationship (\"to-one\").
+     
+     - parameter id: (path) Folder item id 
+     - parameter include: (query) Include related resources. Available relationships: subjectSharingSettings (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subjectSharingSettings.subject (optional)
+     - returns: FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func folderItemsIdRelationshipsSubjectSharingSettingsGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument {
+        do {
+            return try await folderItemsIdRelationshipsSubjectSharingSettingsGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get subjectSharingSettings relationship (\"to-one\").
+     - GET /folderItems/{id}/relationships/subjectSharingSettings
+     - Retrieves subjectSharingSettings relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Folder item id 
+     - parameter include: (query) Include related resources. Available relationships: subjectSharingSettings (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subjectSharingSettings.subject (optional)
+     - returns: RequestBuilder<FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument> 
+     */
+    internal class func folderItemsIdRelationshipsSubjectSharingSettingsGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument> {
+        var localVariablePath = "/folderItems/{id}/relationships/subjectSharingSettings"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

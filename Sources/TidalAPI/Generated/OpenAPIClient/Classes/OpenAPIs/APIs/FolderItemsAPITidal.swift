@@ -22,6 +22,7 @@ public enum FolderItemsAPITidal {
 		case owners = "owners"
 		case parent = "parent"
 		case subject = "subject"
+		case subjectsharingsettings = "subjectSharingSettings"
 
 		func toFolderItemsAPIEnum() -> FolderItemsAPI.IncludeLinkage_folderItemsGet {
 			switch self {
@@ -29,6 +30,7 @@ public enum FolderItemsAPITidal {
 			case .owners: return .owners
 			case .parent: return .parent
 			case .subject: return .subject
+			case .subjectsharingsettings: return .subjectsharingsettings
 			}
 		}
 	}
@@ -65,6 +67,7 @@ public enum FolderItemsAPITidal {
 		case owners = "owners"
 		case parent = "parent"
 		case subject = "subject"
+		case subjectsharingsettings = "subjectSharingSettings"
 
 		func toFolderItemsAPIEnum() -> FolderItemsAPI.IncludeLinkage_folderItemsIdGet {
 			switch self {
@@ -72,6 +75,7 @@ public enum FolderItemsAPITidal {
 			case .owners: return .owners
 			case .parent: return .parent
 			case .subject: return .subject
+			case .subjectsharingsettings: return .subjectsharingsettings
 			}
 		}
 	}
@@ -144,6 +148,18 @@ public enum FolderItemsAPITidal {
 	public static func folderItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSubjectSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			FolderItemsAPI.folderItemsIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Get subjectSharingSettings relationship (\&quot;to-one\&quot;).
+     
+     - returns: FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument
+     */
+	public static func folderItemsIdRelationshipsSubjectSharingSettingsGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			FolderItemsAPI.folderItemsIdRelationshipsSubjectSharingSettingsGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 
