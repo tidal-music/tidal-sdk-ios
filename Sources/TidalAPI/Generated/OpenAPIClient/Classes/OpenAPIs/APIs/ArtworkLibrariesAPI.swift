@@ -220,7 +220,7 @@ internal class ArtworkLibrariesAPI {
     /**
      Get randomArtwork relationship (\"to-one\").
      - GET /artworkLibraries/{id}/relationships/randomArtwork
-     - A random artwork from the library, used by clients to supply a default artwork, for example for albums without cover art. Picked per request from the artworks that have finished processing and are not flagged or taken down, and not stored; empty when there are none. The same pick may be returned for as long as the response is cached
+     - A random artwork from the library, used by clients to supply a default artwork, for example for albums without cover art. Picked per request from the artworks that have finished processing and are not flagged or taken down, and not stored; empty when there are none
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

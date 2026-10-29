@@ -167,7 +167,7 @@ Name | Type | Description  | Notes
 
 Get randomArtwork relationship (\"to-one\").
 
-A random artwork from the library, used by clients to supply a default artwork, for example for albums without cover art. Picked per request from the artworks that have finished processing and are not flagged or taken down, and not stored; empty when there are none. The same pick may be returned for as long as the response is cached
+A random artwork from the library, used by clients to supply a default artwork, for example for albums without cover art. Picked per request from the artworks that have finished processing and are not flagged or taken down, and not stored; empty when there are none
 
 ### Example
 ```swift
