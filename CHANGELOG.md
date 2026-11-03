@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.18] - 2026-10-28
+
+### Changed
+- Generated API code using spec version 1.10.217, including optional Square item publication during creation and folder subject sharing settings (TidalAPI)
+
 ## [0.12.17] - 2026-10-28
 
 ### Changed

@@ -5,6 +5,31 @@ import Testing
 // MARK: - AtomicOperationsRequestTests
 
 struct AtomicOperationsRequestTests {
+	@Test(arguments: [nil, "selected-tidal-site"] as [String?])
+	func creationIncludesOnlyAnExplicitPublicationTarget(siteID: String?) throws {
+		let operation = AtomicOperationsRequestAtomicOperationsInner.atomicOperationsRequestAtomicOperationsInnerOneOf1(.init(
+			data: .init(
+				attributes: .init(title: "Tour tee"), lid: "tee",
+				relationships: siteID.map { .init(sites: .init(data: [.init(id: $0, type: .squaresites)])) },
+				type: .squareitems
+			), op: .add
+		))
+		let builder = SquareItemsAPI.operationsPostWithRequestBuilder(
+			idempotencyKey: "create-item", atomicOperationsRequest: .init(atomicOperations: [operation])
+		)
+		let body = try #require(urlRequest(for: builder).httpBody)
+		let document = try #require(JSONSerialization.jsonObject(with: body) as? [String: Any])
+		let operations = try #require(document["atomic:operations"] as? [[String: Any]])
+		let item = try #require(operations.first?["data"] as? [String: Any])
+		if let siteID {
+			let relationships = try #require(item["relationships"] as? [String: Any])
+			let sites = try #require(relationships["sites"] as? [String: Any])
+			#expect(sites["data"] as? [[String: String]] == [["id": siteID, "type": "squareSites"]])
+		} else {
+			#expect(item["relationships"] == nil)
+		}
+	}
+
 	@Test
 	func atomicRequestsPreserveQuotedExtension() throws {
 		let payload = AtomicOperationsRequest(atomicOperations: [])
