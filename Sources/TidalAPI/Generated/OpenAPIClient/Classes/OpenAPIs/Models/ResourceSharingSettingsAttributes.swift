@@ -14,15 +14,20 @@ public struct ResourceSharingSettingsAttributes: Codable, Hashable {
 
     /** Whether anyone but the owner has a grant, or an active share link exists, on the subject or above it. */
     public var shared: Bool
+    /** Whether a folder or album above the subject is shared, so the subject stays shared whatever is set on it. */
+    public var sharedViaParent: Bool
 
     public init(
-        shared: Bool
+        shared: Bool,
+        sharedViaParent: Bool
     ) {
         self.shared = shared
+        self.sharedViaParent = sharedViaParent
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case shared
+        case sharedViaParent
     }
 
     // Encodable protocol methods
@@ -30,5 +35,6 @@ public struct ResourceSharingSettingsAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(shared, forKey: .shared)
+        try container.encode(sharedViaParent, forKey: .sharedViaParent)
     }
 }
