@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **groupsGet**
 ```swift
-    open class func groupsGet(filterName: String) async throws -> GroupsMultiResourceDataDocument
+    open class func groupsGet(filterId: [String]) async throws -> GroupsMultiResourceDataDocument
 ```
 
 Get multiple groups.
@@ -22,11 +22,11 @@ Retrieves multiple groups by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterName = "filterName_example" // String | Exact group name (case-sensitive) (e.g. `Everyone`)
+let filterId = ["inner_example"] // [String] | Group ID. The built-in Everyone group has the case-sensitive ID `everyone`.
 
 // Get multiple groups.
 do {
-    let response = try await GroupsAPI.groupsGet(filterName: filterName)
+    let response = try await GroupsAPI.groupsGet(filterId: filterId)
     dump(response)
 } catch {
     print(error)
@@ -37,7 +37,7 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterName** | **String** | Exact group name (case-sensitive) (e.g. &#x60;Everyone&#x60;) | 
+ **filterId** | [**[String]**](String.md) | Group ID. The built-in Everyone group has the case-sensitive ID &#x60;everyone&#x60;. | 
 
 ### Return type
 
@@ -68,7 +68,7 @@ Retrieves single group by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Group ID
+let id = "id_example" // String | Group ID. The built-in Everyone group has the case-sensitive ID `everyone`.
 
 // Get single group.
 do {
@@ -83,7 +83,7 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Group ID | 
+ **id** | **String** | Group ID. The built-in Everyone group has the case-sensitive ID &#x60;everyone&#x60;. | 
 
 ### Return type
 

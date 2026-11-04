@@ -25,12 +25,13 @@ internal class TrackSourceFilesAPI {
      - parameter id: (path) Track source file id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TrackSourceFilesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
+    internal class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
         do {
-            return try await trackSourceFilesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage).execute().body
+            return try await trackSourceFilesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -47,9 +48,10 @@ internal class TrackSourceFilesAPI {
      - parameter id: (path) Track source file id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TrackSourceFilesSingleResourceDataDocument> 
      */
-    internal class func trackSourceFilesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil) -> RequestBuilder<TrackSourceFilesSingleResourceDataDocument> {
+    internal class func trackSourceFilesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil, shareCode: String? = nil) -> RequestBuilder<TrackSourceFilesSingleResourceDataDocument> {
         var localVariablePath = "/trackSourceFiles/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -61,6 +63,7 @@ internal class TrackSourceFilesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -80,12 +83,13 @@ internal class TrackSourceFilesAPI {
      - parameter id: (path) Track source file id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TrackSourceFilesOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument {
+    internal class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument {
         do {
-            return try await trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+            return try await trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -102,9 +106,10 @@ internal class TrackSourceFilesAPI {
      - parameter id: (path) Track source file id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TrackSourceFilesOwnersMultiRelationshipDataDocument> 
      */
-    internal class func trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TrackSourceFilesOwnersMultiRelationshipDataDocument> {
+    internal class func trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<TrackSourceFilesOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/trackSourceFiles/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -116,6 +121,7 @@ internal class TrackSourceFilesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

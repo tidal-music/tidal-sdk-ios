@@ -32,7 +32,7 @@ internal class ResourceGrantsAPI {
     /**
      Get multiple resourceGrants.
      
-     - parameter filterGrantee: (query) Filter by grantee. Also accepts &#x60;users:me&#x60;. (optional)
+     - parameter filterGrantee: (query) Filter by grantee. Use &#x60;groups:everyone&#x60; for the Everyone group. Also accepts &#x60;users:me&#x60;. (optional)
      - parameter filterRole: (query) One of: VIEWER, COLLABORATOR, OWNER (e.g. &#x60;VIEWER&#x60;) (optional)
      - parameter filterSubject: (query) Filter by subject. Also accepts &#x60;folders:me&#x60;. (optional)
      - parameter include: (query) Include related resources. Available relationships: grantee, subject (optional)
@@ -58,7 +58,7 @@ internal class ResourceGrantsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterGrantee: (query) Filter by grantee. Also accepts &#x60;users:me&#x60;. (optional)
+     - parameter filterGrantee: (query) Filter by grantee. Use &#x60;groups:everyone&#x60; for the Everyone group. Also accepts &#x60;users:me&#x60;. (optional)
      - parameter filterRole: (query) One of: VIEWER, COLLABORATOR, OWNER (e.g. &#x60;VIEWER&#x60;) (optional)
      - parameter filterSubject: (query) Filter by subject. Also accepts &#x60;folders:me&#x60;. (optional)
      - parameter include: (query) Include related resources. Available relationships: grantee, subject (optional)

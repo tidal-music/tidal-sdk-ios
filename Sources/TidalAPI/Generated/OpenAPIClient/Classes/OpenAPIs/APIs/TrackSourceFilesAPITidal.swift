@@ -32,9 +32,9 @@ public enum TrackSourceFilesAPITidal {
      
      - returns: TrackSourceFilesSingleResourceDataDocument
      */
-	public static func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [TrackSourceFilesAPITidal.IncludeLinkage_trackSourceFilesIdGet]? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
+	public static func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [TrackSourceFilesAPITidal.IncludeLinkage_trackSourceFilesIdGet]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TrackSourceFilesAPI.trackSourceFilesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toTrackSourceFilesAPIEnum() })
+			TrackSourceFilesAPI.trackSourceFilesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toTrackSourceFilesAPIEnum() }, shareCode: shareCode)
 		}
 	}
 
@@ -44,9 +44,9 @@ public enum TrackSourceFilesAPITidal {
      
      - returns: TrackSourceFilesOwnersMultiRelationshipDataDocument
      */
-	public static func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument {
+	public static func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			TrackSourceFilesAPI.trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+			TrackSourceFilesAPI.trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
 		}
 	}
 

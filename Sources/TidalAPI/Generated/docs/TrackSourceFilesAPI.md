@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **trackSourceFilesIdGet**
 ```swift
-    open class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument
+    open class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument
 ```
 
 Get single trackSourceFile.
@@ -26,10 +26,11 @@ import OpenAPIClient
 let id = "id_example" // String | Track source file id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get single trackSourceFile.
 do {
-    let response = try await TrackSourceFilesAPI.trackSourceFilesIdGet(id: id, include: include, includeLinkage: includeLinkage)
+    let response = try await TrackSourceFilesAPI.trackSourceFilesIdGet(id: id, include: include, includeLinkage: includeLinkage, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -43,6 +44,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track source file id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -61,7 +63,7 @@ Name | Type | Description  | Notes
 
 # **trackSourceFilesIdRelationshipsOwnersGet**
 ```swift
-    open class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument
+    open class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -76,10 +78,11 @@ import OpenAPIClient
 let id = "id_example" // String | Track source file id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get owners relationship (\"to-many\").
 do {
-    let response = try await TrackSourceFilesAPI.trackSourceFilesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    let response = try await TrackSourceFilesAPI.trackSourceFilesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -93,6 +96,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track source file id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
