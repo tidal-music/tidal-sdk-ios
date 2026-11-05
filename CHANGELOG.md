@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-11-05
+
+### Added
+- Comment summaries and reaction summaries endpoints and models, plus related relationships on comments and track source files (TidalAPI)
+
+### Changed
+- Generated API code using spec version 1.10.224 (TidalAPI)
+
+### Removed
+- `CurrentUserReaction`, `ReactionStats`, and `ReactionsMultiResourceDataDocumentMeta` models, superseded by reaction summaries (TidalAPI)
+- `parentComment` relationship from comment creation payload (TidalAPI)
+
 ## [0.12.19] - 2026-11-03
 
 ### Changed
