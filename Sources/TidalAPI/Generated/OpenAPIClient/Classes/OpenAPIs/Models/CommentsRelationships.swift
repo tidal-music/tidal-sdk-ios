@@ -13,23 +13,35 @@ import AnyCodable
 public struct CommentsRelationships: Codable, Hashable {
 
     public var author: CommentsAuthorSingleRelationshipDataDocument?
+    public var commentSummary: CommentsCommentSummarySingleRelationshipDataDocument?
     public var owners: CommentsOwnersMultiRelationshipDataDocument?
-    public var parentComment: CommentsParentCommentSingleRelationshipDataDocument?
+    public var reactionSummary: CommentsReactionSummarySingleRelationshipDataDocument?
+    public var rootSubject: CommentsRootSubjectSingleRelationshipDataDocument?
+    public var subject: CommentsSubjectSingleRelationshipDataDocument?
 
     public init(
         author: CommentsAuthorSingleRelationshipDataDocument? = nil,
+        commentSummary: CommentsCommentSummarySingleRelationshipDataDocument? = nil,
         owners: CommentsOwnersMultiRelationshipDataDocument? = nil,
-        parentComment: CommentsParentCommentSingleRelationshipDataDocument? = nil
+        reactionSummary: CommentsReactionSummarySingleRelationshipDataDocument? = nil,
+        rootSubject: CommentsRootSubjectSingleRelationshipDataDocument? = nil,
+        subject: CommentsSubjectSingleRelationshipDataDocument? = nil
     ) {
         self.author = author
+        self.commentSummary = commentSummary
         self.owners = owners
-        self.parentComment = parentComment
+        self.reactionSummary = reactionSummary
+        self.rootSubject = rootSubject
+        self.subject = subject
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case author
+        case commentSummary
         case owners
-        case parentComment
+        case reactionSummary
+        case rootSubject
+        case subject
     }
 
     // Encodable protocol methods
@@ -37,7 +49,10 @@ public struct CommentsRelationships: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(author, forKey: .author)
+        try container.encodeIfPresent(commentSummary, forKey: .commentSummary)
         try container.encodeIfPresent(owners, forKey: .owners)
-        try container.encodeIfPresent(parentComment, forKey: .parentComment)
+        try container.encodeIfPresent(reactionSummary, forKey: .reactionSummary)
+        try container.encodeIfPresent(rootSubject, forKey: .rootSubject)
+        try container.encodeIfPresent(subject, forKey: .subject)
     }
 }

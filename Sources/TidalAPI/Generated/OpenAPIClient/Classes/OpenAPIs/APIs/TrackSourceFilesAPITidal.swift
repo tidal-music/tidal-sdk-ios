@@ -18,11 +18,15 @@ public enum TrackSourceFilesAPITidal {
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_trackSourceFilesIdGet: String, CaseIterable {
+		case commentsummary = "commentSummary"
 		case owners = "owners"
+		case reactionsummary = "reactionSummary"
 
 		func toTrackSourceFilesAPIEnum() -> TrackSourceFilesAPI.IncludeLinkage_trackSourceFilesIdGet {
 			switch self {
+			case .commentsummary: return .commentsummary
 			case .owners: return .owners
+			case .reactionsummary: return .reactionsummary
 			}
 		}
 	}
@@ -40,6 +44,18 @@ public enum TrackSourceFilesAPITidal {
 
 
 	/**
+     Get commentSummary relationship (\&quot;to-one\&quot;).
+     
+     - returns: TrackSourceFilesCommentSummarySingleRelationshipDataDocument
+     */
+	public static func trackSourceFilesIdRelationshipsCommentSummaryGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesCommentSummarySingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			TrackSourceFilesAPI.trackSourceFilesIdRelationshipsCommentSummaryGetWithRequestBuilder(id: id, include: include, shareCode: shareCode)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: TrackSourceFilesOwnersMultiRelationshipDataDocument
@@ -47,6 +63,18 @@ public enum TrackSourceFilesAPITidal {
 	public static func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			TrackSourceFilesAPI.trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
+		}
+	}
+
+
+	/**
+     Get reactionSummary relationship (\&quot;to-one\&quot;).
+     
+     - returns: TrackSourceFilesReactionSummarySingleRelationshipDataDocument
+     */
+	public static func trackSourceFilesIdRelationshipsReactionSummaryGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesReactionSummarySingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			TrackSourceFilesAPI.trackSourceFilesIdRelationshipsReactionSummaryGetWithRequestBuilder(id: id, include: include, shareCode: shareCode)
 		}
 	}
 

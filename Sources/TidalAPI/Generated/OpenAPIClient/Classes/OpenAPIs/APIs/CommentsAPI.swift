@@ -13,21 +13,15 @@ import AnyCodable
 internal class CommentsAPI {
 
     /**
-     * enum for parameter filterSubjectType
-     */
-    public enum FilterSubjectType_commentsGet: String, CaseIterable {
-        case albums = "albums"
-        case tracks = "tracks"
-        case tracksourcefiles = "trackSourceFiles"
-    }
-
-    /**
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_commentsGet: String, CaseIterable {
         case author = "author"
+        case commentsummary = "commentSummary"
         case owners = "owners"
-        case parentcomment = "parentComment"
+        case reactionsummary = "reactionSummary"
+        case rootsubject = "rootSubject"
+        case subject = "subject"
     }
 
     /**
@@ -36,22 +30,13 @@ internal class CommentsAPI {
     public enum Sort_commentsGet: String, CaseIterable {
         case CreatedAtAsc = "createdAt"
         case CreatedAtDesc = "-createdAt"
-        case LikeCountAsc = "likeCount"
-        case LikeCountDesc = "-likeCount"
-        case ReplyCountAsc = "replyCount"
-        case ReplyCountDesc = "-replyCount"
-        case StartTimeAsc = "startTime"
-        case StartTimeDesc = "-startTime"
     }
 
     /**
      Get multiple comments.
      
-     - parameter filterParentCommentId: (query) Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
-     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
-     - parameter filterSubject: (query) The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
-     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
+     - parameter filterSubject: (query) The immediate subject whose comments to return. 
+     - parameter include: (query) Include related resources. Available relationships: author, commentSummary, owners, reactionSummary, rootSubject, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
@@ -59,9 +44,9 @@ internal class CommentsAPI {
      - returns: CommentsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsGet(filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_commentsGet]? = nil) async throws -> CommentsMultiResourceDataDocument {
+    internal class func commentsGet(filterSubject: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_commentsGet]? = nil) async throws -> CommentsMultiResourceDataDocument {
         do {
-            return try await commentsGetWithRequestBuilder(filterParentCommentId: filterParentCommentId, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort).execute().body
+            return try await commentsGetWithRequestBuilder(filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -71,32 +56,26 @@ internal class CommentsAPI {
     /**
      Get multiple comments.
      - GET /comments
-     - Retrieves multiple comments by available filters, or without if applicable.
+     - Returns root comments on a resource, or replies to a comment. Root comments support createdAt in either direction, newest first by default. Replies require sort=createdAt (oldest first); other sort values return 400.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterParentCommentId: (query) Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) (optional)
-     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
-     - parameter filterSubject: (query) The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
-     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
+     - parameter filterSubject: (query) The immediate subject whose comments to return. 
+     - parameter include: (query) Include related resources. Available relationships: author, commentSummary, owners, reactionSummary, rootSubject, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - returns: RequestBuilder<CommentsMultiResourceDataDocument> 
      */
-    internal class func commentsGetWithRequestBuilder(filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_commentsGet]? = nil) -> RequestBuilder<CommentsMultiResourceDataDocument> {
+    internal class func commentsGetWithRequestBuilder(filterSubject: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_commentsGet]? = nil) -> RequestBuilder<CommentsMultiResourceDataDocument> {
         let localVariablePath = "/comments"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[parentComment.id]": (wrappedValue: filterParentCommentId?.encodeToJSON(), isExplode: true),
-            "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
-            "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
-            "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
+            "filter[subject]": (wrappedValue: filterSubject.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
@@ -169,15 +148,18 @@ internal class CommentsAPI {
      */
     public enum IncludeLinkage_commentsIdGet: String, CaseIterable {
         case author = "author"
+        case commentsummary = "commentSummary"
         case owners = "owners"
-        case parentcomment = "parentComment"
+        case reactionsummary = "reactionSummary"
+        case rootsubject = "rootSubject"
+        case subject = "subject"
     }
 
     /**
      Get single comment.
      
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, commentSummary, owners, reactionSummary, rootSubject, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: CommentsSingleResourceDataDocument
@@ -200,7 +182,7 @@ internal class CommentsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Include related resources. Available relationships: author, owners, parentComment (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, commentSummary, owners, reactionSummary, rootSubject, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: RequestBuilder<CommentsSingleResourceDataDocument> 
@@ -339,6 +321,58 @@ internal class CommentsAPI {
     }
 
     /**
+     Get commentSummary relationship (\"to-one\").
+     
+     - parameter id: (path) Comment Id 
+     - parameter include: (query) Include related resources. Available relationships: commentSummary (optional)
+     - returns: CommentsCommentSummarySingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func commentsIdRelationshipsCommentSummaryGet(id: String, include: [String]? = nil) async throws -> CommentsCommentSummarySingleRelationshipDataDocument {
+        do {
+            return try await commentsIdRelationshipsCommentSummaryGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get commentSummary relationship (\"to-one\").
+     - GET /comments/{id}/relationships/commentSummary
+     - Retrieves commentSummary relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Comment Id 
+     - parameter include: (query) Include related resources. Available relationships: commentSummary (optional)
+     - returns: RequestBuilder<CommentsCommentSummarySingleRelationshipDataDocument> 
+     */
+    internal class func commentsIdRelationshipsCommentSummaryGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CommentsCommentSummarySingleRelationshipDataDocument> {
+        var localVariablePath = "/comments/{id}/relationships/commentSummary"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CommentsCommentSummarySingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Comment Id 
@@ -394,17 +428,16 @@ internal class CommentsAPI {
     }
 
     /**
-     Get parentComment relationship (\"to-one\").
+     Get reactionSummary relationship (\"to-one\").
      
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Include related resources. Available relationships: parentComment (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parentComment.author.albums (optional)
-     - returns: CommentsParentCommentSingleRelationshipDataDocument
+     - parameter include: (query) Include related resources. Available relationships: reactionSummary (optional)
+     - returns: CommentsReactionSummarySingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CommentsParentCommentSingleRelationshipDataDocument {
+    internal class func commentsIdRelationshipsReactionSummaryGet(id: String, include: [String]? = nil) async throws -> CommentsReactionSummarySingleRelationshipDataDocument {
         do {
-            return try await commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await commentsIdRelationshipsReactionSummaryGetWithRequestBuilder(id: id, include: include).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -412,19 +445,124 @@ internal class CommentsAPI {
     }
 
     /**
-     Get parentComment relationship (\"to-one\").
-     - GET /comments/{id}/relationships/parentComment
-     - Retrieves parentComment relationship.
+     Get reactionSummary relationship (\"to-one\").
+     - GET /comments/{id}/relationships/reactionSummary
+     - Retrieves reactionSummary relationship.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Comment Id 
-     - parameter include: (query) Include related resources. Available relationships: parentComment (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parentComment.author.albums (optional)
-     - returns: RequestBuilder<CommentsParentCommentSingleRelationshipDataDocument> 
+     - parameter include: (query) Include related resources. Available relationships: reactionSummary (optional)
+     - returns: RequestBuilder<CommentsReactionSummarySingleRelationshipDataDocument> 
      */
-    internal class func commentsIdRelationshipsParentCommentGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CommentsParentCommentSingleRelationshipDataDocument> {
-        var localVariablePath = "/comments/{id}/relationships/parentComment"
+    internal class func commentsIdRelationshipsReactionSummaryGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CommentsReactionSummarySingleRelationshipDataDocument> {
+        var localVariablePath = "/comments/{id}/relationships/reactionSummary"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CommentsReactionSummarySingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get rootSubject relationship (\"to-one\").
+     
+     - parameter id: (path) Comment Id 
+     - parameter include: (query) Include related resources. Available relationships: rootSubject (optional)
+     - returns: CommentsRootSubjectSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func commentsIdRelationshipsRootSubjectGet(id: String, include: [String]? = nil) async throws -> CommentsRootSubjectSingleRelationshipDataDocument {
+        do {
+            return try await commentsIdRelationshipsRootSubjectGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get rootSubject relationship (\"to-one\").
+     - GET /comments/{id}/relationships/rootSubject
+     - Retrieves rootSubject relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Comment Id 
+     - parameter include: (query) Include related resources. Available relationships: rootSubject (optional)
+     - returns: RequestBuilder<CommentsRootSubjectSingleRelationshipDataDocument> 
+     */
+    internal class func commentsIdRelationshipsRootSubjectGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<CommentsRootSubjectSingleRelationshipDataDocument> {
+        var localVariablePath = "/comments/{id}/relationships/rootSubject"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CommentsRootSubjectSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get subject relationship (\"to-one\").
+     
+     - parameter id: (path) Comment Id 
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.author.albums (optional)
+     - returns: CommentsSubjectSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func commentsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CommentsSubjectSingleRelationshipDataDocument {
+        do {
+            return try await commentsIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get subject relationship (\"to-one\").
+     - GET /comments/{id}/relationships/subject
+     - Retrieves subject relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Comment Id 
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.author.albums (optional)
+     - returns: RequestBuilder<CommentsSubjectSingleRelationshipDataDocument> 
+     */
+    internal class func commentsIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<CommentsSubjectSingleRelationshipDataDocument> {
+        var localVariablePath = "/comments/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
         localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
@@ -443,7 +581,7 @@ internal class CommentsAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<CommentsParentCommentSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CommentsSubjectSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -468,7 +606,7 @@ internal class CommentsAPI {
     /**
      Create single comment.
      - POST /comments
-     - Creates a new comment.
+     - Creates a root comment on a resource or a reply whose subject is a root comment. Replies to replies are rejected.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

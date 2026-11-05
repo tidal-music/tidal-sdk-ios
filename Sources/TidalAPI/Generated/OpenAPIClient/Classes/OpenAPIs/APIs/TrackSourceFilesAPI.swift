@@ -16,14 +16,16 @@ internal class TrackSourceFilesAPI {
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_trackSourceFilesIdGet: String, CaseIterable {
+        case commentsummary = "commentSummary"
         case owners = "owners"
+        case reactionsummary = "reactionSummary"
     }
 
     /**
      Get single trackSourceFile.
      
      - parameter id: (path) Track source file id 
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: commentSummary, owners, reactionSummary (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TrackSourceFilesSingleResourceDataDocument
@@ -46,7 +48,7 @@ internal class TrackSourceFilesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Track source file id 
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: commentSummary, owners, reactionSummary (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TrackSourceFilesSingleResourceDataDocument> 
@@ -73,6 +75,61 @@ internal class TrackSourceFilesAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<TrackSourceFilesSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get commentSummary relationship (\"to-one\").
+     
+     - parameter id: (path) Track source file id 
+     - parameter include: (query) Include related resources. Available relationships: commentSummary (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: TrackSourceFilesCommentSummarySingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func trackSourceFilesIdRelationshipsCommentSummaryGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesCommentSummarySingleRelationshipDataDocument {
+        do {
+            return try await trackSourceFilesIdRelationshipsCommentSummaryGetWithRequestBuilder(id: id, include: include, shareCode: shareCode).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get commentSummary relationship (\"to-one\").
+     - GET /trackSourceFiles/{id}/relationships/commentSummary
+     - Retrieves commentSummary relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Track source file id 
+     - parameter include: (query) Include related resources. Available relationships: commentSummary (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: RequestBuilder<TrackSourceFilesCommentSummarySingleRelationshipDataDocument> 
+     */
+    internal class func trackSourceFilesIdRelationshipsCommentSummaryGetWithRequestBuilder(id: String, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TrackSourceFilesCommentSummarySingleRelationshipDataDocument> {
+        var localVariablePath = "/trackSourceFiles/{id}/relationships/commentSummary"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TrackSourceFilesCommentSummarySingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
@@ -131,6 +188,61 @@ internal class TrackSourceFilesAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<TrackSourceFilesOwnersMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get reactionSummary relationship (\"to-one\").
+     
+     - parameter id: (path) Track source file id 
+     - parameter include: (query) Include related resources. Available relationships: reactionSummary (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: TrackSourceFilesReactionSummarySingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func trackSourceFilesIdRelationshipsReactionSummaryGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesReactionSummarySingleRelationshipDataDocument {
+        do {
+            return try await trackSourceFilesIdRelationshipsReactionSummaryGetWithRequestBuilder(id: id, include: include, shareCode: shareCode).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get reactionSummary relationship (\"to-one\").
+     - GET /trackSourceFiles/{id}/relationships/reactionSummary
+     - Retrieves reactionSummary relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Track source file id 
+     - parameter include: (query) Include related resources. Available relationships: reactionSummary (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: RequestBuilder<TrackSourceFilesReactionSummarySingleRelationshipDataDocument> 
+     */
+    internal class func trackSourceFilesIdRelationshipsReactionSummaryGetWithRequestBuilder(id: String, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TrackSourceFilesReactionSummarySingleRelationshipDataDocument> {
+        var localVariablePath = "/trackSourceFiles/{id}/relationships/reactionSummary"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TrackSourceFilesReactionSummarySingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
