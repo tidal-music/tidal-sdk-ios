@@ -1,9 +1,9 @@
-# ReactionsOwnerProfilesMultiRelationshipDataDocument
+# CommentsReactionSummarySingleRelationshipDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [ResourceIdentifier] |  | [optional] 
+**data** | [**ResourceIdentifier**](ResourceIdentifier.md) |  | [optional] 
 **included** | [IncludedInner] |  | [optional] 
 **links** | [**Links**](Links.md) |  | 
 

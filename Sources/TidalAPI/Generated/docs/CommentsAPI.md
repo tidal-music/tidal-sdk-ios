@@ -9,30 +9,30 @@ Method | HTTP request | Description
 [**commentsIdGet**](CommentsAPI.md#commentsidget) | **GET** /comments/{id} | Get single comment.
 [**commentsIdPatch**](CommentsAPI.md#commentsidpatch) | **PATCH** /comments/{id} | Update single comment.
 [**commentsIdRelationshipsAuthorGet**](CommentsAPI.md#commentsidrelationshipsauthorget) | **GET** /comments/{id}/relationships/author | Get author relationship (\&quot;to-one\&quot;).
+[**commentsIdRelationshipsCommentSummaryGet**](CommentsAPI.md#commentsidrelationshipscommentsummaryget) | **GET** /comments/{id}/relationships/commentSummary | Get commentSummary relationship (\&quot;to-one\&quot;).
 [**commentsIdRelationshipsOwnersGet**](CommentsAPI.md#commentsidrelationshipsownersget) | **GET** /comments/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
-[**commentsIdRelationshipsParentCommentGet**](CommentsAPI.md#commentsidrelationshipsparentcommentget) | **GET** /comments/{id}/relationships/parentComment | Get parentComment relationship (\&quot;to-one\&quot;).
+[**commentsIdRelationshipsReactionSummaryGet**](CommentsAPI.md#commentsidrelationshipsreactionsummaryget) | **GET** /comments/{id}/relationships/reactionSummary | Get reactionSummary relationship (\&quot;to-one\&quot;).
+[**commentsIdRelationshipsRootSubjectGet**](CommentsAPI.md#commentsidrelationshipsrootsubjectget) | **GET** /comments/{id}/relationships/rootSubject | Get rootSubject relationship (\&quot;to-one\&quot;).
+[**commentsIdRelationshipsSubjectGet**](CommentsAPI.md#commentsidrelationshipssubjectget) | **GET** /comments/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
 [**commentsPost**](CommentsAPI.md#commentspost) | **POST** /comments | Create single comment.
 
 
 # **commentsGet**
 ```swift
-    open class func commentsGet(filterParentCommentId: [String]? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_commentsGet]? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_commentsGet]? = nil) async throws -> CommentsMultiResourceDataDocument
+    open class func commentsGet(filterSubject: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_commentsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_commentsGet]? = nil) async throws -> CommentsMultiResourceDataDocument
 ```
 
 Get multiple comments.
 
-Retrieves multiple comments by available filters, or without if applicable.
+Returns root comments on a resource, or replies to a comment. Root comments support createdAt in either direction, newest first by default. Replies require sort=createdAt (oldest first); other sort values return 400.
 
 ### Example
 ```swift
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterParentCommentId = ["inner_example"] // [String] | Filter by parent comment ID to get replies (e.g. `550e8400-e29b-41d4-a716-446655440000`) (optional)
-let filterSubjectId = ["inner_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. `12345`) (optional)
-let filterSubjectType = ["filterSubjectType_example"] // [String] | Deprecated: use filter[subject]. Filter by subject resource type (e.g. `albums`) (optional)
-let filterSubject = "filterSubject_example" // String | The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: author, owners, parentComment (optional)
+let filterSubject = "filterSubject_example" // String | The immediate subject whose comments to return.
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: author, commentSummary, owners, reactionSummary, rootSubject, subject (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
@@ -40,7 +40,7 @@ let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted 
 
 // Get multiple comments.
 do {
-    let response = try await CommentsAPI.commentsGet(filterParentCommentId: filterParentCommentId, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
+    let response = try await CommentsAPI.commentsGet(filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
     dump(response)
 } catch {
     print(error)
@@ -51,11 +51,8 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterParentCommentId** | [**[String]**](String.md) | Filter by parent comment ID to get replies (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) | [optional] 
- **filterSubjectId** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) | [optional] 
- **filterSubjectType** | [**[String]**](String.md) | Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) | [optional] 
- **filterSubject** | **String** | The subject whose comments to return. Use either subject or the deprecated subject.id and subject.type pair. | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: author, owners, parentComment | [optional] 
+ **filterSubject** | **String** | The immediate subject whose comments to return. | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: author, commentSummary, owners, reactionSummary, rootSubject, subject | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums | [optional] 
@@ -139,7 +136,7 @@ Retrieves single comment by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Comment Id
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: author, owners, parentComment (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: author, commentSummary, owners, reactionSummary, rootSubject, subject (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: author.albums (optional)
 
@@ -157,7 +154,7 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Comment Id | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: author, owners, parentComment | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: author, commentSummary, owners, reactionSummary, rootSubject, subject | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums | [optional] 
 
@@ -276,6 +273,54 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **commentsIdRelationshipsCommentSummaryGet**
+```swift
+    open class func commentsIdRelationshipsCommentSummaryGet(id: String, include: [String]? = nil) async throws -> CommentsCommentSummarySingleRelationshipDataDocument
+```
+
+Get commentSummary relationship (\"to-one\").
+
+Retrieves commentSummary relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Comment Id
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: commentSummary (optional)
+
+// Get commentSummary relationship (\"to-one\").
+do {
+    let response = try await CommentsAPI.commentsIdRelationshipsCommentSummaryGet(id: id, include: include)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Comment Id | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: commentSummary | [optional] 
+
+### Return type
+
+[**CommentsCommentSummarySingleRelationshipDataDocument**](CommentsCommentSummarySingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **commentsIdRelationshipsOwnersGet**
 ```swift
     open class func commentsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> CommentsOwnersMultiRelationshipDataDocument
@@ -326,14 +371,14 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **commentsIdRelationshipsParentCommentGet**
+# **commentsIdRelationshipsReactionSummaryGet**
 ```swift
-    open class func commentsIdRelationshipsParentCommentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CommentsParentCommentSingleRelationshipDataDocument
+    open class func commentsIdRelationshipsReactionSummaryGet(id: String, include: [String]? = nil) async throws -> CommentsReactionSummarySingleRelationshipDataDocument
 ```
 
-Get parentComment relationship (\"to-one\").
+Get reactionSummary relationship (\"to-one\").
 
-Retrieves parentComment relationship.
+Retrieves reactionSummary relationship.
 
 ### Example
 ```swift
@@ -341,12 +386,11 @@ Retrieves parentComment relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | Comment Id
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: parentComment (optional)
-let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: parentComment.author.albums (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: reactionSummary (optional)
 
-// Get parentComment relationship (\"to-one\").
+// Get reactionSummary relationship (\"to-one\").
 do {
-    let response = try await CommentsAPI.commentsIdRelationshipsParentCommentGet(id: id, include: include, replaceMedia: replaceMedia)
+    let response = try await CommentsAPI.commentsIdRelationshipsReactionSummaryGet(id: id, include: include)
     dump(response)
 } catch {
     print(error)
@@ -358,12 +402,109 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Comment Id | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: parentComment | [optional] 
- **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parentComment.author.albums | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: reactionSummary | [optional] 
 
 ### Return type
 
-[**CommentsParentCommentSingleRelationshipDataDocument**](CommentsParentCommentSingleRelationshipDataDocument.md)
+[**CommentsReactionSummarySingleRelationshipDataDocument**](CommentsReactionSummarySingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **commentsIdRelationshipsRootSubjectGet**
+```swift
+    open class func commentsIdRelationshipsRootSubjectGet(id: String, include: [String]? = nil) async throws -> CommentsRootSubjectSingleRelationshipDataDocument
+```
+
+Get rootSubject relationship (\"to-one\").
+
+Retrieves rootSubject relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Comment Id
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: rootSubject (optional)
+
+// Get rootSubject relationship (\"to-one\").
+do {
+    let response = try await CommentsAPI.commentsIdRelationshipsRootSubjectGet(id: id, include: include)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Comment Id | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: rootSubject | [optional] 
+
+### Return type
+
+[**CommentsRootSubjectSingleRelationshipDataDocument**](CommentsRootSubjectSingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **commentsIdRelationshipsSubjectGet**
+```swift
+    open class func commentsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CommentsSubjectSingleRelationshipDataDocument
+```
+
+Get subject relationship (\"to-one\").
+
+Retrieves subject relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Comment Id
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: subject (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject.author.albums (optional)
+
+// Get subject relationship (\"to-one\").
+do {
+    let response = try await CommentsAPI.commentsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Comment Id | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: subject | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.author.albums | [optional] 
+
+### Return type
+
+[**CommentsSubjectSingleRelationshipDataDocument**](CommentsSubjectSingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -383,7 +524,7 @@ Name | Type | Description  | Notes
 
 Create single comment.
 
-Creates a new comment.
+Creates a root comment on a resource or a reply whose subject is a root comment. Replies to replies are rejected.
 
 ### Example
 ```swift
@@ -391,7 +532,7 @@ Creates a new comment.
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let commentsCreateOperationPayload = CommentsCreateOperation_Payload(data: CommentsCreateOperation_Payload_Data(attributes: CommentsCreateOperation_Payload_Data_Attributes(endTime: "endTime_example", message: "message_example", startTime: "startTime_example"), relationships: CommentsCreateOperation_Payload_Data_Relationships(parentComment: CommentsCreateOperation_Payload_Data_Relationships_ParentComment(data: CommentsCreateOperation_Payload_Data_Relationships_ParentComment_Data(id: "id_example", type: "type_example")), subject: CommentsCreateOperation_Payload_Data_Relationships_Subject(data: CommentsCreateOperation_Payload_Data_Relationships_Subject_Data(id: "id_example", type: "type_example"))), type: "type_example")) // CommentsCreateOperationPayload |  (optional)
+let commentsCreateOperationPayload = CommentsCreateOperation_Payload(data: CommentsCreateOperation_Payload_Data(attributes: CommentsCreateOperation_Payload_Data_Attributes(endTime: "endTime_example", message: "message_example", startTime: "startTime_example"), relationships: CommentsCreateOperation_Payload_Data_Relationships(subject: CommentsCreateOperation_Payload_Data_Relationships_Subject(data: CommentsCreateOperation_Payload_Data_Relationships_Subject_Data(id: "id_example", type: "type_example"))), type: "type_example")) // CommentsCreateOperationPayload |  (optional)
 
 // Create single comment.
 do {

@@ -12,19 +12,15 @@ import AnyCodable
 
 public struct CommentsCreateOperationPayloadDataRelationships: Codable, Hashable {
 
-    public var parentComment: CommentsCreateOperationPayloadDataRelationshipsParentComment?
     public var subject: CommentsCreateOperationPayloadDataRelationshipsSubject
 
     public init(
-        parentComment: CommentsCreateOperationPayloadDataRelationshipsParentComment? = nil,
         subject: CommentsCreateOperationPayloadDataRelationshipsSubject
     ) {
-        self.parentComment = parentComment
         self.subject = subject
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case parentComment
         case subject
     }
 
@@ -32,7 +28,6 @@ public struct CommentsCreateOperationPayloadDataRelationships: Codable, Hashable
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(parentComment, forKey: .parentComment)
         try container.encode(subject, forKey: .subject)
     }
 }

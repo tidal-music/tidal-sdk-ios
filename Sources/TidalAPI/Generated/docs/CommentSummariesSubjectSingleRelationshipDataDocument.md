@@ -1,4 +1,4 @@
-# CommentsParentCommentSingleRelationshipDataDocument
+# CommentSummariesSubjectSingleRelationshipDataDocument
 
 ## Properties
 Name | Type | Description | Notes

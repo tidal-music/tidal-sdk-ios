@@ -19,9 +19,9 @@ public enum GroupsAPITidal {
      
      - returns: GroupsMultiResourceDataDocument
      */
-	public static func groupsGet(filterName: String) async throws -> GroupsMultiResourceDataDocument {
+	public static func groupsGet(filterId: [String]) async throws -> GroupsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			GroupsAPI.groupsGetWithRequestBuilder(filterName: filterName)
+			GroupsAPI.groupsGetWithRequestBuilder(filterId: filterId)
 		}
 	}
 

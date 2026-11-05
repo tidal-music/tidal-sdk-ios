@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** A grant recipient. Identify the Everyone group with &#x60;type&#x60; set to &#x60;groups&#x60; and &#x60;id&#x60; set to &#x60;everyone&#x60;; only albums can be granted to it. */
 public struct ResourceGrantsGrantee: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {

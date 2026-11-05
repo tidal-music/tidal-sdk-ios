@@ -13,24 +13,23 @@ import AnyCodable
 public struct ReactionsRelationships: Codable, Hashable {
 
     public var author: ReactionsAuthorSingleRelationshipDataDocument?
-    @available(*, deprecated, message: "This property is deprecated.")
-    public var ownerProfiles: ReactionsOwnerProfilesMultiRelationshipDataDocument?
     public var owners: ReactionsOwnersMultiRelationshipDataDocument?
+    public var subject: ReactionsSubjectSingleRelationshipDataDocument?
 
     public init(
         author: ReactionsAuthorSingleRelationshipDataDocument? = nil,
-        ownerProfiles: ReactionsOwnerProfilesMultiRelationshipDataDocument? = nil,
-        owners: ReactionsOwnersMultiRelationshipDataDocument? = nil
+        owners: ReactionsOwnersMultiRelationshipDataDocument? = nil,
+        subject: ReactionsSubjectSingleRelationshipDataDocument? = nil
     ) {
         self.author = author
-        self.ownerProfiles = ownerProfiles
         self.owners = owners
+        self.subject = subject
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case author
-        case ownerProfiles
         case owners
+        case subject
     }
 
     // Encodable protocol methods
@@ -38,7 +37,7 @@ public struct ReactionsRelationships: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(author, forKey: .author)
-        try container.encodeIfPresent(ownerProfiles, forKey: .ownerProfiles)
         try container.encodeIfPresent(owners, forKey: .owners)
+        try container.encodeIfPresent(subject, forKey: .subject)
     }
 }

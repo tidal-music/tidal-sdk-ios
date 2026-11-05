@@ -29,6 +29,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case clientsResourceObject(ClientsResourceObject)
     case collaborationInviteRedemptionsResourceObject(CollaborationInviteRedemptionsResourceObject)
     case collaborationInvitesResourceObject(CollaborationInvitesResourceObject)
+    case commentSummariesResourceObject(CommentSummariesResourceObject)
     case commentsResourceObject(CommentsResourceObject)
     case contentClaimsResourceObject(ContentClaimsResourceObject)
     case creditsResourceObject(CreditsResourceObject)
@@ -53,6 +54,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case providerProductInfosResourceObject(ProviderProductInfosResourceObject)
     case providersResourceObject(ProvidersResourceObject)
     case purchasesResourceObject(PurchasesResourceObject)
+    case reactionSummariesResourceObject(ReactionSummariesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
     case resourceGrantsResourceObject(ResourceGrantsResourceObject)
     case resourceSharingSettingsResourceObject(ResourceSharingSettingsResourceObject)
@@ -141,6 +143,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .collaborationInvitesResourceObject(let value):
             try container.encode(value)
+        case .commentSummariesResourceObject(let value):
+            try container.encode(value)
         case .commentsResourceObject(let value):
             try container.encode(value)
         case .contentClaimsResourceObject(let value):
@@ -188,6 +192,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .providersResourceObject(let value):
             try container.encode(value)
         case .purchasesResourceObject(let value):
+            try container.encode(value)
+        case .reactionSummariesResourceObject(let value):
             try container.encode(value)
         case .reactionsResourceObject(let value):
             try container.encode(value)
@@ -351,6 +357,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "collaborationInvites":
             let value = try CollaborationInvitesResourceObject(from: decoder)
             self = .collaborationInvitesResourceObject(value)
+        case "commentSummaries":
+            let value = try CommentSummariesResourceObject(from: decoder)
+            self = .commentSummariesResourceObject(value)
         case "comments":
             let value = try CommentsResourceObject(from: decoder)
             self = .commentsResourceObject(value)
@@ -423,6 +432,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "purchases":
             let value = try PurchasesResourceObject(from: decoder)
             self = .purchasesResourceObject(value)
+        case "reactionSummaries":
+            let value = try ReactionSummariesResourceObject(from: decoder)
+            self = .reactionSummariesResourceObject(value)
         case "reactions":
             let value = try ReactionsResourceObject(from: decoder)
             self = .reactionsResourceObject(value)
@@ -595,6 +607,7 @@ extension IncludedInner: Identifiable {
         case .clientsResourceObject(let value): return value.id
         case .collaborationInviteRedemptionsResourceObject(let value): return value.id
         case .collaborationInvitesResourceObject(let value): return value.id
+        case .commentSummariesResourceObject(let value): return value.id
         case .commentsResourceObject(let value): return value.id
         case .contentClaimsResourceObject(let value): return value.id
         case .creditsResourceObject(let value): return value.id
@@ -619,6 +632,7 @@ extension IncludedInner: Identifiable {
         case .providerProductInfosResourceObject(let value): return value.id
         case .providersResourceObject(let value): return value.id
         case .purchasesResourceObject(let value): return value.id
+        case .reactionSummariesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
         case .resourceGrantsResourceObject(let value): return value.id
         case .resourceSharingSettingsResourceObject(let value): return value.id

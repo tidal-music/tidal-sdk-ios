@@ -26,14 +26,10 @@ public struct CommentsAttributes: Codable, Hashable {
     public var endTime: String?
     /** Datetime when the comment was last modified (ISO 8601) */
     public var lastModifiedAt: Date
-    /** Number of likes on this comment */
-    public var likeCount: Int
     /** The comment message content */
     public var message: String
     /** Moderation status of the comment */
     public var moderationStatus: ModerationStatus
-    /** Number of replies to this comment */
-    public var replyCount: Int
     /** Start time offset for timestamped comments (ISO 8601 duration) */
     public var startTime: String?
 
@@ -41,19 +37,15 @@ public struct CommentsAttributes: Codable, Hashable {
         createdAt: Date,
         endTime: String? = nil,
         lastModifiedAt: Date,
-        likeCount: Int,
         message: String,
         moderationStatus: ModerationStatus,
-        replyCount: Int,
         startTime: String? = nil
     ) {
         self.createdAt = createdAt
         self.endTime = endTime
         self.lastModifiedAt = lastModifiedAt
-        self.likeCount = likeCount
         self.message = message
         self.moderationStatus = moderationStatus
-        self.replyCount = replyCount
         self.startTime = startTime
     }
 
@@ -61,10 +53,8 @@ public struct CommentsAttributes: Codable, Hashable {
         case createdAt
         case endTime
         case lastModifiedAt
-        case likeCount
         case message
         case moderationStatus
-        case replyCount
         case startTime
     }
 
@@ -75,10 +65,8 @@ public struct CommentsAttributes: Codable, Hashable {
         try container.encode(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(endTime, forKey: .endTime)
         try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
-        try container.encode(likeCount, forKey: .likeCount)
         try container.encode(message, forKey: .message)
         try container.encode(moderationStatus, forKey: .moderationStatus)
-        try container.encode(replyCount, forKey: .replyCount)
         try container.encodeIfPresent(startTime, forKey: .startTime)
     }
 }

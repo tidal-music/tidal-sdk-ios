@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct ResourceSharingSettingsAttributes: Codable, Hashable {
 
-    /** Whether anyone but the owner has a grant, or an active share link exists, on the subject or above it. */
+    /** Whether a user other than the owner has a grant, or an active share link exists, on the subject or above it. The Everyone grant that comes with an album's usage rules does not count. */
     public var shared: Bool
     /** Whether a folder or album above the subject is shared, so the subject stays shared whatever is set on it. */
     public var sharedViaParent: Bool

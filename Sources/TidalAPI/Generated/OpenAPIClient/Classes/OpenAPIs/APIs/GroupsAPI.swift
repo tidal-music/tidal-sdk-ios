@@ -15,13 +15,13 @@ internal class GroupsAPI {
     /**
      Get multiple groups.
      
-     - parameter filterName: (query) Exact group name (case-sensitive) (e.g. &#x60;Everyone&#x60;) 
+     - parameter filterId: (query) Group ID. The built-in Everyone group has the case-sensitive ID &#x60;everyone&#x60;. 
      - returns: GroupsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func groupsGet(filterName: String) async throws -> GroupsMultiResourceDataDocument {
+    internal class func groupsGet(filterId: [String]) async throws -> GroupsMultiResourceDataDocument {
         do {
-            return try await groupsGetWithRequestBuilder(filterName: filterName).execute().body
+            return try await groupsGetWithRequestBuilder(filterId: filterId).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -38,17 +38,17 @@ internal class GroupsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter filterName: (query) Exact group name (case-sensitive) (e.g. &#x60;Everyone&#x60;) 
+     - parameter filterId: (query) Group ID. The built-in Everyone group has the case-sensitive ID &#x60;everyone&#x60;. 
      - returns: RequestBuilder<GroupsMultiResourceDataDocument> 
      */
-    internal class func groupsGetWithRequestBuilder(filterName: String) -> RequestBuilder<GroupsMultiResourceDataDocument> {
+    internal class func groupsGetWithRequestBuilder(filterId: [String]) -> RequestBuilder<GroupsMultiResourceDataDocument> {
         let localVariablePath = "/groups"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[name]": (wrappedValue: filterName.encodeToJSON(), isExplode: true),
+            "filter[id]": (wrappedValue: filterId.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -65,7 +65,7 @@ internal class GroupsAPI {
     /**
      Get single group.
      
-     - parameter id: (path) Group ID 
+     - parameter id: (path) Group ID. The built-in Everyone group has the case-sensitive ID &#x60;everyone&#x60;. 
      - returns: GroupsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -88,7 +88,7 @@ internal class GroupsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter id: (path) Group ID 
+     - parameter id: (path) Group ID. The built-in Everyone group has the case-sensitive ID &#x60;everyone&#x60;. 
      - returns: RequestBuilder<GroupsSingleResourceDataDocument> 
      */
     internal class func groupsIdGetWithRequestBuilder(id: String) -> RequestBuilder<GroupsSingleResourceDataDocument> {

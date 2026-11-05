@@ -27,7 +27,7 @@ Lists stored grants from every source visible to the subject's owner or named us
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterGrantee = "filterGrantee_example" // String | Filter by grantee. Also accepts `users:me`. (optional)
+let filterGrantee = "filterGrantee_example" // String | Filter by grantee. Use `groups:everyone` for the Everyone group. Also accepts `users:me`. (optional)
 let filterRole = "filterRole_example" // String | One of: VIEWER, COLLABORATOR, OWNER (e.g. `VIEWER`) (optional)
 let filterSubject = "filterSubject_example" // String | Filter by subject. Also accepts `folders:me`. (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: grantee, subject (optional)
@@ -48,7 +48,7 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterGrantee** | **String** | Filter by grantee. Also accepts &#x60;users:me&#x60;. | [optional] 
+ **filterGrantee** | **String** | Filter by grantee. Use &#x60;groups:everyone&#x60; for the Everyone group. Also accepts &#x60;users:me&#x60;. | [optional] 
  **filterRole** | **String** | One of: VIEWER, COLLABORATOR, OWNER (e.g. &#x60;VIEWER&#x60;) | [optional] 
  **filterSubject** | **String** | Filter by subject. Also accepts &#x60;folders:me&#x60;. | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: grantee, subject | [optional] 
