@@ -56,7 +56,7 @@ internal class CommentsAPI {
     /**
      Get multiple comments.
      - GET /comments
-     - Returns root comments on a resource, or replies to a comment. Root comments support createdAt in either direction, newest first by default. Replies require sort=createdAt (oldest first); other sort values return 400.
+     - Returns root comments on a resource, or replies to a comment. Both support createdAt in either direction, newest first by default.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

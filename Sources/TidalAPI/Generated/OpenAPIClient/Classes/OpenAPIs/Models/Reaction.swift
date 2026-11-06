@@ -13,7 +13,7 @@ import AnyCodable
 /** The viewer has a current reaction to the subject, with its emoji. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
 public struct Reaction: Codable, Hashable {
 
-    public static let emojiRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let emojiRule = StringRule(minLength: 1, maxLength: 32, pattern: nil)
     public var emoji: String
 
     public init(

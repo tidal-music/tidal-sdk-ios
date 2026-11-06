@@ -81,6 +81,18 @@ public enum SharesAPITidal {
 
 
 	/**
+     Update single share.
+     
+     - returns: SharesUpdateSingleResourceDataDocument
+     */
+	public static func sharesIdPatch(id: String, idempotencyKey: String? = nil, sharesUpdateOperationPayload: SharesUpdateOperationPayload? = nil) async throws -> SharesUpdateSingleResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			SharesAPI.sharesIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, sharesUpdateOperationPayload: sharesUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: SharesOwnersMultiRelationshipDataDocument

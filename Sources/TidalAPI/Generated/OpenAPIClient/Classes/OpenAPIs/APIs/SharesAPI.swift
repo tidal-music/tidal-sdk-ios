@@ -203,6 +203,58 @@ internal class SharesAPI {
     }
 
     /**
+     Update single share.
+     
+     - parameter id: (path) Share id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter sharesUpdateOperationPayload: (body)  (optional)
+     - returns: SharesUpdateSingleResourceDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func sharesIdPatch(id: String, idempotencyKey: String? = nil, sharesUpdateOperationPayload: SharesUpdateOperationPayload? = nil) async throws -> SharesUpdateSingleResourceDataDocument {
+        do {
+            return try await sharesIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, sharesUpdateOperationPayload: sharesUpdateOperationPayload).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Update single share.
+     - PATCH /shares/{id}
+     - Set, change or remove the share's password. Setting one also removes BEARER access; removing one leaves the access modes unchanged. Existing savers keep their access.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Share id 
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter sharesUpdateOperationPayload: (body)  (optional)
+     - returns: RequestBuilder<SharesUpdateSingleResourceDataDocument> 
+     */
+    internal class func sharesIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, sharesUpdateOperationPayload: SharesUpdateOperationPayload? = nil) -> RequestBuilder<SharesUpdateSingleResourceDataDocument> {
+        var localVariablePath = "/shares/{id}"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: sharesUpdateOperationPayload)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/vnd.api+json",
+            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SharesUpdateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Share id 

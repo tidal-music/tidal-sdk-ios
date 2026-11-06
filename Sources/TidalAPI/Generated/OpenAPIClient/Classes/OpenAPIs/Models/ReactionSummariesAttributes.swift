@@ -13,9 +13,9 @@ import AnyCodable
 public struct ReactionSummariesAttributes: Codable, Hashable {
 
     public static let totalCountRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
-    /** Complete reaction counts keyed by emoji. Comments support only thumbs-up. An empty object means no reactions. */
+    /** Complete reaction counts keyed by emoji for source files and comments. An empty object means no reactions. */
     public var countsByEmoji: [String: Int64]
-    /** Number of current reactions, summed across all emojis. */
+    /** Number of current reactions across all emojis and time offsets, including whole-subject reactions. A user can contribute more than one reaction. */
     public var totalCount: Int64
 
     public init(

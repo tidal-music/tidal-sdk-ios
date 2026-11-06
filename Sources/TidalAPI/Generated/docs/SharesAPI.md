@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**sharesGet**](SharesAPI.md#sharesget) | **GET** /shares | Get multiple shares.
 [**sharesIdDelete**](SharesAPI.md#sharesiddelete) | **DELETE** /shares/{id} | Delete single share.
 [**sharesIdGet**](SharesAPI.md#sharesidget) | **GET** /shares/{id} | Get single share.
+[**sharesIdPatch**](SharesAPI.md#sharesidpatch) | **PATCH** /shares/{id} | Update single share.
 [**sharesIdRelationshipsOwnersGet**](SharesAPI.md#sharesidrelationshipsownersget) | **GET** /shares/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**sharesIdRelationshipsSharedResourcesGet**](SharesAPI.md#sharesidrelationshipssharedresourcesget) | **GET** /shares/{id}/relationships/sharedResources | Get sharedResources relationship (\&quot;to-many\&quot;).
 [**sharesPost**](SharesAPI.md#sharespost) | **POST** /shares | Create single share.
@@ -166,6 +167,56 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **sharesIdPatch**
+```swift
+    open class func sharesIdPatch(id: String, idempotencyKey: String? = nil, sharesUpdateOperationPayload: SharesUpdateOperationPayload? = nil) async throws -> SharesUpdateSingleResourceDataDocument
+```
+
+Update single share.
+
+Set, change or remove the share's password. Setting one also removes BEARER access; removing one leaves the access modes unchanged. Existing savers keep their access.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Share id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let sharesUpdateOperationPayload = SharesUpdateOperation_Payload(data: SharesUpdateOperation_Payload_Data(attributes: SharesUpdateOperation_Payload_Data_Attributes(password: "password_example"), id: "id_example", type: "type_example")) // SharesUpdateOperationPayload |  (optional)
+
+// Update single share.
+do {
+    let response = try await SharesAPI.sharesIdPatch(id: id, idempotencyKey: idempotencyKey, sharesUpdateOperationPayload: sharesUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Share id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **sharesUpdateOperationPayload** | [**SharesUpdateOperationPayload**](SharesUpdateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+[**SharesUpdateSingleResourceDataDocument**](SharesUpdateSingleResourceDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **sharesIdRelationshipsOwnersGet**
 ```swift
     open class func sharesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> SharesOwnersMultiRelationshipDataDocument
@@ -283,7 +334,7 @@ Creates a new share.
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let sharesCreateOperationPayload = SharesCreateOperation_Payload(data: SharesCreateOperation_Payload_Data(attributes: SharesCreateOperation_Payload_Data_Attributes(accessModes: ["accessModes_example"], expiresAt: Date(), maxUses: 123, role: "role_example"), relationships: SharesCreateOperation_Payload_Data_Relationships(sharedResources: SharesCreateOperation_Payload_Data_Relationships_SharedResources(data: [SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // SharesCreateOperationPayload |  (optional)
+let sharesCreateOperationPayload = SharesCreateOperation_Payload(data: SharesCreateOperation_Payload_Data(attributes: SharesCreateOperation_Payload_Data_Attributes(accessModes: ["accessModes_example"], expiresAt: Date(), maxUses: 123, password: "password_example", role: "role_example"), relationships: SharesCreateOperation_Payload_Data_Relationships(sharedResources: SharesCreateOperation_Payload_Data_Relationships_SharedResources(data: [SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // SharesCreateOperationPayload |  (optional)
 
 // Create single share.
 do {

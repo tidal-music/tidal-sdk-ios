@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 Get multiple commentSummaries.
 
-Returns one current summary per accessible subject, for up to 20 subjects. Duplicates are returned once. Inaccessible or missing subjects are omitted. Empty supported subjects still have a summary. IDs remain stable as counts change. Source-file comment totals are unavailable and currently return a zero placeholder.
+Returns one current summary per accessible subject, for up to 20 subjects. Duplicates are returned once. Inaccessible or missing subjects are omitted. Empty supported subjects still have a summary. IDs remain stable as counts change. Counts include root comments on source files and direct replies on comments.
 
 ### Example
 ```swift
