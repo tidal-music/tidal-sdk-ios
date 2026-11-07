@@ -1,9 +1,9 @@
-# ResourceSharingSettingsSubjectSingleRelationshipDataDocument
+# SharingSummariesSubjectSingleRelationshipDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**ResourceSharingSettingsSubjectResourceIdentifier**](ResourceSharingSettingsSubjectResourceIdentifier.md) |  | [optional] 
+**data** | [**SharingSummariesSubjectResourceIdentifier**](SharingSummariesSubjectResourceIdentifier.md) |  | [optional] 
 **included** | [IncludedInner] |  | [optional] 
 **links** | [**Links**](Links.md) |  | 
 

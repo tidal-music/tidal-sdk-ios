@@ -263,9 +263,9 @@ public enum PlaylistsAPITidal {
      
      - returns: PlaylistsItemsMultiRelationshipDataDocument
      */
-	public static func playlistsIdRelationshipsItemsGet(id: String, countryCode: String? = nil, filterQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsIdRelationshipsItemsGet]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
+	public static func playlistsIdRelationshipsItemsGet(id: String, countryCode: String? = nil, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [PlaylistsAPITidal.Sort_playlistsIdRelationshipsItemsGet]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, filterQuery: filterQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() })
+			PlaylistsAPI.playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toPlaylistsAPIEnum() })
 		}
 	}
 

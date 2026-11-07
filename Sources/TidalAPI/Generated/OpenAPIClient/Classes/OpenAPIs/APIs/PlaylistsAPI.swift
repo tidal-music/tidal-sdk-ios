@@ -712,7 +712,7 @@ internal class PlaylistsAPI {
      
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter filterQuery: (query) Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) (optional)
+     - parameter filterSelfMatchesQuery: (query) Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) (optional)
      - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
@@ -720,9 +720,9 @@ internal class PlaylistsAPI {
      - returns: PlaylistsItemsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistsIdRelationshipsItemsGet(id: String, countryCode: String? = nil, filterQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
+    internal class func playlistsIdRelationshipsItemsGet(id: String, countryCode: String? = nil, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument {
         do {
-            return try await playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, filterQuery: filterQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort).execute().body
+            return try await playlistsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -741,14 +741,14 @@ internal class PlaylistsAPI {
        - name: Client_Credentials
      - parameter id: (path) Playlist id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter filterQuery: (query) Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) (optional)
+     - parameter filterSelfMatchesQuery: (query) Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) (optional)
      - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - returns: RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> 
      */
-    internal class func playlistsIdRelationshipsItemsGetWithRequestBuilder(id: String, countryCode: String? = nil, filterQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil) -> RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> {
+    internal class func playlistsIdRelationshipsItemsGetWithRequestBuilder(id: String, countryCode: String? = nil, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil) -> RequestBuilder<PlaylistsItemsMultiRelationshipDataDocument> {
         var localVariablePath = "/playlists/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -759,7 +759,7 @@ internal class PlaylistsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "countryCode": (wrappedValue: countryCode?.encodeToJSON(), isExplode: true),
-            "filter[query]": (wrappedValue: filterQuery?.encodeToJSON(), isExplode: true),
+            "filter[self][matchesQuery]": (wrappedValue: filterSelfMatchesQuery?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),

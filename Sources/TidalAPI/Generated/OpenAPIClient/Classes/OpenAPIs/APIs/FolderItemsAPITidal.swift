@@ -21,16 +21,16 @@ public enum FolderItemsAPITidal {
 		case breadcrumb = "breadcrumb"
 		case owners = "owners"
 		case parent = "parent"
+		case sharingsummary = "sharingSummary"
 		case subject = "subject"
-		case subjectsharingsettings = "subjectSharingSettings"
 
 		func toFolderItemsAPIEnum() -> FolderItemsAPI.IncludeLinkage_folderItemsGet {
 			switch self {
 			case .breadcrumb: return .breadcrumb
 			case .owners: return .owners
 			case .parent: return .parent
+			case .sharingsummary: return .sharingsummary
 			case .subject: return .subject
-			case .subjectsharingsettings: return .subjectsharingsettings
 			}
 		}
 	}
@@ -40,9 +40,9 @@ public enum FolderItemsAPITidal {
      
      - returns: FolderItemsMultiResourceDataDocument
      */
-	public static func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [FolderItemsAPITidal.IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
+	public static func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSelfMatchesQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [FolderItemsAPITidal.IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsGetWithRequestBuilder(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterQuery: filterQuery, filterSubjectAlbumsPublished: filterSubjectAlbumsPublished, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage?.compactMap { $0.toFolderItemsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
+			FolderItemsAPI.folderItemsGetWithRequestBuilder(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSelfMatchesQuery: filterSelfMatchesQuery, filterSubjectAlbumsPublished: filterSubjectAlbumsPublished, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage?.compactMap { $0.toFolderItemsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -66,16 +66,16 @@ public enum FolderItemsAPITidal {
 		case breadcrumb = "breadcrumb"
 		case owners = "owners"
 		case parent = "parent"
+		case sharingsummary = "sharingSummary"
 		case subject = "subject"
-		case subjectsharingsettings = "subjectSharingSettings"
 
 		func toFolderItemsAPIEnum() -> FolderItemsAPI.IncludeLinkage_folderItemsIdGet {
 			switch self {
 			case .breadcrumb: return .breadcrumb
 			case .owners: return .owners
 			case .parent: return .parent
+			case .sharingsummary: return .sharingsummary
 			case .subject: return .subject
-			case .subjectsharingsettings: return .subjectsharingsettings
 			}
 		}
 	}
@@ -141,6 +141,18 @@ public enum FolderItemsAPITidal {
 
 
 	/**
+     Get sharingSummary relationship (\&quot;to-one\&quot;).
+     
+     - returns: FolderItemsSharingSummarySingleRelationshipDataDocument
+     */
+	public static func folderItemsIdRelationshipsSharingSummaryGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSharingSummarySingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			FolderItemsAPI.folderItemsIdRelationshipsSharingSummaryGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
      Get subject relationship (\&quot;to-one\&quot;).
      
      - returns: FolderItemsSubjectSingleRelationshipDataDocument
@@ -148,18 +160,6 @@ public enum FolderItemsAPITidal {
 	public static func folderItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSubjectSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			FolderItemsAPI.folderItemsIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
-		}
-	}
-
-
-	/**
-     Get subjectSharingSettings relationship (\&quot;to-one\&quot;).
-     
-     - returns: FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument
-     */
-	public static func folderItemsIdRelationshipsSubjectSharingSettingsGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument {
-		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsIdRelationshipsSubjectSharingSettingsGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

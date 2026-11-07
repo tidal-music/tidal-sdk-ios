@@ -57,13 +57,13 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case reactionSummariesResourceObject(ReactionSummariesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
     case resourceGrantsResourceObject(ResourceGrantsResourceObject)
-    case resourceSharingSettingsResourceObject(ResourceSharingSettingsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
     case scopesResourceObject(ScopesResourceObject)
     case searchHistoryEntriesResourceObject(SearchHistoryEntriesResourceObject)
     case searchResultsResourceObject(SearchResultsResourceObject)
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
     case sharesResourceObject(SharesResourceObject)
+    case sharingSummariesResourceObject(SharingSummariesResourceObject)
     case squareConnectionsResourceObject(SquareConnectionsResourceObject)
     case squareItemVariationPhysicalCountsResourceObject(SquareItemVariationPhysicalCountsResourceObject)
     case squareItemVariationsResourceObject(SquareItemVariationsResourceObject)
@@ -199,8 +199,6 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .resourceGrantsResourceObject(let value):
             try container.encode(value)
-        case .resourceSharingSettingsResourceObject(let value):
-            try container.encode(value)
         case .savedSharesResourceObject(let value):
             try container.encode(value)
         case .scopesResourceObject(let value):
@@ -212,6 +210,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .searchSuggestionsResourceObject(let value):
             try container.encode(value)
         case .sharesResourceObject(let value):
+            try container.encode(value)
+        case .sharingSummariesResourceObject(let value):
             try container.encode(value)
         case .squareConnectionsResourceObject(let value):
             try container.encode(value)
@@ -441,9 +441,6 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "resourceGrants":
             let value = try ResourceGrantsResourceObject(from: decoder)
             self = .resourceGrantsResourceObject(value)
-        case "resourceSharingSettings":
-            let value = try ResourceSharingSettingsResourceObject(from: decoder)
-            self = .resourceSharingSettingsResourceObject(value)
         case "savedShares":
             let value = try SavedSharesResourceObject(from: decoder)
             self = .savedSharesResourceObject(value)
@@ -462,6 +459,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "shares":
             let value = try SharesResourceObject(from: decoder)
             self = .sharesResourceObject(value)
+        case "sharingSummaries":
+            let value = try SharingSummariesResourceObject(from: decoder)
+            self = .sharingSummariesResourceObject(value)
         case "squareConnections":
             let value = try SquareConnectionsResourceObject(from: decoder)
             self = .squareConnectionsResourceObject(value)
@@ -635,13 +635,13 @@ extension IncludedInner: Identifiable {
         case .reactionSummariesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
         case .resourceGrantsResourceObject(let value): return value.id
-        case .resourceSharingSettingsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
         case .scopesResourceObject(let value): return value.id
         case .searchHistoryEntriesResourceObject(let value): return value.id
         case .searchResultsResourceObject(let value): return value.id
         case .searchSuggestionsResourceObject(let value): return value.id
         case .sharesResourceObject(let value): return value.id
+        case .sharingSummariesResourceObject(let value): return value.id
         case .squareConnectionsResourceObject(let value): return value.id
         case .squareItemVariationPhysicalCountsResourceObject(let value): return value.id
         case .squareItemVariationsResourceObject(let value): return value.id

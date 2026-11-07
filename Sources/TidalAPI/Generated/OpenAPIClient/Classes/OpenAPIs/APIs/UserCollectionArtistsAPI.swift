@@ -147,7 +147,7 @@ internal class UserCollectionArtistsAPI {
      Get items relationship (\"to-many\").
      
      - parameter id: (path) User collection artists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter filterQuery: (query) Filter artists by a free-text query matched against the artist name. Internal clients only (e.g. &#x60;love&#x60;) (optional)
+     - parameter filterSelfMatchesQuery: (query) Filter artists by a free-text query matched against the artist name. Internal clients only (e.g. &#x60;love&#x60;) (optional)
      - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -156,9 +156,9 @@ internal class UserCollectionArtistsAPI {
      - returns: UserCollectionArtistsItemsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionArtistsIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument {
+    internal class func userCollectionArtistsIdRelationshipsItemsGet(id: String, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort).execute().body
+            return try await userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: id, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -173,7 +173,7 @@ internal class UserCollectionArtistsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection artists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter filterQuery: (query) Filter artists by a free-text query matched against the artist name. Internal clients only (e.g. &#x60;love&#x60;) (optional)
+     - parameter filterSelfMatchesQuery: (query) Filter artists by a free-text query matched against the artist name. Internal clients only (e.g. &#x60;love&#x60;) (optional)
      - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter locale: (query) BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional, default to "en-US")
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -181,7 +181,7 @@ internal class UserCollectionArtistsAPI {
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - returns: RequestBuilder<UserCollectionArtistsItemsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil) -> RequestBuilder<UserCollectionArtistsItemsMultiRelationshipDataDocument> {
+    internal class func userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: String, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil) -> RequestBuilder<UserCollectionArtistsItemsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollectionArtists/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -191,7 +191,7 @@ internal class UserCollectionArtistsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[query]": (wrappedValue: filterQuery?.encodeToJSON(), isExplode: true),
+            "filter[self][matchesQuery]": (wrappedValue: filterSelfMatchesQuery?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "locale": (wrappedValue: locale?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),

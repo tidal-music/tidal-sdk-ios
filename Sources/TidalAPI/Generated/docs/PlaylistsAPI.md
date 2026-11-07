@@ -594,7 +594,7 @@ Name | Type | Description  | Notes
 
 # **playlistsIdRelationshipsItemsGet**
 ```swift
-    open class func playlistsIdRelationshipsItemsGet(id: String, countryCode: String? = nil, filterQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument
+    open class func playlistsIdRelationshipsItemsGet(id: String, countryCode: String? = nil, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_playlistsIdRelationshipsItemsGet]? = nil) async throws -> PlaylistsItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -608,7 +608,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Playlist id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let filterQuery = "filterQuery_example" // String | Filter playlist items by a free-text query (e.g. `halo`) (optional)
+let filterSelfMatchesQuery = "filterSelfMatchesQuery_example" // String | Filter playlist items by a free-text query (e.g. `halo`) (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items (optional)
@@ -616,7 +616,7 @@ let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted 
 
 // Get items relationship (\"to-many\").
 do {
-    let response = try await PlaylistsAPI.playlistsIdRelationshipsItemsGet(id: id, countryCode: countryCode, filterQuery: filterQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
+    let response = try await PlaylistsAPI.playlistsIdRelationshipsItemsGet(id: id, countryCode: countryCode, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
     dump(response)
 } catch {
     print(error)
@@ -629,7 +629,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Playlist id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **filterQuery** | **String** | Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) | [optional] 
+ **filterSelfMatchesQuery** | **String** | Filter playlist items by a free-text query (e.g. &#x60;halo&#x60;) | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items | [optional] 

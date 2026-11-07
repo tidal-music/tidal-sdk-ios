@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 
 # **squareItemsGet**
 ```swift
-    open class func squareItemsGet(filterOwnersId: [String], filterOrigin: FilterOrigin_squareItemsGet? = nil, filterQuery: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareItemsGet]? = nil, pageCursor: String? = nil) async throws -> SquareItemsMultiResourceDataDocument
+    open class func squareItemsGet(filterOwnersId: [String], filterOrigin: FilterOrigin_squareItemsGet? = nil, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareItemsGet]? = nil, pageCursor: String? = nil) async throws -> SquareItemsMultiResourceDataDocument
 ```
 
 Get multiple squareItems.
@@ -80,14 +80,14 @@ import OpenAPIClient
 
 let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let filterOrigin = "filterOrigin_example" // String | Only items with this origin (e.g. `TIDAL`) (optional)
-let filterQuery = "filterQuery_example" // String | Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. `tee`) (optional)
+let filterSelfMatchesQuery = "filterSelfMatchesQuery_example" // String | Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. `tee`) (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: artworks, owners, variations (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get multiple squareItems.
 do {
-    let response = try await SquareItemsAPI.squareItemsGet(filterOwnersId: filterOwnersId, filterOrigin: filterOrigin, filterQuery: filterQuery, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor)
+    let response = try await SquareItemsAPI.squareItemsGet(filterOwnersId: filterOwnersId, filterOrigin: filterOrigin, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor)
     dump(response)
 } catch {
     print(error)
@@ -100,7 +100,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **filterOrigin** | **String** | Only items with this origin (e.g. &#x60;TIDAL&#x60;) | [optional] 
- **filterQuery** | **String** | Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) | [optional] 
+ **filterSelfMatchesQuery** | **String** | Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: artworks, owners, variations | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 

@@ -12,63 +12,52 @@ import AnyCodable
 
 public struct ViewerContextsAttributes: Codable, Hashable {
 
-    /** The viewer has at least one existing comment on the subject; deleted historical comments do not count. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
-    public var hasCommentedOn: AnyCodable?
+    public var hasEffectiveRole: EffectiveRole?
     /** The viewer has the original subject in their normal collection. Present as an empty object when known present, otherwise omitted. Includes owned and saved playlists and saved mixes across folders; excludes Save for Later. */
     public var hasInCollection: AnyCodable?
     /** The viewer has a current qualifying purchase entitlement. Includes a track covered by its purchased album; excludes subscription access and free downloads. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
     public var hasPurchased: AnyCodable?
-    public var hasReactedTo: Reaction?
     /** The viewer has saved the subject for later. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
     public var hasSavedForLater: AnyCodable?
     /** The viewer is followed by the subject. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
     public var isFollowedBy: AnyCodable?
     /** The viewer follows the subject. Reserved; not currently populated and omitted from responses. Omission does not indicate that the relation is absent. */
     public var isFollowing: AnyCodable?
-    public var isGranteeOf: Grantee?
 
     public init(
-        hasCommentedOn: AnyCodable? = nil,
+        hasEffectiveRole: EffectiveRole? = nil,
         hasInCollection: AnyCodable? = nil,
         hasPurchased: AnyCodable? = nil,
-        hasReactedTo: Reaction? = nil,
         hasSavedForLater: AnyCodable? = nil,
         isFollowedBy: AnyCodable? = nil,
-        isFollowing: AnyCodable? = nil,
-        isGranteeOf: Grantee? = nil
+        isFollowing: AnyCodable? = nil
     ) {
-        self.hasCommentedOn = hasCommentedOn
+        self.hasEffectiveRole = hasEffectiveRole
         self.hasInCollection = hasInCollection
         self.hasPurchased = hasPurchased
-        self.hasReactedTo = hasReactedTo
         self.hasSavedForLater = hasSavedForLater
         self.isFollowedBy = isFollowedBy
         self.isFollowing = isFollowing
-        self.isGranteeOf = isGranteeOf
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case hasCommentedOn
+        case hasEffectiveRole
         case hasInCollection
         case hasPurchased
-        case hasReactedTo
         case hasSavedForLater
         case isFollowedBy
         case isFollowing
-        case isGranteeOf
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(hasCommentedOn, forKey: .hasCommentedOn)
+        try container.encodeIfPresent(hasEffectiveRole, forKey: .hasEffectiveRole)
         try container.encodeIfPresent(hasInCollection, forKey: .hasInCollection)
         try container.encodeIfPresent(hasPurchased, forKey: .hasPurchased)
-        try container.encodeIfPresent(hasReactedTo, forKey: .hasReactedTo)
         try container.encodeIfPresent(hasSavedForLater, forKey: .hasSavedForLater)
         try container.encodeIfPresent(isFollowedBy, forKey: .isFollowedBy)
         try container.encodeIfPresent(isFollowing, forKey: .isFollowing)
-        try container.encodeIfPresent(isGranteeOf, forKey: .isGranteeOf)
     }
 }

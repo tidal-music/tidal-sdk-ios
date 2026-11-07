@@ -102,14 +102,14 @@ public enum InstallationsAPITidal {
 	}
 
 	/**
-	 * enum for parameter filterState
+	 * enum for parameter filterClientStorageState
 	 */
-	public enum FilterState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
+	public enum FilterClientStorageState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
 		case pending = "PENDING"
 		case stored = "STORED"
 		case failed = "FAILED"
 
-		func toInstallationsAPIEnum() -> InstallationsAPI.FilterState_installationsIdRelationshipsOfflineInventoryGet {
+		func toInstallationsAPIEnum() -> InstallationsAPI.FilterClientStorageState_installationsIdRelationshipsOfflineInventoryGet {
 			switch self {
 			case .pending: return .pending
 			case .stored: return .stored
@@ -123,9 +123,9 @@ public enum InstallationsAPITidal {
      
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
-	public static func installationsIdRelationshipsOfflineInventoryGet(filterType: [InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterId: [String]? = nil, filterState: [InstallationsAPITidal.FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
+	public static func installationsIdRelationshipsOfflineInventoryGet(filterType: [InstallationsAPITidal.FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterClientStorageState: [InstallationsAPITidal.FilterClientStorageState_installationsIdRelationshipsOfflineInventoryGet]? = nil, filterId: [String]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			InstallationsAPI.installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(filterType: filterType.compactMap { $0.toInstallationsAPIEnum() }, id: id, filterId: filterId, filterState: filterState?.compactMap { $0.toInstallationsAPIEnum() }, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+			InstallationsAPI.installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(filterType: filterType.compactMap { $0.toInstallationsAPIEnum() }, id: id, filterClientStorageState: filterClientStorageState?.compactMap { $0.toInstallationsAPIEnum() }, filterId: filterId, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

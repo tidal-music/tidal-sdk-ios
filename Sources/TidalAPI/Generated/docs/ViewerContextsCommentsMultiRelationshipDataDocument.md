@@ -1,9 +1,9 @@
-# ResourceSharingSettingsMultiResourceDataDocument
+# ViewerContextsCommentsMultiRelationshipDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [ResourceSharingSettingsResourceObject] |  | 
+**data** | [ResourceIdentifier] |  | [optional] 
 **included** | [IncludedInner] |  | [optional] 
 **links** | [**Links**](Links.md) |  | 
 

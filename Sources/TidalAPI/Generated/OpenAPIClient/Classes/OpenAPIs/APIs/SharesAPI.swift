@@ -23,16 +23,18 @@ internal class SharesAPI {
     /**
      Get multiple shares.
      
-     - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) 
+     - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) (optional)
+     - parameter filterSelfAppliesTo: (query) Album, track or folder owned by the caller. Selects undeleted, unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an ancestor folder. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. Also accepts &#x60;folders:me&#x60;. (optional)
      - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: SharesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func sharesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
+    internal class func sharesGet(filterCode: [String]? = nil, filterSelfAppliesTo: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
         do {
-            return try await sharesGetWithRequestBuilder(filterCode: filterCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+            return try await sharesGetWithRequestBuilder(filterCode: filterCode, filterSelfAppliesTo: filterSelfAppliesTo, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -49,22 +51,26 @@ internal class SharesAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) 
+     - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) (optional)
+     - parameter filterSelfAppliesTo: (query) Album, track or folder owned by the caller. Selects undeleted, unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an ancestor folder. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. Also accepts &#x60;folders:me&#x60;. (optional)
      - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: RequestBuilder<SharesMultiResourceDataDocument> 
      */
-    internal class func sharesGetWithRequestBuilder(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesMultiResourceDataDocument> {
+    internal class func sharesGetWithRequestBuilder(filterCode: [String]? = nil, filterSelfAppliesTo: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesMultiResourceDataDocument> {
         let localVariablePath = "/shares"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[code]": (wrappedValue: filterCode.encodeToJSON(), isExplode: true),
+            "filter[code]": (wrappedValue: filterCode?.encodeToJSON(), isExplode: true),
+            "filter[self][appliesTo]": (wrappedValue: filterSelfAppliesTo?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 

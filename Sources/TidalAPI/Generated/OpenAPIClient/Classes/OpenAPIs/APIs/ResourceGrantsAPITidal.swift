@@ -51,9 +51,9 @@ public enum ResourceGrantsAPITidal {
      
      - returns: ResourceGrantsMultiResourceDataDocument
      */
-	public static func resourceGrantsGet(filterGrantee: String? = nil, filterRole: ResourceGrantsAPITidal.FilterRole_resourceGrantsGet? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [ResourceGrantsAPITidal.IncludeLinkage_resourceGrantsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsMultiResourceDataDocument {
+	public static func resourceGrantsGet(filterGrantee: String? = nil, filterRole: ResourceGrantsAPITidal.FilterRole_resourceGrantsGet? = nil, filterSelfAppliesTo: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [ResourceGrantsAPITidal.IncludeLinkage_resourceGrantsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ResourceGrantsAPI.resourceGrantsGetWithRequestBuilder(filterGrantee: filterGrantee, filterRole: filterRole?.toResourceGrantsAPIEnum(), filterSubject: filterSubject, include: include, includeLinkage: includeLinkage?.compactMap { $0.toResourceGrantsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
+			ResourceGrantsAPI.resourceGrantsGetWithRequestBuilder(filterGrantee: filterGrantee, filterRole: filterRole?.toResourceGrantsAPIEnum(), filterSelfAppliesTo: filterSelfAppliesTo, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage?.compactMap { $0.toResourceGrantsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

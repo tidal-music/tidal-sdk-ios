@@ -1,9 +1,9 @@
-# ResourceSharingSettingsGrantsMultiRelationshipDataDocument
+# SharingSummariesMultiResourceDataDocument
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [ResourceIdentifier] |  | [optional] 
+**data** | [SharingSummariesResourceObject] |  | 
 **included** | [IncludedInner] |  | [optional] 
 **links** | [**Links**](Links.md) |  | 
 
