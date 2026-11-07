@@ -85,9 +85,9 @@ public enum UserCollectionVideosAPITidal {
      
      - returns: UserCollectionVideosItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionVideosIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionVideosAPITidal.Sort_userCollectionVideosIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionVideosItemsMultiRelationshipDataDocument {
+	public static func userCollectionVideosIdRelationshipsItemsGet(id: String, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionVideosAPITidal.Sort_userCollectionVideosIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionVideosItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsGetWithRequestBuilder(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionVideosAPIEnum() })
+			UserCollectionVideosAPI.userCollectionVideosIdRelationshipsItemsGetWithRequestBuilder(id: id, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionVideosAPIEnum() })
 		}
 	}
 

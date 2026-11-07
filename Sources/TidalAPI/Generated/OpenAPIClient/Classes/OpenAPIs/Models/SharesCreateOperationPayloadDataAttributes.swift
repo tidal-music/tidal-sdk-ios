@@ -22,12 +22,15 @@ public struct SharesCreateOperationPayloadDataAttributes: Codable, Hashable {
     }
     public static let accessModesRule = ArrayRule(minItems: 1, maxItems: nil, uniqueItems: true)
     public static let maxUsesRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: 100, exclusiveMaximum: false, multipleOf: nil)
+    public static let passwordRule = StringRule(minLength: 6, maxLength: 128, pattern: "^[\\x20-\\x7E]*$")
     /** Ways this share may be used to obtain access. BEARER permits access by presenting its code while active. VOUCHER permits redemption for a stored grant. Defaults to both modes for every role. Playlist shares must include VOUCHER; bearer-only playlist shares are rejected with 400. */
     public var accessModes: Set<AccessModes>?
     /** Time bearer access and acceptance expire; must be in the future and at most a year away. Defaults to seven days after creation when omitted or null. */
     public var expiresAt: Date?
     /** Number of users other than the owner who may save the share. Only a save counts as a use, and a used-up share also stops bearer access. Requires the VOUCHER access mode. Omit or send null for unlimited saves. */
     public var maxUses: Int?
+    /** Password a user must send to save the share. Never returned. Must be printable ASCII characters. Without accessModes, a protected share defaults to VOUCHER only; BEARER with a password, or a password on a playlist share, is rejected with 400. */
+    public var password: String?
     /** Role offered by the share. */
     public var role: Role
 
@@ -35,11 +38,13 @@ public struct SharesCreateOperationPayloadDataAttributes: Codable, Hashable {
         accessModes: Set<AccessModes>? = nil,
         expiresAt: Date? = nil,
         maxUses: Int? = nil,
+        password: String? = nil,
         role: Role
     ) {
         self.accessModes = accessModes
         self.expiresAt = expiresAt
         self.maxUses = maxUses
+        self.password = password
         self.role = role
     }
 
@@ -47,6 +52,7 @@ public struct SharesCreateOperationPayloadDataAttributes: Codable, Hashable {
         case accessModes
         case expiresAt
         case maxUses
+        case password
         case role
     }
 
@@ -57,6 +63,7 @@ public struct SharesCreateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(accessModes, forKey: .accessModes)
         try container.encodeIfPresent(expiresAt, forKey: .expiresAt)
         try container.encodeIfPresent(maxUses, forKey: .maxUses)
+        try container.encodeIfPresent(password, forKey: .password)
         try container.encode(role, forKey: .role)
     }
 }

@@ -173,7 +173,7 @@ Name | Type | Description  | Notes
 
 # **installationsIdRelationshipsOfflineInventoryGet**
 ```swift
-    open class func installationsIdRelationshipsOfflineInventoryGet(filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument
+    open class func installationsIdRelationshipsOfflineInventoryGet(filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterClientStorageState: [FilterClientStorageState_installationsIdRelationshipsOfflineInventoryGet]? = nil, filterId: [String]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument
 ```
 
 Get offlineInventory relationship (\"to-many\").
@@ -187,15 +187,15 @@ import OpenAPIClient
 
 let filterType = ["filterType_example"] // [String] | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. `tracks`)
 let id = "id_example" // String | Installation id
+let filterClientStorageState = ["filterClientStorageState_example"] // [String] | One of: PENDING, STORED, FAILED (e.g. `PENDING`) (optional)
 let filterId = ["inner_example"] // [String] | Offline item id (e.g. `1234`) (optional)
-let filterState = ["filterState_example"] // [String] | One of: PENDING, STORED, FAILED (e.g. `PENDING`) (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: offlineInventory (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: offlineInventory (optional)
 
 // Get offlineInventory relationship (\"to-many\").
 do {
-    let response = try await InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(filterType: filterType, id: id, filterId: filterId, filterState: filterState, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    let response = try await InstallationsAPI.installationsIdRelationshipsOfflineInventoryGet(filterType: filterType, id: id, filterClientStorageState: filterClientStorageState, filterId: filterId, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -208,8 +208,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterType** | [**[String]**](String.md) | One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) | 
  **id** | **String** | Installation id | 
+ **filterClientStorageState** | [**[String]**](String.md) | One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) | [optional] 
  **filterId** | [**[String]**](String.md) | Offline item id (e.g. &#x60;1234&#x60;) | [optional] 
- **filterState** | [**[String]**](String.md) | One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: offlineInventory | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory | [optional] 

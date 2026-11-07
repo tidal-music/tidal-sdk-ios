@@ -81,16 +81,16 @@ internal class SquareItemsAPI {
      
      - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterOrigin: (query) Only items with this origin (e.g. &#x60;TIDAL&#x60;) (optional)
-     - parameter filterQuery: (query) Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
+     - parameter filterSelfMatchesQuery: (query) Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
      - parameter include: (query) Include related resources. Available relationships: artworks, owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: SquareItemsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func squareItemsGet(filterOwnersId: [String], filterOrigin: FilterOrigin_squareItemsGet? = nil, filterQuery: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareItemsGet]? = nil, pageCursor: String? = nil) async throws -> SquareItemsMultiResourceDataDocument {
+    internal class func squareItemsGet(filterOwnersId: [String], filterOrigin: FilterOrigin_squareItemsGet? = nil, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareItemsGet]? = nil, pageCursor: String? = nil) async throws -> SquareItemsMultiResourceDataDocument {
         do {
-            return try await squareItemsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterOrigin: filterOrigin, filterQuery: filterQuery, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor).execute().body
+            return try await squareItemsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterOrigin: filterOrigin, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -106,13 +106,13 @@ internal class SquareItemsAPI {
        - name: Authorization_Code_PKCE
      - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter filterOrigin: (query) Only items with this origin (e.g. &#x60;TIDAL&#x60;) (optional)
-     - parameter filterQuery: (query) Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
+     - parameter filterSelfMatchesQuery: (query) Word-prefix match on item titles, descriptions and abbreviations, and on variation names, SKUs and UPCs (e.g. &#x60;tee&#x60;) (optional)
      - parameter include: (query) Include related resources. Available relationships: artworks, owners, variations (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - returns: RequestBuilder<SquareItemsMultiResourceDataDocument> 
      */
-    internal class func squareItemsGetWithRequestBuilder(filterOwnersId: [String], filterOrigin: FilterOrigin_squareItemsGet? = nil, filterQuery: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareItemsGet]? = nil, pageCursor: String? = nil) -> RequestBuilder<SquareItemsMultiResourceDataDocument> {
+    internal class func squareItemsGetWithRequestBuilder(filterOwnersId: [String], filterOrigin: FilterOrigin_squareItemsGet? = nil, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_squareItemsGet]? = nil, pageCursor: String? = nil) -> RequestBuilder<SquareItemsMultiResourceDataDocument> {
         let localVariablePath = "/squareItems"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -121,7 +121,7 @@ internal class SquareItemsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[owners.id]": (wrappedValue: filterOwnersId.encodeToJSON(), isExplode: true),
             "filter[origin]": (wrappedValue: filterOrigin?.encodeToJSON(), isExplode: true),
-            "filter[query]": (wrappedValue: filterQuery?.encodeToJSON(), isExplode: true),
+            "filter[self][matchesQuery]": (wrappedValue: filterSelfMatchesQuery?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),

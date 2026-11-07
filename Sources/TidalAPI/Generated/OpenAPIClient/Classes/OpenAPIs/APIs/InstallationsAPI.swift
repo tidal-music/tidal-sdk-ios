@@ -212,9 +212,9 @@ internal class InstallationsAPI {
     }
 
     /**
-     * enum for parameter filterState
+     * enum for parameter filterClientStorageState
      */
-    public enum FilterState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
+    public enum FilterClientStorageState_installationsIdRelationshipsOfflineInventoryGet: String, CaseIterable {
         case pending = "PENDING"
         case stored = "STORED"
         case failed = "FAILED"
@@ -225,17 +225,17 @@ internal class InstallationsAPI {
      
      - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) 
      - parameter id: (path) Installation id 
+     - parameter filterClientStorageState: (query) One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
-     - parameter filterState: (query) One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      - parameter include: (query) Include related resources. Available relationships: offlineInventory (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      - returns: InstallationsOfflineInventoryMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func installationsIdRelationshipsOfflineInventoryGet(filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
+    internal class func installationsIdRelationshipsOfflineInventoryGet(filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterClientStorageState: [FilterClientStorageState_installationsIdRelationshipsOfflineInventoryGet]? = nil, filterId: [String]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> InstallationsOfflineInventoryMultiRelationshipDataDocument {
         do {
-            return try await installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(filterType: filterType, id: id, filterId: filterId, filterState: filterState, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
+            return try await installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(filterType: filterType, id: id, filterClientStorageState: filterClientStorageState, filterId: filterId, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -251,14 +251,14 @@ internal class InstallationsAPI {
        - name: Authorization_Code_PKCE
      - parameter filterType: (query) One of: tracks, videos, albums, playlists, userCollectionTracks (e.g. &#x60;tracks&#x60;) 
      - parameter id: (path) Installation id 
+     - parameter filterClientStorageState: (query) One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      - parameter filterId: (query) Offline item id (e.g. &#x60;1234&#x60;) (optional)
-     - parameter filterState: (query) One of: PENDING, STORED, FAILED (e.g. &#x60;PENDING&#x60;) (optional)
      - parameter include: (query) Include related resources. Available relationships: offlineInventory (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: offlineInventory (optional)
      - returns: RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> 
      */
-    internal class func installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterId: [String]? = nil, filterState: [FilterState_installationsIdRelationshipsOfflineInventoryGet]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> {
+    internal class func installationsIdRelationshipsOfflineInventoryGetWithRequestBuilder(filterType: [FilterType_installationsIdRelationshipsOfflineInventoryGet], id: String, filterClientStorageState: [FilterClientStorageState_installationsIdRelationshipsOfflineInventoryGet]? = nil, filterId: [String]? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<InstallationsOfflineInventoryMultiRelationshipDataDocument> {
         var localVariablePath = "/installations/{id}/relationships/offlineInventory"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -269,8 +269,8 @@ internal class InstallationsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[type]": (wrappedValue: filterType.encodeToJSON(), isExplode: true),
+            "filter[clientStorageState]": (wrappedValue: filterClientStorageState?.encodeToJSON(), isExplode: true),
             "filter[id]": (wrappedValue: filterId?.encodeToJSON(), isExplode: true),
-            "filter[state]": (wrappedValue: filterState?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),

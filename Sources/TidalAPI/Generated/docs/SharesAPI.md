@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**sharesGet**](SharesAPI.md#sharesget) | **GET** /shares | Get multiple shares.
 [**sharesIdDelete**](SharesAPI.md#sharesiddelete) | **DELETE** /shares/{id} | Delete single share.
 [**sharesIdGet**](SharesAPI.md#sharesidget) | **GET** /shares/{id} | Get single share.
+[**sharesIdPatch**](SharesAPI.md#sharesidpatch) | **PATCH** /shares/{id} | Update single share.
 [**sharesIdRelationshipsOwnersGet**](SharesAPI.md#sharesidrelationshipsownersget) | **GET** /shares/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**sharesIdRelationshipsSharedResourcesGet**](SharesAPI.md#sharesidrelationshipssharedresourcesget) | **GET** /shares/{id}/relationships/sharedResources | Get sharedResources relationship (\&quot;to-many\&quot;).
 [**sharesPost**](SharesAPI.md#sharespost) | **POST** /shares | Create single share.
@@ -14,7 +15,7 @@ Method | HTTP request | Description
 
 # **sharesGet**
 ```swift
-    open class func sharesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument
+    open class func sharesGet(filterCode: [String]? = nil, filterSelfAppliesTo: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument
 ```
 
 Get multiple shares.
@@ -26,14 +27,16 @@ Retrieves multiple shares by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterCode = ["inner_example"] // [String] | A share code (e.g. `xyz`)
+let filterCode = ["inner_example"] // [String] | A share code (e.g. `xyz`) (optional)
+let filterSelfAppliesTo = "filterSelfAppliesTo_example" // String | Album, track or folder owned by the caller. Selects undeleted, unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an ancestor folder. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. Also accepts `folders:me`. (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, sharedResources (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: sharedResources (optional)
 
 // Get multiple shares.
 do {
-    let response = try await SharesAPI.sharesGet(filterCode: filterCode, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await SharesAPI.sharesGet(filterCode: filterCode, filterSelfAppliesTo: filterSelfAppliesTo, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -44,9 +47,11 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterCode** | [**[String]**](String.md) | A share code (e.g. &#x60;xyz&#x60;) | 
+ **filterCode** | [**[String]**](String.md) | A share code (e.g. &#x60;xyz&#x60;) | [optional] 
+ **filterSelfAppliesTo** | **String** | Album, track or folder owned by the caller. Selects undeleted, unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an ancestor folder. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. Also accepts &#x60;folders:me&#x60;. | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, sharedResources | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources | [optional] 
 
 ### Return type
@@ -162,6 +167,56 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **sharesIdPatch**
+```swift
+    open class func sharesIdPatch(id: String, idempotencyKey: String? = nil, sharesUpdateOperationPayload: SharesUpdateOperationPayload? = nil) async throws -> SharesUpdateSingleResourceDataDocument
+```
+
+Update single share.
+
+Set, change or remove the share's password. Setting one also removes BEARER access; removing one leaves the access modes unchanged. Existing savers keep their access.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Share id
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let sharesUpdateOperationPayload = SharesUpdateOperation_Payload(data: SharesUpdateOperation_Payload_Data(attributes: SharesUpdateOperation_Payload_Data_Attributes(password: "password_example"), id: "id_example", type: "type_example")) // SharesUpdateOperationPayload |  (optional)
+
+// Update single share.
+do {
+    let response = try await SharesAPI.sharesIdPatch(id: id, idempotencyKey: idempotencyKey, sharesUpdateOperationPayload: sharesUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Share id | 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **sharesUpdateOperationPayload** | [**SharesUpdateOperationPayload**](SharesUpdateOperationPayload.md) |  | [optional] 
+
+### Return type
+
+[**SharesUpdateSingleResourceDataDocument**](SharesUpdateSingleResourceDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: application/vnd.api+json
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -283,7 +338,7 @@ Creates a new share.
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let sharesCreateOperationPayload = SharesCreateOperation_Payload(data: SharesCreateOperation_Payload_Data(attributes: SharesCreateOperation_Payload_Data_Attributes(accessModes: ["accessModes_example"], expiresAt: Date(), maxUses: 123, role: "role_example"), relationships: SharesCreateOperation_Payload_Data_Relationships(sharedResources: SharesCreateOperation_Payload_Data_Relationships_SharedResources(data: [SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // SharesCreateOperationPayload |  (optional)
+let sharesCreateOperationPayload = SharesCreateOperation_Payload(data: SharesCreateOperation_Payload_Data(attributes: SharesCreateOperation_Payload_Data_Attributes(accessModes: ["accessModes_example"], expiresAt: Date(), maxUses: 123, password: "password_example", role: "role_example"), relationships: SharesCreateOperation_Payload_Data_Relationships(sharedResources: SharesCreateOperation_Payload_Data_Relationships_SharedResources(data: [SharesCreateOperation_Payload_Data_Relationships_SharedResources_Data(id: "id_example", type: "type_example")])), type: "type_example")) // SharesCreateOperationPayload |  (optional)
 
 // Create single share.
 do {

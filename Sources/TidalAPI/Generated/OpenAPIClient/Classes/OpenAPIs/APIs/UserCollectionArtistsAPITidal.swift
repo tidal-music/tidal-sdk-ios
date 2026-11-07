@@ -77,9 +77,9 @@ public enum UserCollectionArtistsAPITidal {
      
      - returns: UserCollectionArtistsItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionArtistsIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionArtistsAPITidal.Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument {
+	public static func userCollectionArtistsIdRelationshipsItemsGet(id: String, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionArtistsAPITidal.Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionArtistsAPIEnum() })
+			UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsGetWithRequestBuilder(id: id, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionArtistsAPIEnum() })
 		}
 	}
 

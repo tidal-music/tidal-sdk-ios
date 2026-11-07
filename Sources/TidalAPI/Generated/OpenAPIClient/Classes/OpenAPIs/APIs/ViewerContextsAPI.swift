@@ -16,6 +16,8 @@ internal class ViewerContextsAPI {
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_viewerContextsGet: String, CaseIterable {
+        case comments = "comments"
+        case reactions = "reactions"
         case subject = "subject"
         case viewer = "viewer"
     }
@@ -24,9 +26,9 @@ internal class ViewerContextsAPI {
      Get multiple viewerContexts.
      
      - parameter filterSubject: (query) Original subjects to look up. Also accepts &#x60;folders:me&#x60;. 
-     - parameter include: (query) Include related resources. Available relationships: subject, viewer (optional)
+     - parameter include: (query) Include related resources. Available relationships: comments, reactions, subject, viewer (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: comments.author.albums (optional)
      - returns: ViewerContextsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -47,9 +49,9 @@ internal class ViewerContextsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterSubject: (query) Original subjects to look up. Also accepts &#x60;folders:me&#x60;. 
-     - parameter include: (query) Include related resources. Available relationships: subject, viewer (optional)
+     - parameter include: (query) Include related resources. Available relationships: comments, reactions, subject, viewer (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: comments.author.albums (optional)
      - returns: RequestBuilder<ViewerContextsMultiResourceDataDocument> 
      */
     internal class func viewerContextsGetWithRequestBuilder(filterSubject: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_viewerContextsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ViewerContextsMultiResourceDataDocument> {
@@ -80,6 +82,8 @@ internal class ViewerContextsAPI {
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_viewerContextsIdGet: String, CaseIterable {
+        case comments = "comments"
+        case reactions = "reactions"
         case subject = "subject"
         case viewer = "viewer"
     }
@@ -88,9 +92,9 @@ internal class ViewerContextsAPI {
      Get single viewerContext.
      
      - parameter id: (path) Opaque identifier of one authenticated viewer and original subject pair 
-     - parameter include: (query) Include related resources. Available relationships: subject, viewer (optional)
+     - parameter include: (query) Include related resources. Available relationships: comments, reactions, subject, viewer (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: comments.author.albums (optional)
      - returns: ViewerContextsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -111,9 +115,9 @@ internal class ViewerContextsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Opaque identifier of one authenticated viewer and original subject pair 
-     - parameter include: (query) Include related resources. Available relationships: subject, viewer (optional)
+     - parameter include: (query) Include related resources. Available relationships: comments, reactions, subject, viewer (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
-     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: comments.author.albums (optional)
      - returns: RequestBuilder<ViewerContextsSingleResourceDataDocument> 
      */
     internal class func viewerContextsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_viewerContextsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ViewerContextsSingleResourceDataDocument> {
@@ -138,6 +142,122 @@ internal class ViewerContextsAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<ViewerContextsSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get comments relationship (\"to-many\").
+     
+     - parameter id: (path) Opaque identifier of one authenticated viewer and original subject pair 
+     - parameter include: (query) Include related resources. Available relationships: comments (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: comments.author.albums (optional)
+     - returns: ViewerContextsCommentsMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func viewerContextsIdRelationshipsCommentsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ViewerContextsCommentsMultiRelationshipDataDocument {
+        do {
+            return try await viewerContextsIdRelationshipsCommentsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get comments relationship (\"to-many\").
+     - GET /viewerContexts/{id}/relationships/comments
+     - Returns the viewer's comments on the subject.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Opaque identifier of one authenticated viewer and original subject pair 
+     - parameter include: (query) Include related resources. Available relationships: comments (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: comments.author.albums (optional)
+     - returns: RequestBuilder<ViewerContextsCommentsMultiRelationshipDataDocument> 
+     */
+    internal class func viewerContextsIdRelationshipsCommentsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<ViewerContextsCommentsMultiRelationshipDataDocument> {
+        var localVariablePath = "/viewerContexts/{id}/relationships/comments"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ViewerContextsCommentsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get reactions relationship (\"to-many\").
+     
+     - parameter id: (path) Opaque identifier of one authenticated viewer and original subject pair 
+     - parameter include: (query) Include related resources. Available relationships: reactions (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: reactions.author.albums (optional)
+     - returns: ViewerContextsReactionsMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func viewerContextsIdRelationshipsReactionsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ViewerContextsReactionsMultiRelationshipDataDocument {
+        do {
+            return try await viewerContextsIdRelationshipsReactionsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get reactions relationship (\"to-many\").
+     - GET /viewerContexts/{id}/relationships/reactions
+     - Returns the viewer's reactions on the subject.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Opaque identifier of one authenticated viewer and original subject pair 
+     - parameter include: (query) Include related resources. Available relationships: reactions (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: reactions.author.albums (optional)
+     - returns: RequestBuilder<ViewerContextsReactionsMultiRelationshipDataDocument> 
+     */
+    internal class func viewerContextsIdRelationshipsReactionsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<ViewerContextsReactionsMultiRelationshipDataDocument> {
+        var localVariablePath = "/viewerContexts/{id}/relationships/reactions"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ViewerContextsReactionsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }

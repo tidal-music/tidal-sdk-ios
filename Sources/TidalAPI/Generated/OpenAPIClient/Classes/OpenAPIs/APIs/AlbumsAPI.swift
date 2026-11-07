@@ -1320,7 +1320,7 @@ internal class AlbumsAPI {
     /**
      Create single album.
      - POST /albums
-     - Creates an uploaded album. Album creation is not atomic with its artist assignment, so every listed artist must be owned by the caller; a collaborator or album-level grant is not enough until the album exists.
+     - Creates an uploaded album. Album creation is not atomic with its artist assignment, so the caller must be OWNER of every listed artist; COLLABORATOR, or a role on an album, is not enough until the album exists.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

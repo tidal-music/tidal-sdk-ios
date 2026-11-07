@@ -13,33 +13,35 @@ import AnyCodable
 public struct CommentsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
     public static let messageRule = StringRule(minLength: 1, maxLength: 2000, pattern: nil)
-    public var endTime: String?
+    /** End offset from the beginning of the source file (ISO 8601 duration). */
+    public var endOffset: String?
     /** The comment message content */
     public var message: String
-    public var startTime: String?
+    /** Start offset from the beginning of the source file (ISO 8601 duration). */
+    public var startOffset: String?
 
     public init(
-        endTime: String? = nil,
+        endOffset: String? = nil,
         message: String,
-        startTime: String? = nil
+        startOffset: String? = nil
     ) {
-        self.endTime = endTime
+        self.endOffset = endOffset
         self.message = message
-        self.startTime = startTime
+        self.startOffset = startOffset
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case endTime
+        case endOffset
         case message
-        case startTime
+        case startOffset
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(endTime, forKey: .endTime)
+        try container.encodeIfPresent(endOffset, forKey: .endOffset)
         try container.encode(message, forKey: .message)
-        try container.encodeIfPresent(startTime, forKey: .startTime)
+        try container.encodeIfPresent(startOffset, forKey: .startOffset)
     }
 }

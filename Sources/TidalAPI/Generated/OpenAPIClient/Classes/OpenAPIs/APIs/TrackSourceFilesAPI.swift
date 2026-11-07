@@ -47,6 +47,9 @@ internal class TrackSourceFilesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
      - parameter id: (path) Track source file id 
      - parameter include: (query) Include related resources. Available relationships: commentSummary, owners, reactionSummary (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)

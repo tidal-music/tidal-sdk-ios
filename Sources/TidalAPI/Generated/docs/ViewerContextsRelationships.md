@@ -3,6 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**comments** | [**ViewerContextsCommentsMultiRelationshipDataDocument**](ViewerContextsCommentsMultiRelationshipDataDocument.md) |  | [optional] 
+**reactions** | [**ViewerContextsReactionsMultiRelationshipDataDocument**](ViewerContextsReactionsMultiRelationshipDataDocument.md) |  | [optional] 
 **subject** | [**ViewerContextsSubjectSingleRelationshipDataDocument**](ViewerContextsSubjectSingleRelationshipDataDocument.md) |  | [optional] 
 **viewer** | [**ViewerContextsViewerSingleRelationshipDataDocument**](ViewerContextsViewerSingleRelationshipDataDocument.md) |  | [optional] 
 

@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionArtistsIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionArtistsIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument
+    open class func userCollectionArtistsIdRelationshipsItemsGet(id: String, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionArtistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionArtistsItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -130,7 +130,7 @@ Retrieves items relationship.
 import OpenAPIClient
 
 let id = "id_example" // String | User collection artists id. Use `me` for the authenticated user's resource
-let filterQuery = "filterQuery_example" // String | Filter artists by a free-text query matched against the artist name. Internal clients only (e.g. `love`) (optional)
+let filterSelfMatchesQuery = "filterSelfMatchesQuery_example" // String | Filter artists by a free-text query matched against the artist name. Internal clients only (e.g. `love`) (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
 let locale = "locale_example" // String | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. (optional) (default to "en-US")
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -139,7 +139,7 @@ let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted 
 
 // Get items relationship (\"to-many\").
 do {
-    let response = try await UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsGet(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
+    let response = try await UserCollectionArtistsAPI.userCollectionArtistsIdRelationshipsItemsGet(id: id, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
     dump(response)
 } catch {
     print(error)
@@ -151,7 +151,7 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection artists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **filterQuery** | **String** | Filter artists by a free-text query matched against the artist name. Internal clients only (e.g. &#x60;love&#x60;) | [optional] 
+ **filterSelfMatchesQuery** | **String** | Filter artists by a free-text query matched against the artist name. Internal clients only (e.g. &#x60;love&#x60;) | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
  **locale** | **String** | BCP 47 locale (e.g., en-US, nb-NO, pt-BR). Defaults to en-US if not provided or unsupported. | [optional] [default to &quot;en-US&quot;]
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 

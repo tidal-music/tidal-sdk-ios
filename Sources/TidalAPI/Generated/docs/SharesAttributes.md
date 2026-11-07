@@ -9,6 +9,8 @@ Name | Type | Description | Notes
 **expiresAt** | **Date** | Time bearer access and acceptance expire; accepted grants remain valid. | 
 **externalLinks** | [ExternalLink] | Links external to TIDAL API | [optional] 
 **maxUses** | **Int** | Number of users other than the owner who may save the share. Absent when unlimited. | [optional] 
+**password** | **String** | Password a user must send to save the share. Write-only: never returned. | [optional] 
+**passwordProtected** | **Bool** | Whether saving the share requires a password. A protected share never permits BEARER access, and only its owner and savers see its shared resource. | 
 **role** | **String** | Role offered on the shared resource. | 
 **useCount** | **Int** | Number of users other than the owner who have saved the share. Once it reaches maxUses, bearer access and acceptance end. Absent when maxUses is. | [optional] 
 
