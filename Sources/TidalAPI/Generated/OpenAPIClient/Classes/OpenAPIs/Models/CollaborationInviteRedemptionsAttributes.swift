@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct CollaborationInviteRedemptionsAttributes: Codable, Hashable {
 
-    /** Datetime the invite was redeemed (ISO 8601) */
+    /** Time of this redemption (ISO 8601). Redeeming the invite again returns the same id with the time of that request. */
     public var redeemedAt: Date
 
     public init(

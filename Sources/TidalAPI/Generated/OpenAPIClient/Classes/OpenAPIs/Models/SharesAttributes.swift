@@ -25,7 +25,8 @@ public struct SharesAttributes: Codable, Hashable {
     public static let maxUsesRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: 100, exclusiveMaximum: false, multipleOf: nil)
     public static let passwordRule = StringRule(minLength: 6, maxLength: 128, pattern: "^[\\x20-\\x7E]*$")
     public static let useCountRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: 100, exclusiveMaximum: false, multipleOf: nil)
-    /** Ways this share may be used to obtain access. BEARER permits access by presenting its code while active. VOUCHER permits an authenticated user to redeem it for a stored grant. Multiple modes may be enabled. */
+    /** Ways this share may be used to obtain access, decided by the server. Deprecated: clients must not rely on it. */
+    @available(*, deprecated, message: "This property is deprecated.")
     public var accessModes: Set<AccessModes>
     /** Share code */
     public var code: String
@@ -35,15 +36,15 @@ public struct SharesAttributes: Codable, Hashable {
     public var expiresAt: Date
     /** Links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
-    /** Number of users other than the owner who may save the share. Absent when unlimited. */
+    /** Number of saves the share permits. Absent when unlimited. */
     public var maxUses: Int?
     /** Password a user must send to save the share. Write-only: never returned. */
     public var password: String?
-    /** Whether saving the share requires a password. A protected share never permits BEARER access, and only its owner and savers see its shared resource. */
+    /** Whether saving the share requires a password. A protected share never permits BEARER access, and only its owner and users with a role on its shared resource see that resource. */
     public var passwordProtected: Bool
     /** Role offered on the shared resource. */
     public var role: Role
-    /** Number of users other than the owner who have saved the share. Once it reaches maxUses, bearer access and acceptance end. Absent when maxUses is. */
+    /** Number of saves so far, repeated saves included. Once it reaches maxUses, bearer access and acceptance end. Absent when maxUses is. */
     public var useCount: Int?
 
     public init(
