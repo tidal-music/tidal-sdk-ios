@@ -24,13 +24,19 @@ class OfflinerTestCase: XCTestCase {
 		artworkDownloader: ArtworkDownloaderProtocol,
 		mediaDownloader: MediaDownloaderProtocol,
 		trackManifestFetcher: TrackManifestFetcherProtocol = SucceedingTrackManifestFetcher(),
-		videoManifestFetcher: VideoManifestFetcherProtocol = SucceedingVideoManifestFetcher()
+		videoManifestFetcher: VideoManifestFetcherProtocol = SucceedingVideoManifestFetcher(),
+		reusingDatabaseQueue existingDatabaseQueue: DatabaseQueue? = nil
 	) -> Offliner {
-		let dbPath = tempDir.appendingPathComponent("test-\(UUID().uuidString).sqlite").path
-		// swiftlint:disable:next force_try
-		let databaseQueue = try! OfflineStore.makeDatabaseQueue(path: dbPath)
-		// swiftlint:disable:next force_try
-		try! Migrations.run(databaseQueue)
+		let databaseQueue: DatabaseQueue
+		if let existingDatabaseQueue {
+			databaseQueue = existingDatabaseQueue
+		} else {
+			let dbPath = tempDir.appendingPathComponent("test-\(UUID().uuidString).sqlite").path
+			// swiftlint:disable:next force_try
+			databaseQueue = try! OfflineStore.makeDatabaseQueue(path: dbPath)
+			// swiftlint:disable:next force_try
+			try! Migrations.run(databaseQueue)
+		}
 		lastDatabaseQueue = databaseQueue
 		let offlineStore = OfflineStore(databaseQueue)
 

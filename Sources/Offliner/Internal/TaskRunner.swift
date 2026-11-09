@@ -16,6 +16,7 @@ actor TaskRunner {
 	private let removeCollectionHandler: RemoveCollectionHandler
 
 	private let offlineApiClient: OfflineApiClientProtocol
+	private let offlineStore: OfflineStore
 	private let network: Network
 
 	private var pendingTasks: [InternalTask] = []
@@ -44,6 +45,7 @@ actor TaskRunner {
 		videoManifestFetcher: VideoManifestFetcherProtocol
 	) {
 		self.offlineApiClient = offlineApiClient
+		self.offlineStore = offlineStore
 		self.allowDownloadsOnExpensiveNetworks = configuration.allowDownloadsOnExpensiveNetworks
 		self.network = Network()
 
@@ -125,11 +127,35 @@ actor TaskRunner {
 		}
 	}
 
+	/// Drops the queued tasks that store items of `collection`. Running tasks can't be stopped; the store rejects their
+	/// writes once the collection is pending removal.
+	func cancelTasks(for collection: OfflineCollectionReference) async {
+		let cancelled = pendingTasks.filter { $0.storedCollection == collection }
+		guard !cancelled.isEmpty else { return }
+
+		pendingTasks.removeAll { $0.storedCollection == collection }
+		for task in cancelled {
+			taskIds.remove(task.id)
+			if let download = task.download {
+				currentDownloads.removeAll { $0 === download }
+			}
+		}
+
+		for task in cancelled {
+			await task.download?.updateState(.failed)
+		}
+	}
+
 	private func refresh() async throws {
 		let (tasks, _) = try await offlineApiClient.getTasks(cursor: nil)
 
-		for task in tasks where taskIds.insert(task.id).inserted {
+		for task in tasks where !taskIds.contains(task.id) {
 			let pendingTask = handle(task)
+			// The backend deletes a removed collection's store tasks asynchronously, so they can still be listed.
+			if let collection = pendingTask.storedCollection, (try? offlineStore.isPendingRemoval(collection)) == true {
+				continue
+			}
+			taskIds.insert(task.id)
 			pendingTasks.append(pendingTask)
 			if let download = pendingTask.download {
 				currentDownloads.append(download)
@@ -270,12 +296,16 @@ protocol InternalTask: AnyObject {
 	var id: String { get }
 	var download: Download? { get }
 	var concurrencyKey: OfflineTaskConcurrencyKey { get }
+	/// The collection this task stores the collection itself or an item of, or `nil` for remove tasks.
+	var storedCollection: OfflineCollectionReference? { get }
 	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool
 	func run() async throws
 }
 
 extension InternalTask {
 	var download: Download? { nil }
+
+	var storedCollection: OfflineCollectionReference? { download?.relatedCollection }
 
 	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool {
 		download?.relatedCollection == collection
