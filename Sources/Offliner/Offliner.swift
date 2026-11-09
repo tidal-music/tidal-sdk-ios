@@ -411,6 +411,8 @@ public final class Offliner {
 
 	/// Removes a collection. After this returns, local reads no longer contain it, and pending inventory reads
 	/// leave it out until the backend stops listing it. Throws if the backend request or the local delete fails.
+	///
+	/// Queued downloads of the collection are cancelled, and finish as ``Download/State/failed``.
 	public func remove(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId.stringValue)
 
