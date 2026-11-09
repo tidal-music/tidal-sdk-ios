@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `offlineCollections(collectionType:)`, a throwing variant of `getOfflineCollections` that fails on a local read or inventory page error instead of returning a partial list (Offliner)
+
+### Fixed
+- Skip offline collections with unreadable metadata instead of failing the whole list (Offliner)
+
 ## [0.14.1] - 2026-11-11
 
 ### Fixed

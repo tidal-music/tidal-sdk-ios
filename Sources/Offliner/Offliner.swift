@@ -181,6 +181,44 @@ public final class Offliner {
 		}
 	}
 
+	/// Reads the offline collections of one type, and fails instead of returning a partial list.
+	///
+	/// Yields the local collections with `isComplete == false`, then the local collections merged with every
+	/// pending inventory page with `isComplete == true`, then finishes. Throws if the local read fails, before
+	/// yielding anything, or if any inventory page fails, before yielding a complete value.
+	/// A local collection whose metadata can't be read is skipped.
+	public func offlineCollections(
+		collectionType: OfflineCollectionType
+	) -> AsyncThrowingStream<OfflineCollectionsRead, Error> {
+		AsyncThrowingStream { continuation in
+			let task = Task {
+				do {
+					var collections = try await offlineStore.getCollections(collectionType: collectionType)
+					continuation.yield(OfflineCollectionsRead(collections: collections, isComplete: false))
+
+					var cursor: String?
+					repeat {
+						let page = try await offlineApiClient.getPendingCollections(type: collectionType, cursor: cursor)
+						for item in page.collections {
+							if let index = collections.firstIndex(of: item) {
+								collections[index] = item
+							} else {
+								collections.append(item)
+							}
+						}
+						cursor = page.cursor
+					} while cursor != nil
+
+					continuation.yield(OfflineCollectionsRead(collections: collections, isComplete: true))
+					continuation.finish()
+				} catch {
+					continuation.finish(throwing: error)
+				}
+			}
+			continuation.onTermination = { _ in task.cancel() }
+		}
+	}
+
 	public func getOfflineCollectionDownloadState(
 		collectionType: OfflineCollectionType,
 		resourceId: ResourceId
