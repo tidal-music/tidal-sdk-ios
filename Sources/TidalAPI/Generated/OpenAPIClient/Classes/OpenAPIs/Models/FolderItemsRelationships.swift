@@ -15,29 +15,29 @@ public struct FolderItemsRelationships: Codable, Hashable {
     public var breadcrumb: FolderItemsBreadcrumbMultiRelationshipDataDocument?
     public var owners: FolderItemsOwnersMultiRelationshipDataDocument?
     public var parent: FolderItemsParentSingleRelationshipDataDocument?
+    public var sharingSummary: FolderItemsSharingSummarySingleRelationshipDataDocument?
     public var subject: FolderItemsSubjectSingleRelationshipDataDocument?
-    public var subjectSharingSettings: FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument?
 
     public init(
         breadcrumb: FolderItemsBreadcrumbMultiRelationshipDataDocument? = nil,
         owners: FolderItemsOwnersMultiRelationshipDataDocument? = nil,
         parent: FolderItemsParentSingleRelationshipDataDocument? = nil,
-        subject: FolderItemsSubjectSingleRelationshipDataDocument? = nil,
-        subjectSharingSettings: FolderItemsSubjectSharingSettingsSingleRelationshipDataDocument? = nil
+        sharingSummary: FolderItemsSharingSummarySingleRelationshipDataDocument? = nil,
+        subject: FolderItemsSubjectSingleRelationshipDataDocument? = nil
     ) {
         self.breadcrumb = breadcrumb
         self.owners = owners
         self.parent = parent
+        self.sharingSummary = sharingSummary
         self.subject = subject
-        self.subjectSharingSettings = subjectSharingSettings
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case breadcrumb
         case owners
         case parent
+        case sharingSummary
         case subject
-        case subjectSharingSettings
     }
 
     // Encodable protocol methods
@@ -47,7 +47,7 @@ public struct FolderItemsRelationships: Codable, Hashable {
         try container.encodeIfPresent(breadcrumb, forKey: .breadcrumb)
         try container.encodeIfPresent(owners, forKey: .owners)
         try container.encodeIfPresent(parent, forKey: .parent)
+        try container.encodeIfPresent(sharingSummary, forKey: .sharingSummary)
         try container.encodeIfPresent(subject, forKey: .subject)
-        try container.encodeIfPresent(subjectSharingSettings, forKey: .subjectSharingSettings)
     }
 }

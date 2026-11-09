@@ -22,40 +22,40 @@ public struct CommentsAttributes: Codable, Hashable {
     public static let messageRule = StringRule(minLength: 1, maxLength: 2000, pattern: nil)
     /** Datetime when the comment was created (ISO 8601) */
     public var createdAt: Date
-    /** End time offset for timestamped comments (ISO 8601 duration) */
-    public var endTime: String?
+    /** End offset from the beginning of the source file (ISO 8601 duration) */
+    public var endOffset: String?
     /** Datetime when the comment was last modified (ISO 8601) */
     public var lastModifiedAt: Date
     /** The comment message content */
     public var message: String
     /** Moderation status of the comment */
     public var moderationStatus: ModerationStatus
-    /** Start time offset for timestamped comments (ISO 8601 duration) */
-    public var startTime: String?
+    /** Start offset from the beginning of the source file (ISO 8601 duration) */
+    public var startOffset: String?
 
     public init(
         createdAt: Date,
-        endTime: String? = nil,
+        endOffset: String? = nil,
         lastModifiedAt: Date,
         message: String,
         moderationStatus: ModerationStatus,
-        startTime: String? = nil
+        startOffset: String? = nil
     ) {
         self.createdAt = createdAt
-        self.endTime = endTime
+        self.endOffset = endOffset
         self.lastModifiedAt = lastModifiedAt
         self.message = message
         self.moderationStatus = moderationStatus
-        self.startTime = startTime
+        self.startOffset = startOffset
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case createdAt
-        case endTime
+        case endOffset
         case lastModifiedAt
         case message
         case moderationStatus
-        case startTime
+        case startOffset
     }
 
     // Encodable protocol methods
@@ -63,10 +63,10 @@ public struct CommentsAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(createdAt, forKey: .createdAt)
-        try container.encodeIfPresent(endTime, forKey: .endTime)
+        try container.encodeIfPresent(endOffset, forKey: .endOffset)
         try container.encode(lastModifiedAt, forKey: .lastModifiedAt)
         try container.encode(message, forKey: .message)
         try container.encode(moderationStatus, forKey: .moderationStatus)
-        try container.encodeIfPresent(startTime, forKey: .startTime)
+        try container.encodeIfPresent(startOffset, forKey: .startOffset)
     }
 }

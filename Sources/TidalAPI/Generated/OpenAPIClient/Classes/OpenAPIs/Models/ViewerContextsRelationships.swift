@@ -12,18 +12,26 @@ import AnyCodable
 
 public struct ViewerContextsRelationships: Codable, Hashable {
 
+    public var comments: ViewerContextsCommentsMultiRelationshipDataDocument?
+    public var reactions: ViewerContextsReactionsMultiRelationshipDataDocument?
     public var subject: ViewerContextsSubjectSingleRelationshipDataDocument?
     public var viewer: ViewerContextsViewerSingleRelationshipDataDocument?
 
     public init(
+        comments: ViewerContextsCommentsMultiRelationshipDataDocument? = nil,
+        reactions: ViewerContextsReactionsMultiRelationshipDataDocument? = nil,
         subject: ViewerContextsSubjectSingleRelationshipDataDocument? = nil,
         viewer: ViewerContextsViewerSingleRelationshipDataDocument? = nil
     ) {
+        self.comments = comments
+        self.reactions = reactions
         self.subject = subject
         self.viewer = viewer
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case comments
+        case reactions
         case subject
         case viewer
     }
@@ -32,6 +40,8 @@ public struct ViewerContextsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(comments, forKey: .comments)
+        try container.encodeIfPresent(reactions, forKey: .reactions)
         try container.encodeIfPresent(subject, forKey: .subject)
         try container.encodeIfPresent(viewer, forKey: .viewer)
     }

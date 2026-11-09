@@ -18,11 +18,15 @@ public enum ViewerContextsAPITidal {
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_viewerContextsGet: String, CaseIterable {
+		case comments = "comments"
+		case reactions = "reactions"
 		case subject = "subject"
 		case viewer = "viewer"
 
 		func toViewerContextsAPIEnum() -> ViewerContextsAPI.IncludeLinkage_viewerContextsGet {
 			switch self {
+			case .comments: return .comments
+			case .reactions: return .reactions
 			case .subject: return .subject
 			case .viewer: return .viewer
 			}
@@ -45,11 +49,15 @@ public enum ViewerContextsAPITidal {
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_viewerContextsIdGet: String, CaseIterable {
+		case comments = "comments"
+		case reactions = "reactions"
 		case subject = "subject"
 		case viewer = "viewer"
 
 		func toViewerContextsAPIEnum() -> ViewerContextsAPI.IncludeLinkage_viewerContextsIdGet {
 			switch self {
+			case .comments: return .comments
+			case .reactions: return .reactions
 			case .subject: return .subject
 			case .viewer: return .viewer
 			}
@@ -64,6 +72,30 @@ public enum ViewerContextsAPITidal {
 	public static func viewerContextsIdGet(id: String, include: [String]? = nil, includeLinkage: [ViewerContextsAPITidal.IncludeLinkage_viewerContextsIdGet]? = nil, replaceMedia: String? = nil) async throws -> ViewerContextsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			ViewerContextsAPI.viewerContextsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toViewerContextsAPIEnum() }, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Get comments relationship (\&quot;to-many\&quot;).
+     
+     - returns: ViewerContextsCommentsMultiRelationshipDataDocument
+     */
+	public static func viewerContextsIdRelationshipsCommentsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ViewerContextsCommentsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			ViewerContextsAPI.viewerContextsIdRelationshipsCommentsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Get reactions relationship (\&quot;to-many\&quot;).
+     
+     - returns: ViewerContextsReactionsMultiRelationshipDataDocument
+     */
+	public static func viewerContextsIdRelationshipsReactionsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ViewerContextsReactionsMultiRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			ViewerContextsAPI.viewerContextsIdRelationshipsReactionsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

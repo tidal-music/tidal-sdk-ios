@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 Get multiple reactions.
 
-Lists reactions on a subject. Comment subjects are not supported.
+Lists reactions on a source file or comment, newest first.
 
 ### Example
 ```swift
@@ -273,7 +273,7 @@ Name | Type | Description  | Notes
 
 Create single reaction.
 
-Adds or replaces the caller's reaction on a subject. Each user has at most one reaction per subject. Comments accept only 👍. Replacing a reaction keeps its ID.
+Adds the caller's emoji reaction on a subject and exact time offsets. Omit both offsets for the whole subject, provide startOffset for a point, or both for a section. Offsets are supported only on source files and must be nonnegative, with endOffset at or after startOffset. Each user can add different emojis at the same position or section. Repeating the same emoji returns the existing reaction with its UUID and creation time unchanged.
 
 ### Example
 ```swift
@@ -281,7 +281,7 @@ Adds or replaces the caller's reaction on a subject. Each user has at most one r
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let reactionsCreateOperationPayload = ReactionsCreateOperation_Payload(data: ReactionsCreateOperation_Payload_Data(attributes: ReactionsCreateOperation_Payload_Data_Attributes(emoji: "emoji_example"), relationships: ReactionsCreateOperation_Payload_Data_Relationships(subject: ReactionsCreateOperation_Payload_Data_Relationships_Subject(data: ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data(id: "id_example", type: "type_example"))), type: "type_example")) // ReactionsCreateOperationPayload |  (optional)
+let reactionsCreateOperationPayload = ReactionsCreateOperation_Payload(data: ReactionsCreateOperation_Payload_Data(attributes: ReactionsCreateOperation_Payload_Data_Attributes(emoji: "emoji_example", endOffset: "endOffset_example", startOffset: "startOffset_example"), relationships: ReactionsCreateOperation_Payload_Data_Relationships(subject: ReactionsCreateOperation_Payload_Data_Relationships_Subject(data: ReactionsCreateOperation_Payload_Data_Relationships_Subject_Data(id: "id_example", type: "type_example"))), type: "type_example")) // ReactionsCreateOperationPayload |  (optional)
 
 // Create single reaction.
 do {

@@ -34,7 +34,8 @@ internal class ResourceGrantsAPI {
      
      - parameter filterGrantee: (query) Filter by grantee. Use &#x60;groups:everyone&#x60; for the Everyone group. Also accepts &#x60;users:me&#x60;. (optional)
      - parameter filterRole: (query) One of: VIEWER, COLLABORATOR, OWNER (e.g. &#x60;VIEWER&#x60;) (optional)
-     - parameter filterSubject: (query) Filter by subject. Also accepts &#x60;folders:me&#x60;. (optional)
+     - parameter filterSelfAppliesTo: (query) Album, track or folder owned by the caller; playlists return 400. Selects every live stored grant on the resource and its ancestor folders and albums, direct and from saved share links. Each grant keeps the subject it is stored on, so a grantee can have several. Does not expand groups or bearer access or resolve effective permissions. Cannot be combined with other filters. Missing or non-owned resources return no records. Ordered by grantee, each grantee&#39;s nearest grants first; at most 20 grants per page. Also accepts &#x60;folders:me&#x60;. (optional)
+     - parameter filterSubject: (query) Filter by subject. Required unless &#x60;filter[self][appliesTo]&#x60; is used. The subject&#39;s owner reads all its grants; other callers read only grants made directly to them. Also accepts &#x60;folders:me&#x60;. (optional)
      - parameter include: (query) Include related resources. Available relationships: grantee, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -42,9 +43,9 @@ internal class ResourceGrantsAPI {
      - returns: ResourceGrantsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func resourceGrantsGet(filterGrantee: String? = nil, filterRole: FilterRole_resourceGrantsGet? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsMultiResourceDataDocument {
+    internal class func resourceGrantsGet(filterGrantee: String? = nil, filterRole: FilterRole_resourceGrantsGet? = nil, filterSelfAppliesTo: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsMultiResourceDataDocument {
         do {
-            return try await resourceGrantsGetWithRequestBuilder(filterGrantee: filterGrantee, filterRole: filterRole, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
+            return try await resourceGrantsGetWithRequestBuilder(filterGrantee: filterGrantee, filterRole: filterRole, filterSelfAppliesTo: filterSelfAppliesTo, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -54,20 +55,21 @@ internal class ResourceGrantsAPI {
     /**
      Get multiple resourceGrants.
      - GET /resourceGrants
-     - Lists stored grants from every source visible to the subject's owner or named user grantee, selected by subject or grantee, optionally restricted by assigned role. Requires subject or grantee.
+     - Retrieves multiple resourceGrants by available filters, or without if applicable.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterGrantee: (query) Filter by grantee. Use &#x60;groups:everyone&#x60; for the Everyone group. Also accepts &#x60;users:me&#x60;. (optional)
      - parameter filterRole: (query) One of: VIEWER, COLLABORATOR, OWNER (e.g. &#x60;VIEWER&#x60;) (optional)
-     - parameter filterSubject: (query) Filter by subject. Also accepts &#x60;folders:me&#x60;. (optional)
+     - parameter filterSelfAppliesTo: (query) Album, track or folder owned by the caller; playlists return 400. Selects every live stored grant on the resource and its ancestor folders and albums, direct and from saved share links. Each grant keeps the subject it is stored on, so a grantee can have several. Does not expand groups or bearer access or resolve effective permissions. Cannot be combined with other filters. Missing or non-owned resources return no records. Ordered by grantee, each grantee&#39;s nearest grants first; at most 20 grants per page. Also accepts &#x60;folders:me&#x60;. (optional)
+     - parameter filterSubject: (query) Filter by subject. Required unless &#x60;filter[self][appliesTo]&#x60; is used. The subject&#39;s owner reads all its grants; other callers read only grants made directly to them. Also accepts &#x60;folders:me&#x60;. (optional)
      - parameter include: (query) Include related resources. Available relationships: grantee, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: grantee.artist.albums (optional)
      - returns: RequestBuilder<ResourceGrantsMultiResourceDataDocument> 
      */
-    internal class func resourceGrantsGetWithRequestBuilder(filterGrantee: String? = nil, filterRole: FilterRole_resourceGrantsGet? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<ResourceGrantsMultiResourceDataDocument> {
+    internal class func resourceGrantsGetWithRequestBuilder(filterGrantee: String? = nil, filterRole: FilterRole_resourceGrantsGet? = nil, filterSelfAppliesTo: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<ResourceGrantsMultiResourceDataDocument> {
         let localVariablePath = "/resourceGrants"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -76,6 +78,7 @@ internal class ResourceGrantsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[grantee]": (wrappedValue: filterGrantee?.encodeToJSON(), isExplode: true),
             "filter[role]": (wrappedValue: filterRole?.encodeToJSON(), isExplode: true),
+            "filter[self][appliesTo]": (wrappedValue: filterSelfAppliesTo?.encodeToJSON(), isExplode: true),
             "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),

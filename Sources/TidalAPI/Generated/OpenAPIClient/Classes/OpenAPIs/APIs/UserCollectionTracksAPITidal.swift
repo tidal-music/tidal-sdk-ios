@@ -89,9 +89,9 @@ public enum UserCollectionTracksAPITidal {
      
      - returns: UserCollectionTracksItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionTracksIdRelationshipsItemsGet(id: String, filterQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionTracksAPITidal.Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
+	public static func userCollectionTracksIdRelationshipsItemsGet(id: String, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionTracksAPITidal.Sort_userCollectionTracksIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionTracksItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGetWithRequestBuilder(id: id, filterQuery: filterQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionTracksAPIEnum() })
+			UserCollectionTracksAPI.userCollectionTracksIdRelationshipsItemsGetWithRequestBuilder(id: id, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionTracksAPIEnum() })
 		}
 	}
 

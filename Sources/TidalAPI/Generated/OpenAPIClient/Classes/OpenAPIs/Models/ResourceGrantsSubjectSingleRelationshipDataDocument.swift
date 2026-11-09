@@ -10,7 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Target resource types: &#x60;albums&#x60;, &#x60;folders&#x60;, &#x60;tracks&#x60;. */
+/** Target resource types: &#x60;albums&#x60;, &#x60;folders&#x60;, &#x60;playlists&#x60;, &#x60;tracks&#x60;. */
 public struct ResourceGrantsSubjectSingleRelationshipDataDocument: Codable, Hashable {
 
     public var data: ResourceGrantsSubjectResourceIdentifier?

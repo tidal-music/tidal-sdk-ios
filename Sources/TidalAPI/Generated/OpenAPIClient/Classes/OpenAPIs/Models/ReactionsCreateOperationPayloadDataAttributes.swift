@@ -12,17 +12,27 @@ import AnyCodable
 
 public struct ReactionsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public static let emojiRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let emojiRule = StringRule(minLength: 1, maxLength: 32, pattern: nil)
     public var emoji: String
+    /** Section end offset (ISO 8601 duration), at or after startOffset. Requires startOffset; omitted for a point reaction. */
+    public var endOffset: String?
+    /** Nonnegative source-file offset (ISO 8601 duration); omitted for the whole subject. */
+    public var startOffset: String?
 
     public init(
-        emoji: String
+        emoji: String,
+        endOffset: String? = nil,
+        startOffset: String? = nil
     ) {
         self.emoji = emoji
+        self.endOffset = endOffset
+        self.startOffset = startOffset
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case emoji
+        case endOffset
+        case startOffset
     }
 
     // Encodable protocol methods
@@ -30,5 +40,7 @@ public struct ReactionsCreateOperationPayloadDataAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(emoji, forKey: .emoji)
+        try container.encodeIfPresent(endOffset, forKey: .endOffset)
+        try container.encodeIfPresent(startOffset, forKey: .startOffset)
     }
 }

@@ -96,9 +96,9 @@ public enum UserCollectionPlaylistsAPITidal {
      
      - returns: UserCollectionPlaylistsItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: UserCollectionPlaylistsAPITidal.CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, filterQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionPlaylistsAPITidal.Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
+	public static func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: UserCollectionPlaylistsAPITidal.CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionPlaylistsAPITidal.Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGetWithRequestBuilder(id: id, collectionView: collectionView?.toUserCollectionPlaylistsAPIEnum(), filterQuery: filterQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionPlaylistsAPIEnum() })
+			UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGetWithRequestBuilder(id: id, collectionView: collectionView?.toUserCollectionPlaylistsAPIEnum(), filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionPlaylistsAPIEnum() })
 		}
 	}
 

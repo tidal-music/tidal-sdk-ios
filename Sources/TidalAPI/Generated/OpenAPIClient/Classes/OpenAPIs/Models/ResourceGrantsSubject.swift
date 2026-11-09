@@ -16,6 +16,7 @@ public struct ResourceGrantsSubject: Codable, Hashable {
         case albums = "albums"
         case tracks = "tracks"
         case folders = "folders"
+        case playlists = "playlists"
     }
     public var id: String
     public var type: ModelType

@@ -13,7 +13,7 @@ import AnyCodable
 public struct CommentSummariesAttributes: Codable, Hashable {
 
     public static let totalCountRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
-    /** Number of existing direct replies. Source-file comment totals are unavailable and currently return a zero placeholder. */
+    /** Number of existing comments directly targeting the subject. For a source file this counts root comments; for a comment this counts its direct replies. */
     public var totalCount: Int64
 
     public init(

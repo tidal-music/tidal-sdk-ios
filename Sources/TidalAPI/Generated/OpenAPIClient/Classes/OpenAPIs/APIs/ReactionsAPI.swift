@@ -45,7 +45,7 @@ internal class ReactionsAPI {
     /**
      Get multiple reactions.
      - GET /reactions
-     - Lists reactions on a subject. Comment subjects are not supported.
+     - Lists reactions on a source file or comment, newest first.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -317,7 +317,7 @@ internal class ReactionsAPI {
     /**
      Create single reaction.
      - POST /reactions
-     - Adds or replaces the caller's reaction on a subject. Each user has at most one reaction per subject. Comments accept only 👍. Replacing a reaction keeps its ID.
+     - Adds the caller's emoji reaction on a subject and exact time offsets. Omit both offsets for the whole subject, provide startOffset for a point, or both for a section. Offsets are supported only on source files and must be nonnegative, with endOffset at or after startOffset. Each user can add different emojis at the same position or section. Repeating the same emoji returns the existing reaction with its UUID and creation time unchanged.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

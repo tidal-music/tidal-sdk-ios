@@ -158,7 +158,7 @@ internal class UserCollectionPlaylistsAPI {
      
      - parameter id: (path) User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter collectionView: (query)  (optional)
-     - parameter filterQuery: (query) Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) (optional)
+     - parameter filterSelfMatchesQuery: (query) Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) (optional)
      - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
@@ -166,9 +166,9 @@ internal class UserCollectionPlaylistsAPI {
      - returns: UserCollectionPlaylistsItemsMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, filterQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
+    internal class func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument {
         do {
-            return try await userCollectionPlaylistsIdRelationshipsItemsGetWithRequestBuilder(id: id, collectionView: collectionView, filterQuery: filterQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort).execute().body
+            return try await userCollectionPlaylistsIdRelationshipsItemsGetWithRequestBuilder(id: id, collectionView: collectionView, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -184,14 +184,14 @@ internal class UserCollectionPlaylistsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter collectionView: (query)  (optional)
-     - parameter filterQuery: (query) Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) (optional)
+     - parameter filterSelfMatchesQuery: (query) Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) (optional)
      - parameter include: (query) Include related resources. Available relationships: items (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items (optional)
      - parameter sort: (query) Values prefixed with \&quot;-\&quot; are sorted descending; values without it are sorted ascending. (optional)
      - returns: RequestBuilder<UserCollectionPlaylistsItemsMultiRelationshipDataDocument> 
      */
-    internal class func userCollectionPlaylistsIdRelationshipsItemsGetWithRequestBuilder(id: String, collectionView: CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, filterQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil) -> RequestBuilder<UserCollectionPlaylistsItemsMultiRelationshipDataDocument> {
+    internal class func userCollectionPlaylistsIdRelationshipsItemsGetWithRequestBuilder(id: String, collectionView: CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil) -> RequestBuilder<UserCollectionPlaylistsItemsMultiRelationshipDataDocument> {
         var localVariablePath = "/userCollectionPlaylists/{id}/relationships/items"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -202,7 +202,7 @@ internal class UserCollectionPlaylistsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "collectionView": (wrappedValue: collectionView?.encodeToJSON(), isExplode: true),
-            "filter[query]": (wrappedValue: filterQuery?.encodeToJSON(), isExplode: true),
+            "filter[self][matchesQuery]": (wrappedValue: filterSelfMatchesQuery?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),

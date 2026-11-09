@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 
 # **userCollectionPlaylistsIdRelationshipsItemsGet**
 ```swift
-    open class func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, filterQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument
+    open class func userCollectionPlaylistsIdRelationshipsItemsGet(id: String, collectionView: CollectionView_userCollectionPlaylistsIdRelationshipsItemsGet? = nil, filterSelfMatchesQuery: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [Sort_userCollectionPlaylistsIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionPlaylistsItemsMultiRelationshipDataDocument
 ```
 
 Get items relationship (\"to-many\").
@@ -131,7 +131,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | User collection playlists id. Use `me` for the authenticated user's resource
 let collectionView = "collectionView_example" // String |  (optional)
-let filterQuery = "filterQuery_example" // String | Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView=FOLDERS. Internal clients only (e.g. `summer`) (optional)
+let filterSelfMatchesQuery = "filterSelfMatchesQuery_example" // String | Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView=FOLDERS. Internal clients only (e.g. `summer`) (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: items.items (optional)
@@ -139,7 +139,7 @@ let sort = ["sort_example"] // [String] | Values prefixed with \"-\" are sorted 
 
 // Get items relationship (\"to-many\").
 do {
-    let response = try await UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGet(id: id, collectionView: collectionView, filterQuery: filterQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
+    let response = try await UserCollectionPlaylistsAPI.userCollectionPlaylistsIdRelationshipsItemsGet(id: id, collectionView: collectionView, filterSelfMatchesQuery: filterSelfMatchesQuery, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort)
     dump(response)
 } catch {
     print(error)
@@ -152,7 +152,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | User collection playlists id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
  **collectionView** | **String** |  | [optional] 
- **filterQuery** | **String** | Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) | [optional] 
+ **filterSelfMatchesQuery** | **String** | Filter playlists by a free-text query. Returns matching playlists only (no mixes or folders), including playlists inside folders. Cannot be combined with collectionView&#x3D;FOLDERS. Internal clients only (e.g. &#x60;summer&#x60;) | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items.items | [optional] 

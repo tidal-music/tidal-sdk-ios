@@ -15,12 +15,12 @@ Method | HTTP request | Description
 
 # **resourceGrantsGet**
 ```swift
-    open class func resourceGrantsGet(filterGrantee: String? = nil, filterRole: FilterRole_resourceGrantsGet? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsMultiResourceDataDocument
+    open class func resourceGrantsGet(filterGrantee: String? = nil, filterRole: FilterRole_resourceGrantsGet? = nil, filterSelfAppliesTo: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsMultiResourceDataDocument
 ```
 
 Get multiple resourceGrants.
 
-Lists stored grants from every source visible to the subject's owner or named user grantee, selected by subject or grantee, optionally restricted by assigned role. Requires subject or grantee.
+Retrieves multiple resourceGrants by available filters, or without if applicable.
 
 ### Example
 ```swift
@@ -29,7 +29,8 @@ import OpenAPIClient
 
 let filterGrantee = "filterGrantee_example" // String | Filter by grantee. Use `groups:everyone` for the Everyone group. Also accepts `users:me`. (optional)
 let filterRole = "filterRole_example" // String | One of: VIEWER, COLLABORATOR, OWNER (e.g. `VIEWER`) (optional)
-let filterSubject = "filterSubject_example" // String | Filter by subject. Also accepts `folders:me`. (optional)
+let filterSelfAppliesTo = "filterSelfAppliesTo_example" // String | Album, track or folder owned by the caller; playlists return 400. Selects every live stored grant on the resource and its ancestor folders and albums, direct and from saved share links. Each grant keeps the subject it is stored on, so a grantee can have several. Does not expand groups or bearer access or resolve effective permissions. Cannot be combined with other filters. Missing or non-owned resources return no records. Ordered by grantee, each grantee's nearest grants first; at most 20 grants per page. Also accepts `folders:me`. (optional)
+let filterSubject = "filterSubject_example" // String | Filter by subject. Required unless `filter[self][appliesTo]` is used. The subject's owner reads all its grants; other callers read only grants made directly to them. Also accepts `folders:me`. (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: grantee, subject (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -37,7 +38,7 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 
 // Get multiple resourceGrants.
 do {
-    let response = try await ResourceGrantsAPI.resourceGrantsGet(filterGrantee: filterGrantee, filterRole: filterRole, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    let response = try await ResourceGrantsAPI.resourceGrantsGet(filterGrantee: filterGrantee, filterRole: filterRole, filterSelfAppliesTo: filterSelfAppliesTo, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -50,7 +51,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterGrantee** | **String** | Filter by grantee. Use &#x60;groups:everyone&#x60; for the Everyone group. Also accepts &#x60;users:me&#x60;. | [optional] 
  **filterRole** | **String** | One of: VIEWER, COLLABORATOR, OWNER (e.g. &#x60;VIEWER&#x60;) | [optional] 
- **filterSubject** | **String** | Filter by subject. Also accepts &#x60;folders:me&#x60;. | [optional] 
+ **filterSelfAppliesTo** | **String** | Album, track or folder owned by the caller; playlists return 400. Selects every live stored grant on the resource and its ancestor folders and albums, direct and from saved share links. Each grant keeps the subject it is stored on, so a grantee can have several. Does not expand groups or bearer access or resolve effective permissions. Cannot be combined with other filters. Missing or non-owned resources return no records. Ordered by grantee, each grantee&#39;s nearest grants first; at most 20 grants per page. Also accepts &#x60;folders:me&#x60;. | [optional] 
+ **filterSubject** | **String** | Filter by subject. Required unless &#x60;filter[self][appliesTo]&#x60; is used. The subject&#39;s owner reads all its grants; other callers read only grants made directly to them. Also accepts &#x60;folders:me&#x60;. | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: grantee, subject | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 

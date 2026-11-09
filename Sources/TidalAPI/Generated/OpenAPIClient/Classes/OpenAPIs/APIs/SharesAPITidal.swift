@@ -34,9 +34,9 @@ public enum SharesAPITidal {
      
      - returns: SharesMultiResourceDataDocument
      */
-	public static func sharesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [SharesAPITidal.IncludeLinkage_sharesGet]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
+	public static func sharesGet(filterCode: [String]? = nil, filterSelfAppliesTo: String? = nil, include: [String]? = nil, includeLinkage: [SharesAPITidal.IncludeLinkage_sharesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesGetWithRequestBuilder(filterCode: filterCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSharesAPIEnum() }, replaceMedia: replaceMedia)
+			SharesAPI.sharesGetWithRequestBuilder(filterCode: filterCode, filterSelfAppliesTo: filterSelfAppliesTo, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSharesAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -76,6 +76,18 @@ public enum SharesAPITidal {
 	public static func sharesIdGet(id: String, include: [String]? = nil, includeLinkage: [SharesAPITidal.IncludeLinkage_sharesIdGet]? = nil, replaceMedia: String? = nil) async throws -> SharesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
 			SharesAPI.sharesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSharesAPIEnum() }, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Update single share.
+     
+     - returns: SharesUpdateSingleResourceDataDocument
+     */
+	public static func sharesIdPatch(id: String, idempotencyKey: String? = nil, sharesUpdateOperationPayload: SharesUpdateOperationPayload? = nil) async throws -> SharesUpdateSingleResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			SharesAPI.sharesIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, sharesUpdateOperationPayload: sharesUpdateOperationPayload)
 		}
 	}
 
