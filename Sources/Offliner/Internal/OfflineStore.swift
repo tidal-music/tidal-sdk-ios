@@ -139,6 +139,13 @@ final class OfflineStore {
 				arguments: [result.resourceType.rawValue, result.resourceId, catalogMetadataJson, artworkBookmark]
 			)
 
+			try recordCollectionAddedAt(
+				resourceType: result.resourceType.rawValue,
+				resourceId: result.resourceId,
+				addedAt: Date(),
+				database: database
+			)
+
 			return .commit
 		}
 
@@ -161,10 +168,72 @@ final class OfflineStore {
 				arguments: [resourceType, resourceId]
 			)
 
+			try database.execute(
+				sql: "DELETE FROM offline_collection_added_at WHERE resource_type = ? AND resource_id = ?",
+				arguments: [resourceType, resourceId]
+			)
+
 			return .commit
 		}
 
 		deleteFiles(for: bookmarksToDelete)
+	}
+
+	/// Records when a collection was added, unless it already has a value. The first value wins.
+	func recordCollectionAddedAt(collectionType: OfflineCollectionType, resourceId: String, addedAt: Date) throws {
+		try databaseQueue.write { database in
+			try recordCollectionAddedAt(
+				resourceType: collectionType.rawValue,
+				resourceId: Self.collectionLocalResourceId(collectionType: collectionType, resourceId: resourceId),
+				addedAt: addedAt,
+				database: database
+			)
+		}
+	}
+
+	/// Gives each pending collection its recorded `addedAt`. A collection seen for the first time records the inventory's
+	/// value, or `now` if the inventory has none, so later reads return the same value.
+	func resolvePendingCollections(
+		_ pending: [PendingOfflineCollection],
+		collectionType: OfflineCollectionType,
+		now: Date = Date()
+	) async throws -> [OfflineCollection] {
+		guard !pending.isEmpty else { return [] }
+
+		return try await databaseQueue.write { database in
+			try pending.map { item in
+				let resourceId = Self.collectionLocalResourceId(collectionType: collectionType, resourceId: item.catalogMetadata.id)
+				try self.recordCollectionAddedAt(
+					resourceType: collectionType.rawValue,
+					resourceId: resourceId,
+					addedAt: item.addedAt ?? now,
+					database: database
+				)
+				let addedAt = try Date.fetchOne(
+					database,
+					sql: "SELECT added_at FROM offline_collection_added_at WHERE resource_type = ? AND resource_id = ?",
+					arguments: [collectionType.rawValue, resourceId]
+				)
+
+				return OfflineCollection(
+					catalogMetadata: item.catalogMetadata,
+					artworkURL: item.artworkURL,
+					state: .pending,
+					addedAt: addedAt ?? item.addedAt ?? now
+				)
+			}
+		}
+	}
+
+	private func recordCollectionAddedAt(resourceType: String, resourceId: String, addedAt: Date, database: GRDB.Database) throws {
+		try database.execute(
+			sql: "INSERT OR IGNORE INTO offline_collection_added_at (resource_type, resource_id, added_at) VALUES (?, ?, ?)",
+			arguments: [resourceType, resourceId, addedAt]
+		)
+	}
+
+	private static func collectionLocalResourceId(collectionType: OfflineCollectionType, resourceId: String) -> String {
+		collectionType == .userCollectionTracks ? ResourceId.me.stringValue : resourceId
 	}
 
 	func deleteMediaItem(
@@ -211,9 +280,12 @@ final class OfflineStore {
 			try Row.fetchOne(
 				database,
 				sql: """
-					SELECT resource_type, resource_id, catalog_metadata, artwork_bookmark, created_at
-					FROM offline_item
-					WHERE resource_type = ? AND resource_id = ?
+					SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.artwork_bookmark,
+						COALESCE(a.added_at, i.created_at) AS added_at
+					FROM offline_item i
+					LEFT JOIN offline_collection_added_at a
+						ON a.resource_type = i.resource_type AND a.resource_id = i.resource_id
+					WHERE i.resource_type = ? AND i.resource_id = ?
 					""",
 				arguments: [collectionType.rawValue, resourceId]
 			)
@@ -227,7 +299,7 @@ final class OfflineStore {
 		let collection = OfflineCollection(
 			catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
 			artworkURL: try? Self.resolveBookmarkIfPresent(row, column: "artwork_bookmark", renewals: &renewals),
-			addedAt: row["created_at"]
+			addedAt: row["added_at"]
 		)
 		try await storeRenewedBookmarks(renewals)
 
@@ -318,10 +390,13 @@ final class OfflineStore {
 			try Row.fetchAll(
 				database,
 				sql: """
-					SELECT resource_type, resource_id, catalog_metadata, artwork_bookmark, created_at
-					FROM offline_item
-					WHERE resource_type = ?
-					ORDER BY created_at DESC
+					SELECT i.resource_type, i.resource_id, i.catalog_metadata, i.artwork_bookmark,
+						COALESCE(a.added_at, i.created_at) AS added_at
+					FROM offline_item i
+					LEFT JOIN offline_collection_added_at a
+						ON a.resource_type = i.resource_type AND a.resource_id = i.resource_id
+					WHERE i.resource_type = ?
+					ORDER BY added_at DESC, i.resource_id ASC
 					""",
 				arguments: [collectionType.rawValue]
 			)
@@ -335,7 +410,7 @@ final class OfflineStore {
 				collections.append(OfflineCollection(
 					catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
 					artworkURL: try? Self.resolveBookmarkIfPresent(row, column: "artwork_bookmark", renewals: &renewals),
-					addedAt: row["created_at"]
+					addedAt: row["added_at"]
 				))
 			} catch {
 				Self.logger.error("Skipping offline collection \(resourceId, privacy: .public) with unreadable metadata: \(error, privacy: .public)")

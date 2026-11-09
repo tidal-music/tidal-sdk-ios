@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Skip offline collections with unreadable metadata instead of failing the whole list (Offliner)
+- Give each offline collection one stable `addedAt`, recorded when it is first requested or seen pending, and sort `offlineCollections` reads by `addedAt` then id (Offliner)
 
 ## [0.14.1] - 2026-11-11
 

@@ -23,6 +23,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		var pendingCollectionsPages: [(collections: [OfflineCollection], cursor: String?)] = []
 		var pendingCollectionsCallCount: Int = 0
 		var pendingCollectionsFailingCall: Int?
+		var pendingCollectionsOmitAddedAt = false
 		var pendingCollection: OfflineCollection?
 		var pendingCollectionResponses: [OfflineCollection?]?
 		var getOfflineCollectionError: Error?
@@ -51,6 +52,12 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	}
 
 	var pendingCollectionsCallCount: Int { lock.withLock { storage.pendingCollectionsCallCount } }
+
+	/// Returns pending collections without the inventory's `meta.addedAt`.
+	var pendingCollectionsOmitAddedAt: Bool {
+		get { lock.withLock { storage.pendingCollectionsOmitAddedAt } }
+		set { lock.withLock { storage.pendingCollectionsOmitAddedAt = newValue } }
+	}
 
 	var pendingCollection: OfflineCollection? {
 		get { lock.withLock { storage.pendingCollection } }
@@ -208,7 +215,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 	func getPendingCollections(
 		type: OfflineCollectionType,
 		cursor: String?
-	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+	) async throws -> (collections: [PendingOfflineCollection], cursor: String?) {
 		try lock.withLock {
 			storage.pendingCollectionsCallCount += 1
 			if storage.pendingCollectionsCallCount == storage.pendingCollectionsFailingCall {
@@ -217,26 +224,37 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 			guard !storage.pendingCollectionsPages.isEmpty else {
 				return ([], nil)
 			}
-			return storage.pendingCollectionsPages.removeFirst()
+			let page = storage.pendingCollectionsPages.removeFirst()
+			return (page.collections.map(pending), page.cursor)
 		}
 	}
 
-	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
-		try lock.withLock {
-			storage.getOfflineCollectionCallCount += 1
-			if let error = storage.getOfflineCollectionError {
-				throw error
-			}
-			if var responses = storage.pendingCollectionResponses, !responses.isEmpty {
-				let response = responses.removeFirst()
-				storage.pendingCollectionResponses = responses
-				return response
-			}
-			if let collection = storage.pendingCollection {
-				return collection
-			}
-			return derivedPendingCollection(type: type, id: id)
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> PendingOfflineCollection? {
+		try lock.withLock { try pendingCollection(type: type, id: id).map(pending) }
+	}
+
+	private func pending(_ collection: OfflineCollection) -> PendingOfflineCollection {
+		PendingOfflineCollection(
+			catalogMetadata: collection.catalogMetadata,
+			artworkURL: collection.artworkURL,
+			addedAt: storage.pendingCollectionsOmitAddedAt ? nil : collection.addedAt
+		)
+	}
+
+	private func pendingCollection(type: OfflineCollectionType, id: String) throws -> OfflineCollection? {
+		storage.getOfflineCollectionCallCount += 1
+		if let error = storage.getOfflineCollectionError {
+			throw error
 		}
+		if var responses = storage.pendingCollectionResponses, !responses.isEmpty {
+			let response = responses.removeFirst()
+			storage.pendingCollectionResponses = responses
+			return response
+		}
+		if let collection = storage.pendingCollection {
+			return collection
+		}
+		return derivedPendingCollection(type: type, id: id)
 	}
 
 	private func derivedPendingCollection(type: OfflineCollectionType, id: String) -> OfflineCollection? {
