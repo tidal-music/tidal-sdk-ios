@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `offlineCollections(collectionType:)`, a throwing variant of `getOfflineCollections` that fails on a local read or inventory page error instead of returning a partial list (Offliner)
+- `collectionEvents`, a multi-consumer stream of per-collection events: a download request, a removal, and the start and finish of every task that stores or removes a collection or its items. A task's finish is emitted after the backend has been updated. `Download.relatedCollection` and `OfflineCollectionReference` are now public (Offliner)
 
 ### Fixed
 - Skip offline collections with unreadable metadata instead of failing the whole list (Offliner)

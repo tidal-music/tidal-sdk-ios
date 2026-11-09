@@ -24,6 +24,10 @@ private final class InternalRemoveItemTask: InternalTask {
 		self.offlineStore = offlineStore
 	}
 
+	var relatedCollection: OfflineCollectionReference? {
+		OfflineCollectionReference(collectionResourceType: task.collectionResourceType, collectionResourceId: task.collectionResourceId)
+	}
+
 	var concurrencyKey: OfflineTaskConcurrencyKey {
 		OfflineTaskConcurrencyKey(
 			collectionType: task.collectionResourceType,

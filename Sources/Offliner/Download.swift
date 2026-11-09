@@ -18,7 +18,8 @@ public actor Download {
 	public nonisolated let artists: [String]
 	public nonisolated let imageURL: URL?
 	public nonisolated let events: AsyncStream<Event>
-	nonisolated let relatedCollection: OfflineCollectionReference?
+	/// The collection this download stores an item of.
+	public nonisolated let relatedCollection: OfflineCollectionReference?
 
 	private let continuation: AsyncStream<Event>.Continuation
 
