@@ -312,8 +312,8 @@ private extension OfflineApiClient {
 		let response = try await InstallationsAPITidal.installationsIdRelationshipsOfflineInventoryGet(
 			filterType: [type.toFilterType],
 			id: installationId,
+			filterClientStorageState: [.pending],
 			filterId: id.map { [$0] },
-			filterState: [.pending],
 			include: ["offlineInventory", "offlineInventory.coverArt"],
 			pageCursor: cursor
 		)
