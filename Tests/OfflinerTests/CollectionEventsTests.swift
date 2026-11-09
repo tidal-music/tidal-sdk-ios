@@ -62,6 +62,35 @@ final class CollectionEventsTests: OfflinerTestCase {
 		XCTAssertTrue(events[2].completedTaskIdsAtReceipt.contains("task-0"))
 	}
 
+	func testRemoveEmitsRemovedAndFailsQueuedDownloadsInTheSameCall() async throws {
+		let media = GatedMediaDownloader()
+		let offliner = createOffliner(
+			offlineApiClient: backend,
+			artworkDownloader: SucceedingArtworkDownloader(),
+			mediaDownloader: media
+		)
+		// Five tasks fill the runner's slots, so the album's track stays queued.
+		let blockers = (1 ... 5).map { storeTrackTask(id: "blocker-\($0)", albumId: "album-other") }
+		backend.enqueueTasks((blockers + [storeTrackTask(id: "queued")]).map { .storeTrack($0) })
+		await offliner.run()
+		await media.waitUntilStarted(count: 5)
+		let currentDownloads = await offliner.currentDownloads
+		let queued = try XCTUnwrap(currentDownloads.first { $0.relatedCollection == album })
+		let recorder = EventRecorder(offliner.collectionEvents, backend: backend)
+
+		try await offliner.remove(collectionType: .albums, resourceId: .identifier("album-1"))
+
+		// The download's stream finishes on failure, so this returns only if remove() already failed it.
+		var states: [Download.State] = []
+		for await case let .state(state) in queued.events {
+			states.append(state)
+		}
+		XCTAssertEqual(states.last, .failed)
+		let events = try await recorder.waitForEvents(count: 1)
+		XCTAssertEqual(events.first?.event, OfflineCollectionEvent(collection: album, kind: .removed))
+		await media.releaseAll()
+	}
+
 	func testFailedTrackTaskEmitsTaskFinishedForItsCollection() async throws {
 		let offliner = createOffliner(
 			offlineApiClient: backend,
@@ -106,14 +135,14 @@ final class CollectionEventsTests: OfflinerTestCase {
 		StoreAlbumTask(id: id, album: AlbumsResourceObject(id: "album-1", type: "albums"), artists: [], artwork: nil)
 	}
 
-	private func storeTrackTask(id: String) -> StoreTrackTask {
+	private func storeTrackTask(id: String, albumId: String = "album-1") -> StoreTrackTask {
 		StoreTrackTask(
 			id: id,
-			track: TracksResourceObject(id: "track-1", type: "tracks"),
+			track: TracksResourceObject(id: "track-\(id)", type: "tracks"),
 			artists: [],
 			artwork: nil,
 			collectionResourceType: "albums",
-			collectionResourceId: "album-1",
+			collectionResourceId: albumId,
 			volume: 1,
 			position: 1
 		)

@@ -4,7 +4,8 @@ public actor Download {
 	public enum State {
 		case pending
 		case inProgress
-		/// The download failed, or was cancelled because its collection was removed.
+		/// The download failed, or was cancelled because its collection was removed. A cancelled download's
+		/// ``OfflineCollectionEvent/Kind/removed`` event is emitted before it fails.
 		case failed
 		case completed
 	}

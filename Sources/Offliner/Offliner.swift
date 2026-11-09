@@ -428,7 +428,9 @@ public final class Offliner {
 	/// Removes a collection. After this returns, local reads no longer contain it, and pending inventory reads
 	/// leave it out until the backend stops listing it. Throws if the backend request or the local delete fails.
 	///
-	/// Queued downloads of the collection are cancelled, and finish as ``Download/State/failed``.
+	/// Queued downloads of the collection are cancelled, and finish as ``Download/State/failed``. The
+	/// ``OfflineCollectionEvent/Kind/removed`` event is emitted before they fail. They are separate streams,
+	/// so a consumer can still receive the failures first.
 	public func remove(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId.stringValue)
 
@@ -441,8 +443,8 @@ public final class Offliner {
 				markPendingRemoval: true
 			)
 		}
-		await taskRunner.cancelTasks(for: collection)
 		collectionEventBroadcaster.emit(OfflineCollectionEvent(collection: collection, kind: .removed))
+		await taskRunner.cancelTasks(for: collection)
 		await taskRunner.notifyCollectionChanged(collectionType: collectionType, resourceId: resourceId)
 		await taskRunner.run()
 
