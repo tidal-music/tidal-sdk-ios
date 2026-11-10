@@ -9,6 +9,8 @@ public class MediaProduct: Codable {
 	public let progressSource: Source?
 	public let playLogSource: Source?
 	public let extras: Extras?
+	/// Grants playback of an upload shared by link to a recipient who has not saved the share.
+	public let shareCode: String?
 
 	public init(
 		productType: ProductType,
@@ -16,7 +18,8 @@ public class MediaProduct: Codable {
 		referenceId: String?,
 		progressSource: Source?,
 		playLogSource: Source?,
-		extras: Extras?
+		extras: Extras?,
+		shareCode: String? = nil
 	) {
 		self.productType = productType
 		self.productId = productId
@@ -24,6 +27,7 @@ public class MediaProduct: Codable {
 		self.progressSource = progressSource
 		self.playLogSource = playLogSource
 		self.extras = extras
+		self.shareCode = shareCode
 	}
 
 	public convenience init(productType: ProductType, productId: String) {
@@ -64,7 +68,8 @@ extension MediaProduct: Equatable {
 			lhs.referenceId == rhs.referenceId &&
 			lhs.playLogSource == rhs.playLogSource &&
 			lhs.progressSource == rhs.progressSource &&
-			lhs.extras == rhs.extras
+			lhs.extras == rhs.extras &&
+			lhs.shareCode == rhs.shareCode
 	}
 }
 
