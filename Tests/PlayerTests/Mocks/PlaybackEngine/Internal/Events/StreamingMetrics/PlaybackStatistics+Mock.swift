@@ -17,7 +17,8 @@ extension PlaybackStatistics {
 		endTimestamp: UInt64 = 1,
 		tags: [PlaybackStatistics.EventTag] = [],
 		errorMessage: String? = nil,
-		errorCode: String? = nil
+		errorCode: String? = nil,
+		sourceFileId: String? = nil
 	) -> Self {
 		PlaybackStatistics(
 			streamingSessionId: streamingSessionId,
@@ -35,7 +36,8 @@ extension PlaybackStatistics {
 			endTimestamp: endTimestamp,
 			tags: tags,
 			errorMessage: errorMessage,
-			errorCode: errorCode
+			errorCode: errorCode,
+			sourceFileId: sourceFileId
 		)
 	}
 }

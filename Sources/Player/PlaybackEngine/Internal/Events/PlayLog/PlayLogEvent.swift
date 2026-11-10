@@ -16,6 +16,8 @@ struct PlayLogEvent: Codable, Equatable {
 	let actions: [Action]
 	let endTimestamp: UInt64
 	let endAssetPosition: Double
+	/// Set only for ``ProductType/TRACK_SOURCE_FILE``; omitted from the payload when nil.
+	let sourceFileId: String?
 
 	init(
 		playbackSessionId: String,
@@ -32,7 +34,8 @@ struct PlayLogEvent: Codable, Equatable {
 		sourceId: String?,
 		actions: [Action],
 		endTimestamp: UInt64,
-		endAssetPosition: Double
+		endAssetPosition: Double,
+		sourceFileId: String? = nil
 	) {
 		self.playbackSessionId = playbackSessionId
 		self.startTimestamp = startTimestamp
@@ -49,5 +52,6 @@ struct PlayLogEvent: Codable, Equatable {
 		self.actions = actions
 		self.endTimestamp = endTimestamp
 		self.endAssetPosition = endAssetPosition
+		self.sourceFileId = sourceFileId
 	}
 }

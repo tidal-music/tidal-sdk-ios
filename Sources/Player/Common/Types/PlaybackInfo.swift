@@ -25,4 +25,6 @@ struct PlaybackInfo: Equatable {
 	let offlineValidUntil: UInt64?
 	let isAdaptivePlaybackEnabled: Bool
 	let previewReason: PreviewReason?
+	/// The source file the manifest was served from, when the backend knows it.
+	var sourceFileId: String?
 }

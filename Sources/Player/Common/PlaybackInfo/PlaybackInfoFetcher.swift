@@ -1,16 +1,34 @@
 import Auth
 import Foundation
-import TidalAPI
+@_spi(TrackSourceFilePlayback) import TidalAPI
 
 // MARK: - PlaybackInfoFetcher
 
 final class PlaybackInfoFetcher {
+	typealias TrackSourceFileManifestFetch = (
+		_ sourceFileId: String,
+		_ formats: [TrackManifestsAPITidal.Formats_trackManifestsIdGet],
+		_ adaptive: Bool
+	) async throws -> TrackManifestsSingleResourceDataDocument
+
+	static let defaultTrackSourceFileManifestFetch: TrackSourceFileManifestFetch = { sourceFileId, formats, adaptive in
+		try await TrackSourceFileManifestsInterimAPI.trackSourceFileManifestsIdGet(
+			id: sourceFileId,
+			manifestType: .hls,
+			formats: formats,
+			uriScheme: .data,
+			usage: .playback,
+			adaptive: adaptive
+		)
+	}
+
 	private var configuration: Configuration
 	private let httpClient: HttpClient
 	private let credentialsProvider: CredentialsProvider
 	private let networkMonitor: NetworkMonitor
 	private let playerEventSender: PlayerEventSender
 	private let featureFlagProvider: FeatureFlagProvider
+	private let trackSourceFileManifestFetch: TrackSourceFileManifestFetch
 
 	init(
 		with configuration: Configuration,
@@ -18,7 +36,8 @@ final class PlaybackInfoFetcher {
 		_ credentialsProvider: CredentialsProvider,
 		_ networkMonitor: NetworkMonitor,
 		and playerEventSender: PlayerEventSender,
-		featureFlagProvider: FeatureFlagProvider
+		featureFlagProvider: FeatureFlagProvider,
+		trackSourceFileManifestFetch: @escaping TrackSourceFileManifestFetch = PlaybackInfoFetcher.defaultTrackSourceFileManifestFetch
 	) {
 		self.configuration = configuration
 		self.httpClient = httpClient
@@ -26,6 +45,7 @@ final class PlaybackInfoFetcher {
 		self.networkMonitor = networkMonitor
 		self.playerEventSender = playerEventSender
 		self.featureFlagProvider = featureFlagProvider
+		self.trackSourceFileManifestFetch = trackSourceFileManifestFetch
 	}
 
 	func getPlaybackInfo(
@@ -37,6 +57,13 @@ final class PlaybackInfoFetcher {
 		case .TRACK:
 			try await getTrackPlaybackInfo(
 				trackId: mediaProduct.productId,
+				playbackMode: playbackMode,
+				streamingSessionId: streamingSessionId
+			)
+		case .TRACK_SOURCE_FILE:
+			try await getTrackPlaybackInfo(
+				trackId: mediaProduct.productId,
+				sourceFileId: sourceFileId(of: mediaProduct),
 				playbackMode: playbackMode,
 				streamingSessionId: streamingSessionId
 			)
@@ -66,8 +93,18 @@ final class PlaybackInfoFetcher {
 }
 
 private extension PlaybackInfoFetcher {
+	func sourceFileId(of mediaProduct: MediaProduct) throws -> String {
+		guard let sourceFileId = mediaProduct.sourceFileIdentifier else {
+			throw PlaybackInfoFetcherError.trackSourceFileIdMissing.error(.EUnexpected)
+		}
+		return sourceFileId
+	}
+
+	/// With a `sourceFileId`, fetches that source file's manifest instead and reports it as `TRACK_SOURCE_FILE`.
+	/// The info's `sourceFileId` is the one the manifest says it was served from, else the requested one.
 	func getTrackPlaybackInfo(
 		trackId: String,
+		sourceFileId: String? = nil,
 		playbackMode: PlaybackMode,
 		streamingSessionId: String
 	) async throws -> PlaybackInfo {
@@ -82,14 +119,18 @@ private extension PlaybackInfoFetcher {
 				OpenAPIClientAPI.credentialsProvider = credentialsProvider
 			}
 
-			let manifestResponse = try await TrackManifestsAPITidal.trackManifestsIdGet(
-				adaptive: adaptivePlaybackEnabled,
-				formats: formats,
-				id: trackId,
-				manifestType: .hls,
-				uriScheme: .data,
-				usage: playbackMode == .OFFLINE ? .download : .playback
-			)
+			let manifestResponse = if let sourceFileId {
+				try await trackSourceFileManifestFetch(sourceFileId, formats, adaptivePlaybackEnabled)
+			} else {
+				try await TrackManifestsAPITidal.trackManifestsIdGet(
+					adaptive: adaptivePlaybackEnabled,
+					formats: formats,
+					id: trackId,
+					manifestType: .hls,
+					uriScheme: .data,
+					usage: playbackMode == .OFFLINE ? .download : .playback
+				)
+			}
 
 			let manifestData = manifestResponse.data
 			let attributes = manifestData.attributes
@@ -124,7 +165,7 @@ private extension PlaybackInfoFetcher {
 			let isAdaptivePlaybackEnabled = configuration.allowVariablePlayback
 
 			return PlaybackInfo(
-				productType: .TRACK,
+				productType: sourceFileId == nil ? .TRACK : .TRACK_SOURCE_FILE,
 				productId: trackId,
 				streamType: .ON_DEMAND,
 				assetPresentation: convertTrackPresentation(attributes?.trackPresentation),
@@ -147,7 +188,8 @@ private extension PlaybackInfoFetcher {
 				offlineRevalidateAt: nil, // May need to be derived from DRM data
 				offlineValidUntil: nil, // May need to be derived from DRM data
 				isAdaptivePlaybackEnabled: isAdaptivePlaybackEnabled,
-				previewReason: convertPreviewReason(attributes?.previewReason)
+				previewReason: convertPreviewReason(attributes?.previewReason),
+				sourceFileId: attributes?.sourceFileId ?? sourceFileId
 			)
 
 		} catch {

@@ -36,6 +36,8 @@ public struct TrackManifestsAttributes: Codable, Hashable {
     public var hash: String?
     /** Why a preview is served instead of the full track */
     public var previewReason: PreviewReason?
+    /** Source file of the media asset served; null when unknown or ambiguous */
+    public var sourceFileId: String?
     public var trackAudioNormalizationData: AudioNormalizationData?
     /** Track presentation */
     public var trackPresentation: TrackPresentation?
@@ -48,6 +50,7 @@ public struct TrackManifestsAttributes: Codable, Hashable {
         formats: [Formats]? = nil,
         hash: String? = nil,
         previewReason: PreviewReason? = nil,
+        sourceFileId: String? = nil,
         trackAudioNormalizationData: AudioNormalizationData? = nil,
         trackPresentation: TrackPresentation? = nil,
         uri: String? = nil
@@ -57,6 +60,7 @@ public struct TrackManifestsAttributes: Codable, Hashable {
         self.formats = formats
         self.hash = hash
         self.previewReason = previewReason
+        self.sourceFileId = sourceFileId
         self.trackAudioNormalizationData = trackAudioNormalizationData
         self.trackPresentation = trackPresentation
         self.uri = uri
@@ -68,6 +72,7 @@ public struct TrackManifestsAttributes: Codable, Hashable {
         case formats
         case hash
         case previewReason
+        case sourceFileId
         case trackAudioNormalizationData
         case trackPresentation
         case uri
@@ -82,6 +87,7 @@ public struct TrackManifestsAttributes: Codable, Hashable {
         try container.encodeIfPresent(formats, forKey: .formats)
         try container.encodeIfPresent(hash, forKey: .hash)
         try container.encodeIfPresent(previewReason, forKey: .previewReason)
+        try container.encodeIfPresent(sourceFileId, forKey: .sourceFileId)
         try container.encodeIfPresent(trackAudioNormalizationData, forKey: .trackAudioNormalizationData)
         try container.encodeIfPresent(trackPresentation, forKey: .trackPresentation)
         try container.encodeIfPresent(uri, forKey: .uri)
