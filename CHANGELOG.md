@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-11-10
+
+### Added
+- Optional `shareCode` on `MediaProduct`, sent with the track manifest request so a shared upload plays before the recipient saves it (Player)
+
 ## [0.13.1] - 2026-11-09
 
 ### Changed
