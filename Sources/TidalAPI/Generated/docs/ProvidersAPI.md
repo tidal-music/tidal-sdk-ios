@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **providersIdGet**
 ```swift
-    open class func providersIdGet(id: String, completion: @escaping (_ data: ProvidersSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func providersIdGet(id: String) async throws -> ProvidersSingleResourceDataDocument
 ```
 
 Get single provider.
@@ -24,15 +24,11 @@ import OpenAPIClient
 let id = "id_example" // String | Provider ID
 
 // Get single provider.
-ProvidersAPI.providersIdGet(id: id) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ProvidersAPI.providersIdGet(id: id)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

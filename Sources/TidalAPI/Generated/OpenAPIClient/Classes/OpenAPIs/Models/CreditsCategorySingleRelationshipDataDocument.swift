@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;artistRoles&#x60;. */
 public struct CreditsCategorySingleRelationshipDataDocument: Codable, Hashable {
 
     public var data: ResourceIdentifier?

@@ -33,18 +33,19 @@ final class TrackManifestFetcher: TrackManifestFetcherProtocol {
 
 	func fetchTrackManifest(trackId: String) async throws -> ManifestFetchResult {
 		let response = try await TrackManifestsAPITidal.trackManifestsIdGet(
+			adaptive: false,
+			formats: audioFormats.map(\.toAPIFormat),
 			id: trackId,
 			manifestType: .hls,
-			formats: audioFormats.map(\.toAPIFormat),
 			uriScheme: .data,
-			usage: .download,
-			adaptive: false
+			usage: .download
 		)
 
 		let attributes = response.data.attributes
 
 		guard let uriString = attributes?.uri,
-			  let url = URL(string: uriString) else {
+		      let url = URL(string: uriString)
+		else {
 			throw MediaDownloaderError.manifestNotFound
 		}
 
@@ -75,7 +76,8 @@ final class VideoManifestFetcher: VideoManifestFetcherProtocol {
 		let attributes = response.data.attributes
 
 		guard let hrefString = attributes?.link?.href,
-			  let url = URL(string: hrefString) else {
+		      let url = URL(string: hrefString)
+		else {
 			throw MediaDownloaderError.manifestNotFound
 		}
 
@@ -87,7 +89,9 @@ final class VideoManifestFetcher: VideoManifestFetcherProtocol {
 
 private extension OfflineMediaItem.NormalizationData {
 	init?(_ apiData: AudioNormalizationData?) {
-		guard let apiData else { return nil }
+		guard let apiData else {
+			return nil
+		}
 		self.init(peakAmplitude: apiData.peakAmplitude, replayGain: apiData.replayGain)
 	}
 }

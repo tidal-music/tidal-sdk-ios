@@ -58,9 +58,9 @@ public enum UserCollectionSaveForLatersAPITidal {
      
      - returns: UserCollectionSaveForLatersItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersItemsMultiRelationshipDataDocument {
+	public static func userCollectionSaveForLatersIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserCollectionSaveForLatersItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			UserCollectionSaveForLatersAPI.userCollectionSaveForLatersIdRelationshipsItemsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

@@ -36,9 +36,9 @@ public enum OfflineTasksAPITidal {
      
      - returns: OfflineTasksMultiResourceDataDocument
      */
-	public static func offlineTasksGet(filterInstallationId: [String], pageCursor: String? = nil, include: [String]? = nil, includeLinkage: [OfflineTasksAPITidal.IncludeLinkage_offlineTasksGet]? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
+	public static func offlineTasksGet(filterInstallationId: [String], include: [String]? = nil, includeLinkage: [OfflineTasksAPITidal.IncludeLinkage_offlineTasksGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> OfflineTasksMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			OfflineTasksAPI.offlineTasksGetWithRequestBuilder(filterInstallationId: filterInstallationId, pageCursor: pageCursor, include: include, includeLinkage: includeLinkage?.compactMap { $0.toOfflineTasksAPIEnum() }, replaceMedia: replaceMedia)
+			OfflineTasksAPI.offlineTasksGetWithRequestBuilder(filterInstallationId: filterInstallationId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toOfflineTasksAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

@@ -13,25 +13,21 @@ import AnyCodable
 public struct PlaylistsItemsResourceIdentifierMeta: Codable, Hashable {
 
     public var addedAt: Date?
-    public var itemCursor: String?
     public var itemId: String?
     public var replacement: ReplacementProvenance?
 
     public init(
         addedAt: Date? = nil,
-        itemCursor: String? = nil,
         itemId: String? = nil,
         replacement: ReplacementProvenance? = nil
     ) {
         self.addedAt = addedAt
-        self.itemCursor = itemCursor
         self.itemId = itemId
         self.replacement = replacement
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case addedAt
-        case itemCursor
         case itemId
         case replacement
     }
@@ -41,7 +37,6 @@ public struct PlaylistsItemsResourceIdentifierMeta: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(addedAt, forKey: .addedAt)
-        try container.encodeIfPresent(itemCursor, forKey: .itemCursor)
         try container.encodeIfPresent(itemId, forKey: .itemId)
         try container.encodeIfPresent(replacement, forKey: .replacement)
     }

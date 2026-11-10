@@ -12,23 +12,33 @@ import AnyCodable
 
 public struct ReactionsAttributes: Codable, Hashable {
 
-    public static let emojiRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let emojiRule = StringRule(minLength: 1, maxLength: 32, pattern: nil)
     /** Datetime of the reaction creation (ISO 8601) */
     public var createdAt: Date
     /** The type of reaction representing an emoji */
     public var emoji: String
+    /** End offset of a source-file section. Omitted for a point or whole-subject reaction. */
+    public var endOffset: String?
+    /** Source-file offset (ISO 8601 duration). Omitted for the whole subject. */
+    public var startOffset: String?
 
     public init(
         createdAt: Date,
-        emoji: String
+        emoji: String,
+        endOffset: String? = nil,
+        startOffset: String? = nil
     ) {
         self.createdAt = createdAt
         self.emoji = emoji
+        self.endOffset = endOffset
+        self.startOffset = startOffset
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case createdAt
         case emoji
+        case endOffset
+        case startOffset
     }
 
     // Encodable protocol methods
@@ -37,5 +47,7 @@ public struct ReactionsAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(createdAt, forKey: .createdAt)
         try container.encode(emoji, forKey: .emoji)
+        try container.encodeIfPresent(endOffset, forKey: .endOffset)
+        try container.encodeIfPresent(startOffset, forKey: .startOffset)
     }
 }

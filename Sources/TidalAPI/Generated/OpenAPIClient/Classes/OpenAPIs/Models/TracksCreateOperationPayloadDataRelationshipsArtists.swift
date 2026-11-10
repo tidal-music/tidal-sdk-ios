@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct TracksCreateOperationPayloadDataRelationshipsArtists: Codable, Hashable {
 
-    public static let dataRule = ArrayRule(minItems: 1, maxItems: 1, uniqueItems: false)
+    public static let dataRule = ArrayRule(minItems: 1, maxItems: 10, uniqueItems: false)
     public var data: [TracksCreateOperationPayloadDataRelationshipsArtistsData]
 
     public init(

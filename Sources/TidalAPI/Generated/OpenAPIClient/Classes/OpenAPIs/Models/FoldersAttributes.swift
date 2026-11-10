@@ -13,15 +13,20 @@ import AnyCodable
 public struct FoldersAttributes: Codable, Hashable {
 
     public static let nameRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
+    /** Whether this is the root folder. */
+    public var isRoot: Bool
     public var name: String
 
     public init(
+        isRoot: Bool,
         name: String
     ) {
+        self.isRoot = isRoot
         self.name = name
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case isRoot
         case name
     }
 
@@ -29,6 +34,7 @@ public struct FoldersAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(isRoot, forKey: .isRoot)
         try container.encode(name, forKey: .name)
     }
 }

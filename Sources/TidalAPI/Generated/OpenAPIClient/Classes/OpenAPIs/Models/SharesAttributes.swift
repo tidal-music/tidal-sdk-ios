@@ -12,36 +12,91 @@ import AnyCodable
 
 public struct SharesAttributes: Codable, Hashable {
 
+    public enum AccessModes: String, Codable, CaseIterable {
+        case bearer = "BEARER"
+        case voucher = "VOUCHER"
+    }
+    public enum Role: String, Codable, CaseIterable {
+        case viewer = "VIEWER"
+        case collaborator = "COLLABORATOR"
+    }
+    public static let accessModesRule = ArrayRule(minItems: 1, maxItems: nil, uniqueItems: true)
     public static let codeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let maxUsesRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: 100, exclusiveMaximum: false, multipleOf: nil)
+    public static let passwordRule = StringRule(minLength: 6, maxLength: 128, pattern: "^[\\x20-\\x7E]*$")
+    public static let useCountRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: 100, exclusiveMaximum: false, multipleOf: nil)
+    /** Ways this share may be used to obtain access, decided by the server. Deprecated: clients must not rely on it. */
+    @available(*, deprecated, message: "This property is deprecated.")
+    public var accessModes: Set<AccessModes>
     /** Share code */
     public var code: String
-    /** Datetime of share creation (ISO 8601) */
+    /** Time the share was created. */
     public var createdAt: Date
+    /** Time bearer access and acceptance expire; accepted grants remain valid. */
+    public var expiresAt: Date
     /** Links external to TIDAL API */
     public var externalLinks: [ExternalLink]?
+    /** Number of saves the share permits. Absent when unlimited. */
+    public var maxUses: Int?
+    /** Password a user must send to save the share. Write-only: never returned. */
+    public var password: String?
+    /** Whether saving the share requires a password. A protected share never permits BEARER access, and only its owner and users with a role on its shared resource see that resource. */
+    public var passwordProtected: Bool
+    /** Role offered on the shared resource. */
+    public var role: Role
+    /** Number of saves so far, repeated saves included. Once it reaches maxUses, bearer access and acceptance end. Absent when maxUses is. */
+    public var useCount: Int?
 
     public init(
+        accessModes: Set<AccessModes>,
         code: String,
         createdAt: Date,
-        externalLinks: [ExternalLink]? = nil
+        expiresAt: Date,
+        externalLinks: [ExternalLink]? = nil,
+        maxUses: Int? = nil,
+        password: String? = nil,
+        passwordProtected: Bool,
+        role: Role,
+        useCount: Int? = nil
     ) {
+        self.accessModes = accessModes
         self.code = code
         self.createdAt = createdAt
+        self.expiresAt = expiresAt
         self.externalLinks = externalLinks
+        self.maxUses = maxUses
+        self.password = password
+        self.passwordProtected = passwordProtected
+        self.role = role
+        self.useCount = useCount
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case accessModes
         case code
         case createdAt
+        case expiresAt
         case externalLinks
+        case maxUses
+        case password
+        case passwordProtected
+        case role
+        case useCount
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(accessModes, forKey: .accessModes)
         try container.encode(code, forKey: .code)
         try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(expiresAt, forKey: .expiresAt)
         try container.encodeIfPresent(externalLinks, forKey: .externalLinks)
+        try container.encodeIfPresent(maxUses, forKey: .maxUses)
+        try container.encodeIfPresent(password, forKey: .password)
+        try container.encode(passwordProtected, forKey: .passwordProtected)
+        try container.encode(role, forKey: .role)
+        try container.encodeIfPresent(useCount, forKey: .useCount)
     }
 }

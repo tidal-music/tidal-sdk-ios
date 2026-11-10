@@ -4,10 +4,12 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **albums** | [**ArtistsAlbumsMultiRelationshipDataDocument**](ArtistsAlbumsMultiRelationshipDataDocument.md) |  | [optional] 
+**bannerArt** | [**ArtistsBannerArtMultiRelationshipDataDocument**](ArtistsBannerArtMultiRelationshipDataDocument.md) |  | [optional] 
 **biography** | [**ArtistsBiographySingleRelationshipDataDocument**](ArtistsBiographySingleRelationshipDataDocument.md) |  | [optional] 
 **claimStatus** | [**ArtistsClaimStatusSingleRelationshipDataDocument**](ArtistsClaimStatusSingleRelationshipDataDocument.md) |  | [optional] 
 **followers** | [**ArtistsFollowersMultiRelationshipDataDocument**](ArtistsFollowersMultiRelationshipDataDocument.md) |  | [optional] 
 **following** | [**ArtistsFollowingMultiRelationshipDataDocument**](ArtistsFollowingMultiRelationshipDataDocument.md) |  | [optional] 
+**logoArt** | [**ArtistsLogoArtMultiRelationshipDataDocument**](ArtistsLogoArtMultiRelationshipDataDocument.md) |  | [optional] 
 **owners** | [**ArtistsOwnersMultiRelationshipDataDocument**](ArtistsOwnersMultiRelationshipDataDocument.md) |  | [optional] 
 **profileArt** | [**ArtistsProfileArtMultiRelationshipDataDocument**](ArtistsProfileArtMultiRelationshipDataDocument.md) |  | [optional] 
 **radio** | [**ArtistsRadioMultiRelationshipDataDocument**](ArtistsRadioMultiRelationshipDataDocument.md) |  | [optional] 

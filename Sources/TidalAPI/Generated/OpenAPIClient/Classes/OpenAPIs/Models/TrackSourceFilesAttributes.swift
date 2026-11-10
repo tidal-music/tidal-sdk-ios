@@ -14,27 +14,35 @@ public struct TrackSourceFilesAttributes: Codable, Hashable {
 
     public static let md5HashRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let sizeRule = NumericRule<Int64>(minimum: 1, exclusiveMinimum: false, maximum: 5000000000, exclusiveMaximum: false, multipleOf: nil)
+    public var downloadLink: LinkObject?
     /** MD5 hash of file to be uploaded */
-    public var md5Hash: String
+    public var md5Hash: String?
+    public var processing: SourceProcessing?
     /** File size of the track in bytes */
-    public var size: Int64
-    public var status: FileStatus
-    public var uploadLink: FileUploadLink
+    public var size: Int64?
+    public var status: FileStatus?
+    public var uploadLink: FileUploadLink?
 
     public init(
-        md5Hash: String,
-        size: Int64,
-        status: FileStatus,
-        uploadLink: FileUploadLink
+        downloadLink: LinkObject? = nil,
+        md5Hash: String? = nil,
+        processing: SourceProcessing? = nil,
+        size: Int64? = nil,
+        status: FileStatus? = nil,
+        uploadLink: FileUploadLink? = nil
     ) {
+        self.downloadLink = downloadLink
         self.md5Hash = md5Hash
+        self.processing = processing
         self.size = size
         self.status = status
         self.uploadLink = uploadLink
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case downloadLink
         case md5Hash
+        case processing
         case size
         case status
         case uploadLink
@@ -44,9 +52,11 @@ public struct TrackSourceFilesAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(md5Hash, forKey: .md5Hash)
-        try container.encode(size, forKey: .size)
-        try container.encode(status, forKey: .status)
-        try container.encode(uploadLink, forKey: .uploadLink)
+        try container.encodeIfPresent(downloadLink, forKey: .downloadLink)
+        try container.encodeIfPresent(md5Hash, forKey: .md5Hash)
+        try container.encodeIfPresent(processing, forKey: .processing)
+        try container.encodeIfPresent(size, forKey: .size)
+        try container.encodeIfPresent(status, forKey: .status)
+        try container.encodeIfPresent(uploadLink, forKey: .uploadLink)
     }
 }

@@ -123,12 +123,12 @@ private extension PlaybackInfoFetcher {
 				try await trackSourceFileManifestFetch(sourceFileId, formats, adaptivePlaybackEnabled)
 			} else {
 				try await TrackManifestsAPITidal.trackManifestsIdGet(
+					adaptive: adaptivePlaybackEnabled,
+					formats: formats,
 					id: trackId,
 					manifestType: .hls,
-					formats: formats,
 					uriScheme: .data,
-					usage: playbackMode == .OFFLINE ? .download : .playback,
-					adaptive: adaptivePlaybackEnabled
+					usage: playbackMode == .OFFLINE ? .download : .playback
 				)
 			}
 

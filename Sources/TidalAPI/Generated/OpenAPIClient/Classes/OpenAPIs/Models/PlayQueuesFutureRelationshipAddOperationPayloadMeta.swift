@@ -24,17 +24,20 @@ public struct PlayQueuesFutureRelationshipAddOperationPayloadMeta: Codable, Hash
     public var legacySource: LegacySource?
     public var mode: Mode
     public var positionBefore: String?
+    public var source: PlayQueuesFutureRelationshipSource?
 
     public init(
         batchId: UUID? = nil,
         legacySource: LegacySource? = nil,
         mode: Mode,
-        positionBefore: String? = nil
+        positionBefore: String? = nil,
+        source: PlayQueuesFutureRelationshipSource? = nil
     ) {
         self.batchId = batchId
         self.legacySource = legacySource
         self.mode = mode
         self.positionBefore = positionBefore
+        self.source = source
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -42,6 +45,7 @@ public struct PlayQueuesFutureRelationshipAddOperationPayloadMeta: Codable, Hash
         case legacySource
         case mode
         case positionBefore
+        case source
     }
 
     // Encodable protocol methods
@@ -52,5 +56,6 @@ public struct PlayQueuesFutureRelationshipAddOperationPayloadMeta: Codable, Hash
         try container.encodeIfPresent(legacySource, forKey: .legacySource)
         try container.encode(mode, forKey: .mode)
         try container.encodeIfPresent(positionBefore, forKey: .positionBefore)
+        try container.encodeIfPresent(source, forKey: .source)
     }
 }

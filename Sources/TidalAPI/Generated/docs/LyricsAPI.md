@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 # **lyricsIdDelete**
 ```swift
-    open class func lyricsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single lyric.
@@ -27,18 +27,14 @@ Deletes existing lyric.
 import OpenAPIClient
 
 let id = "id_example" // String | Lyrics Id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single lyric.
-LyricsAPI.lyricsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await LyricsAPI.lyricsIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -47,7 +43,7 @@ LyricsAPI.lyricsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, er
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Lyrics Id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -66,7 +62,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdGet**
 ```swift
-    open class func lyricsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_lyricsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: LyricsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_lyricsIdGet]? = nil, replaceMedia: String? = nil) async throws -> LyricsSingleResourceDataDocument
 ```
 
 Get single lyric.
@@ -84,15 +80,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: track (optional)
 
 // Get single lyric.
-LyricsAPI.lyricsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await LyricsAPI.lyricsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -122,7 +114,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdPatch**
 ```swift
-    open class func lyricsIdPatch(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdPatch(id: String, idempotencyKey: String? = nil, lyricsUpdateOperationPayload: LyricsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update single lyric.
@@ -135,19 +127,15 @@ Updates existing lyric.
 import OpenAPIClient
 
 let id = "id_example" // String | Lyrics Id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let lyricsUpdateOperationPayload = LyricsUpdateOperation_Payload(data: LyricsUpdateOperation_Payload_Data(attributes: LyricsUpdateOperation_Payload_Data_Attributes(lrcText: "lrcText_example", text: "text_example"), id: "id_example", type: "type_example")) // LyricsUpdateOperationPayload |  (optional)
 
 // Update single lyric.
-LyricsAPI.lyricsIdPatch(id: id, idempotencyKey: idempotencyKey, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await LyricsAPI.lyricsIdPatch(id: id, idempotencyKey: idempotencyKey, lyricsUpdateOperationPayload: lyricsUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -156,7 +144,7 @@ LyricsAPI.lyricsIdPatch(id: id, idempotencyKey: idempotencyKey, lyricsUpdateOper
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Lyrics Id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **lyricsUpdateOperationPayload** | [**LyricsUpdateOperationPayload**](LyricsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -176,7 +164,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdRelationshipsOwnersGet**
 ```swift
-    open class func lyricsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: LyricsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> LyricsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -193,15 +181,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-LyricsAPI.lyricsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await LyricsAPI.lyricsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -230,7 +214,7 @@ Name | Type | Description  | Notes
 
 # **lyricsIdRelationshipsTrackGet**
 ```swift
-    open class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: LyricsTrackSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsIdRelationshipsTrackGet(id: String, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> LyricsTrackSingleRelationshipDataDocument
 ```
 
 Get track relationship (\"to-one\").
@@ -248,15 +232,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: track (optional)
 
 // Get track relationship (\"to-one\").
-LyricsAPI.lyricsIdRelationshipsTrackGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await LyricsAPI.lyricsIdRelationshipsTrackGet(id: id, countryCode: countryCode, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -286,7 +266,7 @@ Name | Type | Description  | Notes
 
 # **lyricsPost**
 ```swift
-    open class func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil, completion: @escaping (_ data: LyricsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func lyricsPost(idempotencyKey: String? = nil, lyricsCreateOperationPayload: LyricsCreateOperationPayload? = nil) async throws -> LyricsCreateSingleResourceDataDocument
 ```
 
 Create single lyric.
@@ -298,19 +278,15 @@ Creates a new lyric.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let lyricsCreateOperationPayload = LyricsCreateOperation_Payload(data: LyricsCreateOperation_Payload_Data(attributes: LyricsCreateOperation_Payload_Data_Attributes(text: "text_example"), relationships: LyricsCreateOperation_Payload_Data_Relationships(track: LyricsCreateOperation_Payload_Data_Relationships_Track(data: LyricsCreateOperation_Payload_Data_Relationships_Track_Data(id: "id_example", type: "type_example"), id: "id_example", type: "type_example")), type: "type_example"), meta: LyricsCreateOperation_Payload_Meta(generate: false)) // LyricsCreateOperationPayload |  (optional)
 
 // Create single lyric.
-LyricsAPI.lyricsPost(idempotencyKey: idempotencyKey, lyricsCreateOperationPayload: lyricsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await LyricsAPI.lyricsPost(idempotencyKey: idempotencyKey, lyricsCreateOperationPayload: lyricsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -318,7 +294,7 @@ LyricsAPI.lyricsPost(idempotencyKey: idempotencyKey, lyricsCreateOperationPayloa
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **lyricsCreateOperationPayload** | [**LyricsCreateOperationPayload**](LyricsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

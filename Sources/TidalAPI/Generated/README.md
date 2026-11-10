@@ -13,21 +13,29 @@ Every request requires an OAuth 2.0 access token in the `Authorization: Bearer` 
 Each property's schema is authoritative for its allowed values, format, requiredness, nullability, and constraints. A standard defines how a value is represented; an individual schema may support only a documented subset.
 
 - **Enums** use `UPPER_CASE_UNDERSCORE`, except JSON:API resource types, which use plural camelCase names such as `playlistGenerationSchedules`. New values can be added to any enum at any time, so treat unknown values as forward-compatible rather than errors.
-- **Resource IDs** are opaque strings. Never parse, construct, or infer meaning from an `id`, even when its current representation resembles an integer, UUID, or another recognizable value. Other properties explicitly marked with OpenAPI `format: uuid` are UUIDs.
+- **Resource IDs** are opaque strings. A few resources document well-known IDs for permanent system singleton instances; compare those IDs by exact value. Never parse, construct, or infer meaning from any other `id`, even when its current representation resembles an integer, UUID, or another recognizable value. Other properties explicitly marked with OpenAPI `format: uuid` are UUIDs.
 - **Dates and times** use ISO 8601. Date-times use the OpenAPI `date-time` format (`2024-05-01T12:00:00Z`), dates use `YYYY-MM-DD`, and durations use values such as `PT3M5S`.
 - **Recurrence frequencies** use RFC 5545 `FREQ` names such as `DAILY`, `WEEKLY`, and `MONTHLY`. The property's enum lists the frequencies that field currently supports.
 - **Weekdays** use `MONDAY` through `SUNDAY`.
 - **Time zones** use IANA Time Zone Database identifiers such as `Europe/Stockholm`, not abbreviations or raw UTC offsets for recurring civil-time schedules.
 - **Country codes** use ISO 3166-1 alpha-2; the shared country type also accepts `WW` for worldwide. **Locales** use IETF BCP 47 language tags such as `en-US`.
-- **Currencies** use ISO 4217 codes; a property's enum may narrow the supported set. Monetary amounts using the standard price type are positive decimal strings with at most two fractional digits, such as `\"9.99\"`.
+- **Currencies** use ISO 4217 codes. Monetary amounts are decimal strings; each field defines its sign and precision constraints.
 - **Colors** use three- or six-digit hexadecimal strings (`#RGB` or `#RRGGBB`). Resource links to external URLs use JSON:API link objects with an `href` member.
 
 ### Resource identifiers
 
 Where supported, `filter[subject]=tracks:123` matches a related resource by type and ID;
 `filter[subject.id]=123` and `filter[subject.type]=tracks` match either component.
-Comma-separated identifiers match any complete pair. For to-many relationships, one related
-resource must match; filtering does not trim relationship contents. Each endpoint lists its supported filters and types.
+Where multiple identifiers are accepted, comma-separated values match any complete pair.
+When a member path names a to-many relationship, at least one related resource must match;
+filtering does not trim that relationship. On collection and to-many relationship reads, the
+reserved root `self` (`filter[self]=tracks:123`) filters primary data itself.
+Each endpoint lists its supported filters and types.
+
+Where supported, `me` aliases the authenticated user's dedicated resource ID for the referenced
+resource type. It works in paths, resource-ID filters, compact identifiers (`type:me`), resource
+PATCH primary IDs and standalone relationship mutation identifiers, with the same meaning as
+the resolved ID. Reads using the alias are `no-store`.
 
 ### Relationships and includes
 
@@ -41,8 +49,10 @@ Include paths are validated: a path that cannot be resolved against the resource
 
 ### Filtering, sorting, pagination
 
-- [`filter[<member>]=value`](https://jsonapi.org/format/#fetching-filtering) filters collections; each endpoint documents its available filters, and most collections require at least one.
-- [`sort=<member>`](https://jsonapi.org/format/#fetching-sorting) sorts ascending, `-<member>` descending (`sort=-addedAt`). Filter and sort members are relative to the resources being returned.
+- [`filter[<memberPath>]=value`](https://jsonapi.org/format/#fetching-filtering) filters primary data by equality. Each endpoint lists its available filters; most collections require at least one.
+- Where explicitly documented, `filter[<memberPath>][ne]=value` negates the complete equality predicate. When the member path names a to-many relationship, no related ID may match any supplied value; a known-empty relationship matches. Operators are separate from values. Supplied comparisons combine with AND. For a required filter with multiple supported comparisons, at least one must be supplied; the parameter descriptions identify these alternatives. Unsupported operators and groups return `400`.
+- Where documented, `filter[<path>][<operator>]=value` applies an endpoint-defined operator, such as `filter[self][matchesQuery]`. Its meaning is described per endpoint, and it combines with other filters by AND.
+- [`sort=<memberPath>`](https://jsonapi.org/format/#fetching-sorting) sorts ascending, `-<memberPath>` descending (`sort=-addedAt`). Filter and sort member paths are relative to primary data.
 - Parameters an endpoint cannot honor are rejected with `400`: a `filter[...]` parameter the endpoint does not document (the error lists the available filters), or `sort` on an endpoint that documents no sort values.
 - [Pagination](https://jsonapi.org/format/#fetching-pagination) is cursor-based: responses carry `links.self` and, while more pages exist, `links.next` with an opaque `page[cursor]`. Follow `next` until absent — there are no offset or total-page parameters. Collection sizes, when available, appear as `meta.total` and may be approximate.
 
@@ -55,8 +65,16 @@ The same syntax applies to `filter` and `sort` member paths on endpoints that su
 ### Mutations
 
 - [Partial updates](https://jsonapi.org/format/#crud-updating-resource-attributes) distinguish three wire states for nullable attributes: omission leaves the current value unchanged, an explicit `null` clears it, and a concrete value updates it.
-- Every mutation accepts an [`Idempotency-Key`](https://www.ietf.org/archive/id/draft-ietf-httpapi-idempotency-key-header-07.html) header. Once the original request has completed, retrying with the same key and payload within one hour replays its response; a retry while it is still processing is rejected with `409`, and the same key with a different payload with `422`.
+- Every mutation accepts an [`Idempotency-Key`](https://www.ietf.org/archive/id/draft-ietf-httpapi-idempotency-key-header-07.html) header. Keys are scoped to the client and the authenticated user. Once the original request has completed, retrying it with the same key, method, path, query and payload within one hour replays its response; a retry while it is still processing is rejected with `409`, and the same key with a different method, path, query or payload with `422`.
 - After a successful write, your own subsequent reads reflect the change; other clients may observe it with a delay.
+
+### Revisions and concurrent editing
+
+Where supported, `attributes.revision` identifies the resource's documented aggregate state; a separately versioned relationship collection uses document `meta.revision`. Revisions are nonnegative integers that increase when covered state changes. Compare them only within the same identity and scope, preserve the exact value, and never calculate the next revision. Related content, viewer projections and independent sources are not automatically covered. Domain fields named `version`, such as a music edition, are distinct; existing endpoints retain their documented contracts.
+
+Guarded mutations accept the observed value as top-level `meta.expectedRevision`. Each operation declares its scope and whether the precondition is required. A mismatch returns `409`; missing required input returns `400`. Refresh and reconcile after a conflict, then submit a new operation with a new idempotency key. An identical retry with the original key replays a recorded success under the idempotency contract. These revisions are not HTTP ETags.
+
+Returned revisions describe observed snapshots, not reservations for later writes. Background changes can advance them immediately after a successful response.
 
 ### Media resource replacements - BETA Internal only
 
@@ -83,9 +101,9 @@ Deprecated endpoints, parameters, and fields are marked `deprecated` in this spe
 ## Overview
 This API client was generated by the [OpenAPI Generator](https://openapi-generator.tech) project.  By using the [openapi-spec](https://github.com/OAI/OpenAPI-Specification) from a remote server, you can easily generate an API client.
 
-- API version: 1.10.145
+- API version: 1.10.239
 - Package version: 
-- Generator version: 7.25.0
+- Generator version: 7.26.0
 - Build package: org.openapitools.codegen.languages.Swift5ClientCodegen
 For more information, please visit [https://github.com/orgs/tidal-music/discussions](https://github.com/orgs/tidal-music/discussions)
 
@@ -117,6 +135,7 @@ Class | Method | HTTP request | Description
 *AlbumsAPI* | [**albumsIdPatch**](docs/AlbumsAPI.md#albumsidpatch) | **PATCH** /albums/{id} | Update single album.
 *AlbumsAPI* | [**albumsIdRelationshipsAlbumStatisticsGet**](docs/AlbumsAPI.md#albumsidrelationshipsalbumstatisticsget) | **GET** /albums/{id}/relationships/albumStatistics | Get albumStatistics relationship (\&quot;to-one\&quot;).
 *AlbumsAPI* | [**albumsIdRelationshipsArtistsGet**](docs/AlbumsAPI.md#albumsidrelationshipsartistsget) | **GET** /albums/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
+*AlbumsAPI* | [**albumsIdRelationshipsArtistsPatch**](docs/AlbumsAPI.md#albumsidrelationshipsartistspatch) | **PATCH** /albums/{id}/relationships/artists | Update artists relationship (\&quot;to-many\&quot;).
 *AlbumsAPI* | [**albumsIdRelationshipsCoverArtGet**](docs/AlbumsAPI.md#albumsidrelationshipscoverartget) | **GET** /albums/{id}/relationships/coverArt | Get coverArt relationship (\&quot;to-many\&quot;).
 *AlbumsAPI* | [**albumsIdRelationshipsCoverArtPatch**](docs/AlbumsAPI.md#albumsidrelationshipscoverartpatch) | **PATCH** /albums/{id}/relationships/coverArt | Update coverArt relationship (\&quot;to-many\&quot;).
 *AlbumsAPI* | [**albumsIdRelationshipsGenresGet**](docs/AlbumsAPI.md#albumsidrelationshipsgenresget) | **GET** /albums/{id}/relationships/genres | Get genres relationship (\&quot;to-many\&quot;).
@@ -146,16 +165,26 @@ Class | Method | HTTP request | Description
 *ArtistClaimsAPI* | [**artistClaimsIdRelationshipsRecommendedArtistsGet**](docs/ArtistClaimsAPI.md#artistclaimsidrelationshipsrecommendedartistsget) | **GET** /artistClaims/{id}/relationships/recommendedArtists | Get recommendedArtists relationship (\&quot;to-many\&quot;).
 *ArtistClaimsAPI* | [**artistClaimsPost**](docs/ArtistClaimsAPI.md#artistclaimspost) | **POST** /artistClaims | Create single artistClaim.
 *ArtistRolesAPI* | [**artistRolesIdGet**](docs/ArtistRolesAPI.md#artistrolesidget) | **GET** /artistRoles/{id} | Get single artistRole.
+*ArtistSalesStatisticsAPI* | [**artistSalesStatisticsGet**](docs/ArtistSalesStatisticsAPI.md#artistsalesstatisticsget) | **GET** /artistSalesStatistics | Get multiple artistSalesStatistics.
+*ArtistSalesStatisticsAPI* | [**artistSalesStatisticsIdRelationshipsArtistGet**](docs/ArtistSalesStatisticsAPI.md#artistsalesstatisticsidrelationshipsartistget) | **GET** /artistSalesStatistics/{id}/relationships/artist | Get artist relationship (\&quot;to-one\&quot;).
+*ArtistSalesStatisticsAPI* | [**artistSalesStatisticsIdRelationshipsTopSellersGet**](docs/ArtistSalesStatisticsAPI.md#artistsalesstatisticsidrelationshipstopsellersget) | **GET** /artistSalesStatistics/{id}/relationships/topSellers | Get topSellers relationship (\&quot;to-many\&quot;).
+*ArtistStreamsStatisticsAPI* | [**artistStreamsStatisticsGet**](docs/ArtistStreamsStatisticsAPI.md#artiststreamsstatisticsget) | **GET** /artistStreamsStatistics | Get multiple artistStreamsStatistics.
+*ArtistStreamsStatisticsAPI* | [**artistStreamsStatisticsIdRelationshipsArtistGet**](docs/ArtistStreamsStatisticsAPI.md#artiststreamsstatisticsidrelationshipsartistget) | **GET** /artistStreamsStatistics/{id}/relationships/artist | Get artist relationship (\&quot;to-one\&quot;).
+*ArtistStreamsStatisticsAPI* | [**artistStreamsStatisticsIdRelationshipsTopTracksGet**](docs/ArtistStreamsStatisticsAPI.md#artiststreamsstatisticsidrelationshipstoptracksget) | **GET** /artistStreamsStatistics/{id}/relationships/topTracks | Get topTracks relationship (\&quot;to-many\&quot;).
 *ArtistsAPI* | [**artistsGet**](docs/ArtistsAPI.md#artistsget) | **GET** /artists | Get multiple artists.
 *ArtistsAPI* | [**artistsIdGet**](docs/ArtistsAPI.md#artistsidget) | **GET** /artists/{id} | Get single artist.
 *ArtistsAPI* | [**artistsIdPatch**](docs/ArtistsAPI.md#artistsidpatch) | **PATCH** /artists/{id} | Update single artist.
 *ArtistsAPI* | [**artistsIdRelationshipsAlbumsGet**](docs/ArtistsAPI.md#artistsidrelationshipsalbumsget) | **GET** /artists/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
+*ArtistsAPI* | [**artistsIdRelationshipsBannerArtGet**](docs/ArtistsAPI.md#artistsidrelationshipsbannerartget) | **GET** /artists/{id}/relationships/bannerArt | Get bannerArt relationship (\&quot;to-many\&quot;).
+*ArtistsAPI* | [**artistsIdRelationshipsBannerArtPatch**](docs/ArtistsAPI.md#artistsidrelationshipsbannerartpatch) | **PATCH** /artists/{id}/relationships/bannerArt | Update bannerArt relationship (\&quot;to-many\&quot;).
 *ArtistsAPI* | [**artistsIdRelationshipsBiographyGet**](docs/ArtistsAPI.md#artistsidrelationshipsbiographyget) | **GET** /artists/{id}/relationships/biography | Get biography relationship (\&quot;to-one\&quot;).
 *ArtistsAPI* | [**artistsIdRelationshipsClaimStatusGet**](docs/ArtistsAPI.md#artistsidrelationshipsclaimstatusget) | **GET** /artists/{id}/relationships/claimStatus | Get claimStatus relationship (\&quot;to-one\&quot;).
 *ArtistsAPI* | [**artistsIdRelationshipsFollowersGet**](docs/ArtistsAPI.md#artistsidrelationshipsfollowersget) | **GET** /artists/{id}/relationships/followers | Get followers relationship (\&quot;to-many\&quot;).
 *ArtistsAPI* | [**artistsIdRelationshipsFollowingDelete**](docs/ArtistsAPI.md#artistsidrelationshipsfollowingdelete) | **DELETE** /artists/{id}/relationships/following | Delete from following relationship (\&quot;to-many\&quot;).
 *ArtistsAPI* | [**artistsIdRelationshipsFollowingGet**](docs/ArtistsAPI.md#artistsidrelationshipsfollowingget) | **GET** /artists/{id}/relationships/following | Get following relationship (\&quot;to-many\&quot;).
 *ArtistsAPI* | [**artistsIdRelationshipsFollowingPost**](docs/ArtistsAPI.md#artistsidrelationshipsfollowingpost) | **POST** /artists/{id}/relationships/following | Add to following relationship (\&quot;to-many\&quot;).
+*ArtistsAPI* | [**artistsIdRelationshipsLogoArtGet**](docs/ArtistsAPI.md#artistsidrelationshipslogoartget) | **GET** /artists/{id}/relationships/logoArt | Get logoArt relationship (\&quot;to-many\&quot;).
+*ArtistsAPI* | [**artistsIdRelationshipsLogoArtPatch**](docs/ArtistsAPI.md#artistsidrelationshipslogoartpatch) | **PATCH** /artists/{id}/relationships/logoArt | Update logoArt relationship (\&quot;to-many\&quot;).
 *ArtistsAPI* | [**artistsIdRelationshipsOwnersGet**](docs/ArtistsAPI.md#artistsidrelationshipsownersget) | **GET** /artists/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 *ArtistsAPI* | [**artistsIdRelationshipsProfileArtGet**](docs/ArtistsAPI.md#artistsidrelationshipsprofileartget) | **GET** /artists/{id}/relationships/profileArt | Get profileArt relationship (\&quot;to-many\&quot;).
 *ArtistsAPI* | [**artistsIdRelationshipsProfileArtPatch**](docs/ArtistsAPI.md#artistsidrelationshipsprofileartpatch) | **PATCH** /artists/{id}/relationships/profileArt | Update profileArt relationship (\&quot;to-many\&quot;).
@@ -166,14 +195,22 @@ Class | Method | HTTP request | Description
 *ArtistsAPI* | [**artistsIdRelationshipsTracksGet**](docs/ArtistsAPI.md#artistsidrelationshipstracksget) | **GET** /artists/{id}/relationships/tracks | Get tracks relationship (\&quot;to-many\&quot;).
 *ArtistsAPI* | [**artistsIdRelationshipsVideosGet**](docs/ArtistsAPI.md#artistsidrelationshipsvideosget) | **GET** /artists/{id}/relationships/videos | Get videos relationship (\&quot;to-many\&quot;).
 *ArtistsAPI* | [**artistsPost**](docs/ArtistsAPI.md#artistspost) | **POST** /artists | Create single artist.
+*ArtworkLibrariesAPI* | [**artworkLibrariesGet**](docs/ArtworkLibrariesAPI.md#artworklibrariesget) | **GET** /artworkLibraries | Get multiple artworkLibraries.
+*ArtworkLibrariesAPI* | [**artworkLibrariesIdGet**](docs/ArtworkLibrariesAPI.md#artworklibrariesidget) | **GET** /artworkLibraries/{id} | Get single artworkLibrarie.
+*ArtworkLibrariesAPI* | [**artworkLibrariesIdRelationshipsArtworksGet**](docs/ArtworkLibrariesAPI.md#artworklibrariesidrelationshipsartworksget) | **GET** /artworkLibraries/{id}/relationships/artworks | Get artworks relationship (\&quot;to-many\&quot;).
+*ArtworkLibrariesAPI* | [**artworkLibrariesIdRelationshipsRandomArtworkGet**](docs/ArtworkLibrariesAPI.md#artworklibrariesidrelationshipsrandomartworkget) | **GET** /artworkLibraries/{id}/relationships/randomArtwork | Get randomArtwork relationship (\&quot;to-one\&quot;).
 *ArtworksAPI* | [**artworksGet**](docs/ArtworksAPI.md#artworksget) | **GET** /artworks | Get multiple artworks.
 *ArtworksAPI* | [**artworksIdGet**](docs/ArtworksAPI.md#artworksidget) | **GET** /artworks/{id} | Get single artwork.
 *ArtworksAPI* | [**artworksIdRelationshipsOwnersGet**](docs/ArtworksAPI.md#artworksidrelationshipsownersget) | **GET** /artworks/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 *ArtworksAPI* | [**artworksPost**](docs/ArtworksAPI.md#artworkspost) | **POST** /artworks | Create single artwork.
+*ClientCertificatesAPI* | [**clientCertificatesIdGet**](docs/ClientCertificatesAPI.md#clientcertificatesidget) | **GET** /clientCertificates/{id} | Get single clientCertificate.
+*ClientCertificatesAPI* | [**clientCertificatesIdRelationshipsOwnersGet**](docs/ClientCertificatesAPI.md#clientcertificatesidrelationshipsownersget) | **GET** /clientCertificates/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+*ClientCertificatesAPI* | [**clientCertificatesPost**](docs/ClientCertificatesAPI.md#clientcertificatespost) | **POST** /clientCertificates | Create single clientCertificate.
 *ClientsAPI* | [**clientsGet**](docs/ClientsAPI.md#clientsget) | **GET** /clients | Get multiple clients.
 *ClientsAPI* | [**clientsIdDelete**](docs/ClientsAPI.md#clientsiddelete) | **DELETE** /clients/{id} | Delete single client.
 *ClientsAPI* | [**clientsIdGet**](docs/ClientsAPI.md#clientsidget) | **GET** /clients/{id} | Get single client.
 *ClientsAPI* | [**clientsIdPatch**](docs/ClientsAPI.md#clientsidpatch) | **PATCH** /clients/{id} | Update single client.
+*ClientsAPI* | [**clientsIdRelationshipsCertificatesGet**](docs/ClientsAPI.md#clientsidrelationshipscertificatesget) | **GET** /clients/{id}/relationships/certificates | Get certificates relationship (\&quot;to-many\&quot;).
 *ClientsAPI* | [**clientsIdRelationshipsOwnersGet**](docs/ClientsAPI.md#clientsidrelationshipsownersget) | **GET** /clients/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 *ClientsAPI* | [**clientsPost**](docs/ClientsAPI.md#clientspost) | **POST** /clients | Create single client.
 *CollaborationInviteRedemptionsAPI* | [**collaborationInviteRedemptionsPost**](docs/CollaborationInviteRedemptionsAPI.md#collaborationinviteredemptionspost) | **POST** /collaborationInviteRedemptions | Create single collaborationInviteRedemption.
@@ -183,13 +220,18 @@ Class | Method | HTTP request | Description
 *CollaborationInvitesAPI* | [**collaborationInvitesIdRelationshipsOwnersGet**](docs/CollaborationInvitesAPI.md#collaborationinvitesidrelationshipsownersget) | **GET** /collaborationInvites/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 *CollaborationInvitesAPI* | [**collaborationInvitesIdRelationshipsSubjectGet**](docs/CollaborationInvitesAPI.md#collaborationinvitesidrelationshipssubjectget) | **GET** /collaborationInvites/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
 *CollaborationInvitesAPI* | [**collaborationInvitesPost**](docs/CollaborationInvitesAPI.md#collaborationinvitespost) | **POST** /collaborationInvites | Create single collaborationInvite.
+*CommentSummariesAPI* | [**commentSummariesGet**](docs/CommentSummariesAPI.md#commentsummariesget) | **GET** /commentSummaries | Get multiple commentSummaries.
+*CommentSummariesAPI* | [**commentSummariesIdRelationshipsSubjectGet**](docs/CommentSummariesAPI.md#commentsummariesidrelationshipssubjectget) | **GET** /commentSummaries/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
 *CommentsAPI* | [**commentsGet**](docs/CommentsAPI.md#commentsget) | **GET** /comments | Get multiple comments.
 *CommentsAPI* | [**commentsIdDelete**](docs/CommentsAPI.md#commentsiddelete) | **DELETE** /comments/{id} | Delete single comment.
 *CommentsAPI* | [**commentsIdGet**](docs/CommentsAPI.md#commentsidget) | **GET** /comments/{id} | Get single comment.
 *CommentsAPI* | [**commentsIdPatch**](docs/CommentsAPI.md#commentsidpatch) | **PATCH** /comments/{id} | Update single comment.
 *CommentsAPI* | [**commentsIdRelationshipsAuthorGet**](docs/CommentsAPI.md#commentsidrelationshipsauthorget) | **GET** /comments/{id}/relationships/author | Get author relationship (\&quot;to-one\&quot;).
+*CommentsAPI* | [**commentsIdRelationshipsCommentSummaryGet**](docs/CommentsAPI.md#commentsidrelationshipscommentsummaryget) | **GET** /comments/{id}/relationships/commentSummary | Get commentSummary relationship (\&quot;to-one\&quot;).
 *CommentsAPI* | [**commentsIdRelationshipsOwnersGet**](docs/CommentsAPI.md#commentsidrelationshipsownersget) | **GET** /comments/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
-*CommentsAPI* | [**commentsIdRelationshipsParentCommentGet**](docs/CommentsAPI.md#commentsidrelationshipsparentcommentget) | **GET** /comments/{id}/relationships/parentComment | Get parentComment relationship (\&quot;to-one\&quot;).
+*CommentsAPI* | [**commentsIdRelationshipsReactionSummaryGet**](docs/CommentsAPI.md#commentsidrelationshipsreactionsummaryget) | **GET** /comments/{id}/relationships/reactionSummary | Get reactionSummary relationship (\&quot;to-one\&quot;).
+*CommentsAPI* | [**commentsIdRelationshipsRootSubjectGet**](docs/CommentsAPI.md#commentsidrelationshipsrootsubjectget) | **GET** /comments/{id}/relationships/rootSubject | Get rootSubject relationship (\&quot;to-one\&quot;).
+*CommentsAPI* | [**commentsIdRelationshipsSubjectGet**](docs/CommentsAPI.md#commentsidrelationshipssubjectget) | **GET** /comments/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
 *CommentsAPI* | [**commentsPost**](docs/CommentsAPI.md#commentspost) | **POST** /comments | Create single comment.
 *ContentClaimsAPI* | [**contentClaimsGet**](docs/ContentClaimsAPI.md#contentclaimsget) | **GET** /contentClaims | Get multiple contentClaims.
 *ContentClaimsAPI* | [**contentClaimsIdGet**](docs/ContentClaimsAPI.md#contentclaimsidget) | **GET** /contentClaims/{id} | Get single contentClaim.
@@ -212,21 +254,30 @@ Class | Method | HTTP request | Description
 *DynamicPagesAPI* | [**dynamicPagesGet**](docs/DynamicPagesAPI.md#dynamicpagesget) | **GET** /dynamicPages | Get multiple dynamicPages.
 *DynamicPagesAPI* | [**dynamicPagesIdRelationshipsModulesGet**](docs/DynamicPagesAPI.md#dynamicpagesidrelationshipsmodulesget) | **GET** /dynamicPages/{id}/relationships/modules | Get modules relationship (\&quot;to-many\&quot;).
 *DynamicPagesAPI* | [**dynamicPagesIdRelationshipsSubjectGet**](docs/DynamicPagesAPI.md#dynamicpagesidrelationshipssubjectget) | **GET** /dynamicPages/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
+*FolderItemsAPI* | [**folderItemsGet**](docs/FolderItemsAPI.md#folderitemsget) | **GET** /folderItems | Get multiple folderItems.
 *FolderItemsAPI* | [**folderItemsIdDelete**](docs/FolderItemsAPI.md#folderitemsiddelete) | **DELETE** /folderItems/{id} | Delete single folderItem.
 *FolderItemsAPI* | [**folderItemsIdGet**](docs/FolderItemsAPI.md#folderitemsidget) | **GET** /folderItems/{id} | Get single folderItem.
+*FolderItemsAPI* | [**folderItemsIdRelationshipsBreadcrumbGet**](docs/FolderItemsAPI.md#folderitemsidrelationshipsbreadcrumbget) | **GET** /folderItems/{id}/relationships/breadcrumb | Get breadcrumb relationship (\&quot;to-many\&quot;).
 *FolderItemsAPI* | [**folderItemsIdRelationshipsOwnersGet**](docs/FolderItemsAPI.md#folderitemsidrelationshipsownersget) | **GET** /folderItems/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 *FolderItemsAPI* | [**folderItemsIdRelationshipsParentGet**](docs/FolderItemsAPI.md#folderitemsidrelationshipsparentget) | **GET** /folderItems/{id}/relationships/parent | Get parent relationship (\&quot;to-one\&quot;).
 *FolderItemsAPI* | [**folderItemsIdRelationshipsParentPatch**](docs/FolderItemsAPI.md#folderitemsidrelationshipsparentpatch) | **PATCH** /folderItems/{id}/relationships/parent | Update parent relationship (\&quot;to-one\&quot;).
+*FolderItemsAPI* | [**folderItemsIdRelationshipsSharingSummaryGet**](docs/FolderItemsAPI.md#folderitemsidrelationshipssharingsummaryget) | **GET** /folderItems/{id}/relationships/sharingSummary | Get sharingSummary relationship (\&quot;to-one\&quot;).
 *FolderItemsAPI* | [**folderItemsIdRelationshipsSubjectGet**](docs/FolderItemsAPI.md#folderitemsidrelationshipssubjectget) | **GET** /folderItems/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
 *FolderItemsAPI* | [**folderItemsPost**](docs/FolderItemsAPI.md#folderitemspost) | **POST** /folderItems | Create single folderItem.
+*FoldersAPI* | [**foldersGet**](docs/FoldersAPI.md#foldersget) | **GET** /folders | Get multiple folders.
 *FoldersAPI* | [**foldersIdDelete**](docs/FoldersAPI.md#foldersiddelete) | **DELETE** /folders/{id} | Delete single folder.
 *FoldersAPI* | [**foldersIdGet**](docs/FoldersAPI.md#foldersidget) | **GET** /folders/{id} | Get single folder.
 *FoldersAPI* | [**foldersIdPatch**](docs/FoldersAPI.md#foldersidpatch) | **PATCH** /folders/{id} | Update single folder.
 *FoldersAPI* | [**foldersIdRelationshipsChildrenGet**](docs/FoldersAPI.md#foldersidrelationshipschildrenget) | **GET** /folders/{id}/relationships/children | Get children relationship (\&quot;to-many\&quot;).
 *FoldersAPI* | [**foldersIdRelationshipsOwnersGet**](docs/FoldersAPI.md#foldersidrelationshipsownersget) | **GET** /folders/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+*FoldersAPI* | [**foldersIdRelationshipsParentGet**](docs/FoldersAPI.md#foldersidrelationshipsparentget) | **GET** /folders/{id}/relationships/parent | Get parent relationship (\&quot;to-one\&quot;).
+*FoldersAPI* | [**foldersIdRelationshipsPreviewGet**](docs/FoldersAPI.md#foldersidrelationshipspreviewget) | **GET** /folders/{id}/relationships/preview | Get preview relationship (\&quot;to-many\&quot;).
+*FoldersAPI* | [**foldersIdRelationshipsSharesGet**](docs/FoldersAPI.md#foldersidrelationshipssharesget) | **GET** /folders/{id}/relationships/shares | Get shares relationship (\&quot;to-many\&quot;).
 *FoldersAPI* | [**foldersPost**](docs/FoldersAPI.md#folderspost) | **POST** /folders | Create single folder.
 *GenresAPI* | [**genresGet**](docs/GenresAPI.md#genresget) | **GET** /genres | Get multiple genres.
 *GenresAPI* | [**genresIdGet**](docs/GenresAPI.md#genresidget) | **GET** /genres/{id} | Get single genre.
+*GroupsAPI* | [**groupsGet**](docs/GroupsAPI.md#groupsget) | **GET** /groups | Get multiple groups.
+*GroupsAPI* | [**groupsIdGet**](docs/GroupsAPI.md#groupsidget) | **GET** /groups/{id} | Get single group.
 *InstallationsAPI* | [**installationsGet**](docs/InstallationsAPI.md#installationsget) | **GET** /installations | Get multiple installations.
 *InstallationsAPI* | [**installationsIdGet**](docs/InstallationsAPI.md#installationsidget) | **GET** /installations/{id} | Get single installation.
 *InstallationsAPI* | [**installationsIdRelationshipsOfflineInventoryDelete**](docs/InstallationsAPI.md#installationsidrelationshipsofflineinventorydelete) | **DELETE** /installations/{id}/relationships/offlineInventory | Delete from offlineInventory relationship (\&quot;to-many\&quot;).
@@ -307,12 +358,21 @@ Class | Method | HTTP request | Description
 *PurchasesAPI* | [**purchasesGet**](docs/PurchasesAPI.md#purchasesget) | **GET** /purchases | Get multiple purchases.
 *PurchasesAPI* | [**purchasesIdRelationshipsOwnersGet**](docs/PurchasesAPI.md#purchasesidrelationshipsownersget) | **GET** /purchases/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 *PurchasesAPI* | [**purchasesIdRelationshipsSubjectGet**](docs/PurchasesAPI.md#purchasesidrelationshipssubjectget) | **GET** /purchases/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
+*ReactionSummariesAPI* | [**reactionSummariesGet**](docs/ReactionSummariesAPI.md#reactionsummariesget) | **GET** /reactionSummaries | Get multiple reactionSummaries.
+*ReactionSummariesAPI* | [**reactionSummariesIdRelationshipsSubjectGet**](docs/ReactionSummariesAPI.md#reactionsummariesidrelationshipssubjectget) | **GET** /reactionSummaries/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
 *ReactionsAPI* | [**reactionsGet**](docs/ReactionsAPI.md#reactionsget) | **GET** /reactions | Get multiple reactions.
 *ReactionsAPI* | [**reactionsIdDelete**](docs/ReactionsAPI.md#reactionsiddelete) | **DELETE** /reactions/{id} | Delete single reaction.
 *ReactionsAPI* | [**reactionsIdRelationshipsAuthorGet**](docs/ReactionsAPI.md#reactionsidrelationshipsauthorget) | **GET** /reactions/{id}/relationships/author | Get author relationship (\&quot;to-one\&quot;).
-*ReactionsAPI* | [**reactionsIdRelationshipsOwnerProfilesGet**](docs/ReactionsAPI.md#reactionsidrelationshipsownerprofilesget) | **GET** /reactions/{id}/relationships/ownerProfiles | Get ownerProfiles relationship (\&quot;to-many\&quot;).
 *ReactionsAPI* | [**reactionsIdRelationshipsOwnersGet**](docs/ReactionsAPI.md#reactionsidrelationshipsownersget) | **GET** /reactions/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+*ReactionsAPI* | [**reactionsIdRelationshipsSubjectGet**](docs/ReactionsAPI.md#reactionsidrelationshipssubjectget) | **GET** /reactions/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
 *ReactionsAPI* | [**reactionsPost**](docs/ReactionsAPI.md#reactionspost) | **POST** /reactions | Create single reaction.
+*ResourceGrantsAPI* | [**resourceGrantsGet**](docs/ResourceGrantsAPI.md#resourcegrantsget) | **GET** /resourceGrants | Get multiple resourceGrants.
+*ResourceGrantsAPI* | [**resourceGrantsIdDelete**](docs/ResourceGrantsAPI.md#resourcegrantsiddelete) | **DELETE** /resourceGrants/{id} | Delete single resourceGrant.
+*ResourceGrantsAPI* | [**resourceGrantsIdGet**](docs/ResourceGrantsAPI.md#resourcegrantsidget) | **GET** /resourceGrants/{id} | Get single resourceGrant.
+*ResourceGrantsAPI* | [**resourceGrantsIdPatch**](docs/ResourceGrantsAPI.md#resourcegrantsidpatch) | **PATCH** /resourceGrants/{id} | Update single resourceGrant.
+*ResourceGrantsAPI* | [**resourceGrantsIdRelationshipsGranteeGet**](docs/ResourceGrantsAPI.md#resourcegrantsidrelationshipsgranteeget) | **GET** /resourceGrants/{id}/relationships/grantee | Get grantee relationship (\&quot;to-one\&quot;).
+*ResourceGrantsAPI* | [**resourceGrantsIdRelationshipsSubjectGet**](docs/ResourceGrantsAPI.md#resourcegrantsidrelationshipssubjectget) | **GET** /resourceGrants/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
+*ResourceGrantsAPI* | [**resourceGrantsPost**](docs/ResourceGrantsAPI.md#resourcegrantspost) | **POST** /resourceGrants | Create single resourceGrant.
 *SavedSharesAPI* | [**savedSharesPost**](docs/SavedSharesAPI.md#savedsharespost) | **POST** /savedShares | Create single savedShare.
 *ScopesAPI* | [**scopesGet**](docs/ScopesAPI.md#scopesget) | **GET** /scopes | Get multiple scopes.
 *SearchHistoryEntriesAPI* | [**searchHistoryEntriesIdDelete**](docs/SearchHistoryEntriesAPI.md#searchhistoryentriesiddelete) | **DELETE** /searchHistoryEntries/{id} | Delete single searchHistoryEntrie.
@@ -327,15 +387,41 @@ Class | Method | HTTP request | Description
 *SearchSuggestionsAPI* | [**searchSuggestionsIdRelationshipsDirectHitsGet**](docs/SearchSuggestionsAPI.md#searchsuggestionsidrelationshipsdirecthitsget) | **GET** /searchSuggestions/{id}/relationships/directHits | Get directHits relationship (\&quot;to-many\&quot;).
 *SearchSuggestionsAPI* | [**searchSuggestionsIdRelationshipsHistoryGet**](docs/SearchSuggestionsAPI.md#searchsuggestionsidrelationshipshistoryget) | **GET** /searchSuggestions/{id}/relationships/history | Get history relationship (\&quot;to-many\&quot;).
 *SharesAPI* | [**sharesGet**](docs/SharesAPI.md#sharesget) | **GET** /shares | Get multiple shares.
+*SharesAPI* | [**sharesIdDelete**](docs/SharesAPI.md#sharesiddelete) | **DELETE** /shares/{id} | Delete single share.
 *SharesAPI* | [**sharesIdGet**](docs/SharesAPI.md#sharesidget) | **GET** /shares/{id} | Get single share.
+*SharesAPI* | [**sharesIdPatch**](docs/SharesAPI.md#sharesidpatch) | **PATCH** /shares/{id} | Update single share.
 *SharesAPI* | [**sharesIdRelationshipsOwnersGet**](docs/SharesAPI.md#sharesidrelationshipsownersget) | **GET** /shares/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 *SharesAPI* | [**sharesIdRelationshipsSharedResourcesGet**](docs/SharesAPI.md#sharesidrelationshipssharedresourcesget) | **GET** /shares/{id}/relationships/sharedResources | Get sharedResources relationship (\&quot;to-many\&quot;).
 *SharesAPI* | [**sharesPost**](docs/SharesAPI.md#sharespost) | **POST** /shares | Create single share.
+*SharingSummariesAPI* | [**sharingSummariesGet**](docs/SharingSummariesAPI.md#sharingsummariesget) | **GET** /sharingSummaries | Get multiple sharingSummaries.
+*SharingSummariesAPI* | [**sharingSummariesIdRelationshipsSubjectGet**](docs/SharingSummariesAPI.md#sharingsummariesidrelationshipssubjectget) | **GET** /sharingSummaries/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
 *SquareConnectionsAPI* | [**squareConnectionsIdGet**](docs/SquareConnectionsAPI.md#squareconnectionsidget) | **GET** /squareConnections/{id} | Get single squareConnection.
 *SquareConnectionsAPI* | [**squareConnectionsIdRelationshipsSelectedSiteGet**](docs/SquareConnectionsAPI.md#squareconnectionsidrelationshipsselectedsiteget) | **GET** /squareConnections/{id}/relationships/selectedSite | Get selectedSite relationship (\&quot;to-one\&quot;).
 *SquareConnectionsAPI* | [**squareConnectionsIdRelationshipsSelectedSitePatch**](docs/SquareConnectionsAPI.md#squareconnectionsidrelationshipsselectedsitepatch) | **PATCH** /squareConnections/{id}/relationships/selectedSite | Update selectedSite relationship (\&quot;to-one\&quot;).
 *SquareConnectionsAPI* | [**squareConnectionsIdRelationshipsSitesGet**](docs/SquareConnectionsAPI.md#squareconnectionsidrelationshipssitesget) | **GET** /squareConnections/{id}/relationships/sites | Get sites relationship (\&quot;to-many\&quot;).
 *SquareConnectionsAPI* | [**squareConnectionsPost**](docs/SquareConnectionsAPI.md#squareconnectionspost) | **POST** /squareConnections | Create single squareConnection.
+*SquareItemVariationPhysicalCountsAPI* | [**squareItemVariationPhysicalCountsPost**](docs/SquareItemVariationPhysicalCountsAPI.md#squareitemvariationphysicalcountspost) | **POST** /squareItemVariationPhysicalCounts | Create single squareItemVariationPhysicalCount.
+*SquareItemVariationsAPI* | [**operationsPost**](docs/SquareItemVariationsAPI.md#operationspost) | **POST** /operations | Commit atomic resource operations
+*SquareItemVariationsAPI* | [**squareItemVariationsIdDelete**](docs/SquareItemVariationsAPI.md#squareitemvariationsiddelete) | **DELETE** /squareItemVariations/{id} | Delete single squareItemVariation.
+*SquareItemVariationsAPI* | [**squareItemVariationsIdGet**](docs/SquareItemVariationsAPI.md#squareitemvariationsidget) | **GET** /squareItemVariations/{id} | Get single squareItemVariation.
+*SquareItemVariationsAPI* | [**squareItemVariationsIdPatch**](docs/SquareItemVariationsAPI.md#squareitemvariationsidpatch) | **PATCH** /squareItemVariations/{id} | Update single squareItemVariation.
+*SquareItemVariationsAPI* | [**squareItemVariationsIdRelationshipsArtworksGet**](docs/SquareItemVariationsAPI.md#squareitemvariationsidrelationshipsartworksget) | **GET** /squareItemVariations/{id}/relationships/artworks | Get artworks relationship (\&quot;to-many\&quot;).
+*SquareItemVariationsAPI* | [**squareItemVariationsIdRelationshipsArtworksPatch**](docs/SquareItemVariationsAPI.md#squareitemvariationsidrelationshipsartworkspatch) | **PATCH** /squareItemVariations/{id}/relationships/artworks | Update artworks relationship (\&quot;to-many\&quot;).
+*SquareItemVariationsAPI* | [**squareItemVariationsIdRelationshipsOwnersGet**](docs/SquareItemVariationsAPI.md#squareitemvariationsidrelationshipsownersget) | **GET** /squareItemVariations/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+*SquareItemVariationsAPI* | [**squareItemVariationsPost**](docs/SquareItemVariationsAPI.md#squareitemvariationspost) | **POST** /squareItemVariations | Create single squareItemVariation.
+*SquareItemsAPI* | [**operationsPost**](docs/SquareItemsAPI.md#operationspost) | **POST** /operations | Commit atomic resource operations
+*SquareItemsAPI* | [**squareItemsGet**](docs/SquareItemsAPI.md#squareitemsget) | **GET** /squareItems | Get multiple squareItems.
+*SquareItemsAPI* | [**squareItemsIdDelete**](docs/SquareItemsAPI.md#squareitemsiddelete) | **DELETE** /squareItems/{id} | Delete single squareItem.
+*SquareItemsAPI* | [**squareItemsIdGet**](docs/SquareItemsAPI.md#squareitemsidget) | **GET** /squareItems/{id} | Get single squareItem.
+*SquareItemsAPI* | [**squareItemsIdPatch**](docs/SquareItemsAPI.md#squareitemsidpatch) | **PATCH** /squareItems/{id} | Update single squareItem.
+*SquareItemsAPI* | [**squareItemsIdRelationshipsArtworksGet**](docs/SquareItemsAPI.md#squareitemsidrelationshipsartworksget) | **GET** /squareItems/{id}/relationships/artworks | Get artworks relationship (\&quot;to-many\&quot;).
+*SquareItemsAPI* | [**squareItemsIdRelationshipsArtworksPatch**](docs/SquareItemsAPI.md#squareitemsidrelationshipsartworkspatch) | **PATCH** /squareItems/{id}/relationships/artworks | Update artworks relationship (\&quot;to-many\&quot;).
+*SquareItemsAPI* | [**squareItemsIdRelationshipsOwnersGet**](docs/SquareItemsAPI.md#squareitemsidrelationshipsownersget) | **GET** /squareItems/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+*SquareItemsAPI* | [**squareItemsIdRelationshipsVariationsGet**](docs/SquareItemsAPI.md#squareitemsidrelationshipsvariationsget) | **GET** /squareItems/{id}/relationships/variations | Get variations relationship (\&quot;to-many\&quot;).
+*SquareItemsAPI* | [**squareItemsIdRelationshipsVariationsPatch**](docs/SquareItemsAPI.md#squareitemsidrelationshipsvariationspatch) | **PATCH** /squareItems/{id}/relationships/variations | Update variations relationship (\&quot;to-many\&quot;).
+*SquareSitesAPI* | [**squareSitesIdRelationshipsItemsDelete**](docs/SquareSitesAPI.md#squaresitesidrelationshipsitemsdelete) | **DELETE** /squareSites/{id}/relationships/items | Delete from items relationship (\&quot;to-many\&quot;).
+*SquareSitesAPI* | [**squareSitesIdRelationshipsItemsGet**](docs/SquareSitesAPI.md#squaresitesidrelationshipsitemsget) | **GET** /squareSites/{id}/relationships/items | Get items relationship (\&quot;to-many\&quot;).
+*SquareSitesAPI* | [**squareSitesIdRelationshipsItemsPost**](docs/SquareSitesAPI.md#squaresitesidrelationshipsitemspost) | **POST** /squareSites/{id}/relationships/items | Add to items relationship (\&quot;to-many\&quot;).
 *StripeConnectionsAPI* | [**stripeConnectionsGet**](docs/StripeConnectionsAPI.md#stripeconnectionsget) | **GET** /stripeConnections | Get multiple stripeConnections.
 *StripeConnectionsAPI* | [**stripeConnectionsIdRelationshipsOwnersGet**](docs/StripeConnectionsAPI.md#stripeconnectionsidrelationshipsownersget) | **GET** /stripeConnections/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 *StripeConnectionsAPI* | [**stripeConnectionsPost**](docs/StripeConnectionsAPI.md#stripeconnectionspost) | **POST** /stripeConnections | Create single stripeConnection.
@@ -353,7 +439,9 @@ Class | Method | HTTP request | Description
 *TrackFilesAPI* | [**trackFilesIdGet**](docs/TrackFilesAPI.md#trackfilesidget) | **GET** /trackFiles/{id} | Get single trackFile.
 *TrackManifestsAPI* | [**trackManifestsIdGet**](docs/TrackManifestsAPI.md#trackmanifestsidget) | **GET** /trackManifests/{id} | Get single trackManifest.
 *TrackSourceFilesAPI* | [**trackSourceFilesIdGet**](docs/TrackSourceFilesAPI.md#tracksourcefilesidget) | **GET** /trackSourceFiles/{id} | Get single trackSourceFile.
+*TrackSourceFilesAPI* | [**trackSourceFilesIdRelationshipsCommentSummaryGet**](docs/TrackSourceFilesAPI.md#tracksourcefilesidrelationshipscommentsummaryget) | **GET** /trackSourceFiles/{id}/relationships/commentSummary | Get commentSummary relationship (\&quot;to-one\&quot;).
 *TrackSourceFilesAPI* | [**trackSourceFilesIdRelationshipsOwnersGet**](docs/TrackSourceFilesAPI.md#tracksourcefilesidrelationshipsownersget) | **GET** /trackSourceFiles/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+*TrackSourceFilesAPI* | [**trackSourceFilesIdRelationshipsReactionSummaryGet**](docs/TrackSourceFilesAPI.md#tracksourcefilesidrelationshipsreactionsummaryget) | **GET** /trackSourceFiles/{id}/relationships/reactionSummary | Get reactionSummary relationship (\&quot;to-one\&quot;).
 *TrackSourceFilesAPI* | [**trackSourceFilesPost**](docs/TrackSourceFilesAPI.md#tracksourcefilespost) | **POST** /trackSourceFiles | Create single trackSourceFile.
 *TrackStatisticsAPI* | [**trackStatisticsIdGet**](docs/TrackStatisticsAPI.md#trackstatisticsidget) | **GET** /trackStatistics/{id} | Get single trackStatistic.
 *TrackStatisticsAPI* | [**trackStatisticsIdRelationshipsOwnersGet**](docs/TrackStatisticsAPI.md#trackstatisticsidrelationshipsownersget) | **GET** /trackStatistics/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
@@ -364,6 +452,7 @@ Class | Method | HTTP request | Description
 *TracksAPI* | [**tracksIdRelationshipsAlbumsGet**](docs/TracksAPI.md#tracksidrelationshipsalbumsget) | **GET** /tracks/{id}/relationships/albums | Get albums relationship (\&quot;to-many\&quot;).
 *TracksAPI* | [**tracksIdRelationshipsAlbumsPatch**](docs/TracksAPI.md#tracksidrelationshipsalbumspatch) | **PATCH** /tracks/{id}/relationships/albums | Update albums relationship (\&quot;to-many\&quot;).
 *TracksAPI* | [**tracksIdRelationshipsArtistsGet**](docs/TracksAPI.md#tracksidrelationshipsartistsget) | **GET** /tracks/{id}/relationships/artists | Get artists relationship (\&quot;to-many\&quot;).
+*TracksAPI* | [**tracksIdRelationshipsArtistsPatch**](docs/TracksAPI.md#tracksidrelationshipsartistspatch) | **PATCH** /tracks/{id}/relationships/artists | Update artists relationship (\&quot;to-many\&quot;).
 *TracksAPI* | [**tracksIdRelationshipsCreditsGet**](docs/TracksAPI.md#tracksidrelationshipscreditsget) | **GET** /tracks/{id}/relationships/credits | Get credits relationship (\&quot;to-many\&quot;).
 *TracksAPI* | [**tracksIdRelationshipsDownloadGet**](docs/TracksAPI.md#tracksidrelationshipsdownloadget) | **GET** /tracks/{id}/relationships/download | Get download relationship (\&quot;to-one\&quot;).
 *TracksAPI* | [**tracksIdRelationshipsGenresGet**](docs/TracksAPI.md#tracksidrelationshipsgenresget) | **GET** /tracks/{id}/relationships/genres | Get genres relationship (\&quot;to-many\&quot;).
@@ -429,6 +518,11 @@ Class | Method | HTTP request | Description
 *UserDataExportRequestsAPI* | [**userDataExportRequestsPost**](docs/UserDataExportRequestsAPI.md#userdataexportrequestspost) | **POST** /userDataExportRequests | Create single userDataExportRequest.
 *UserDiscoveryMixesAPI* | [**userDiscoveryMixesIdGet**](docs/UserDiscoveryMixesAPI.md#userdiscoverymixesidget) | **GET** /userDiscoveryMixes/{id} | Get single userDiscoveryMixe.
 *UserDiscoveryMixesAPI* | [**userDiscoveryMixesIdRelationshipsItemsGet**](docs/UserDiscoveryMixesAPI.md#userdiscoverymixesidrelationshipsitemsget) | **GET** /userDiscoveryMixes/{id}/relationships/items | Get items relationship (\&quot;to-many\&quot;).
+*UserFeedItemsAPI* | [**userFeedItemsGet**](docs/UserFeedItemsAPI.md#userfeeditemsget) | **GET** /userFeedItems | Get multiple userFeedItems.
+*UserFeedItemsAPI* | [**userFeedItemsIdRelationshipsActorsGet**](docs/UserFeedItemsAPI.md#userfeeditemsidrelationshipsactorsget) | **GET** /userFeedItems/{id}/relationships/actors | Get actors relationship (\&quot;to-many\&quot;).
+*UserFeedItemsAPI* | [**userFeedItemsIdRelationshipsSubjectGet**](docs/UserFeedItemsAPI.md#userfeeditemsidrelationshipssubjectget) | **GET** /userFeedItems/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
+*UserFeedsAPI* | [**userFeedsIdGet**](docs/UserFeedsAPI.md#userfeedsidget) | **GET** /userFeeds/{id} | Get single userFeed.
+*UserFeedsAPI* | [**userFeedsIdPatch**](docs/UserFeedsAPI.md#userfeedsidpatch) | **PATCH** /userFeeds/{id} | Update single userFeed.
 *UserNewReleaseMixesAPI* | [**userNewReleaseMixesIdGet**](docs/UserNewReleaseMixesAPI.md#usernewreleasemixesidget) | **GET** /userNewReleaseMixes/{id} | Get single userNewReleaseMixe.
 *UserNewReleaseMixesAPI* | [**userNewReleaseMixesIdRelationshipsItemsGet**](docs/UserNewReleaseMixesAPI.md#usernewreleasemixesidrelationshipsitemsget) | **GET** /userNewReleaseMixes/{id}/relationships/items | Get items relationship (\&quot;to-many\&quot;).
 *UserOfflineMixesAPI* | [**userOfflineMixesIdGet**](docs/UserOfflineMixesAPI.md#userofflinemixesidget) | **GET** /userOfflineMixes/{id} | Get single userOfflineMixe.
@@ -473,6 +567,8 @@ Class | Method | HTTP request | Description
 *VideosAPI* | [**videosIdRelationshipsUsageRulesGet**](docs/VideosAPI.md#videosidrelationshipsusagerulesget) | **GET** /videos/{id}/relationships/usageRules | Get usageRules relationship (\&quot;to-one\&quot;).
 *ViewerContextsAPI* | [**viewerContextsGet**](docs/ViewerContextsAPI.md#viewercontextsget) | **GET** /viewerContexts | Get multiple viewerContexts.
 *ViewerContextsAPI* | [**viewerContextsIdGet**](docs/ViewerContextsAPI.md#viewercontextsidget) | **GET** /viewerContexts/{id} | Get single viewerContext.
+*ViewerContextsAPI* | [**viewerContextsIdRelationshipsCommentsGet**](docs/ViewerContextsAPI.md#viewercontextsidrelationshipscommentsget) | **GET** /viewerContexts/{id}/relationships/comments | Get comments relationship (\&quot;to-many\&quot;).
+*ViewerContextsAPI* | [**viewerContextsIdRelationshipsReactionsGet**](docs/ViewerContextsAPI.md#viewercontextsidrelationshipsreactionsget) | **GET** /viewerContexts/{id}/relationships/reactions | Get reactions relationship (\&quot;to-many\&quot;).
 *ViewerContextsAPI* | [**viewerContextsIdRelationshipsSubjectGet**](docs/ViewerContextsAPI.md#viewercontextsidrelationshipssubjectget) | **GET** /viewerContexts/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
 *ViewerContextsAPI* | [**viewerContextsIdRelationshipsViewerGet**](docs/ViewerContextsAPI.md#viewercontextsidrelationshipsviewerget) | **GET** /viewerContexts/{id}/relationships/viewer | Get viewer relationship (\&quot;to-one\&quot;).
 
@@ -498,6 +594,9 @@ Class | Method | HTTP request | Description
  - [AlbumStatisticsSingleResourceDataDocument](docs/AlbumStatisticsSingleResourceDataDocument.md)
  - [AlbumsAlbumStatisticsSingleRelationshipDataDocument](docs/AlbumsAlbumStatisticsSingleRelationshipDataDocument.md)
  - [AlbumsArtistsMultiRelationshipDataDocument](docs/AlbumsArtistsMultiRelationshipDataDocument.md)
+ - [AlbumsArtistsRelationshipUpdateOperationPayload](docs/AlbumsArtistsRelationshipUpdateOperationPayload.md)
+ - [AlbumsArtistsRelationshipUpdateOperationPayloadData](docs/AlbumsArtistsRelationshipUpdateOperationPayloadData.md)
+ - [AlbumsArtistsRelationshipUpdateOperationPayloadMeta](docs/AlbumsArtistsRelationshipUpdateOperationPayloadMeta.md)
  - [AlbumsAttributes](docs/AlbumsAttributes.md)
  - [AlbumsCoverArtMultiRelationshipDataDocument](docs/AlbumsCoverArtMultiRelationshipDataDocument.md)
  - [AlbumsCoverArtRelationshipUpdateOperationPayload](docs/AlbumsCoverArtRelationshipUpdateOperationPayload.md)
@@ -584,10 +683,49 @@ Class | Method | HTTP request | Description
  - [ArtistRolesAttributes](docs/ArtistRolesAttributes.md)
  - [ArtistRolesResourceObject](docs/ArtistRolesResourceObject.md)
  - [ArtistRolesSingleResourceDataDocument](docs/ArtistRolesSingleResourceDataDocument.md)
+ - [ArtistSalesStatisticsArtistSingleRelationshipDataDocument](docs/ArtistSalesStatisticsArtistSingleRelationshipDataDocument.md)
+ - [ArtistSalesStatisticsAttributes](docs/ArtistSalesStatisticsAttributes.md)
+ - [ArtistSalesStatisticsBuyerSourceShare](docs/ArtistSalesStatisticsBuyerSourceShare.md)
+ - [ArtistSalesStatisticsBuyerSources](docs/ArtistSalesStatisticsBuyerSources.md)
+ - [ArtistSalesStatisticsByType](docs/ArtistSalesStatisticsByType.md)
+ - [ArtistSalesStatisticsMultiResourceDataDocument](docs/ArtistSalesStatisticsMultiResourceDataDocument.md)
+ - [ArtistSalesStatisticsNetSales](docs/ArtistSalesStatisticsNetSales.md)
+ - [ArtistSalesStatisticsRefunds](docs/ArtistSalesStatisticsRefunds.md)
+ - [ArtistSalesStatisticsRelationships](docs/ArtistSalesStatisticsRelationships.md)
+ - [ArtistSalesStatisticsResourceObject](docs/ArtistSalesStatisticsResourceObject.md)
+ - [ArtistSalesStatisticsSeries](docs/ArtistSalesStatisticsSeries.md)
+ - [ArtistSalesStatisticsSeriesPoint](docs/ArtistSalesStatisticsSeriesPoint.md)
+ - [ArtistSalesStatisticsTopSellersMultiRelationshipDataDocument](docs/ArtistSalesStatisticsTopSellersMultiRelationshipDataDocument.md)
+ - [ArtistSalesStatisticsTopSellersMultiRelationshipDataDocumentMeta](docs/ArtistSalesStatisticsTopSellersMultiRelationshipDataDocumentMeta.md)
+ - [ArtistSalesStatisticsTopSellersResourceIdentifier](docs/ArtistSalesStatisticsTopSellersResourceIdentifier.md)
+ - [ArtistSalesStatisticsTopSellersResourceIdentifierMeta](docs/ArtistSalesStatisticsTopSellersResourceIdentifierMeta.md)
+ - [ArtistStatisticsBucketPeriod](docs/ArtistStatisticsBucketPeriod.md)
+ - [ArtistStatisticsWindowPeriod](docs/ArtistStatisticsWindowPeriod.md)
+ - [ArtistStreamsStatisticsArtistSingleRelationshipDataDocument](docs/ArtistStreamsStatisticsArtistSingleRelationshipDataDocument.md)
+ - [ArtistStreamsStatisticsAttributes](docs/ArtistStreamsStatisticsAttributes.md)
+ - [ArtistStreamsStatisticsCount](docs/ArtistStreamsStatisticsCount.md)
+ - [ArtistStreamsStatisticsCountryListeners](docs/ArtistStreamsStatisticsCountryListeners.md)
+ - [ArtistStreamsStatisticsMultiResourceDataDocument](docs/ArtistStreamsStatisticsMultiResourceDataDocument.md)
+ - [ArtistStreamsStatisticsOtherPlays](docs/ArtistStreamsStatisticsOtherPlays.md)
+ - [ArtistStreamsStatisticsPlays](docs/ArtistStreamsStatisticsPlays.md)
+ - [ArtistStreamsStatisticsPlaysBySource](docs/ArtistStreamsStatisticsPlaysBySource.md)
+ - [ArtistStreamsStatisticsRelationships](docs/ArtistStreamsStatisticsRelationships.md)
+ - [ArtistStreamsStatisticsResourceObject](docs/ArtistStreamsStatisticsResourceObject.md)
+ - [ArtistStreamsStatisticsSeries](docs/ArtistStreamsStatisticsSeries.md)
+ - [ArtistStreamsStatisticsSeriesPoint](docs/ArtistStreamsStatisticsSeriesPoint.md)
+ - [ArtistStreamsStatisticsSourcePlays](docs/ArtistStreamsStatisticsSourcePlays.md)
+ - [ArtistStreamsStatisticsTopCountries](docs/ArtistStreamsStatisticsTopCountries.md)
+ - [ArtistStreamsStatisticsTopTracksMultiRelationshipDataDocument](docs/ArtistStreamsStatisticsTopTracksMultiRelationshipDataDocument.md)
+ - [ArtistStreamsStatisticsTopTracksMultiRelationshipDataDocumentMeta](docs/ArtistStreamsStatisticsTopTracksMultiRelationshipDataDocumentMeta.md)
+ - [ArtistStreamsStatisticsTopTracksResourceIdentifier](docs/ArtistStreamsStatisticsTopTracksResourceIdentifier.md)
+ - [ArtistStreamsStatisticsTopTracksResourceIdentifierMeta](docs/ArtistStreamsStatisticsTopTracksResourceIdentifierMeta.md)
  - [ArtistsAlbumsMultiRelationshipDataDocument](docs/ArtistsAlbumsMultiRelationshipDataDocument.md)
  - [ArtistsAlbumsResourceIdentifier](docs/ArtistsAlbumsResourceIdentifier.md)
  - [ArtistsAlbumsResourceIdentifierMeta](docs/ArtistsAlbumsResourceIdentifierMeta.md)
  - [ArtistsAttributes](docs/ArtistsAttributes.md)
+ - [ArtistsBannerArtMultiRelationshipDataDocument](docs/ArtistsBannerArtMultiRelationshipDataDocument.md)
+ - [ArtistsBannerArtRelationshipUpdateOperationPayload](docs/ArtistsBannerArtRelationshipUpdateOperationPayload.md)
+ - [ArtistsBannerArtRelationshipUpdateOperationPayloadData](docs/ArtistsBannerArtRelationshipUpdateOperationPayloadData.md)
  - [ArtistsBiographySingleRelationshipDataDocument](docs/ArtistsBiographySingleRelationshipDataDocument.md)
  - [ArtistsClaimStatusSingleRelationshipDataDocument](docs/ArtistsClaimStatusSingleRelationshipDataDocument.md)
  - [ArtistsCreateOperationPayload](docs/ArtistsCreateOperationPayload.md)
@@ -606,6 +744,9 @@ Class | Method | HTTP request | Description
  - [ArtistsFollowingRelationshipRemoveOperationPayloadData](docs/ArtistsFollowingRelationshipRemoveOperationPayloadData.md)
  - [ArtistsFollowingResourceIdentifier](docs/ArtistsFollowingResourceIdentifier.md)
  - [ArtistsFollowingResourceIdentifierMeta](docs/ArtistsFollowingResourceIdentifierMeta.md)
+ - [ArtistsLogoArtMultiRelationshipDataDocument](docs/ArtistsLogoArtMultiRelationshipDataDocument.md)
+ - [ArtistsLogoArtRelationshipUpdateOperationPayload](docs/ArtistsLogoArtRelationshipUpdateOperationPayload.md)
+ - [ArtistsLogoArtRelationshipUpdateOperationPayloadData](docs/ArtistsLogoArtRelationshipUpdateOperationPayloadData.md)
  - [ArtistsMultiResourceDataDocument](docs/ArtistsMultiResourceDataDocument.md)
  - [ArtistsOwnersMultiRelationshipDataDocument](docs/ArtistsOwnersMultiRelationshipDataDocument.md)
  - [ArtistsProfileArtMultiRelationshipDataDocument](docs/ArtistsProfileArtMultiRelationshipDataDocument.md)
@@ -630,8 +771,20 @@ Class | Method | HTTP request | Description
  - [ArtistsVideosMultiRelationshipDataDocument](docs/ArtistsVideosMultiRelationshipDataDocument.md)
  - [ArtistsVideosResourceIdentifier](docs/ArtistsVideosResourceIdentifier.md)
  - [ArtistsVideosResourceIdentifierMeta](docs/ArtistsVideosResourceIdentifierMeta.md)
+ - [Artwork](docs/Artwork.md)
  - [ArtworkFile](docs/ArtworkFile.md)
  - [ArtworkFileMeta](docs/ArtworkFileMeta.md)
+ - [ArtworkLibrariesArtworksMultiRelationshipDataDocument](docs/ArtworkLibrariesArtworksMultiRelationshipDataDocument.md)
+ - [ArtworkLibrariesArtworksResourceIdentifier](docs/ArtworkLibrariesArtworksResourceIdentifier.md)
+ - [ArtworkLibrariesArtworksResourceIdentifierMeta](docs/ArtworkLibrariesArtworksResourceIdentifierMeta.md)
+ - [ArtworkLibrariesAttributes](docs/ArtworkLibrariesAttributes.md)
+ - [ArtworkLibrariesMultiResourceDataDocument](docs/ArtworkLibrariesMultiResourceDataDocument.md)
+ - [ArtworkLibrariesRandomArtworkResourceIdentifier](docs/ArtworkLibrariesRandomArtworkResourceIdentifier.md)
+ - [ArtworkLibrariesRandomArtworkResourceIdentifierMeta](docs/ArtworkLibrariesRandomArtworkResourceIdentifierMeta.md)
+ - [ArtworkLibrariesRandomArtworkSingleRelationshipDataDocument](docs/ArtworkLibrariesRandomArtworkSingleRelationshipDataDocument.md)
+ - [ArtworkLibrariesRelationships](docs/ArtworkLibrariesRelationships.md)
+ - [ArtworkLibrariesResourceObject](docs/ArtworkLibrariesResourceObject.md)
+ - [ArtworkLibrariesSingleResourceDataDocument](docs/ArtworkLibrariesSingleResourceDataDocument.md)
  - [ArtworkSourceFile](docs/ArtworkSourceFile.md)
  - [ArtworkVisualMetadata](docs/ArtworkVisualMetadata.md)
  - [ArtworksAttributes](docs/ArtworksAttributes.md)
@@ -645,10 +798,53 @@ Class | Method | HTTP request | Description
  - [ArtworksRelationships](docs/ArtworksRelationships.md)
  - [ArtworksResourceObject](docs/ArtworksResourceObject.md)
  - [ArtworksSingleResourceDataDocument](docs/ArtworksSingleResourceDataDocument.md)
+ - [AtomicOperations400ResponseBody](docs/AtomicOperations400ResponseBody.md)
+ - [AtomicOperations400ResponseBodyErrorsInner](docs/AtomicOperations400ResponseBodyErrorsInner.md)
+ - [AtomicOperations403ResponseBody](docs/AtomicOperations403ResponseBody.md)
+ - [AtomicOperations403ResponseBodyErrorsInner](docs/AtomicOperations403ResponseBodyErrorsInner.md)
+ - [AtomicOperations404ResponseBody](docs/AtomicOperations404ResponseBody.md)
+ - [AtomicOperations404ResponseBodyErrorsInner](docs/AtomicOperations404ResponseBodyErrorsInner.md)
+ - [AtomicOperations405ResponseBody](docs/AtomicOperations405ResponseBody.md)
+ - [AtomicOperations405ResponseBodyErrorsInner](docs/AtomicOperations405ResponseBodyErrorsInner.md)
+ - [AtomicOperations406ResponseBody](docs/AtomicOperations406ResponseBody.md)
+ - [AtomicOperations406ResponseBodyErrorsInner](docs/AtomicOperations406ResponseBodyErrorsInner.md)
+ - [AtomicOperations409ResponseBody](docs/AtomicOperations409ResponseBody.md)
+ - [AtomicOperations409ResponseBodyErrorsInner](docs/AtomicOperations409ResponseBodyErrorsInner.md)
+ - [AtomicOperations415ResponseBody](docs/AtomicOperations415ResponseBody.md)
+ - [AtomicOperations415ResponseBodyErrorsInner](docs/AtomicOperations415ResponseBodyErrorsInner.md)
+ - [AtomicOperations422ResponseBody](docs/AtomicOperations422ResponseBody.md)
+ - [AtomicOperations422ResponseBodyErrorsInner](docs/AtomicOperations422ResponseBodyErrorsInner.md)
+ - [AtomicOperations429ResponseBody](docs/AtomicOperations429ResponseBody.md)
+ - [AtomicOperations429ResponseBodyErrorsInner](docs/AtomicOperations429ResponseBodyErrorsInner.md)
+ - [AtomicOperations500ResponseBody](docs/AtomicOperations500ResponseBody.md)
+ - [AtomicOperations500ResponseBodyErrorsInner](docs/AtomicOperations500ResponseBodyErrorsInner.md)
+ - [AtomicOperations503ResponseBody](docs/AtomicOperations503ResponseBody.md)
+ - [AtomicOperations503ResponseBodyErrorsInner](docs/AtomicOperations503ResponseBodyErrorsInner.md)
+ - [AtomicOperationsRequest](docs/AtomicOperationsRequest.md)
+ - [AtomicOperationsRequestAtomicOperationsInner](docs/AtomicOperationsRequestAtomicOperationsInner.md)
+ - [AtomicOperationsRequestAtomicOperationsInnerOneOf](docs/AtomicOperationsRequestAtomicOperationsInnerOneOf.md)
+ - [AtomicOperationsRequestAtomicOperationsInnerOneOf1](docs/AtomicOperationsRequestAtomicOperationsInnerOneOf1.md)
+ - [AtomicOperationsResponse](docs/AtomicOperationsResponse.md)
+ - [AtomicOperationsResponseAtomicResultsInner](docs/AtomicOperationsResponseAtomicResultsInner.md)
+ - [AtomicOperationsResponseAtomicResultsInnerOneOf](docs/AtomicOperationsResponseAtomicResultsInnerOneOf.md)
+ - [AtomicOperationsResponseAtomicResultsInnerOneOf1](docs/AtomicOperationsResponseAtomicResultsInnerOneOf1.md)
+ - [Audio](docs/Audio.md)
  - [AudioNormalizationData](docs/AudioNormalizationData.md)
  - [ChangeEventStreamsAttributes](docs/ChangeEventStreamsAttributes.md)
  - [ChangeEventStreamsResourceObject](docs/ChangeEventStreamsResourceObject.md)
+ - [ClientCertificatesAttributes](docs/ClientCertificatesAttributes.md)
+ - [ClientCertificatesCreateOperationPayload](docs/ClientCertificatesCreateOperationPayload.md)
+ - [ClientCertificatesCreateOperationPayloadData](docs/ClientCertificatesCreateOperationPayloadData.md)
+ - [ClientCertificatesCreateOperationPayloadDataRelationships](docs/ClientCertificatesCreateOperationPayloadDataRelationships.md)
+ - [ClientCertificatesCreateOperationPayloadDataRelationshipsClient](docs/ClientCertificatesCreateOperationPayloadDataRelationshipsClient.md)
+ - [ClientCertificatesCreateOperationPayloadDataRelationshipsClientData](docs/ClientCertificatesCreateOperationPayloadDataRelationshipsClientData.md)
+ - [ClientCertificatesCreateSingleResourceDataDocument](docs/ClientCertificatesCreateSingleResourceDataDocument.md)
+ - [ClientCertificatesOwnersMultiRelationshipDataDocument](docs/ClientCertificatesOwnersMultiRelationshipDataDocument.md)
+ - [ClientCertificatesRelationships](docs/ClientCertificatesRelationships.md)
+ - [ClientCertificatesResourceObject](docs/ClientCertificatesResourceObject.md)
+ - [ClientCertificatesSingleResourceDataDocument](docs/ClientCertificatesSingleResourceDataDocument.md)
  - [ClientsAttributes](docs/ClientsAttributes.md)
+ - [ClientsCertificatesMultiRelationshipDataDocument](docs/ClientsCertificatesMultiRelationshipDataDocument.md)
  - [ClientsCreateOperationPayload](docs/ClientsCreateOperationPayload.md)
  - [ClientsCreateOperationPayloadData](docs/ClientsCreateOperationPayloadData.md)
  - [ClientsCreateOperationPayloadDataAttributes](docs/ClientsCreateOperationPayloadDataAttributes.md)
@@ -683,23 +879,29 @@ Class | Method | HTTP request | Description
  - [CollaborationInvitesResourceObject](docs/CollaborationInvitesResourceObject.md)
  - [CollaborationInvitesSingleResourceDataDocument](docs/CollaborationInvitesSingleResourceDataDocument.md)
  - [CollaborationInvitesSubjectSingleRelationshipDataDocument](docs/CollaborationInvitesSubjectSingleRelationshipDataDocument.md)
+ - [CommentSummariesAttributes](docs/CommentSummariesAttributes.md)
+ - [CommentSummariesMultiResourceDataDocument](docs/CommentSummariesMultiResourceDataDocument.md)
+ - [CommentSummariesRelationships](docs/CommentSummariesRelationships.md)
+ - [CommentSummariesResourceObject](docs/CommentSummariesResourceObject.md)
+ - [CommentSummariesSubjectSingleRelationshipDataDocument](docs/CommentSummariesSubjectSingleRelationshipDataDocument.md)
  - [CommentsAttributes](docs/CommentsAttributes.md)
  - [CommentsAuthorSingleRelationshipDataDocument](docs/CommentsAuthorSingleRelationshipDataDocument.md)
+ - [CommentsCommentSummarySingleRelationshipDataDocument](docs/CommentsCommentSummarySingleRelationshipDataDocument.md)
  - [CommentsCreateOperationPayload](docs/CommentsCreateOperationPayload.md)
  - [CommentsCreateOperationPayloadData](docs/CommentsCreateOperationPayloadData.md)
  - [CommentsCreateOperationPayloadDataAttributes](docs/CommentsCreateOperationPayloadDataAttributes.md)
  - [CommentsCreateOperationPayloadDataRelationships](docs/CommentsCreateOperationPayloadDataRelationships.md)
- - [CommentsCreateOperationPayloadDataRelationshipsParentComment](docs/CommentsCreateOperationPayloadDataRelationshipsParentComment.md)
- - [CommentsCreateOperationPayloadDataRelationshipsParentCommentData](docs/CommentsCreateOperationPayloadDataRelationshipsParentCommentData.md)
  - [CommentsCreateOperationPayloadDataRelationshipsSubject](docs/CommentsCreateOperationPayloadDataRelationshipsSubject.md)
  - [CommentsCreateOperationPayloadDataRelationshipsSubjectData](docs/CommentsCreateOperationPayloadDataRelationshipsSubjectData.md)
  - [CommentsCreateSingleResourceDataDocument](docs/CommentsCreateSingleResourceDataDocument.md)
  - [CommentsMultiResourceDataDocument](docs/CommentsMultiResourceDataDocument.md)
  - [CommentsOwnersMultiRelationshipDataDocument](docs/CommentsOwnersMultiRelationshipDataDocument.md)
- - [CommentsParentCommentSingleRelationshipDataDocument](docs/CommentsParentCommentSingleRelationshipDataDocument.md)
+ - [CommentsReactionSummarySingleRelationshipDataDocument](docs/CommentsReactionSummarySingleRelationshipDataDocument.md)
  - [CommentsRelationships](docs/CommentsRelationships.md)
  - [CommentsResourceObject](docs/CommentsResourceObject.md)
+ - [CommentsRootSubjectSingleRelationshipDataDocument](docs/CommentsRootSubjectSingleRelationshipDataDocument.md)
  - [CommentsSingleResourceDataDocument](docs/CommentsSingleResourceDataDocument.md)
+ - [CommentsSubjectSingleRelationshipDataDocument](docs/CommentsSubjectSingleRelationshipDataDocument.md)
  - [CommentsUpdateOperationPayload](docs/CommentsUpdateOperationPayload.md)
  - [CommentsUpdateOperationPayloadData](docs/CommentsUpdateOperationPayloadData.md)
  - [CommentsUpdateOperationPayloadDataAttributes](docs/CommentsUpdateOperationPayloadDataAttributes.md)
@@ -729,23 +931,14 @@ Class | Method | HTTP request | Description
  - [CreditsRelationships](docs/CreditsRelationships.md)
  - [CreditsResourceObject](docs/CreditsResourceObject.md)
  - [CreditsSingleResourceDataDocument](docs/CreditsSingleResourceDataDocument.md)
- - [CurrentUserReaction](docs/CurrentUserReaction.md)
  - [Default400ResponseBody](docs/Default400ResponseBody.md)
- - [Default400ResponseBodyErrorsInner](docs/Default400ResponseBodyErrorsInner.md)
  - [Default404ResponseBody](docs/Default404ResponseBody.md)
- - [Default404ResponseBodyErrorsInner](docs/Default404ResponseBodyErrorsInner.md)
  - [Default405ResponseBody](docs/Default405ResponseBody.md)
- - [Default405ResponseBodyErrorsInner](docs/Default405ResponseBodyErrorsInner.md)
  - [Default406ResponseBody](docs/Default406ResponseBody.md)
- - [Default406ResponseBodyErrorsInner](docs/Default406ResponseBodyErrorsInner.md)
  - [Default415ResponseBody](docs/Default415ResponseBody.md)
- - [Default415ResponseBodyErrorsInner](docs/Default415ResponseBodyErrorsInner.md)
  - [Default429ResponseBody](docs/Default429ResponseBody.md)
- - [Default429ResponseBodyErrorsInner](docs/Default429ResponseBodyErrorsInner.md)
  - [Default500ResponseBody](docs/Default500ResponseBody.md)
- - [Default500ResponseBodyErrorsInner](docs/Default500ResponseBodyErrorsInner.md)
  - [Default503ResponseBody](docs/Default503ResponseBody.md)
- - [Default503ResponseBodyErrorsInner](docs/Default503ResponseBodyErrorsInner.md)
  - [DownloadLink](docs/DownloadLink.md)
  - [DownloadLinkMeta](docs/DownloadLinkMeta.md)
  - [DownloadsAttributes](docs/DownloadsAttributes.md)
@@ -782,6 +975,7 @@ Class | Method | HTTP request | Description
  - [DynamicPagesSubjectResourceIdentifier](docs/DynamicPagesSubjectResourceIdentifier.md)
  - [DynamicPagesSubjectResourceIdentifierMeta](docs/DynamicPagesSubjectResourceIdentifierMeta.md)
  - [DynamicPagesSubjectSingleRelationshipDataDocument](docs/DynamicPagesSubjectSingleRelationshipDataDocument.md)
+ - [EffectiveRole](docs/EffectiveRole.md)
  - [ErrorObject](docs/ErrorObject.md)
  - [ErrorObjectSource](docs/ErrorObjectSource.md)
  - [ErrorsDocument](docs/ErrorsDocument.md)
@@ -791,6 +985,8 @@ Class | Method | HTTP request | Description
  - [FileStatus](docs/FileStatus.md)
  - [FileUploadLink](docs/FileUploadLink.md)
  - [FileUploadLinkMeta](docs/FileUploadLinkMeta.md)
+ - [FolderItemsAttributes](docs/FolderItemsAttributes.md)
+ - [FolderItemsBreadcrumbMultiRelationshipDataDocument](docs/FolderItemsBreadcrumbMultiRelationshipDataDocument.md)
  - [FolderItemsCreateOperationPayload](docs/FolderItemsCreateOperationPayload.md)
  - [FolderItemsCreateOperationPayloadData](docs/FolderItemsCreateOperationPayloadData.md)
  - [FolderItemsCreateOperationPayloadDataRelationships](docs/FolderItemsCreateOperationPayloadDataRelationships.md)
@@ -801,30 +997,39 @@ Class | Method | HTTP request | Description
  - [FolderItemsCreateResource400ResponseBody](docs/FolderItemsCreateResource400ResponseBody.md)
  - [FolderItemsCreateResource400ResponseBodyErrorsInner](docs/FolderItemsCreateResource400ResponseBodyErrorsInner.md)
  - [FolderItemsCreateSingleResourceDataDocument](docs/FolderItemsCreateSingleResourceDataDocument.md)
+ - [FolderItemsMultiResourceDataDocument](docs/FolderItemsMultiResourceDataDocument.md)
  - [FolderItemsOwnersMultiRelationshipDataDocument](docs/FolderItemsOwnersMultiRelationshipDataDocument.md)
  - [FolderItemsParentRelationshipUpdateOperationPayload](docs/FolderItemsParentRelationshipUpdateOperationPayload.md)
  - [FolderItemsParentRelationshipUpdateOperationPayloadData](docs/FolderItemsParentRelationshipUpdateOperationPayloadData.md)
  - [FolderItemsParentSingleRelationshipDataDocument](docs/FolderItemsParentSingleRelationshipDataDocument.md)
  - [FolderItemsParentUpdateResourceIdentifier](docs/FolderItemsParentUpdateResourceIdentifier.md)
+ - [FolderItemsParentUpdateSingleDataRelationship400ResponseBody](docs/FolderItemsParentUpdateSingleDataRelationship400ResponseBody.md)
  - [FolderItemsParentUpdateSingleRelationshipDataDocument](docs/FolderItemsParentUpdateSingleRelationshipDataDocument.md)
  - [FolderItemsRelationships](docs/FolderItemsRelationships.md)
  - [FolderItemsResourceObject](docs/FolderItemsResourceObject.md)
+ - [FolderItemsSharingSummarySingleRelationshipDataDocument](docs/FolderItemsSharingSummarySingleRelationshipDataDocument.md)
  - [FolderItemsSingleResourceDataDocument](docs/FolderItemsSingleResourceDataDocument.md)
  - [FolderItemsSubjectResourceIdentifier](docs/FolderItemsSubjectResourceIdentifier.md)
  - [FolderItemsSubjectResourceIdentifierMeta](docs/FolderItemsSubjectResourceIdentifierMeta.md)
  - [FolderItemsSubjectSingleRelationshipDataDocument](docs/FolderItemsSubjectSingleRelationshipDataDocument.md)
- - [FolderItemsUpdateSingleDataRelationship400ResponseBody](docs/FolderItemsUpdateSingleDataRelationship400ResponseBody.md)
  - [FoldersAttributes](docs/FoldersAttributes.md)
  - [FoldersChildrenMultiRelationshipDataDocument](docs/FoldersChildrenMultiRelationshipDataDocument.md)
  - [FoldersCreateOperationPayload](docs/FoldersCreateOperationPayload.md)
  - [FoldersCreateOperationPayloadData](docs/FoldersCreateOperationPayloadData.md)
  - [FoldersCreateOperationPayloadDataAttributes](docs/FoldersCreateOperationPayloadDataAttributes.md)
+ - [FoldersCreateOperationPayloadDataRelationships](docs/FoldersCreateOperationPayloadDataRelationships.md)
+ - [FoldersCreateOperationPayloadDataRelationshipsParent](docs/FoldersCreateOperationPayloadDataRelationshipsParent.md)
  - [FoldersCreateSingleResourceDataDocument](docs/FoldersCreateSingleResourceDataDocument.md)
  - [FoldersDeleteResource400ResponseBody](docs/FoldersDeleteResource400ResponseBody.md)
  - [FoldersDeleteResource400ResponseBodyErrorsInner](docs/FoldersDeleteResource400ResponseBodyErrorsInner.md)
+ - [FoldersMultiResourceDataDocument](docs/FoldersMultiResourceDataDocument.md)
  - [FoldersOwnersMultiRelationshipDataDocument](docs/FoldersOwnersMultiRelationshipDataDocument.md)
+ - [FoldersParentIdentifier](docs/FoldersParentIdentifier.md)
+ - [FoldersParentSingleRelationshipDataDocument](docs/FoldersParentSingleRelationshipDataDocument.md)
+ - [FoldersPreviewMultiRelationshipDataDocument](docs/FoldersPreviewMultiRelationshipDataDocument.md)
  - [FoldersRelationships](docs/FoldersRelationships.md)
  - [FoldersResourceObject](docs/FoldersResourceObject.md)
+ - [FoldersSharesMultiRelationshipDataDocument](docs/FoldersSharesMultiRelationshipDataDocument.md)
  - [FoldersSingleResourceDataDocument](docs/FoldersSingleResourceDataDocument.md)
  - [FoldersUpdateOperationPayload](docs/FoldersUpdateOperationPayload.md)
  - [FoldersUpdateOperationPayloadData](docs/FoldersUpdateOperationPayloadData.md)
@@ -835,10 +1040,13 @@ Class | Method | HTTP request | Description
  - [GenresMultiResourceDataDocument](docs/GenresMultiResourceDataDocument.md)
  - [GenresResourceObject](docs/GenresResourceObject.md)
  - [GenresSingleResourceDataDocument](docs/GenresSingleResourceDataDocument.md)
+ - [GroupsAttributes](docs/GroupsAttributes.md)
+ - [GroupsMultiResourceDataDocument](docs/GroupsMultiResourceDataDocument.md)
+ - [GroupsResourceObject](docs/GroupsResourceObject.md)
+ - [GroupsSingleResourceDataDocument](docs/GroupsSingleResourceDataDocument.md)
  - [Idempotency409ResponseBody](docs/Idempotency409ResponseBody.md)
  - [Idempotency409ResponseBodyErrorsInner](docs/Idempotency409ResponseBodyErrorsInner.md)
  - [Idempotency422ResponseBody](docs/Idempotency422ResponseBody.md)
- - [Idempotency422ResponseBodyErrorsInner](docs/Idempotency422ResponseBodyErrorsInner.md)
  - [IncludedInner](docs/IncludedInner.md)
  - [InstallationsAttributes](docs/InstallationsAttributes.md)
  - [InstallationsCreateOperationPayload](docs/InstallationsCreateOperationPayload.md)
@@ -856,13 +1064,15 @@ Class | Method | HTTP request | Description
  - [InstallationsRelationships](docs/InstallationsRelationships.md)
  - [InstallationsResourceObject](docs/InstallationsResourceObject.md)
  - [InstallationsSingleResourceDataDocument](docs/InstallationsSingleResourceDataDocument.md)
+ - [Item](docs/Item.md)
+ - [ItemArtwork](docs/ItemArtwork.md)
+ - [ItemVariation](docs/ItemVariation.md)
  - [LegacyBarcodeId](docs/LegacyBarcodeId.md)
  - [LegacySource](docs/LegacySource.md)
  - [LinkObject](docs/LinkObject.md)
  - [Links](docs/Links.md)
  - [LinksMeta](docs/LinksMeta.md)
  - [LyricsAttributes](docs/LyricsAttributes.md)
- - [LyricsAttributesProvider](docs/LyricsAttributesProvider.md)
  - [LyricsCreateOperationPayload](docs/LyricsCreateOperationPayload.md)
  - [LyricsCreateOperationPayloadData](docs/LyricsCreateOperationPayloadData.md)
  - [LyricsCreateOperationPayloadDataAttributes](docs/LyricsCreateOperationPayloadDataAttributes.md)
@@ -887,8 +1097,8 @@ Class | Method | HTTP request | Description
  - [ManualArtistClaimsCreateOperationPayloadData](docs/ManualArtistClaimsCreateOperationPayloadData.md)
  - [ManualArtistClaimsCreateOperationPayloadDataAttributes](docs/ManualArtistClaimsCreateOperationPayloadDataAttributes.md)
  - [ManualArtistClaimsCreateSingleResourceDataDocument](docs/ManualArtistClaimsCreateSingleResourceDataDocument.md)
+ - [ManualArtistClaimsExternalLink](docs/ManualArtistClaimsExternalLink.md)
  - [ManualArtistClaimsResourceObject](docs/ManualArtistClaimsResourceObject.md)
- - [Membership](docs/Membership.md)
  - [MutationResponseDocument](docs/MutationResponseDocument.md)
  - [OfflineTasksAttributes](docs/OfflineTasksAttributes.md)
  - [OfflineTasksCollectionResourceIdentifier](docs/OfflineTasksCollectionResourceIdentifier.md)
@@ -910,26 +1120,37 @@ Class | Method | HTTP request | Description
  - [PlayQueuesCreateOperationPayload](docs/PlayQueuesCreateOperationPayload.md)
  - [PlayQueuesCreateOperationPayloadData](docs/PlayQueuesCreateOperationPayloadData.md)
  - [PlayQueuesCreateSingleResourceDataDocument](docs/PlayQueuesCreateSingleResourceDataDocument.md)
+ - [PlayQueuesCreateSingleResourceDataDocumentMeta](docs/PlayQueuesCreateSingleResourceDataDocumentMeta.md)
  - [PlayQueuesCurrentRelationshipUpdateOperationPayload](docs/PlayQueuesCurrentRelationshipUpdateOperationPayload.md)
  - [PlayQueuesCurrentRelationshipUpdateOperationPayloadData](docs/PlayQueuesCurrentRelationshipUpdateOperationPayloadData.md)
  - [PlayQueuesCurrentRelationshipUpdateOperationPayloadDataMeta](docs/PlayQueuesCurrentRelationshipUpdateOperationPayloadDataMeta.md)
  - [PlayQueuesCurrentResourceIdentifier](docs/PlayQueuesCurrentResourceIdentifier.md)
  - [PlayQueuesCurrentResourceIdentifierMeta](docs/PlayQueuesCurrentResourceIdentifierMeta.md)
  - [PlayQueuesCurrentSingleRelationshipDataDocument](docs/PlayQueuesCurrentSingleRelationshipDataDocument.md)
+ - [PlayQueuesCurrentUpdateResourceIdentifier](docs/PlayQueuesCurrentUpdateResourceIdentifier.md)
+ - [PlayQueuesCurrentUpdateResourceIdentifierMeta](docs/PlayQueuesCurrentUpdateResourceIdentifierMeta.md)
+ - [PlayQueuesCurrentUpdateSingleRelationshipDataDocument](docs/PlayQueuesCurrentUpdateSingleRelationshipDataDocument.md)
+ - [PlayQueuesCurrentUpdateSingleRelationshipDataDocumentMeta](docs/PlayQueuesCurrentUpdateSingleRelationshipDataDocumentMeta.md)
+ - [PlayQueuesFutureAddMultiRelationshipDataDocument](docs/PlayQueuesFutureAddMultiRelationshipDataDocument.md)
+ - [PlayQueuesFutureAddMultiRelationshipDataDocumentMeta](docs/PlayQueuesFutureAddMultiRelationshipDataDocumentMeta.md)
+ - [PlayQueuesFutureAddResourceIdentifier](docs/PlayQueuesFutureAddResourceIdentifier.md)
  - [PlayQueuesFutureMultiRelationshipDataDocument](docs/PlayQueuesFutureMultiRelationshipDataDocument.md)
  - [PlayQueuesFutureRelationshipAddOperationPayload](docs/PlayQueuesFutureRelationshipAddOperationPayload.md)
  - [PlayQueuesFutureRelationshipAddOperationPayloadData](docs/PlayQueuesFutureRelationshipAddOperationPayloadData.md)
- - [PlayQueuesFutureRelationshipAddOperationPayloadDataMeta](docs/PlayQueuesFutureRelationshipAddOperationPayloadDataMeta.md)
  - [PlayQueuesFutureRelationshipAddOperationPayloadMeta](docs/PlayQueuesFutureRelationshipAddOperationPayloadMeta.md)
  - [PlayQueuesFutureRelationshipRemoveOperationPayload](docs/PlayQueuesFutureRelationshipRemoveOperationPayload.md)
  - [PlayQueuesFutureRelationshipRemoveOperationPayloadData](docs/PlayQueuesFutureRelationshipRemoveOperationPayloadData.md)
  - [PlayQueuesFutureRelationshipRemoveOperationPayloadDataMeta](docs/PlayQueuesFutureRelationshipRemoveOperationPayloadDataMeta.md)
+ - [PlayQueuesFutureRelationshipSource](docs/PlayQueuesFutureRelationshipSource.md)
  - [PlayQueuesFutureRelationshipUpdateOperationPayload](docs/PlayQueuesFutureRelationshipUpdateOperationPayload.md)
  - [PlayQueuesFutureRelationshipUpdateOperationPayloadData](docs/PlayQueuesFutureRelationshipUpdateOperationPayloadData.md)
  - [PlayQueuesFutureRelationshipUpdateOperationPayloadDataMeta](docs/PlayQueuesFutureRelationshipUpdateOperationPayloadDataMeta.md)
  - [PlayQueuesFutureRelationshipUpdateOperationPayloadMeta](docs/PlayQueuesFutureRelationshipUpdateOperationPayloadMeta.md)
  - [PlayQueuesFutureResourceIdentifier](docs/PlayQueuesFutureResourceIdentifier.md)
  - [PlayQueuesFutureResourceIdentifierMeta](docs/PlayQueuesFutureResourceIdentifierMeta.md)
+ - [PlayQueuesFutureUpdateMultiRelationshipDataDocument](docs/PlayQueuesFutureUpdateMultiRelationshipDataDocument.md)
+ - [PlayQueuesFutureUpdateMultiRelationshipDataDocumentMeta](docs/PlayQueuesFutureUpdateMultiRelationshipDataDocumentMeta.md)
+ - [PlayQueuesFutureUpdateResourceIdentifier](docs/PlayQueuesFutureUpdateResourceIdentifier.md)
  - [PlayQueuesMultiResourceDataDocument](docs/PlayQueuesMultiResourceDataDocument.md)
  - [PlayQueuesOwnersMultiRelationshipDataDocument](docs/PlayQueuesOwnersMultiRelationshipDataDocument.md)
  - [PlayQueuesPastMultiRelationshipDataDocument](docs/PlayQueuesPastMultiRelationshipDataDocument.md)
@@ -938,9 +1159,17 @@ Class | Method | HTTP request | Description
  - [PlayQueuesRelationships](docs/PlayQueuesRelationships.md)
  - [PlayQueuesResourceObject](docs/PlayQueuesResourceObject.md)
  - [PlayQueuesSingleResourceDataDocument](docs/PlayQueuesSingleResourceDataDocument.md)
+ - [PlayQueuesUpdateOperationCurrent](docs/PlayQueuesUpdateOperationCurrent.md)
+ - [PlayQueuesUpdateOperationCurrentMeta](docs/PlayQueuesUpdateOperationCurrentMeta.md)
+ - [PlayQueuesUpdateOperationFuture](docs/PlayQueuesUpdateOperationFuture.md)
+ - [PlayQueuesUpdateOperationFutureData](docs/PlayQueuesUpdateOperationFutureData.md)
+ - [PlayQueuesUpdateOperationFutureMeta](docs/PlayQueuesUpdateOperationFutureMeta.md)
  - [PlayQueuesUpdateOperationPayload](docs/PlayQueuesUpdateOperationPayload.md)
  - [PlayQueuesUpdateOperationPayloadData](docs/PlayQueuesUpdateOperationPayloadData.md)
  - [PlayQueuesUpdateOperationPayloadDataAttributes](docs/PlayQueuesUpdateOperationPayloadDataAttributes.md)
+ - [PlayQueuesUpdateOperationPayloadDataRelationships](docs/PlayQueuesUpdateOperationPayloadDataRelationships.md)
+ - [PlayQueuesUpdateSingleResourceDataDocument](docs/PlayQueuesUpdateSingleResourceDataDocument.md)
+ - [PlayQueuesUpdateSingleResourceDataDocumentMeta](docs/PlayQueuesUpdateSingleResourceDataDocumentMeta.md)
  - [PlaylistGenerationProgress](docs/PlaylistGenerationProgress.md)
  - [PlaylistGenerationSchedulesAttributes](docs/PlaylistGenerationSchedulesAttributes.md)
  - [PlaylistGenerationSchedulesCreateOperationPayload](docs/PlaylistGenerationSchedulesCreateOperationPayload.md)
@@ -961,8 +1190,6 @@ Class | Method | HTTP request | Description
  - [PlaylistGenerationSchedulesUpdateOperationPayloadData](docs/PlaylistGenerationSchedulesUpdateOperationPayloadData.md)
  - [PlaylistGenerationSchedulesUpdateOperationPayloadDataAttributes](docs/PlaylistGenerationSchedulesUpdateOperationPayloadDataAttributes.md)
  - [PlaylistGenerationSchedulesUpdateSingleResourceDataDocument](docs/PlaylistGenerationSchedulesUpdateSingleResourceDataDocument.md)
- - [PlaylistGenerationsAddMultiDataRelationshipWithResponse409ResponseBody](docs/PlaylistGenerationsAddMultiDataRelationshipWithResponse409ResponseBody.md)
- - [PlaylistGenerationsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner](docs/PlaylistGenerationsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner.md)
  - [PlaylistGenerationsAttributes](docs/PlaylistGenerationsAttributes.md)
  - [PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument](docs/PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument.md)
  - [PlaylistGenerationsCreateOperationPayload](docs/PlaylistGenerationsCreateOperationPayload.md)
@@ -974,13 +1201,14 @@ Class | Method | HTTP request | Description
  - [PlaylistGenerationsCreateOperationPayloadDataRelationshipsPlaylist](docs/PlaylistGenerationsCreateOperationPayloadDataRelationshipsPlaylist.md)
  - [PlaylistGenerationsCreateOperationPayloadDataRelationshipsPlaylistData](docs/PlaylistGenerationsCreateOperationPayloadDataRelationshipsPlaylistData.md)
  - [PlaylistGenerationsCreateResource409ResponseBody](docs/PlaylistGenerationsCreateResource409ResponseBody.md)
+ - [PlaylistGenerationsCreateResource409ResponseBodyErrorsInner](docs/PlaylistGenerationsCreateResource409ResponseBodyErrorsInner.md)
  - [PlaylistGenerationsCreateSingleResourceDataDocument](docs/PlaylistGenerationsCreateSingleResourceDataDocument.md)
  - [PlaylistGenerationsMultiResourceDataDocument](docs/PlaylistGenerationsMultiResourceDataDocument.md)
  - [PlaylistGenerationsPlaylistSingleRelationshipDataDocument](docs/PlaylistGenerationsPlaylistSingleRelationshipDataDocument.md)
  - [PlaylistGenerationsRelationships](docs/PlaylistGenerationsRelationships.md)
- - [PlaylistGenerationsRemoveMultiDataRelationship409ResponseBody](docs/PlaylistGenerationsRemoveMultiDataRelationship409ResponseBody.md)
  - [PlaylistGenerationsResourceObject](docs/PlaylistGenerationsResourceObject.md)
  - [PlaylistGenerationsSingleResourceDataDocument](docs/PlaylistGenerationsSingleResourceDataDocument.md)
+ - [PlaylistGenerationsTrackPreferencesAddMultiDataRelationshipWithResponse409ResponseBody](docs/PlaylistGenerationsTrackPreferencesAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocument](docs/PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocument.md)
  - [PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocumentMeta](docs/PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocumentMeta.md)
  - [PlaylistGenerationsTrackPreferencesAddResourceIdentifier](docs/PlaylistGenerationsTrackPreferencesAddResourceIdentifier.md)
@@ -994,15 +1222,15 @@ Class | Method | HTTP request | Description
  - [PlaylistGenerationsTrackPreferencesRelationshipRemoveOperationPayload](docs/PlaylistGenerationsTrackPreferencesRelationshipRemoveOperationPayload.md)
  - [PlaylistGenerationsTrackPreferencesRelationshipRemoveOperationPayloadData](docs/PlaylistGenerationsTrackPreferencesRelationshipRemoveOperationPayloadData.md)
  - [PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayload](docs/PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayload.md)
+ - [PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayloadMeta](docs/PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayloadMeta.md)
+ - [PlaylistGenerationsTrackPreferencesRemoveMultiDataRelationship409ResponseBody](docs/PlaylistGenerationsTrackPreferencesRemoveMultiDataRelationship409ResponseBody.md)
  - [PlaylistGenerationsTrackPreferencesResourceIdentifier](docs/PlaylistGenerationsTrackPreferencesResourceIdentifier.md)
  - [PlaylistGenerationsTrackPreferencesResourceIdentifierMeta](docs/PlaylistGenerationsTrackPreferencesResourceIdentifierMeta.md)
+ - [PlaylistGenerationsTrackPreferencesUpdateMultiDataRelationship409ResponseBody](docs/PlaylistGenerationsTrackPreferencesUpdateMultiDataRelationship409ResponseBody.md)
  - [PlaylistGenerationsTrackPreferencesUpdateMultiRelationshipDataDocument](docs/PlaylistGenerationsTrackPreferencesUpdateMultiRelationshipDataDocument.md)
  - [PlaylistGenerationsTrackPreferencesUpdateMultiRelationshipDataDocumentMeta](docs/PlaylistGenerationsTrackPreferencesUpdateMultiRelationshipDataDocumentMeta.md)
  - [PlaylistGenerationsTrackPreferencesUpdateResourceIdentifier](docs/PlaylistGenerationsTrackPreferencesUpdateResourceIdentifier.md)
  - [PlaylistGenerationsTrackPreferencesUpdateResourceIdentifierMeta](docs/PlaylistGenerationsTrackPreferencesUpdateResourceIdentifierMeta.md)
- - [PlaylistGenerationsUpdateMultiDataRelationship409ResponseBody](docs/PlaylistGenerationsUpdateMultiDataRelationship409ResponseBody.md)
- - [PlaylistsAddMultiDataRelationshipWithResponse409ResponseBody](docs/PlaylistsAddMultiDataRelationshipWithResponse409ResponseBody.md)
- - [PlaylistsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner](docs/PlaylistsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner.md)
  - [PlaylistsAttributes](docs/PlaylistsAttributes.md)
  - [PlaylistsCollaboratorProfilesMultiRelationshipDataDocument](docs/PlaylistsCollaboratorProfilesMultiRelationshipDataDocument.md)
  - [PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload](docs/PlaylistsCollaboratorProfilesRelationshipRemoveOperationPayload.md)
@@ -1016,6 +1244,8 @@ Class | Method | HTTP request | Description
  - [PlaylistsCreateOperationPayloadDataAttributes](docs/PlaylistsCreateOperationPayloadDataAttributes.md)
  - [PlaylistsCreateSingleResourceDataDocument](docs/PlaylistsCreateSingleResourceDataDocument.md)
  - [PlaylistsCuratorsMultiRelationshipDataDocument](docs/PlaylistsCuratorsMultiRelationshipDataDocument.md)
+ - [PlaylistsItemsAddMultiDataRelationshipWithResponse409ResponseBody](docs/PlaylistsItemsAddMultiDataRelationshipWithResponse409ResponseBody.md)
+ - [PlaylistsItemsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner](docs/PlaylistsItemsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner.md)
  - [PlaylistsItemsAddMultiRelationshipDataDocument](docs/PlaylistsItemsAddMultiRelationshipDataDocument.md)
  - [PlaylistsItemsAddMultiRelationshipDataDocumentMeta](docs/PlaylistsItemsAddMultiRelationshipDataDocumentMeta.md)
  - [PlaylistsItemsAddResourceIdentifier](docs/PlaylistsItemsAddResourceIdentifier.md)
@@ -1033,6 +1263,8 @@ Class | Method | HTTP request | Description
  - [PlaylistsItemsRelationshipUpdateOperationPayloadData](docs/PlaylistsItemsRelationshipUpdateOperationPayloadData.md)
  - [PlaylistsItemsRelationshipUpdateOperationPayloadDataMeta](docs/PlaylistsItemsRelationshipUpdateOperationPayloadDataMeta.md)
  - [PlaylistsItemsRelationshipUpdateOperationPayloadMeta](docs/PlaylistsItemsRelationshipUpdateOperationPayloadMeta.md)
+ - [PlaylistsItemsRelationshipUpdateOperationPayloadMetaAnyOf](docs/PlaylistsItemsRelationshipUpdateOperationPayloadMetaAnyOf.md)
+ - [PlaylistsItemsRelationshipUpdateOperationPayloadMetaAnyOf1](docs/PlaylistsItemsRelationshipUpdateOperationPayloadMetaAnyOf1.md)
  - [PlaylistsItemsResourceIdentifier](docs/PlaylistsItemsResourceIdentifier.md)
  - [PlaylistsItemsResourceIdentifierMeta](docs/PlaylistsItemsResourceIdentifierMeta.md)
  - [PlaylistsMultiResourceDataDocument](docs/PlaylistsMultiResourceDataDocument.md)
@@ -1084,8 +1316,11 @@ Class | Method | HTTP request | Description
  - [PurchasesSubjectResourceIdentifier](docs/PurchasesSubjectResourceIdentifier.md)
  - [PurchasesSubjectResourceIdentifierMeta](docs/PurchasesSubjectResourceIdentifierMeta.md)
  - [PurchasesSubjectSingleRelationshipDataDocument](docs/PurchasesSubjectSingleRelationshipDataDocument.md)
- - [Reaction](docs/Reaction.md)
- - [ReactionStats](docs/ReactionStats.md)
+ - [ReactionSummariesAttributes](docs/ReactionSummariesAttributes.md)
+ - [ReactionSummariesMultiResourceDataDocument](docs/ReactionSummariesMultiResourceDataDocument.md)
+ - [ReactionSummariesRelationships](docs/ReactionSummariesRelationships.md)
+ - [ReactionSummariesResourceObject](docs/ReactionSummariesResourceObject.md)
+ - [ReactionSummariesSubjectSingleRelationshipDataDocument](docs/ReactionSummariesSubjectSingleRelationshipDataDocument.md)
  - [ReactionsAttributes](docs/ReactionsAttributes.md)
  - [ReactionsAuthorSingleRelationshipDataDocument](docs/ReactionsAuthorSingleRelationshipDataDocument.md)
  - [ReactionsCreateOperationPayload](docs/ReactionsCreateOperationPayload.md)
@@ -1096,13 +1331,34 @@ Class | Method | HTTP request | Description
  - [ReactionsCreateOperationPayloadDataRelationshipsSubjectData](docs/ReactionsCreateOperationPayloadDataRelationshipsSubjectData.md)
  - [ReactionsCreateSingleResourceDataDocument](docs/ReactionsCreateSingleResourceDataDocument.md)
  - [ReactionsMultiResourceDataDocument](docs/ReactionsMultiResourceDataDocument.md)
- - [ReactionsMultiResourceDataDocumentMeta](docs/ReactionsMultiResourceDataDocumentMeta.md)
- - [ReactionsOwnerProfilesMultiRelationshipDataDocument](docs/ReactionsOwnerProfilesMultiRelationshipDataDocument.md)
  - [ReactionsOwnersMultiRelationshipDataDocument](docs/ReactionsOwnersMultiRelationshipDataDocument.md)
  - [ReactionsRelationships](docs/ReactionsRelationships.md)
  - [ReactionsResourceObject](docs/ReactionsResourceObject.md)
+ - [ReactionsSubjectSingleRelationshipDataDocument](docs/ReactionsSubjectSingleRelationshipDataDocument.md)
  - [ReplacementOriginalIdentifier](docs/ReplacementOriginalIdentifier.md)
  - [ReplacementProvenance](docs/ReplacementProvenance.md)
+ - [ResourceGrantsAttributes](docs/ResourceGrantsAttributes.md)
+ - [ResourceGrantsCreateOperationPayload](docs/ResourceGrantsCreateOperationPayload.md)
+ - [ResourceGrantsCreateOperationPayloadData](docs/ResourceGrantsCreateOperationPayloadData.md)
+ - [ResourceGrantsCreateOperationPayloadDataAttributes](docs/ResourceGrantsCreateOperationPayloadDataAttributes.md)
+ - [ResourceGrantsCreateOperationPayloadDataRelationships](docs/ResourceGrantsCreateOperationPayloadDataRelationships.md)
+ - [ResourceGrantsCreateSingleResourceDataDocument](docs/ResourceGrantsCreateSingleResourceDataDocument.md)
+ - [ResourceGrantsGrantee](docs/ResourceGrantsGrantee.md)
+ - [ResourceGrantsGranteeLinkage](docs/ResourceGrantsGranteeLinkage.md)
+ - [ResourceGrantsGranteeSingleRelationshipDataDocument](docs/ResourceGrantsGranteeSingleRelationshipDataDocument.md)
+ - [ResourceGrantsMultiResourceDataDocument](docs/ResourceGrantsMultiResourceDataDocument.md)
+ - [ResourceGrantsRelationships](docs/ResourceGrantsRelationships.md)
+ - [ResourceGrantsResourceObject](docs/ResourceGrantsResourceObject.md)
+ - [ResourceGrantsSingleResourceDataDocument](docs/ResourceGrantsSingleResourceDataDocument.md)
+ - [ResourceGrantsSubject](docs/ResourceGrantsSubject.md)
+ - [ResourceGrantsSubjectLinkage](docs/ResourceGrantsSubjectLinkage.md)
+ - [ResourceGrantsSubjectResourceIdentifier](docs/ResourceGrantsSubjectResourceIdentifier.md)
+ - [ResourceGrantsSubjectResourceIdentifierMeta](docs/ResourceGrantsSubjectResourceIdentifierMeta.md)
+ - [ResourceGrantsSubjectSingleRelationshipDataDocument](docs/ResourceGrantsSubjectSingleRelationshipDataDocument.md)
+ - [ResourceGrantsUpdateOperationPayload](docs/ResourceGrantsUpdateOperationPayload.md)
+ - [ResourceGrantsUpdateOperationPayloadData](docs/ResourceGrantsUpdateOperationPayloadData.md)
+ - [ResourceGrantsUpdateOperationPayloadDataAttributes](docs/ResourceGrantsUpdateOperationPayloadDataAttributes.md)
+ - [ResourceGrantsUpdateSingleResourceDataDocument](docs/ResourceGrantsUpdateSingleResourceDataDocument.md)
  - [ResourceIdentifier](docs/ResourceIdentifier.md)
  - [ResourceObjectObjectObject](docs/ResourceObjectObjectObject.md)
  - [SavedSharesAttributes](docs/SavedSharesAttributes.md)
@@ -1111,6 +1367,11 @@ Class | Method | HTTP request | Description
  - [SavedSharesCreateOperationPayloadDataRelationships](docs/SavedSharesCreateOperationPayloadDataRelationships.md)
  - [SavedSharesCreateOperationPayloadDataRelationshipsShare](docs/SavedSharesCreateOperationPayloadDataRelationshipsShare.md)
  - [SavedSharesCreateOperationPayloadDataRelationshipsShareData](docs/SavedSharesCreateOperationPayloadDataRelationshipsShareData.md)
+ - [SavedSharesCreateOperationPayloadMeta](docs/SavedSharesCreateOperationPayloadMeta.md)
+ - [SavedSharesCreateResource403ResponseBody](docs/SavedSharesCreateResource403ResponseBody.md)
+ - [SavedSharesCreateResource403ResponseBodyErrorsInner](docs/SavedSharesCreateResource403ResponseBodyErrorsInner.md)
+ - [SavedSharesCreateResource429ResponseBody](docs/SavedSharesCreateResource429ResponseBody.md)
+ - [SavedSharesCreateResource429ResponseBodyErrorsInner](docs/SavedSharesCreateResource429ResponseBodyErrorsInner.md)
  - [SavedSharesCreateSingleResourceDataDocument](docs/SavedSharesCreateSingleResourceDataDocument.md)
  - [SavedSharesResourceObject](docs/SavedSharesResourceObject.md)
  - [ScopesAttributes](docs/ScopesAttributes.md)
@@ -1122,13 +1383,9 @@ Class | Method | HTTP request | Description
  - [SearchResultsAlbumsResourceIdentifier](docs/SearchResultsAlbumsResourceIdentifier.md)
  - [SearchResultsAlbumsResourceIdentifierMeta](docs/SearchResultsAlbumsResourceIdentifierMeta.md)
  - [SearchResultsArtistsMultiRelationshipDataDocument](docs/SearchResultsArtistsMultiRelationshipDataDocument.md)
- - [SearchResultsArtistsResourceIdentifier](docs/SearchResultsArtistsResourceIdentifier.md)
- - [SearchResultsArtistsResourceIdentifierMeta](docs/SearchResultsArtistsResourceIdentifierMeta.md)
  - [SearchResultsAttributes](docs/SearchResultsAttributes.md)
  - [SearchResultsMultiResourceDataDocument](docs/SearchResultsMultiResourceDataDocument.md)
  - [SearchResultsPlaylistsMultiRelationshipDataDocument](docs/SearchResultsPlaylistsMultiRelationshipDataDocument.md)
- - [SearchResultsPlaylistsResourceIdentifier](docs/SearchResultsPlaylistsResourceIdentifier.md)
- - [SearchResultsPlaylistsResourceIdentifierMeta](docs/SearchResultsPlaylistsResourceIdentifierMeta.md)
  - [SearchResultsRelationships](docs/SearchResultsRelationships.md)
  - [SearchResultsResourceObject](docs/SearchResultsResourceObject.md)
  - [SearchResultsTopHitsMultiRelationshipDataDocument](docs/SearchResultsTopHitsMultiRelationshipDataDocument.md)
@@ -1153,6 +1410,7 @@ Class | Method | HTTP request | Description
  - [SharesAttributes](docs/SharesAttributes.md)
  - [SharesCreateOperationPayload](docs/SharesCreateOperationPayload.md)
  - [SharesCreateOperationPayloadData](docs/SharesCreateOperationPayloadData.md)
+ - [SharesCreateOperationPayloadDataAttributes](docs/SharesCreateOperationPayloadDataAttributes.md)
  - [SharesCreateOperationPayloadDataRelationships](docs/SharesCreateOperationPayloadDataRelationships.md)
  - [SharesCreateOperationPayloadDataRelationshipsSharedResources](docs/SharesCreateOperationPayloadDataRelationshipsSharedResources.md)
  - [SharesCreateOperationPayloadDataRelationshipsSharedResourcesData](docs/SharesCreateOperationPayloadDataRelationshipsSharedResourcesData.md)
@@ -1165,6 +1423,19 @@ Class | Method | HTTP request | Description
  - [SharesSharedResourcesResourceIdentifier](docs/SharesSharedResourcesResourceIdentifier.md)
  - [SharesSharedResourcesResourceIdentifierMeta](docs/SharesSharedResourcesResourceIdentifierMeta.md)
  - [SharesSingleResourceDataDocument](docs/SharesSingleResourceDataDocument.md)
+ - [SharesUpdateOperationPayload](docs/SharesUpdateOperationPayload.md)
+ - [SharesUpdateOperationPayloadData](docs/SharesUpdateOperationPayloadData.md)
+ - [SharesUpdateOperationPayloadDataAttributes](docs/SharesUpdateOperationPayloadDataAttributes.md)
+ - [SharesUpdateSingleResourceDataDocument](docs/SharesUpdateSingleResourceDataDocument.md)
+ - [SharingSummariesAttributes](docs/SharingSummariesAttributes.md)
+ - [SharingSummariesMultiResourceDataDocument](docs/SharingSummariesMultiResourceDataDocument.md)
+ - [SharingSummariesRelationships](docs/SharingSummariesRelationships.md)
+ - [SharingSummariesResourceObject](docs/SharingSummariesResourceObject.md)
+ - [SharingSummariesSubjectResourceIdentifier](docs/SharingSummariesSubjectResourceIdentifier.md)
+ - [SharingSummariesSubjectResourceIdentifierMeta](docs/SharingSummariesSubjectResourceIdentifierMeta.md)
+ - [SharingSummariesSubjectSingleRelationshipDataDocument](docs/SharingSummariesSubjectSingleRelationshipDataDocument.md)
+ - [Site](docs/Site.md)
+ - [SourceProcessing](docs/SourceProcessing.md)
  - [SquareConnectionsAttributes](docs/SquareConnectionsAttributes.md)
  - [SquareConnectionsCapability](docs/SquareConnectionsCapability.md)
  - [SquareConnectionsCreateOperationPayload](docs/SquareConnectionsCreateOperationPayload.md)
@@ -1172,22 +1443,142 @@ Class | Method | HTTP request | Description
  - [SquareConnectionsCreateOperationPayloadMeta](docs/SquareConnectionsCreateOperationPayloadMeta.md)
  - [SquareConnectionsCreateSingleResourceDataDocument](docs/SquareConnectionsCreateSingleResourceDataDocument.md)
  - [SquareConnectionsReadById403ResponseBody](docs/SquareConnectionsReadById403ResponseBody.md)
- - [SquareConnectionsReadById403ResponseBodyErrorsInner](docs/SquareConnectionsReadById403ResponseBodyErrorsInner.md)
- - [SquareConnectionsReadMultiDataRelationship403ResponseBody](docs/SquareConnectionsReadMultiDataRelationship403ResponseBody.md)
- - [SquareConnectionsReadSingleDataRelationship403ResponseBody](docs/SquareConnectionsReadSingleDataRelationship403ResponseBody.md)
  - [SquareConnectionsRelationships](docs/SquareConnectionsRelationships.md)
  - [SquareConnectionsResourceObject](docs/SquareConnectionsResourceObject.md)
+ - [SquareConnectionsSelectedSiteReadSingleDataRelationship403ResponseBody](docs/SquareConnectionsSelectedSiteReadSingleDataRelationship403ResponseBody.md)
  - [SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload](docs/SquareConnectionsSelectedSiteRelationshipUpdateOperationPayload.md)
  - [SquareConnectionsSelectedSiteRelationshipUpdateOperationPayloadData](docs/SquareConnectionsSelectedSiteRelationshipUpdateOperationPayloadData.md)
  - [SquareConnectionsSelectedSiteSingleRelationshipDataDocument](docs/SquareConnectionsSelectedSiteSingleRelationshipDataDocument.md)
  - [SquareConnectionsSelectedSiteUpdateResourceIdentifier](docs/SquareConnectionsSelectedSiteUpdateResourceIdentifier.md)
+ - [SquareConnectionsSelectedSiteUpdateSingleDataRelationship403ResponseBody](docs/SquareConnectionsSelectedSiteUpdateSingleDataRelationship403ResponseBody.md)
+ - [SquareConnectionsSelectedSiteUpdateSingleDataRelationship409ResponseBody](docs/SquareConnectionsSelectedSiteUpdateSingleDataRelationship409ResponseBody.md)
+ - [SquareConnectionsSelectedSiteUpdateSingleDataRelationship409ResponseBodyErrorsInner](docs/SquareConnectionsSelectedSiteUpdateSingleDataRelationship409ResponseBodyErrorsInner.md)
  - [SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument](docs/SquareConnectionsSelectedSiteUpdateSingleRelationshipDataDocument.md)
  - [SquareConnectionsSingleResourceDataDocument](docs/SquareConnectionsSingleResourceDataDocument.md)
  - [SquareConnectionsSitesMultiRelationshipDataDocument](docs/SquareConnectionsSitesMultiRelationshipDataDocument.md)
- - [SquareConnectionsUpdateSingleDataRelationship403ResponseBody](docs/SquareConnectionsUpdateSingleDataRelationship403ResponseBody.md)
- - [SquareConnectionsUpdateSingleDataRelationship409ResponseBody](docs/SquareConnectionsUpdateSingleDataRelationship409ResponseBody.md)
- - [SquareConnectionsUpdateSingleDataRelationship409ResponseBodyErrorsInner](docs/SquareConnectionsUpdateSingleDataRelationship409ResponseBodyErrorsInner.md)
+ - [SquareConnectionsSitesReadMultiDataRelationship403ResponseBody](docs/SquareConnectionsSitesReadMultiDataRelationship403ResponseBody.md)
+ - [SquareItemVariationPhysicalCountsAttributes](docs/SquareItemVariationPhysicalCountsAttributes.md)
+ - [SquareItemVariationPhysicalCountsCreateOperationPayload](docs/SquareItemVariationPhysicalCountsCreateOperationPayload.md)
+ - [SquareItemVariationPhysicalCountsCreateOperationPayloadData](docs/SquareItemVariationPhysicalCountsCreateOperationPayloadData.md)
+ - [SquareItemVariationPhysicalCountsCreateOperationPayloadDataAttributes](docs/SquareItemVariationPhysicalCountsCreateOperationPayloadDataAttributes.md)
+ - [SquareItemVariationPhysicalCountsCreateOperationPayloadDataRelationships](docs/SquareItemVariationPhysicalCountsCreateOperationPayloadDataRelationships.md)
+ - [SquareItemVariationPhysicalCountsCreateOperationPayloadDataRelationshipsVariations](docs/SquareItemVariationPhysicalCountsCreateOperationPayloadDataRelationshipsVariations.md)
+ - [SquareItemVariationPhysicalCountsCreateResource403ResponseBody](docs/SquareItemVariationPhysicalCountsCreateResource403ResponseBody.md)
+ - [SquareItemVariationPhysicalCountsCreateResource409ResponseBody](docs/SquareItemVariationPhysicalCountsCreateResource409ResponseBody.md)
+ - [SquareItemVariationPhysicalCountsCreateResource409ResponseBodyErrorsInner](docs/SquareItemVariationPhysicalCountsCreateResource409ResponseBodyErrorsInner.md)
+ - [SquareItemVariationPhysicalCountsCreateSingleResourceDataDocument](docs/SquareItemVariationPhysicalCountsCreateSingleResourceDataDocument.md)
+ - [SquareItemVariationPhysicalCountsResourceObject](docs/SquareItemVariationPhysicalCountsResourceObject.md)
+ - [SquareItemVariationsArtworksMultiRelationshipDataDocument](docs/SquareItemVariationsArtworksMultiRelationshipDataDocument.md)
+ - [SquareItemVariationsArtworksMultiRelationshipDataDocumentMeta](docs/SquareItemVariationsArtworksMultiRelationshipDataDocumentMeta.md)
+ - [SquareItemVariationsArtworksReadMultiDataRelationship403ResponseBody](docs/SquareItemVariationsArtworksReadMultiDataRelationship403ResponseBody.md)
+ - [SquareItemVariationsArtworksReadMultiDataRelationship409ResponseBody](docs/SquareItemVariationsArtworksReadMultiDataRelationship409ResponseBody.md)
+ - [SquareItemVariationsArtworksReadMultiDataRelationship409ResponseBodyErrorsInner](docs/SquareItemVariationsArtworksReadMultiDataRelationship409ResponseBodyErrorsInner.md)
+ - [SquareItemVariationsArtworksRelationshipUpdateOperationPayload](docs/SquareItemVariationsArtworksRelationshipUpdateOperationPayload.md)
+ - [SquareItemVariationsArtworksRelationshipUpdateOperationPayloadMeta](docs/SquareItemVariationsArtworksRelationshipUpdateOperationPayloadMeta.md)
+ - [SquareItemVariationsArtworksUpdateMultiDataRelationship403ResponseBody](docs/SquareItemVariationsArtworksUpdateMultiDataRelationship403ResponseBody.md)
+ - [SquareItemVariationsArtworksUpdateMultiDataRelationship409ResponseBody](docs/SquareItemVariationsArtworksUpdateMultiDataRelationship409ResponseBody.md)
+ - [SquareItemVariationsArtworksUpdateMultiDataRelationship409ResponseBodyErrorsInner](docs/SquareItemVariationsArtworksUpdateMultiDataRelationship409ResponseBodyErrorsInner.md)
+ - [SquareItemVariationsArtworksUpdateMultiDataRelationship413ResponseBody](docs/SquareItemVariationsArtworksUpdateMultiDataRelationship413ResponseBody.md)
+ - [SquareItemVariationsArtworksUpdateMultiDataRelationship413ResponseBodyErrorsInner](docs/SquareItemVariationsArtworksUpdateMultiDataRelationship413ResponseBodyErrorsInner.md)
+ - [SquareItemVariationsArtworksUpdateMultiRelationshipDataDocument](docs/SquareItemVariationsArtworksUpdateMultiRelationshipDataDocument.md)
+ - [SquareItemVariationsArtworksUpdateMultiRelationshipDataDocumentMeta](docs/SquareItemVariationsArtworksUpdateMultiRelationshipDataDocumentMeta.md)
+ - [SquareItemVariationsArtworksUpdateResourceIdentifier](docs/SquareItemVariationsArtworksUpdateResourceIdentifier.md)
+ - [SquareItemVariationsAttributes](docs/SquareItemVariationsAttributes.md)
+ - [SquareItemVariationsCreateOperationPayload](docs/SquareItemVariationsCreateOperationPayload.md)
+ - [SquareItemVariationsCreateOperationPayloadData](docs/SquareItemVariationsCreateOperationPayloadData.md)
+ - [SquareItemVariationsCreateOperationPayloadDataAttributes](docs/SquareItemVariationsCreateOperationPayloadDataAttributes.md)
+ - [SquareItemVariationsCreateOperationPayloadDataRelationships](docs/SquareItemVariationsCreateOperationPayloadDataRelationships.md)
+ - [SquareItemVariationsCreateOperationPayloadDataRelationshipsItems](docs/SquareItemVariationsCreateOperationPayloadDataRelationshipsItems.md)
+ - [SquareItemVariationsCreateOperationPayloadLocal](docs/SquareItemVariationsCreateOperationPayloadLocal.md)
+ - [SquareItemVariationsCreateOperationPayloadLocalData](docs/SquareItemVariationsCreateOperationPayloadLocalData.md)
+ - [SquareItemVariationsCreateOperationPayloadLocalDataRelationships](docs/SquareItemVariationsCreateOperationPayloadLocalDataRelationships.md)
+ - [SquareItemVariationsCreateOperationPayloadLocalDataRelationshipsItems](docs/SquareItemVariationsCreateOperationPayloadLocalDataRelationshipsItems.md)
+ - [SquareItemVariationsCreateOperationPayloadLocalItem](docs/SquareItemVariationsCreateOperationPayloadLocalItem.md)
+ - [SquareItemVariationsCreateResource403ResponseBody](docs/SquareItemVariationsCreateResource403ResponseBody.md)
+ - [SquareItemVariationsCreateResource409ResponseBody](docs/SquareItemVariationsCreateResource409ResponseBody.md)
+ - [SquareItemVariationsCreateResource409ResponseBodyErrorsInner](docs/SquareItemVariationsCreateResource409ResponseBodyErrorsInner.md)
+ - [SquareItemVariationsCreateSingleResourceDataDocument](docs/SquareItemVariationsCreateSingleResourceDataDocument.md)
+ - [SquareItemVariationsCreateSingleResourceDataDocumentMeta](docs/SquareItemVariationsCreateSingleResourceDataDocumentMeta.md)
+ - [SquareItemVariationsDeleteResource403ResponseBody](docs/SquareItemVariationsDeleteResource403ResponseBody.md)
+ - [SquareItemVariationsDeleteResource409ResponseBody](docs/SquareItemVariationsDeleteResource409ResponseBody.md)
+ - [SquareItemVariationsDeleteResource409ResponseBodyErrorsInner](docs/SquareItemVariationsDeleteResource409ResponseBodyErrorsInner.md)
+ - [SquareItemVariationsExpectedItemRevision](docs/SquareItemVariationsExpectedItemRevision.md)
+ - [SquareItemVariationsOwnersMultiRelationshipDataDocument](docs/SquareItemVariationsOwnersMultiRelationshipDataDocument.md)
+ - [SquareItemVariationsReadById403ResponseBody](docs/SquareItemVariationsReadById403ResponseBody.md)
+ - [SquareItemVariationsReadById409ResponseBody](docs/SquareItemVariationsReadById409ResponseBody.md)
+ - [SquareItemVariationsReadById409ResponseBodyErrorsInner](docs/SquareItemVariationsReadById409ResponseBodyErrorsInner.md)
+ - [SquareItemVariationsRelationships](docs/SquareItemVariationsRelationships.md)
+ - [SquareItemVariationsResourceObject](docs/SquareItemVariationsResourceObject.md)
+ - [SquareItemVariationsSingleResourceDataDocument](docs/SquareItemVariationsSingleResourceDataDocument.md)
+ - [SquareItemVariationsUpdateOperationPayload](docs/SquareItemVariationsUpdateOperationPayload.md)
+ - [SquareItemVariationsUpdateOperationPayloadData](docs/SquareItemVariationsUpdateOperationPayloadData.md)
+ - [SquareItemVariationsUpdateOperationPayloadDataAttributes](docs/SquareItemVariationsUpdateOperationPayloadDataAttributes.md)
+ - [SquareItemVariationsUpdateOperationPayloadMeta](docs/SquareItemVariationsUpdateOperationPayloadMeta.md)
+ - [SquareItemVariationsUpdateResource403ResponseBody](docs/SquareItemVariationsUpdateResource403ResponseBody.md)
+ - [SquareItemVariationsUpdateResource409ResponseBody](docs/SquareItemVariationsUpdateResource409ResponseBody.md)
+ - [SquareItemVariationsUpdateResource409ResponseBodyErrorsInner](docs/SquareItemVariationsUpdateResource409ResponseBodyErrorsInner.md)
+ - [SquareItemVariationsUpdateSingleResourceDataDocument](docs/SquareItemVariationsUpdateSingleResourceDataDocument.md)
+ - [SquareItemsArtworksMultiRelationshipDataDocument](docs/SquareItemsArtworksMultiRelationshipDataDocument.md)
+ - [SquareItemsArtworksReadMultiDataRelationship409ResponseBody](docs/SquareItemsArtworksReadMultiDataRelationship409ResponseBody.md)
+ - [SquareItemsArtworksRelationshipUpdateOperationPayload](docs/SquareItemsArtworksRelationshipUpdateOperationPayload.md)
+ - [SquareItemsArtworksRelationshipUpdateOperationPayloadMeta](docs/SquareItemsArtworksRelationshipUpdateOperationPayloadMeta.md)
+ - [SquareItemsArtworksUpdateMultiDataRelationship403ResponseBody](docs/SquareItemsArtworksUpdateMultiDataRelationship403ResponseBody.md)
+ - [SquareItemsArtworksUpdateMultiDataRelationship409ResponseBody](docs/SquareItemsArtworksUpdateMultiDataRelationship409ResponseBody.md)
+ - [SquareItemsArtworksUpdateMultiDataRelationship409ResponseBodyErrorsInner](docs/SquareItemsArtworksUpdateMultiDataRelationship409ResponseBodyErrorsInner.md)
+ - [SquareItemsArtworksUpdateMultiDataRelationship413ResponseBody](docs/SquareItemsArtworksUpdateMultiDataRelationship413ResponseBody.md)
+ - [SquareItemsArtworksUpdateMultiRelationshipDataDocument](docs/SquareItemsArtworksUpdateMultiRelationshipDataDocument.md)
+ - [SquareItemsArtworksUpdateMultiRelationshipDataDocumentMeta](docs/SquareItemsArtworksUpdateMultiRelationshipDataDocumentMeta.md)
+ - [SquareItemsArtworksUpdateResourceIdentifier](docs/SquareItemsArtworksUpdateResourceIdentifier.md)
+ - [SquareItemsAttributes](docs/SquareItemsAttributes.md)
+ - [SquareItemsCreateOperationPayload](docs/SquareItemsCreateOperationPayload.md)
+ - [SquareItemsCreateOperationPayloadData](docs/SquareItemsCreateOperationPayloadData.md)
+ - [SquareItemsCreateOperationPayloadDataAttributes](docs/SquareItemsCreateOperationPayloadDataAttributes.md)
+ - [SquareItemsCreateOperationPayloadDataRelationships](docs/SquareItemsCreateOperationPayloadDataRelationships.md)
+ - [SquareItemsCreateOperationPayloadDataRelationshipsSites](docs/SquareItemsCreateOperationPayloadDataRelationshipsSites.md)
+ - [SquareItemsDeleteResource403ResponseBody](docs/SquareItemsDeleteResource403ResponseBody.md)
+ - [SquareItemsDeleteResource409ResponseBody](docs/SquareItemsDeleteResource409ResponseBody.md)
+ - [SquareItemsDeleteResource409ResponseBodyErrorsInner](docs/SquareItemsDeleteResource409ResponseBodyErrorsInner.md)
+ - [SquareItemsMultiResourceDataDocument](docs/SquareItemsMultiResourceDataDocument.md)
+ - [SquareItemsOwnersMultiRelationshipDataDocument](docs/SquareItemsOwnersMultiRelationshipDataDocument.md)
+ - [SquareItemsReadByFilter403ResponseBody](docs/SquareItemsReadByFilter403ResponseBody.md)
+ - [SquareItemsReadByFilter409ResponseBody](docs/SquareItemsReadByFilter409ResponseBody.md)
+ - [SquareItemsReadById403ResponseBody](docs/SquareItemsReadById403ResponseBody.md)
+ - [SquareItemsReadById409ResponseBody](docs/SquareItemsReadById409ResponseBody.md)
+ - [SquareItemsRelationships](docs/SquareItemsRelationships.md)
+ - [SquareItemsResourceObject](docs/SquareItemsResourceObject.md)
+ - [SquareItemsSingleResourceDataDocument](docs/SquareItemsSingleResourceDataDocument.md)
+ - [SquareItemsUpdateOperationPayload](docs/SquareItemsUpdateOperationPayload.md)
+ - [SquareItemsUpdateOperationPayloadData](docs/SquareItemsUpdateOperationPayloadData.md)
+ - [SquareItemsUpdateOperationPayloadDataAttributes](docs/SquareItemsUpdateOperationPayloadDataAttributes.md)
+ - [SquareItemsUpdateOperationPayloadMeta](docs/SquareItemsUpdateOperationPayloadMeta.md)
+ - [SquareItemsUpdateResource403ResponseBody](docs/SquareItemsUpdateResource403ResponseBody.md)
+ - [SquareItemsUpdateResource409ResponseBody](docs/SquareItemsUpdateResource409ResponseBody.md)
+ - [SquareItemsUpdateSingleResourceDataDocument](docs/SquareItemsUpdateSingleResourceDataDocument.md)
+ - [SquareItemsVariationsMultiRelationshipDataDocument](docs/SquareItemsVariationsMultiRelationshipDataDocument.md)
+ - [SquareItemsVariationsReadMultiDataRelationship403ResponseBody](docs/SquareItemsVariationsReadMultiDataRelationship403ResponseBody.md)
+ - [SquareItemsVariationsReadMultiDataRelationship409ResponseBody](docs/SquareItemsVariationsReadMultiDataRelationship409ResponseBody.md)
+ - [SquareItemsVariationsRelationshipUpdateOperationPayload](docs/SquareItemsVariationsRelationshipUpdateOperationPayload.md)
+ - [SquareItemsVariationsRelationshipUpdateOperationPayloadMeta](docs/SquareItemsVariationsRelationshipUpdateOperationPayloadMeta.md)
+ - [SquareItemsVariationsUpdateMultiDataRelationship403ResponseBody](docs/SquareItemsVariationsUpdateMultiDataRelationship403ResponseBody.md)
+ - [SquareItemsVariationsUpdateMultiDataRelationship409ResponseBody](docs/SquareItemsVariationsUpdateMultiDataRelationship409ResponseBody.md)
+ - [SquareItemsVariationsUpdateMultiRelationshipDataDocument](docs/SquareItemsVariationsUpdateMultiRelationshipDataDocument.md)
+ - [SquareItemsVariationsUpdateMultiRelationshipDataDocumentMeta](docs/SquareItemsVariationsUpdateMultiRelationshipDataDocumentMeta.md)
+ - [SquareItemsVariationsUpdateResourceIdentifier](docs/SquareItemsVariationsUpdateResourceIdentifier.md)
  - [SquareSitesAttributes](docs/SquareSitesAttributes.md)
+ - [SquareSitesItemsAddMultiDataRelationship403ResponseBody](docs/SquareSitesItemsAddMultiDataRelationship403ResponseBody.md)
+ - [SquareSitesItemsAddMultiDataRelationship409ResponseBody](docs/SquareSitesItemsAddMultiDataRelationship409ResponseBody.md)
+ - [SquareSitesItemsAddMultiDataRelationship409ResponseBodyErrorsInner](docs/SquareSitesItemsAddMultiDataRelationship409ResponseBodyErrorsInner.md)
+ - [SquareSitesItemsMultiRelationshipDataDocument](docs/SquareSitesItemsMultiRelationshipDataDocument.md)
+ - [SquareSitesItemsReadMultiDataRelationship403ResponseBody](docs/SquareSitesItemsReadMultiDataRelationship403ResponseBody.md)
+ - [SquareSitesItemsReadMultiDataRelationship409ResponseBody](docs/SquareSitesItemsReadMultiDataRelationship409ResponseBody.md)
+ - [SquareSitesItemsReadMultiDataRelationship409ResponseBodyErrorsInner](docs/SquareSitesItemsReadMultiDataRelationship409ResponseBodyErrorsInner.md)
+ - [SquareSitesItemsRelationshipAddOperationPayload](docs/SquareSitesItemsRelationshipAddOperationPayload.md)
+ - [SquareSitesItemsRelationshipAddOperationPayloadData](docs/SquareSitesItemsRelationshipAddOperationPayloadData.md)
+ - [SquareSitesItemsRelationshipRemoveOperationPayload](docs/SquareSitesItemsRelationshipRemoveOperationPayload.md)
+ - [SquareSitesItemsRelationshipRemoveOperationPayloadData](docs/SquareSitesItemsRelationshipRemoveOperationPayloadData.md)
+ - [SquareSitesItemsRemoveMultiDataRelationship403ResponseBody](docs/SquareSitesItemsRemoveMultiDataRelationship403ResponseBody.md)
+ - [SquareSitesItemsRemoveMultiDataRelationship409ResponseBody](docs/SquareSitesItemsRemoveMultiDataRelationship409ResponseBody.md)
+ - [SquareSitesRelationships](docs/SquareSitesRelationships.md)
  - [SquareSitesResourceObject](docs/SquareSitesResourceObject.md)
  - [StripeConnectionsAttributes](docs/StripeConnectionsAttributes.md)
  - [StripeConnectionsCreateOperationPayload](docs/StripeConnectionsCreateOperationPayload.md)
@@ -1248,6 +1639,7 @@ Class | Method | HTTP request | Description
  - [TrackManifestsResourceObject](docs/TrackManifestsResourceObject.md)
  - [TrackManifestsSingleResourceDataDocument](docs/TrackManifestsSingleResourceDataDocument.md)
  - [TrackSourceFilesAttributes](docs/TrackSourceFilesAttributes.md)
+ - [TrackSourceFilesCommentSummarySingleRelationshipDataDocument](docs/TrackSourceFilesCommentSummarySingleRelationshipDataDocument.md)
  - [TrackSourceFilesCreateOperationPayload](docs/TrackSourceFilesCreateOperationPayload.md)
  - [TrackSourceFilesCreateOperationPayloadData](docs/TrackSourceFilesCreateOperationPayloadData.md)
  - [TrackSourceFilesCreateOperationPayloadDataAttributes](docs/TrackSourceFilesCreateOperationPayloadDataAttributes.md)
@@ -1256,6 +1648,7 @@ Class | Method | HTTP request | Description
  - [TrackSourceFilesCreateOperationPayloadDataRelationshipsTrackData](docs/TrackSourceFilesCreateOperationPayloadDataRelationshipsTrackData.md)
  - [TrackSourceFilesCreateSingleResourceDataDocument](docs/TrackSourceFilesCreateSingleResourceDataDocument.md)
  - [TrackSourceFilesOwnersMultiRelationshipDataDocument](docs/TrackSourceFilesOwnersMultiRelationshipDataDocument.md)
+ - [TrackSourceFilesReactionSummarySingleRelationshipDataDocument](docs/TrackSourceFilesReactionSummarySingleRelationshipDataDocument.md)
  - [TrackSourceFilesRelationships](docs/TrackSourceFilesRelationships.md)
  - [TrackSourceFilesResourceObject](docs/TrackSourceFilesResourceObject.md)
  - [TrackSourceFilesSingleResourceDataDocument](docs/TrackSourceFilesSingleResourceDataDocument.md)
@@ -1270,6 +1663,8 @@ Class | Method | HTTP request | Description
  - [TracksAlbumsResourceIdentifier](docs/TracksAlbumsResourceIdentifier.md)
  - [TracksAlbumsResourceIdentifierMeta](docs/TracksAlbumsResourceIdentifierMeta.md)
  - [TracksArtistsMultiRelationshipDataDocument](docs/TracksArtistsMultiRelationshipDataDocument.md)
+ - [TracksArtistsRelationshipUpdateOperationPayload](docs/TracksArtistsRelationshipUpdateOperationPayload.md)
+ - [TracksArtistsRelationshipUpdateOperationPayloadData](docs/TracksArtistsRelationshipUpdateOperationPayloadData.md)
  - [TracksAttributes](docs/TracksAttributes.md)
  - [TracksCreateOperationPayload](docs/TracksCreateOperationPayload.md)
  - [TracksCreateOperationPayloadData](docs/TracksCreateOperationPayloadData.md)
@@ -1324,18 +1719,22 @@ Class | Method | HTTP request | Description
  - [UsageRulesCreateOperationPayloadDataRelationships](docs/UsageRulesCreateOperationPayloadDataRelationships.md)
  - [UsageRulesCreateOperationPayloadDataRelationshipsSubject](docs/UsageRulesCreateOperationPayloadDataRelationshipsSubject.md)
  - [UsageRulesCreateOperationPayloadSubject](docs/UsageRulesCreateOperationPayloadSubject.md)
+ - [UsageRulesCreateResource403ResponseBody](docs/UsageRulesCreateResource403ResponseBody.md)
+ - [UsageRulesCreateResource403ResponseBodyErrorsInner](docs/UsageRulesCreateResource403ResponseBodyErrorsInner.md)
  - [UsageRulesCreateSingleResourceDataDocument](docs/UsageRulesCreateSingleResourceDataDocument.md)
  - [UsageRulesResourceObject](docs/UsageRulesResourceObject.md)
  - [UsageRulesSingleResourceDataDocument](docs/UsageRulesSingleResourceDataDocument.md)
  - [UserCollection](docs/UserCollection.md)
- - [UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBody.md)
- - [UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner](docs/UserCollectionAlbumsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner.md)
  - [UserCollectionAlbumsAttributes](docs/UserCollectionAlbumsAttributes.md)
+ - [UserCollectionAlbumsItemsAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionAlbumsItemsAddMultiDataRelationshipWithResponse409ResponseBody.md)
+ - [UserCollectionAlbumsItemsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner](docs/UserCollectionAlbumsItemsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner.md)
  - [UserCollectionAlbumsItemsAddMultiRelationshipDataDocument](docs/UserCollectionAlbumsItemsAddMultiRelationshipDataDocument.md)
  - [UserCollectionAlbumsItemsAddMultiRelationshipDataDocumentMeta](docs/UserCollectionAlbumsItemsAddMultiRelationshipDataDocumentMeta.md)
  - [UserCollectionAlbumsItemsAddResourceIdentifier](docs/UserCollectionAlbumsItemsAddResourceIdentifier.md)
  - [UserCollectionAlbumsItemsAddResourceIdentifierMeta](docs/UserCollectionAlbumsItemsAddResourceIdentifierMeta.md)
  - [UserCollectionAlbumsItemsMultiRelationshipDataDocument](docs/UserCollectionAlbumsItemsMultiRelationshipDataDocument.md)
+ - [UserCollectionAlbumsItemsReadMultiDataRelationship403ResponseBody](docs/UserCollectionAlbumsItemsReadMultiDataRelationship403ResponseBody.md)
+ - [UserCollectionAlbumsItemsReadMultiDataRelationship403ResponseBodyErrorsInner](docs/UserCollectionAlbumsItemsReadMultiDataRelationship403ResponseBodyErrorsInner.md)
  - [UserCollectionAlbumsItemsRelationshipAddOperationPayload](docs/UserCollectionAlbumsItemsRelationshipAddOperationPayload.md)
  - [UserCollectionAlbumsItemsRelationshipAddOperationPayloadData](docs/UserCollectionAlbumsItemsRelationshipAddOperationPayloadData.md)
  - [UserCollectionAlbumsItemsRelationshipAddOperationPayloadDataMeta](docs/UserCollectionAlbumsItemsRelationshipAddOperationPayloadDataMeta.md)
@@ -1345,18 +1744,17 @@ Class | Method | HTTP request | Description
  - [UserCollectionAlbumsItemsResourceIdentifier](docs/UserCollectionAlbumsItemsResourceIdentifier.md)
  - [UserCollectionAlbumsItemsResourceIdentifierMeta](docs/UserCollectionAlbumsItemsResourceIdentifierMeta.md)
  - [UserCollectionAlbumsOwnersMultiRelationshipDataDocument](docs/UserCollectionAlbumsOwnersMultiRelationshipDataDocument.md)
- - [UserCollectionAlbumsReadMultiDataRelationship403ResponseBody](docs/UserCollectionAlbumsReadMultiDataRelationship403ResponseBody.md)
- - [UserCollectionAlbumsReadMultiDataRelationship403ResponseBodyErrorsInner](docs/UserCollectionAlbumsReadMultiDataRelationship403ResponseBodyErrorsInner.md)
  - [UserCollectionAlbumsRelationships](docs/UserCollectionAlbumsRelationships.md)
  - [UserCollectionAlbumsResourceObject](docs/UserCollectionAlbumsResourceObject.md)
  - [UserCollectionAlbumsSingleResourceDataDocument](docs/UserCollectionAlbumsSingleResourceDataDocument.md)
- - [UserCollectionArtistsAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionArtistsAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserCollectionArtistsAttributes](docs/UserCollectionArtistsAttributes.md)
+ - [UserCollectionArtistsItemsAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionArtistsItemsAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserCollectionArtistsItemsAddMultiRelationshipDataDocument](docs/UserCollectionArtistsItemsAddMultiRelationshipDataDocument.md)
  - [UserCollectionArtistsItemsAddMultiRelationshipDataDocumentMeta](docs/UserCollectionArtistsItemsAddMultiRelationshipDataDocumentMeta.md)
  - [UserCollectionArtistsItemsAddResourceIdentifier](docs/UserCollectionArtistsItemsAddResourceIdentifier.md)
  - [UserCollectionArtistsItemsAddResourceIdentifierMeta](docs/UserCollectionArtistsItemsAddResourceIdentifierMeta.md)
  - [UserCollectionArtistsItemsMultiRelationshipDataDocument](docs/UserCollectionArtistsItemsMultiRelationshipDataDocument.md)
+ - [UserCollectionArtistsItemsReadMultiDataRelationship403ResponseBody](docs/UserCollectionArtistsItemsReadMultiDataRelationship403ResponseBody.md)
  - [UserCollectionArtistsItemsRelationshipAddOperationPayload](docs/UserCollectionArtistsItemsRelationshipAddOperationPayload.md)
  - [UserCollectionArtistsItemsRelationshipAddOperationPayloadData](docs/UserCollectionArtistsItemsRelationshipAddOperationPayloadData.md)
  - [UserCollectionArtistsItemsRelationshipAddOperationPayloadDataMeta](docs/UserCollectionArtistsItemsRelationshipAddOperationPayloadDataMeta.md)
@@ -1366,7 +1764,6 @@ Class | Method | HTTP request | Description
  - [UserCollectionArtistsItemsResourceIdentifier](docs/UserCollectionArtistsItemsResourceIdentifier.md)
  - [UserCollectionArtistsItemsResourceIdentifierMeta](docs/UserCollectionArtistsItemsResourceIdentifierMeta.md)
  - [UserCollectionArtistsOwnersMultiRelationshipDataDocument](docs/UserCollectionArtistsOwnersMultiRelationshipDataDocument.md)
- - [UserCollectionArtistsReadMultiDataRelationship403ResponseBody](docs/UserCollectionArtistsReadMultiDataRelationship403ResponseBody.md)
  - [UserCollectionArtistsRelationships](docs/UserCollectionArtistsRelationships.md)
  - [UserCollectionArtistsResourceObject](docs/UserCollectionArtistsResourceObject.md)
  - [UserCollectionArtistsSingleResourceDataDocument](docs/UserCollectionArtistsSingleResourceDataDocument.md)
@@ -1395,13 +1792,14 @@ Class | Method | HTTP request | Description
  - [UserCollectionFoldersUpdateOperationPayloadData](docs/UserCollectionFoldersUpdateOperationPayloadData.md)
  - [UserCollectionFoldersUpdateOperationPayloadDataAttributes](docs/UserCollectionFoldersUpdateOperationPayloadDataAttributes.md)
  - [UserCollectionFoldersUserCollectionSingleRelationshipDataDocument](docs/UserCollectionFoldersUserCollectionSingleRelationshipDataDocument.md)
- - [UserCollectionPlaylistsAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionPlaylistsAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserCollectionPlaylistsAttributes](docs/UserCollectionPlaylistsAttributes.md)
+ - [UserCollectionPlaylistsItemsAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionPlaylistsItemsAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument](docs/UserCollectionPlaylistsItemsAddMultiRelationshipDataDocument.md)
  - [UserCollectionPlaylistsItemsAddMultiRelationshipDataDocumentMeta](docs/UserCollectionPlaylistsItemsAddMultiRelationshipDataDocumentMeta.md)
  - [UserCollectionPlaylistsItemsAddResourceIdentifier](docs/UserCollectionPlaylistsItemsAddResourceIdentifier.md)
  - [UserCollectionPlaylistsItemsAddResourceIdentifierMeta](docs/UserCollectionPlaylistsItemsAddResourceIdentifierMeta.md)
  - [UserCollectionPlaylistsItemsMultiRelationshipDataDocument](docs/UserCollectionPlaylistsItemsMultiRelationshipDataDocument.md)
+ - [UserCollectionPlaylistsItemsReadMultiDataRelationship403ResponseBody](docs/UserCollectionPlaylistsItemsReadMultiDataRelationship403ResponseBody.md)
  - [UserCollectionPlaylistsItemsRelationshipAddOperationPayload](docs/UserCollectionPlaylistsItemsRelationshipAddOperationPayload.md)
  - [UserCollectionPlaylistsItemsRelationshipAddOperationPayloadData](docs/UserCollectionPlaylistsItemsRelationshipAddOperationPayloadData.md)
  - [UserCollectionPlaylistsItemsRelationshipAddOperationPayloadDataMeta](docs/UserCollectionPlaylistsItemsRelationshipAddOperationPayloadDataMeta.md)
@@ -1411,12 +1809,11 @@ Class | Method | HTTP request | Description
  - [UserCollectionPlaylistsItemsResourceIdentifier](docs/UserCollectionPlaylistsItemsResourceIdentifier.md)
  - [UserCollectionPlaylistsItemsResourceIdentifierMeta](docs/UserCollectionPlaylistsItemsResourceIdentifierMeta.md)
  - [UserCollectionPlaylistsOwnersMultiRelationshipDataDocument](docs/UserCollectionPlaylistsOwnersMultiRelationshipDataDocument.md)
- - [UserCollectionPlaylistsReadMultiDataRelationship403ResponseBody](docs/UserCollectionPlaylistsReadMultiDataRelationship403ResponseBody.md)
  - [UserCollectionPlaylistsRelationships](docs/UserCollectionPlaylistsRelationships.md)
  - [UserCollectionPlaylistsResourceObject](docs/UserCollectionPlaylistsResourceObject.md)
  - [UserCollectionPlaylistsSingleResourceDataDocument](docs/UserCollectionPlaylistsSingleResourceDataDocument.md)
- - [UserCollectionSaveForLatersAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionSaveForLatersAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserCollectionSaveForLatersAttributes](docs/UserCollectionSaveForLatersAttributes.md)
+ - [UserCollectionSaveForLatersItemsAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionSaveForLatersItemsAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument](docs/UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocument.md)
  - [UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocumentMeta](docs/UserCollectionSaveForLatersItemsAddMultiRelationshipDataDocumentMeta.md)
  - [UserCollectionSaveForLatersItemsAddResourceIdentifier](docs/UserCollectionSaveForLatersItemsAddResourceIdentifier.md)
@@ -1433,13 +1830,14 @@ Class | Method | HTTP request | Description
  - [UserCollectionSaveForLatersRelationships](docs/UserCollectionSaveForLatersRelationships.md)
  - [UserCollectionSaveForLatersResourceObject](docs/UserCollectionSaveForLatersResourceObject.md)
  - [UserCollectionSaveForLatersSingleResourceDataDocument](docs/UserCollectionSaveForLatersSingleResourceDataDocument.md)
- - [UserCollectionTracksAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionTracksAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserCollectionTracksAttributes](docs/UserCollectionTracksAttributes.md)
+ - [UserCollectionTracksItemsAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionTracksItemsAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserCollectionTracksItemsAddMultiRelationshipDataDocument](docs/UserCollectionTracksItemsAddMultiRelationshipDataDocument.md)
  - [UserCollectionTracksItemsAddMultiRelationshipDataDocumentMeta](docs/UserCollectionTracksItemsAddMultiRelationshipDataDocumentMeta.md)
  - [UserCollectionTracksItemsAddResourceIdentifier](docs/UserCollectionTracksItemsAddResourceIdentifier.md)
  - [UserCollectionTracksItemsAddResourceIdentifierMeta](docs/UserCollectionTracksItemsAddResourceIdentifierMeta.md)
  - [UserCollectionTracksItemsMultiRelationshipDataDocument](docs/UserCollectionTracksItemsMultiRelationshipDataDocument.md)
+ - [UserCollectionTracksItemsReadMultiDataRelationship403ResponseBody](docs/UserCollectionTracksItemsReadMultiDataRelationship403ResponseBody.md)
  - [UserCollectionTracksItemsRelationshipAddOperationPayload](docs/UserCollectionTracksItemsRelationshipAddOperationPayload.md)
  - [UserCollectionTracksItemsRelationshipAddOperationPayloadData](docs/UserCollectionTracksItemsRelationshipAddOperationPayloadData.md)
  - [UserCollectionTracksItemsRelationshipAddOperationPayloadDataMeta](docs/UserCollectionTracksItemsRelationshipAddOperationPayloadDataMeta.md)
@@ -1449,17 +1847,17 @@ Class | Method | HTTP request | Description
  - [UserCollectionTracksItemsResourceIdentifier](docs/UserCollectionTracksItemsResourceIdentifier.md)
  - [UserCollectionTracksItemsResourceIdentifierMeta](docs/UserCollectionTracksItemsResourceIdentifierMeta.md)
  - [UserCollectionTracksOwnersMultiRelationshipDataDocument](docs/UserCollectionTracksOwnersMultiRelationshipDataDocument.md)
- - [UserCollectionTracksReadMultiDataRelationship403ResponseBody](docs/UserCollectionTracksReadMultiDataRelationship403ResponseBody.md)
  - [UserCollectionTracksRelationships](docs/UserCollectionTracksRelationships.md)
  - [UserCollectionTracksResourceObject](docs/UserCollectionTracksResourceObject.md)
  - [UserCollectionTracksSingleResourceDataDocument](docs/UserCollectionTracksSingleResourceDataDocument.md)
- - [UserCollectionVideosAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionVideosAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserCollectionVideosAttributes](docs/UserCollectionVideosAttributes.md)
+ - [UserCollectionVideosItemsAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserCollectionVideosItemsAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserCollectionVideosItemsAddMultiRelationshipDataDocument](docs/UserCollectionVideosItemsAddMultiRelationshipDataDocument.md)
  - [UserCollectionVideosItemsAddMultiRelationshipDataDocumentMeta](docs/UserCollectionVideosItemsAddMultiRelationshipDataDocumentMeta.md)
  - [UserCollectionVideosItemsAddResourceIdentifier](docs/UserCollectionVideosItemsAddResourceIdentifier.md)
  - [UserCollectionVideosItemsAddResourceIdentifierMeta](docs/UserCollectionVideosItemsAddResourceIdentifierMeta.md)
  - [UserCollectionVideosItemsMultiRelationshipDataDocument](docs/UserCollectionVideosItemsMultiRelationshipDataDocument.md)
+ - [UserCollectionVideosItemsReadMultiDataRelationship403ResponseBody](docs/UserCollectionVideosItemsReadMultiDataRelationship403ResponseBody.md)
  - [UserCollectionVideosItemsRelationshipAddOperationPayload](docs/UserCollectionVideosItemsRelationshipAddOperationPayload.md)
  - [UserCollectionVideosItemsRelationshipAddOperationPayloadData](docs/UserCollectionVideosItemsRelationshipAddOperationPayloadData.md)
  - [UserCollectionVideosItemsRelationshipAddOperationPayloadDataMeta](docs/UserCollectionVideosItemsRelationshipAddOperationPayloadDataMeta.md)
@@ -1469,7 +1867,6 @@ Class | Method | HTTP request | Description
  - [UserCollectionVideosItemsResourceIdentifier](docs/UserCollectionVideosItemsResourceIdentifier.md)
  - [UserCollectionVideosItemsResourceIdentifierMeta](docs/UserCollectionVideosItemsResourceIdentifierMeta.md)
  - [UserCollectionVideosOwnersMultiRelationshipDataDocument](docs/UserCollectionVideosOwnersMultiRelationshipDataDocument.md)
- - [UserCollectionVideosReadMultiDataRelationship403ResponseBody](docs/UserCollectionVideosReadMultiDataRelationship403ResponseBody.md)
  - [UserCollectionVideosRelationships](docs/UserCollectionVideosRelationships.md)
  - [UserCollectionVideosResourceObject](docs/UserCollectionVideosResourceObject.md)
  - [UserCollectionVideosSingleResourceDataDocument](docs/UserCollectionVideosSingleResourceDataDocument.md)
@@ -1487,6 +1884,39 @@ Class | Method | HTTP request | Description
  - [UserDiscoveryMixesRelationships](docs/UserDiscoveryMixesRelationships.md)
  - [UserDiscoveryMixesResourceObject](docs/UserDiscoveryMixesResourceObject.md)
  - [UserDiscoveryMixesSingleResourceDataDocument](docs/UserDiscoveryMixesSingleResourceDataDocument.md)
+ - [UserFeedItemActivityDetails](docs/UserFeedItemActivityDetails.md)
+ - [UserFeedItemAlbumFavouritedDetails](docs/UserFeedItemAlbumFavouritedDetails.md)
+ - [UserFeedItemAlbumReleasedDetails](docs/UserFeedItemAlbumReleasedDetails.md)
+ - [UserFeedItemAlbumSharedDetails](docs/UserFeedItemAlbumSharedDetails.md)
+ - [UserFeedItemArtistFollowedDetails](docs/UserFeedItemArtistFollowedDetails.md)
+ - [UserFeedItemCommentRepliedDetails](docs/UserFeedItemCommentRepliedDetails.md)
+ - [UserFeedItemCopyrightFlaggedDetails](docs/UserFeedItemCopyrightFlaggedDetails.md)
+ - [UserFeedItemHistoryMixReadyDetails](docs/UserFeedItemHistoryMixReadyDetails.md)
+ - [UserFeedItemPlaylistUpdatedDetails](docs/UserFeedItemPlaylistUpdatedDetails.md)
+ - [UserFeedItemTrackFavouritedDetails](docs/UserFeedItemTrackFavouritedDetails.md)
+ - [UserFeedItemTrackPlayMilestoneDetails](docs/UserFeedItemTrackPlayMilestoneDetails.md)
+ - [UserFeedItemTrackPlaylistedDetails](docs/UserFeedItemTrackPlaylistedDetails.md)
+ - [UserFeedItemTrackSourceFileCommentedDetails](docs/UserFeedItemTrackSourceFileCommentedDetails.md)
+ - [UserFeedItemsActorsMultiRelationshipDataDocument](docs/UserFeedItemsActorsMultiRelationshipDataDocument.md)
+ - [UserFeedItemsAttributes](docs/UserFeedItemsAttributes.md)
+ - [UserFeedItemsMultiResourceDataDocument](docs/UserFeedItemsMultiResourceDataDocument.md)
+ - [UserFeedItemsMultiResourceDataDocumentMeta](docs/UserFeedItemsMultiResourceDataDocumentMeta.md)
+ - [UserFeedItemsRelationships](docs/UserFeedItemsRelationships.md)
+ - [UserFeedItemsResourceObject](docs/UserFeedItemsResourceObject.md)
+ - [UserFeedItemsSubjectResourceIdentifier](docs/UserFeedItemsSubjectResourceIdentifier.md)
+ - [UserFeedItemsSubjectResourceIdentifierMeta](docs/UserFeedItemsSubjectResourceIdentifierMeta.md)
+ - [UserFeedItemsSubjectSingleRelationshipDataDocument](docs/UserFeedItemsSubjectSingleRelationshipDataDocument.md)
+ - [UserFeedsAttributes](docs/UserFeedsAttributes.md)
+ - [UserFeedsAttributesFeed](docs/UserFeedsAttributesFeed.md)
+ - [UserFeedsAttributesInbox](docs/UserFeedsAttributesInbox.md)
+ - [UserFeedsResourceObject](docs/UserFeedsResourceObject.md)
+ - [UserFeedsSingleResourceDataDocument](docs/UserFeedsSingleResourceDataDocument.md)
+ - [UserFeedsUpdateOperationPayload](docs/UserFeedsUpdateOperationPayload.md)
+ - [UserFeedsUpdateOperationPayloadData](docs/UserFeedsUpdateOperationPayloadData.md)
+ - [UserFeedsUpdateOperationPayloadDataAttributes](docs/UserFeedsUpdateOperationPayloadDataAttributes.md)
+ - [UserFeedsUpdateOperationPayloadDataAttributesFeed](docs/UserFeedsUpdateOperationPayloadDataAttributesFeed.md)
+ - [UserFeedsUpdateOperationPayloadDataAttributesInbox](docs/UserFeedsUpdateOperationPayloadDataAttributesInbox.md)
+ - [UserFeedsUpdateSingleResourceDataDocument](docs/UserFeedsUpdateSingleResourceDataDocument.md)
  - [UserNewReleaseMixesItemsMultiRelationshipDataDocument](docs/UserNewReleaseMixesItemsMultiRelationshipDataDocument.md)
  - [UserNewReleaseMixesRelationships](docs/UserNewReleaseMixesRelationships.md)
  - [UserNewReleaseMixesResourceObject](docs/UserNewReleaseMixesResourceObject.md)
@@ -1520,8 +1950,8 @@ Class | Method | HTTP request | Description
  - [UserPlaybackStatesUpdateOperationPayloadData](docs/UserPlaybackStatesUpdateOperationPayloadData.md)
  - [UserPlaybackStatesUpdateOperationPayloadDataAttributes](docs/UserPlaybackStatesUpdateOperationPayloadDataAttributes.md)
  - [UserPlaybackStatesUpdateSingleResourceDataDocument](docs/UserPlaybackStatesUpdateSingleResourceDataDocument.md)
- - [UserRecommendationBlocksAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserRecommendationBlocksAddMultiDataRelationshipWithResponse409ResponseBody.md)
- - [UserRecommendationBlocksAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner](docs/UserRecommendationBlocksAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner.md)
+ - [UserRecommendationBlocksArtistsAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserRecommendationBlocksArtistsAddMultiDataRelationshipWithResponse409ResponseBody.md)
+ - [UserRecommendationBlocksArtistsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner](docs/UserRecommendationBlocksArtistsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner.md)
  - [UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument](docs/UserRecommendationBlocksArtistsAddMultiRelationshipDataDocument.md)
  - [UserRecommendationBlocksArtistsAddResourceIdentifier](docs/UserRecommendationBlocksArtistsAddResourceIdentifier.md)
  - [UserRecommendationBlocksArtistsMultiRelationshipDataDocument](docs/UserRecommendationBlocksArtistsMultiRelationshipDataDocument.md)
@@ -1535,6 +1965,7 @@ Class | Method | HTTP request | Description
  - [UserRecommendationBlocksRelationships](docs/UserRecommendationBlocksRelationships.md)
  - [UserRecommendationBlocksResourceObject](docs/UserRecommendationBlocksResourceObject.md)
  - [UserRecommendationBlocksSingleResourceDataDocument](docs/UserRecommendationBlocksSingleResourceDataDocument.md)
+ - [UserRecommendationBlocksTracksAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserRecommendationBlocksTracksAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserRecommendationBlocksTracksAddMultiRelationshipDataDocument](docs/UserRecommendationBlocksTracksAddMultiRelationshipDataDocument.md)
  - [UserRecommendationBlocksTracksAddResourceIdentifier](docs/UserRecommendationBlocksTracksAddResourceIdentifier.md)
  - [UserRecommendationBlocksTracksMultiRelationshipDataDocument](docs/UserRecommendationBlocksTracksMultiRelationshipDataDocument.md)
@@ -1544,6 +1975,7 @@ Class | Method | HTTP request | Description
  - [UserRecommendationBlocksTracksRelationshipRemoveOperationPayloadData](docs/UserRecommendationBlocksTracksRelationshipRemoveOperationPayloadData.md)
  - [UserRecommendationBlocksTracksResourceIdentifier](docs/UserRecommendationBlocksTracksResourceIdentifier.md)
  - [UserRecommendationBlocksTracksResourceIdentifierMeta](docs/UserRecommendationBlocksTracksResourceIdentifierMeta.md)
+ - [UserRecommendationBlocksVideosAddMultiDataRelationshipWithResponse409ResponseBody](docs/UserRecommendationBlocksVideosAddMultiDataRelationshipWithResponse409ResponseBody.md)
  - [UserRecommendationBlocksVideosAddMultiRelationshipDataDocument](docs/UserRecommendationBlocksVideosAddMultiRelationshipDataDocument.md)
  - [UserRecommendationBlocksVideosAddResourceIdentifier](docs/UserRecommendationBlocksVideosAddResourceIdentifier.md)
  - [UserRecommendationBlocksVideosMultiRelationshipDataDocument](docs/UserRecommendationBlocksVideosMultiRelationshipDataDocument.md)
@@ -1574,6 +2006,7 @@ Class | Method | HTTP request | Description
  - [UsersRelationships](docs/UsersRelationships.md)
  - [UsersResourceObject](docs/UsersResourceObject.md)
  - [UsersSingleResourceDataDocument](docs/UsersSingleResourceDataDocument.md)
+ - [Variation](docs/Variation.md)
  - [VideoManifestsAttributes](docs/VideoManifestsAttributes.md)
  - [VideoManifestsReadById403ResponseBody](docs/VideoManifestsReadById403ResponseBody.md)
  - [VideoManifestsReadById404ResponseBody](docs/VideoManifestsReadById404ResponseBody.md)
@@ -1602,7 +2035,9 @@ Class | Method | HTTP request | Description
  - [VideosThumbnailArtMultiRelationshipDataDocument](docs/VideosThumbnailArtMultiRelationshipDataDocument.md)
  - [VideosUsageRulesSingleRelationshipDataDocument](docs/VideosUsageRulesSingleRelationshipDataDocument.md)
  - [ViewerContextsAttributes](docs/ViewerContextsAttributes.md)
+ - [ViewerContextsCommentsMultiRelationshipDataDocument](docs/ViewerContextsCommentsMultiRelationshipDataDocument.md)
  - [ViewerContextsMultiResourceDataDocument](docs/ViewerContextsMultiResourceDataDocument.md)
+ - [ViewerContextsReactionsMultiRelationshipDataDocument](docs/ViewerContextsReactionsMultiRelationshipDataDocument.md)
  - [ViewerContextsRelationships](docs/ViewerContextsRelationships.md)
  - [ViewerContextsResourceObject](docs/ViewerContextsResourceObject.md)
  - [ViewerContextsSingleResourceDataDocument](docs/ViewerContextsSingleResourceDataDocument.md)
@@ -1610,6 +2045,7 @@ Class | Method | HTTP request | Description
  - [ViewerContextsSubjectResourceIdentifierMeta](docs/ViewerContextsSubjectResourceIdentifierMeta.md)
  - [ViewerContextsSubjectSingleRelationshipDataDocument](docs/ViewerContextsSubjectSingleRelationshipDataDocument.md)
  - [ViewerContextsViewerSingleRelationshipDataDocument](docs/ViewerContextsViewerSingleRelationshipDataDocument.md)
+ - [Waveform](docs/Waveform.md)
 
 
 <a id="documentation-for-authorization"></a>

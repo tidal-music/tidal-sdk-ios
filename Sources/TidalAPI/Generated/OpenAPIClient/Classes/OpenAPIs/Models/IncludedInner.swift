@@ -19,12 +19,17 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case artistClaimStatusesResourceObject(ArtistClaimStatusesResourceObject)
     case artistClaimsResourceObject(ArtistClaimsResourceObject)
     case artistRolesResourceObject(ArtistRolesResourceObject)
+    case artistSalesStatisticsResourceObject(ArtistSalesStatisticsResourceObject)
+    case artistStreamsStatisticsResourceObject(ArtistStreamsStatisticsResourceObject)
     case artistsResourceObject(ArtistsResourceObject)
+    case artworkLibrariesResourceObject(ArtworkLibrariesResourceObject)
     case artworksResourceObject(ArtworksResourceObject)
     case changeEventStreamsResourceObject(ChangeEventStreamsResourceObject)
+    case clientCertificatesResourceObject(ClientCertificatesResourceObject)
     case clientsResourceObject(ClientsResourceObject)
     case collaborationInviteRedemptionsResourceObject(CollaborationInviteRedemptionsResourceObject)
     case collaborationInvitesResourceObject(CollaborationInvitesResourceObject)
+    case commentSummariesResourceObject(CommentSummariesResourceObject)
     case commentsResourceObject(CommentsResourceObject)
     case contentClaimsResourceObject(ContentClaimsResourceObject)
     case creditsResourceObject(CreditsResourceObject)
@@ -35,6 +40,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case folderItemsResourceObject(FolderItemsResourceObject)
     case foldersResourceObject(FoldersResourceObject)
     case genresResourceObject(GenresResourceObject)
+    case groupsResourceObject(GroupsResourceObject)
     case installationsResourceObject(InstallationsResourceObject)
     case lyricsResourceObject(LyricsResourceObject)
     case manualArtistClaimsResourceObject(ManualArtistClaimsResourceObject)
@@ -48,14 +54,20 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case providerProductInfosResourceObject(ProviderProductInfosResourceObject)
     case providersResourceObject(ProvidersResourceObject)
     case purchasesResourceObject(PurchasesResourceObject)
+    case reactionSummariesResourceObject(ReactionSummariesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
+    case resourceGrantsResourceObject(ResourceGrantsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
     case scopesResourceObject(ScopesResourceObject)
     case searchHistoryEntriesResourceObject(SearchHistoryEntriesResourceObject)
     case searchResultsResourceObject(SearchResultsResourceObject)
     case searchSuggestionsResourceObject(SearchSuggestionsResourceObject)
     case sharesResourceObject(SharesResourceObject)
+    case sharingSummariesResourceObject(SharingSummariesResourceObject)
     case squareConnectionsResourceObject(SquareConnectionsResourceObject)
+    case squareItemVariationPhysicalCountsResourceObject(SquareItemVariationPhysicalCountsResourceObject)
+    case squareItemVariationsResourceObject(SquareItemVariationsResourceObject)
+    case squareItemsResourceObject(SquareItemsResourceObject)
     case squareSitesResourceObject(SquareSitesResourceObject)
     case stripeConnectionsResourceObject(StripeConnectionsResourceObject)
     case stripeDashboardLinksResourceObject(StripeDashboardLinksResourceObject)
@@ -79,6 +91,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userDailyMixesResourceObject(UserDailyMixesResourceObject)
     case userDataExportRequestsResourceObject(UserDataExportRequestsResourceObject)
     case userDiscoveryMixesResourceObject(UserDiscoveryMixesResourceObject)
+    case userFeedItemsResourceObject(UserFeedItemsResourceObject)
+    case userFeedsResourceObject(UserFeedsResourceObject)
     case userNewReleaseMixesResourceObject(UserNewReleaseMixesResourceObject)
     case userOfflineMixesResourceObject(UserOfflineMixesResourceObject)
     case userPlaybackStatesResourceObject(UserPlaybackStatesResourceObject)
@@ -109,17 +123,27 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .artistRolesResourceObject(let value):
             try container.encode(value)
+        case .artistSalesStatisticsResourceObject(let value):
+            try container.encode(value)
+        case .artistStreamsStatisticsResourceObject(let value):
+            try container.encode(value)
         case .artistsResourceObject(let value):
+            try container.encode(value)
+        case .artworkLibrariesResourceObject(let value):
             try container.encode(value)
         case .artworksResourceObject(let value):
             try container.encode(value)
         case .changeEventStreamsResourceObject(let value):
+            try container.encode(value)
+        case .clientCertificatesResourceObject(let value):
             try container.encode(value)
         case .clientsResourceObject(let value):
             try container.encode(value)
         case .collaborationInviteRedemptionsResourceObject(let value):
             try container.encode(value)
         case .collaborationInvitesResourceObject(let value):
+            try container.encode(value)
+        case .commentSummariesResourceObject(let value):
             try container.encode(value)
         case .commentsResourceObject(let value):
             try container.encode(value)
@@ -140,6 +164,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .foldersResourceObject(let value):
             try container.encode(value)
         case .genresResourceObject(let value):
+            try container.encode(value)
+        case .groupsResourceObject(let value):
             try container.encode(value)
         case .installationsResourceObject(let value):
             try container.encode(value)
@@ -167,7 +193,11 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .purchasesResourceObject(let value):
             try container.encode(value)
+        case .reactionSummariesResourceObject(let value):
+            try container.encode(value)
         case .reactionsResourceObject(let value):
+            try container.encode(value)
+        case .resourceGrantsResourceObject(let value):
             try container.encode(value)
         case .savedSharesResourceObject(let value):
             try container.encode(value)
@@ -181,7 +211,15 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .sharesResourceObject(let value):
             try container.encode(value)
+        case .sharingSummariesResourceObject(let value):
+            try container.encode(value)
         case .squareConnectionsResourceObject(let value):
+            try container.encode(value)
+        case .squareItemVariationPhysicalCountsResourceObject(let value):
+            try container.encode(value)
+        case .squareItemVariationsResourceObject(let value):
+            try container.encode(value)
+        case .squareItemsResourceObject(let value):
             try container.encode(value)
         case .squareSitesResourceObject(let value):
             try container.encode(value)
@@ -228,6 +266,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .userDataExportRequestsResourceObject(let value):
             try container.encode(value)
         case .userDiscoveryMixesResourceObject(let value):
+            try container.encode(value)
+        case .userFeedItemsResourceObject(let value):
+            try container.encode(value)
+        case .userFeedsResourceObject(let value):
             try container.encode(value)
         case .userNewReleaseMixesResourceObject(let value):
             try container.encode(value)
@@ -285,15 +327,27 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "artistRoles":
             let value = try ArtistRolesResourceObject(from: decoder)
             self = .artistRolesResourceObject(value)
+        case "artistSalesStatistics":
+            let value = try ArtistSalesStatisticsResourceObject(from: decoder)
+            self = .artistSalesStatisticsResourceObject(value)
+        case "artistStreamsStatistics":
+            let value = try ArtistStreamsStatisticsResourceObject(from: decoder)
+            self = .artistStreamsStatisticsResourceObject(value)
         case "artists":
             let value = try ArtistsResourceObject(from: decoder)
             self = .artistsResourceObject(value)
+        case "artworkLibraries":
+            let value = try ArtworkLibrariesResourceObject(from: decoder)
+            self = .artworkLibrariesResourceObject(value)
         case "artworks":
             let value = try ArtworksResourceObject(from: decoder)
             self = .artworksResourceObject(value)
         case "changeEventStreams":
             let value = try ChangeEventStreamsResourceObject(from: decoder)
             self = .changeEventStreamsResourceObject(value)
+        case "clientCertificates":
+            let value = try ClientCertificatesResourceObject(from: decoder)
+            self = .clientCertificatesResourceObject(value)
         case "clients":
             let value = try ClientsResourceObject(from: decoder)
             self = .clientsResourceObject(value)
@@ -303,6 +357,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "collaborationInvites":
             let value = try CollaborationInvitesResourceObject(from: decoder)
             self = .collaborationInvitesResourceObject(value)
+        case "commentSummaries":
+            let value = try CommentSummariesResourceObject(from: decoder)
+            self = .commentSummariesResourceObject(value)
         case "comments":
             let value = try CommentsResourceObject(from: decoder)
             self = .commentsResourceObject(value)
@@ -333,6 +390,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "genres":
             let value = try GenresResourceObject(from: decoder)
             self = .genresResourceObject(value)
+        case "groups":
+            let value = try GroupsResourceObject(from: decoder)
+            self = .groupsResourceObject(value)
         case "installations":
             let value = try InstallationsResourceObject(from: decoder)
             self = .installationsResourceObject(value)
@@ -372,9 +432,15 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "purchases":
             let value = try PurchasesResourceObject(from: decoder)
             self = .purchasesResourceObject(value)
+        case "reactionSummaries":
+            let value = try ReactionSummariesResourceObject(from: decoder)
+            self = .reactionSummariesResourceObject(value)
         case "reactions":
             let value = try ReactionsResourceObject(from: decoder)
             self = .reactionsResourceObject(value)
+        case "resourceGrants":
+            let value = try ResourceGrantsResourceObject(from: decoder)
+            self = .resourceGrantsResourceObject(value)
         case "savedShares":
             let value = try SavedSharesResourceObject(from: decoder)
             self = .savedSharesResourceObject(value)
@@ -393,9 +459,21 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "shares":
             let value = try SharesResourceObject(from: decoder)
             self = .sharesResourceObject(value)
+        case "sharingSummaries":
+            let value = try SharingSummariesResourceObject(from: decoder)
+            self = .sharingSummariesResourceObject(value)
         case "squareConnections":
             let value = try SquareConnectionsResourceObject(from: decoder)
             self = .squareConnectionsResourceObject(value)
+        case "squareItemVariationPhysicalCounts":
+            let value = try SquareItemVariationPhysicalCountsResourceObject(from: decoder)
+            self = .squareItemVariationPhysicalCountsResourceObject(value)
+        case "squareItemVariations":
+            let value = try SquareItemVariationsResourceObject(from: decoder)
+            self = .squareItemVariationsResourceObject(value)
+        case "squareItems":
+            let value = try SquareItemsResourceObject(from: decoder)
+            self = .squareItemsResourceObject(value)
         case "squareSites":
             let value = try SquareSitesResourceObject(from: decoder)
             self = .squareSitesResourceObject(value)
@@ -465,6 +543,12 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userDiscoveryMixes":
             let value = try UserDiscoveryMixesResourceObject(from: decoder)
             self = .userDiscoveryMixesResourceObject(value)
+        case "userFeedItems":
+            let value = try UserFeedItemsResourceObject(from: decoder)
+            self = .userFeedItemsResourceObject(value)
+        case "userFeeds":
+            let value = try UserFeedsResourceObject(from: decoder)
+            self = .userFeedsResourceObject(value)
         case "userNewReleaseMixes":
             let value = try UserNewReleaseMixesResourceObject(from: decoder)
             self = .userNewReleaseMixesResourceObject(value)
@@ -513,12 +597,17 @@ extension IncludedInner: Identifiable {
         case .artistClaimStatusesResourceObject(let value): return value.id
         case .artistClaimsResourceObject(let value): return value.id
         case .artistRolesResourceObject(let value): return value.id
+        case .artistSalesStatisticsResourceObject(let value): return value.id
+        case .artistStreamsStatisticsResourceObject(let value): return value.id
         case .artistsResourceObject(let value): return value.id
+        case .artworkLibrariesResourceObject(let value): return value.id
         case .artworksResourceObject(let value): return value.id
         case .changeEventStreamsResourceObject(let value): return value.id
+        case .clientCertificatesResourceObject(let value): return value.id
         case .clientsResourceObject(let value): return value.id
         case .collaborationInviteRedemptionsResourceObject(let value): return value.id
         case .collaborationInvitesResourceObject(let value): return value.id
+        case .commentSummariesResourceObject(let value): return value.id
         case .commentsResourceObject(let value): return value.id
         case .contentClaimsResourceObject(let value): return value.id
         case .creditsResourceObject(let value): return value.id
@@ -529,6 +618,7 @@ extension IncludedInner: Identifiable {
         case .folderItemsResourceObject(let value): return value.id
         case .foldersResourceObject(let value): return value.id
         case .genresResourceObject(let value): return value.id
+        case .groupsResourceObject(let value): return value.id
         case .installationsResourceObject(let value): return value.id
         case .lyricsResourceObject(let value): return value.id
         case .manualArtistClaimsResourceObject(let value): return value.id
@@ -542,14 +632,20 @@ extension IncludedInner: Identifiable {
         case .providerProductInfosResourceObject(let value): return value.id
         case .providersResourceObject(let value): return value.id
         case .purchasesResourceObject(let value): return value.id
+        case .reactionSummariesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
+        case .resourceGrantsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
         case .scopesResourceObject(let value): return value.id
         case .searchHistoryEntriesResourceObject(let value): return value.id
         case .searchResultsResourceObject(let value): return value.id
         case .searchSuggestionsResourceObject(let value): return value.id
         case .sharesResourceObject(let value): return value.id
+        case .sharingSummariesResourceObject(let value): return value.id
         case .squareConnectionsResourceObject(let value): return value.id
+        case .squareItemVariationPhysicalCountsResourceObject(let value): return value.id
+        case .squareItemVariationsResourceObject(let value): return value.id
+        case .squareItemsResourceObject(let value): return value.id
         case .squareSitesResourceObject(let value): return value.id
         case .stripeConnectionsResourceObject(let value): return value.id
         case .stripeDashboardLinksResourceObject(let value): return value.id
@@ -573,6 +669,8 @@ extension IncludedInner: Identifiable {
         case .userDailyMixesResourceObject(let value): return value.id
         case .userDataExportRequestsResourceObject(let value): return value.id
         case .userDiscoveryMixesResourceObject(let value): return value.id
+        case .userFeedItemsResourceObject(let value): return value.id
+        case .userFeedsResourceObject(let value): return value.id
         case .userNewReleaseMixesResourceObject(let value): return value.id
         case .userOfflineMixesResourceObject(let value): return value.id
         case .userPlaybackStatesResourceObject(let value): return value.id

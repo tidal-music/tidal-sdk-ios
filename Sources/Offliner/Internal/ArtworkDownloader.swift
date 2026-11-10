@@ -1,9 +1,13 @@
 import Foundation
 import TidalAPI
 
+// MARK: - ArtworkDownloaderProtocol
+
 protocol ArtworkDownloaderProtocol {
 	func downloadArtwork(for artwork: ArtworksResourceObject?) async throws -> URL?
 }
+
+// MARK: - ArtworkDownloader
 
 final class ArtworkDownloader: ArtworkDownloaderProtocol {
 	private let urlSession: URLSession
@@ -13,21 +17,22 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 	}
 
 	func downloadArtwork(for artwork: ArtworksResourceObject?) async throws -> URL? {
-		guard let artwork else { return nil }
+		guard let artwork else {
+			return nil
+		}
 		return try await download(artwork: artwork)
 	}
 
 	private func download(artwork: ArtworksResourceObject) async throws -> URL {
-		let files = artwork.attributes?.files.sorted { $0.area > $1.area }
-		guard let file = files?.first,
-			  let imageURL = URL(string: file.href) else {
+		guard let imageURL = artwork.largestFileURL else {
 			throw ArtworkDownloaderError.missingArtworkURL
 		}
 
 		let (tempURL, response) = try await urlSession.download(from: imageURL)
 
 		guard let httpResponse = response as? HTTPURLResponse,
-			  (200 ... 299).contains(httpResponse.statusCode) else {
+		      (200 ... 299).contains(httpResponse.statusCode)
+		else {
 			throw ArtworkDownloaderError.downloadFailed
 		}
 
@@ -38,13 +43,9 @@ final class ArtworkDownloader: ArtworkDownloaderProtocol {
 	}
 }
 
+// MARK: - ArtworkDownloaderError
+
 enum ArtworkDownloaderError: Error {
 	case missingArtworkURL
 	case downloadFailed
-}
-
-private extension ArtworkFile {
-	var area: Int {
-		meta.width * meta.height
-	}
 }

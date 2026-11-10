@@ -22,7 +22,7 @@ internal class StripeConnectionsAPI {
     /**
      Get multiple stripeConnections.
      
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: StripeConnectionsMultiResourceDataDocument
@@ -44,7 +44,7 @@ internal class StripeConnectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<StripeConnectionsMultiResourceDataDocument> 
@@ -130,7 +130,7 @@ internal class StripeConnectionsAPI {
     /**
      Create single stripeConnection.
      
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter stripeConnectionsCreateOperationPayload: (body)  (optional)
      - returns: StripeConnectionsCreateSingleResourceDataDocument
      */
@@ -151,7 +151,7 @@ internal class StripeConnectionsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter stripeConnectionsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<StripeConnectionsCreateSingleResourceDataDocument> 
      */

@@ -1,0 +1,169 @@
+# UserFeedItemsAPI
+
+All URIs are relative to *https://openapi.tidal.com/v2*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**userFeedItemsGet**](UserFeedItemsAPI.md#userfeeditemsget) | **GET** /userFeedItems | Get multiple userFeedItems.
+[**userFeedItemsIdRelationshipsActorsGet**](UserFeedItemsAPI.md#userfeeditemsidrelationshipsactorsget) | **GET** /userFeedItems/{id}/relationships/actors | Get actors relationship (\&quot;to-many\&quot;).
+[**userFeedItemsIdRelationshipsSubjectGet**](UserFeedItemsAPI.md#userfeeditemsidrelationshipssubjectget) | **GET** /userFeedItems/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
+
+
+# **userFeedItemsGet**
+```swift
+    open class func userFeedItemsGet(filterOwnersId: [String], filterSurface: FilterSurface_userFeedItemsGet, include: [String]? = nil, includeLinkage: [IncludeLinkage_userFeedItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsMultiResourceDataDocument
+```
+
+Get multiple userFeedItems.
+
+The authenticated user's activity on the selected feed surface.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
+let filterSurface = "filterSurface_example" // String | Feed surface to read (e.g. `INBOX`)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: actors, subject (optional)
+let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: actors.albums (optional)
+
+// Get multiple userFeedItems.
+do {
+    let response = try await UserFeedItemsAPI.userFeedItemsGet(filterOwnersId: filterOwnersId, filterSurface: filterSurface, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
+ **filterSurface** | **String** | Feed surface to read (e.g. &#x60;INBOX&#x60;) | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: actors, subject | [optional] 
+ **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: actors.albums | [optional] 
+
+### Return type
+
+[**UserFeedItemsMultiResourceDataDocument**](UserFeedItemsMultiResourceDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **userFeedItemsIdRelationshipsActorsGet**
+```swift
+    open class func userFeedItemsIdRelationshipsActorsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsActorsMultiRelationshipDataDocument
+```
+
+Get actors relationship (\"to-many\").
+
+Artists attributed to the activity. Always empty for `ALBUM_FAVOURITED`, `TRACK_FAVOURITED` and `TRACK_PLAYLISTED`, which are counts only, and for `HISTORY_MIX_READY` and `TRACK_PLAY_MILESTONE`, which nobody else acted on.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Opaque identifier of a user feed item.
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: actors (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: actors.albums (optional)
+
+// Get actors relationship (\"to-many\").
+do {
+    let response = try await UserFeedItemsAPI.userFeedItemsIdRelationshipsActorsGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Opaque identifier of a user feed item. | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: actors | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: actors.albums | [optional] 
+
+### Return type
+
+[**UserFeedItemsActorsMultiRelationshipDataDocument**](UserFeedItemsActorsMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **userFeedItemsIdRelationshipsSubjectGet**
+```swift
+    open class func userFeedItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserFeedItemsSubjectSingleRelationshipDataDocument
+```
+
+Get subject relationship (\"to-one\").
+
+The resource the activity concerns. For `HISTORY_MIX_READY`, the viewer's history mix as a playlist.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Opaque identifier of a user feed item.
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: subject (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
+
+// Get subject relationship (\"to-one\").
+do {
+    let response = try await UserFeedItemsAPI.userFeedItemsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Opaque identifier of a user feed item. | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: subject | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
+
+### Return type
+
+[**UserFeedItemsSubjectSingleRelationshipDataDocument**](UserFeedItemsSubjectSingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

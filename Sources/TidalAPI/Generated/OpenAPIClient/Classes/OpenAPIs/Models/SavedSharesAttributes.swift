@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct SavedSharesAttributes: Codable, Hashable {
 
-    /** Datetime of saved share creation (ISO 8601) */
+    /** Time of this save (ISO 8601). Saving the share again returns the same id with the time of that request. */
     public var createdAt: Date
 
     public init(

@@ -53,9 +53,9 @@ public enum AcceptedTermsAPITidal {
      
      - returns: AcceptedTermsMultiResourceDataDocument
      */
-	public static func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [AcceptedTermsAPITidal.FilterTermsTermsType_acceptedTermsGet], include: [String]? = nil, filterTermsIsLatestVersion: [String]? = nil, includeLinkage: [AcceptedTermsAPITidal.IncludeLinkage_acceptedTermsGet]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument {
+	public static func acceptedTermsGet(filterOwnersId: [String], filterTermsTermsType: [AcceptedTermsAPITidal.FilterTermsTermsType_acceptedTermsGet], filterTermsIsLatestVersion: [String]? = nil, include: [String]? = nil, includeLinkage: [AcceptedTermsAPITidal.IncludeLinkage_acceptedTermsGet]? = nil) async throws -> AcceptedTermsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AcceptedTermsAPI.acceptedTermsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType.compactMap { $0.toAcceptedTermsAPIEnum() }, include: include, filterTermsIsLatestVersion: filterTermsIsLatestVersion, includeLinkage: includeLinkage?.compactMap { $0.toAcceptedTermsAPIEnum() })
+			AcceptedTermsAPI.acceptedTermsGetWithRequestBuilder(filterOwnersId: filterOwnersId, filterTermsTermsType: filterTermsTermsType.compactMap { $0.toAcceptedTermsAPIEnum() }, filterTermsIsLatestVersion: filterTermsIsLatestVersion, include: include, includeLinkage: includeLinkage?.compactMap { $0.toAcceptedTermsAPIEnum() })
 		}
 	}
 

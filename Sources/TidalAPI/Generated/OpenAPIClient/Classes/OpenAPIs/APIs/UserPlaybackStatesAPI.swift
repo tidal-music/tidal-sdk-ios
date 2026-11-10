@@ -84,7 +84,7 @@ internal class UserPlaybackStatesAPI {
      Update single userPlaybackState.
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userPlaybackStatesUpdateOperationPayload: (body)  (optional)
      - returns: UserPlaybackStatesUpdateSingleResourceDataDocument
      */
@@ -106,7 +106,7 @@ internal class UserPlaybackStatesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userPlaybackStatesUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserPlaybackStatesUpdateSingleResourceDataDocument> 
      */
@@ -191,7 +191,7 @@ internal class UserPlaybackStatesAPI {
      Update activePlayer relationship (\"to-one\").
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument
      */
@@ -208,12 +208,12 @@ internal class UserPlaybackStatesAPI {
     /**
      Update activePlayer relationship (\"to-one\").
      - PATCH /userPlaybackStates/{id}/relationships/activePlayer
-     - Updates activePlayer relationship.
+     - Replaces the active-player selection with the supplied owned installation. Explicit null data releases the player without deleting the installation. Returns null linkage when released or when the selected installation has no live attachment. An unavailable selection is retained and becomes visible again when its attachment is refreshed.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userPlaybackStatesActivePlayerRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserPlaybackStatesActivePlayerUpdateSingleRelationshipDataDocument> 
      */
@@ -243,7 +243,7 @@ internal class UserPlaybackStatesAPI {
      Delete from availablePlayers relationship (\"to-many\").
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -260,12 +260,12 @@ internal class UserPlaybackStatesAPI {
     /**
      Delete from availablePlayers relationship (\"to-many\").
      - DELETE /userPlaybackStates/{id}/relationships/availablePlayers
-     - Deletes item(s) from availablePlayers relationship.
+     - Detaches one installation without deleting it. Also releases the active player when it is that installation. Returns an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userPlaybackStatesAvailablePlayersRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -353,7 +353,7 @@ internal class UserPlaybackStatesAPI {
      Add to availablePlayers relationship (\"to-many\").
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: (body)  (optional)
      - returns: UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument
      */
@@ -370,12 +370,12 @@ internal class UserPlaybackStatesAPI {
     /**
      Add to availablePlayers relationship (\"to-many\").
      - POST /userPlaybackStates/{id}/relationships/availablePlayers
-     - Adds item(s) to availablePlayers relationship.
+     - Attaches or refreshes one owned installation as an available player, preserving other attachments. Returns all currently available player linkage.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userPlaybackStatesAvailablePlayersRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserPlaybackStatesAvailablePlayersAddMultiRelationshipDataDocument> 
      */
@@ -512,7 +512,7 @@ internal class UserPlaybackStatesAPI {
      Update playQueue relationship (\"to-one\").
      
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: UserPlaybackStatesPlayQueueUpdateSingleRelationshipDataDocument
      */
@@ -529,12 +529,12 @@ internal class UserPlaybackStatesAPI {
     /**
      Update playQueue relationship (\"to-one\").
      - PATCH /userPlaybackStates/{id}/relationships/playQueue
-     - Updates playQueue relationship.
+     - Replaces the selected play queue. Explicit null data clears the selection without deleting the queue. Returns the selected queue linkage, or null data when cleared.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) User playback session id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter userPlaybackStatesPlayQueueRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<UserPlaybackStatesPlayQueueUpdateSingleRelationshipDataDocument> 
      */

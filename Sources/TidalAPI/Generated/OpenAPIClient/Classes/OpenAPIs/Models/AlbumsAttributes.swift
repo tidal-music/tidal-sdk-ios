@@ -61,6 +61,8 @@ public struct AlbumsAttributes: Codable, Hashable {
     public var numberOfVolumes: Int
     /** Popularity (0.0 - 1.0) */
     public var popularity: Double
+    /** Whether the album is published and available to everyone. Present only for uploaded albums. */
+    public var published: Bool?
     /** Release date (ISO-8601) */
     public var releaseDate: Date?
     /** Album title */
@@ -86,6 +88,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         numberOfItems: Int,
         numberOfVolumes: Int,
         popularity: Double,
+        published: Bool? = nil,
         releaseDate: Date? = nil,
         title: String,
         type: ModelType? = nil,
@@ -105,6 +108,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         self.numberOfItems = numberOfItems
         self.numberOfVolumes = numberOfVolumes
         self.popularity = popularity
+        self.published = published
         self.releaseDate = releaseDate
         self.title = title
         self.type = type
@@ -126,6 +130,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         case numberOfItems
         case numberOfVolumes
         case popularity
+        case published
         case releaseDate
         case title
         case type
@@ -150,6 +155,7 @@ public struct AlbumsAttributes: Codable, Hashable {
         try container.encode(numberOfItems, forKey: .numberOfItems)
         try container.encode(numberOfVolumes, forKey: .numberOfVolumes)
         try container.encode(popularity, forKey: .popularity)
+        try container.encodeIfPresent(published, forKey: .published)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
         try container.encode(title, forKey: .title)
         try container.encodeIfPresent(type, forKey: .type)

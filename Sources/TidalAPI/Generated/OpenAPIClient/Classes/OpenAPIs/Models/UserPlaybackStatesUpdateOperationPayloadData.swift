@@ -17,6 +17,7 @@ public struct UserPlaybackStatesUpdateOperationPayloadData: Codable, Hashable {
     }
     public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var attributes: UserPlaybackStatesUpdateOperationPayloadDataAttributes
+    /** Also accepts `me`. */
     public var id: String
     public var type: ModelType
 

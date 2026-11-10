@@ -17,9 +17,9 @@ Name | Type | Description | Notes
 **role** | **String** |  | [optional] 
 **selectedAlbums** | **[String]** |  | [optional] 
 **selectedSingles** | **[String]** |  | [optional] 
-**socialLink** | [**LinkObject**](LinkObject.md) |  | [optional] 
+**socialLink** | [**ManualArtistClaimsExternalLink**](ManualArtistClaimsExternalLink.md) |  | [optional] 
 **upcs** | **[String]** |  | [optional] 
-**websiteOrSocialLink** | [**LinkObject**](LinkObject.md) |  | 
+**websiteOrSocialLink** | [**ManualArtistClaimsExternalLink**](ManualArtistClaimsExternalLink.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

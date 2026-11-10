@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [SearchResultsArtistsResourceIdentifier] |  | [optional] 
+**data** | [ResourceIdentifier] |  | [optional] 
 **included** | [IncludedInner] |  | [optional] 
 **links** | [**Links**](Links.md) |  | 
 

@@ -10,14 +10,15 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;playlists&#x60;. */
 public struct SearchResultsPlaylistsMultiRelationshipDataDocument: Codable, Hashable {
 
-    public var data: [SearchResultsPlaylistsResourceIdentifier]?
+    public var data: [ResourceIdentifier]?
     public var included: [IncludedInner]?
     public var links: Links
 
     public init(
-        data: [SearchResultsPlaylistsResourceIdentifier]? = nil,
+        data: [ResourceIdentifier]? = nil,
         included: [IncludedInner]? = nil,
         links: Links
     ) {

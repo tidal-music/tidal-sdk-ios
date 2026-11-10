@@ -13,10 +13,12 @@ import AnyCodable
 public struct ArtistsRelationships: Codable, Hashable {
 
     public var albums: ArtistsAlbumsMultiRelationshipDataDocument?
+    public var bannerArt: ArtistsBannerArtMultiRelationshipDataDocument?
     public var biography: ArtistsBiographySingleRelationshipDataDocument?
     public var claimStatus: ArtistsClaimStatusSingleRelationshipDataDocument?
     public var followers: ArtistsFollowersMultiRelationshipDataDocument?
     public var following: ArtistsFollowingMultiRelationshipDataDocument?
+    public var logoArt: ArtistsLogoArtMultiRelationshipDataDocument?
     public var owners: ArtistsOwnersMultiRelationshipDataDocument?
     public var profileArt: ArtistsProfileArtMultiRelationshipDataDocument?
     public var radio: ArtistsRadioMultiRelationshipDataDocument?
@@ -28,10 +30,12 @@ public struct ArtistsRelationships: Codable, Hashable {
 
     public init(
         albums: ArtistsAlbumsMultiRelationshipDataDocument? = nil,
+        bannerArt: ArtistsBannerArtMultiRelationshipDataDocument? = nil,
         biography: ArtistsBiographySingleRelationshipDataDocument? = nil,
         claimStatus: ArtistsClaimStatusSingleRelationshipDataDocument? = nil,
         followers: ArtistsFollowersMultiRelationshipDataDocument? = nil,
         following: ArtistsFollowingMultiRelationshipDataDocument? = nil,
+        logoArt: ArtistsLogoArtMultiRelationshipDataDocument? = nil,
         owners: ArtistsOwnersMultiRelationshipDataDocument? = nil,
         profileArt: ArtistsProfileArtMultiRelationshipDataDocument? = nil,
         radio: ArtistsRadioMultiRelationshipDataDocument? = nil,
@@ -42,10 +46,12 @@ public struct ArtistsRelationships: Codable, Hashable {
         videos: ArtistsVideosMultiRelationshipDataDocument? = nil
     ) {
         self.albums = albums
+        self.bannerArt = bannerArt
         self.biography = biography
         self.claimStatus = claimStatus
         self.followers = followers
         self.following = following
+        self.logoArt = logoArt
         self.owners = owners
         self.profileArt = profileArt
         self.radio = radio
@@ -58,10 +64,12 @@ public struct ArtistsRelationships: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case albums
+        case bannerArt
         case biography
         case claimStatus
         case followers
         case following
+        case logoArt
         case owners
         case profileArt
         case radio
@@ -77,10 +85,12 @@ public struct ArtistsRelationships: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(albums, forKey: .albums)
+        try container.encodeIfPresent(bannerArt, forKey: .bannerArt)
         try container.encodeIfPresent(biography, forKey: .biography)
         try container.encodeIfPresent(claimStatus, forKey: .claimStatus)
         try container.encodeIfPresent(followers, forKey: .followers)
         try container.encodeIfPresent(following, forKey: .following)
+        try container.encodeIfPresent(logoArt, forKey: .logoArt)
         try container.encodeIfPresent(owners, forKey: .owners)
         try container.encodeIfPresent(profileArt, forKey: .profileArt)
         try container.encodeIfPresent(radio, forKey: .radio)

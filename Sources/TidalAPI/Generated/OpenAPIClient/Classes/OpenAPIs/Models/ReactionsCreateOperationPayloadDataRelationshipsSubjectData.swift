@@ -13,13 +13,8 @@ import AnyCodable
 public struct ReactionsCreateOperationPayloadDataRelationshipsSubjectData: Codable, Hashable {
 
     public enum ModelType: String, Codable, CaseIterable {
-        case albums = "albums"
-        case tracks = "tracks"
-        case artists = "artists"
-        case videos = "videos"
-        case playlists = "playlists"
-        case comments = "comments"
         case tracksourcefiles = "trackSourceFiles"
+        case comments = "comments"
     }
     public var id: String
     public var type: ModelType

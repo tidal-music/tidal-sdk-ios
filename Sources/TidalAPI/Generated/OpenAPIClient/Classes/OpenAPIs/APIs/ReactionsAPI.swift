@@ -13,56 +13,29 @@ import AnyCodable
 internal class ReactionsAPI {
 
     /**
-     * enum for parameter stats
-     */
-    public enum Stats_reactionsGet: String, CaseIterable {
-        case all = "ALL"
-        case countsByType = "COUNTS_BY_TYPE"
-        case totalCount = "TOTAL_COUNT"
-    }
-
-    /**
-     * enum for parameter filterSubjectType
-     */
-    public enum FilterSubjectType_reactionsGet: String, CaseIterable {
-        case albums = "albums"
-        case tracks = "tracks"
-        case artists = "artists"
-        case videos = "videos"
-        case playlists = "playlists"
-        case comments = "comments"
-        case tracksourcefiles = "trackSourceFiles"
-    }
-
-    /**
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_reactionsGet: String, CaseIterable {
         case author = "author"
-        case ownerprofiles = "ownerProfiles"
         case owners = "owners"
+        case subject = "subject"
     }
 
     /**
      Get multiple reactions.
      
-     - parameter stats: (query)  (optional)
-     - parameter statsOnly: (query)  (optional)
-     - parameter viewerContext: (query)  (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Include related resources. Available relationships: author, ownerProfiles, owners (optional)
+     - parameter filterSubject: (query) The subject whose reactions to return. 
      - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
-     - parameter filterSubject: (query) The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
-     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, owners, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: ReactionsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func reactionsGet(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil) async throws -> ReactionsMultiResourceDataDocument {
+    internal class func reactionsGet(filterSubject: String, filterEmoji: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ReactionsMultiResourceDataDocument {
         do {
-            return try await reactionsGetWithRequestBuilder(stats: stats, statsOnly: statsOnly, viewerContext: viewerContext, pageCursor: pageCursor, include: include, filterEmoji: filterEmoji, filterSubject: filterSubject, filterSubjectId: filterSubjectId, filterSubjectType: filterSubjectType, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+            return try await reactionsGetWithRequestBuilder(filterSubject: filterSubject, filterEmoji: filterEmoji, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -72,40 +45,30 @@ internal class ReactionsAPI {
     /**
      Get multiple reactions.
      - GET /reactions
-     - Retrieves multiple reactions by available filters, or without if applicable.
+     - Lists reactions on a source file or comment, newest first.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter stats: (query)  (optional)
-     - parameter statsOnly: (query)  (optional)
-     - parameter viewerContext: (query)  (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - parameter include: (query) Include related resources. Available relationships: author, ownerProfiles, owners (optional)
+     - parameter filterSubject: (query) The subject whose reactions to return. 
      - parameter filterEmoji: (query) Filter by emoji (e.g. &#x60;👍&#x60;) (optional)
-     - parameter filterSubject: (query) The subject whose reactions to return. Use either subject or the deprecated subject.id and subject.type pair. (optional)
-     - parameter filterSubjectId: (query) Deprecated: use filter[subject]. Filter by subject resource ID (e.g. &#x60;12345&#x60;) (optional)
-     - parameter filterSubjectType: (query) Deprecated: use filter[subject]. Filter by subject resource type (e.g. &#x60;albums&#x60;) (optional)
+     - parameter include: (query) Include related resources. Available relationships: author, owners, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: author.albums (optional)
      - returns: RequestBuilder<ReactionsMultiResourceDataDocument> 
      */
-    internal class func reactionsGetWithRequestBuilder(stats: Stats_reactionsGet? = nil, statsOnly: Bool? = nil, viewerContext: String? = nil, pageCursor: String? = nil, include: [String]? = nil, filterEmoji: [String]? = nil, filterSubject: String? = nil, filterSubjectId: [String]? = nil, filterSubjectType: [FilterSubjectType_reactionsGet]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
+    internal class func reactionsGetWithRequestBuilder(filterSubject: String, filterEmoji: [String]? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_reactionsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<ReactionsMultiResourceDataDocument> {
         let localVariablePath = "/reactions"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "stats": (wrappedValue: stats?.encodeToJSON(), isExplode: true),
-            "statsOnly": (wrappedValue: statsOnly?.encodeToJSON(), isExplode: true),
-            "viewerContext": (wrappedValue: viewerContext?.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "filter[subject]": (wrappedValue: filterSubject.encodeToJSON(), isExplode: true),
             "filter[emoji]": (wrappedValue: filterEmoji?.encodeToJSON(), isExplode: true),
-            "filter[subject]": (wrappedValue: filterSubject?.encodeToJSON(), isExplode: true),
-            "filter[subject.id]": (wrappedValue: filterSubjectId?.encodeToJSON(), isExplode: true),
-            "filter[subject.type]": (wrappedValue: filterSubjectType?.encodeToJSON(), isExplode: true),
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -124,7 +87,7 @@ internal class ReactionsAPI {
      Delete single reaction.
      
      - parameter id: (path) Reaction Id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -145,7 +108,7 @@ internal class ReactionsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Reaction Id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
     internal class func reactionsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
@@ -225,63 +188,6 @@ internal class ReactionsAPI {
     }
 
     /**
-     Get ownerProfiles relationship (\"to-many\").
-     
-     - parameter id: (path) Reaction Id 
-     - parameter include: (query) Include related resources. Available relationships: ownerProfiles (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: ReactionsOwnerProfilesMultiRelationshipDataDocument
-     */
-    @available(*, deprecated, message: "This operation is deprecated.")
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func reactionsIdRelationshipsOwnerProfilesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ReactionsOwnerProfilesMultiRelationshipDataDocument {
-        do {
-            return try await reactionsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Get ownerProfiles relationship (\"to-many\").
-     - GET /reactions/{id}/relationships/ownerProfiles
-     - Deprecated. Use author for attribution.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter id: (path) Reaction Id 
-     - parameter include: (query) Include related resources. Available relationships: ownerProfiles (optional)
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
-     - returns: RequestBuilder<ReactionsOwnerProfilesMultiRelationshipDataDocument> 
-     */
-    @available(*, deprecated, message: "This operation is deprecated.")
-    internal class func reactionsIdRelationshipsOwnerProfilesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ReactionsOwnerProfilesMultiRelationshipDataDocument> {
-        var localVariablePath = "/reactions/{id}/relationships/ownerProfiles"
-        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
-        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters: [String: Any]? = nil
-
-        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
-        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
-        ])
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            :
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<ReactionsOwnerProfilesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Reaction Id 
@@ -337,9 +243,64 @@ internal class ReactionsAPI {
     }
 
     /**
+     Get subject relationship (\"to-one\").
+     
+     - parameter id: (path) Reaction Id 
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.author.albums (optional)
+     - returns: ReactionsSubjectSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func reactionsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ReactionsSubjectSingleRelationshipDataDocument {
+        do {
+            return try await reactionsIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get subject relationship (\"to-one\").
+     - GET /reactions/{id}/relationships/subject
+     - Retrieves subject relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Reaction Id 
+     - parameter include: (query) Include related resources. Available relationships: subject (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject.author.albums (optional)
+     - returns: RequestBuilder<ReactionsSubjectSingleRelationshipDataDocument> 
+     */
+    internal class func reactionsIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ReactionsSubjectSingleRelationshipDataDocument> {
+        var localVariablePath = "/reactions/{id}/relationships/subject"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ReactionsSubjectSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Create single reaction.
      
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter reactionsCreateOperationPayload: (body)  (optional)
      - returns: ReactionsCreateSingleResourceDataDocument
      */
@@ -356,11 +317,11 @@ internal class ReactionsAPI {
     /**
      Create single reaction.
      - POST /reactions
-     - Creates a new reaction.
+     - Adds the caller's emoji reaction on a subject and exact time offsets. Omit both offsets for the whole subject, provide startOffset for a point, or both for a section. Offsets are supported only on source files and must be nonnegative, with endOffset at or after startOffset. Each user can add different emojis at the same position or section. Repeating the same emoji returns the existing reaction with its UUID and creation time unchanged.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter reactionsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<ReactionsCreateSingleResourceDataDocument> 
      */

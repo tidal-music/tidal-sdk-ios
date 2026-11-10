@@ -16,6 +16,7 @@ public struct FoldersUpdateOperationPayloadData: Codable, Hashable {
         case folders = "folders"
     }
     public var attributes: FoldersUpdateOperationPayloadDataAttributes
+    /** Also accepts `me`. */
     public var id: String
     public var type: ModelType
 

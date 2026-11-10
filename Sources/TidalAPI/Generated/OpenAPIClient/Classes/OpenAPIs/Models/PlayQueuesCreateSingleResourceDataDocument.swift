@@ -14,18 +14,22 @@ public struct PlayQueuesCreateSingleResourceDataDocument: Codable, Hashable {
 
     public var data: PlayQueuesResourceObject
     public var links: Links
+    public var meta: PlayQueuesCreateSingleResourceDataDocumentMeta?
 
     public init(
         data: PlayQueuesResourceObject,
-        links: Links
+        links: Links,
+        meta: PlayQueuesCreateSingleResourceDataDocumentMeta? = nil
     ) {
         self.data = data
         self.links = links
+        self.meta = meta
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case data
         case links
+        case meta
     }
 
     // Encodable protocol methods
@@ -34,5 +38,6 @@ public struct PlayQueuesCreateSingleResourceDataDocument: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(data, forKey: .data)
         try container.encode(links, forKey: .links)
+        try container.encodeIfPresent(meta, forKey: .meta)
     }
 }

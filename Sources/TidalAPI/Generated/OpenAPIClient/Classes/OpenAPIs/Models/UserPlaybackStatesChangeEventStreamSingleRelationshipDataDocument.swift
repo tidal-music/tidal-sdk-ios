@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;changeEventStreams&#x60;. */
 public struct UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument: Codable, Hashable {
 
     public var data: ResourceIdentifier?

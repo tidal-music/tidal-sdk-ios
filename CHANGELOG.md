@@ -14,6 +14,81 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - **Source-breaking:** `ProductType` has a new case, `TRACK_SOURCE_FILE`; exhaustive `switch`es over it need to handle it (Player)
 
+## [0.13.1] - 2026-11-09
+
+### Changed
+- Generated API code using spec version 1.10.239 (TidalAPI)
+
+## [0.13.0] - 2026-11-05
+
+### Added
+- Comment summaries and reaction summaries endpoints and models, plus related relationships on comments and track source files (TidalAPI)
+
+### Changed
+- Generated API code using spec version 1.10.224 (TidalAPI)
+
+### Removed
+- `CurrentUserReaction`, `ReactionStats`, and `ReactionsMultiResourceDataDocumentMeta` models, superseded by reaction summaries (TidalAPI)
+- `parentComment` relationship from comment creation payload (TidalAPI)
+
+## [0.12.19] - 2026-11-03
+
+### Changed
+- Generated API code using spec version 1.10.218 (TidalAPI)
+
+## [0.12.18] - 2026-10-28
+
+### Changed
+- Generated API code using spec version 1.10.217, including optional Square item publication during creation and folder subject sharing settings (TidalAPI)
+
+## [0.12.17] - 2026-10-28
+
+### Changed
+- Generated API code using spec version 1.10.214, including artwork libraries and resource sharing settings (TidalAPI)
+
+## [0.12.16] - 2026-10-27
+
+### Fixed
+- Preserve quoted media-type parameters so atomic Square item creation is accepted by the API (TidalAPI)
+
+## [0.12.15] - 2026-10-26
+
+### Changed
+- Generated API code using spec version 1.10.209, including Square variation artwork relationships (TidalAPI)
+
+## [0.12.14] - 2026-10-26
+
+### Changed
+- Generated API code using spec version 1.10.207 (TidalAPI)
+
+### Fixed
+- Handle artwork files without dimensions when selecting artwork for offline collections and downloads (Offliner)
+
+## [0.12.13] - 2026-10-26
+
+### Changed
+- Generated API code using spec version 1.10.207 (TidalAPI)
+
+## [0.12.12] - 2026-10-20
+
+### Changed
+- Generated API code using spec version 1.10.193 (TidalAPI)
+
+## [0.12.11] - 2026-10-20
+
+### Changed
+- Generated API code (TidalAPI)
+
+## [0.12.10] - 2026-10-16
+
+### Changed
+- Generated API code using spec version 1.10.182 (TidalAPI)
+
+## [0.12.9] - 2026-10-14
+
+### Changed
+- Generated API code (TidalAPI)
+
 ## [0.12.8] - 2026-10-01
 
 ### Changed

@@ -8,13 +8,14 @@ Method | HTTP request | Description
 [**clientsIdDelete**](ClientsAPI.md#clientsiddelete) | **DELETE** /clients/{id} | Delete single client.
 [**clientsIdGet**](ClientsAPI.md#clientsidget) | **GET** /clients/{id} | Get single client.
 [**clientsIdPatch**](ClientsAPI.md#clientsidpatch) | **PATCH** /clients/{id} | Update single client.
+[**clientsIdRelationshipsCertificatesGet**](ClientsAPI.md#clientsidrelationshipscertificatesget) | **GET** /clients/{id}/relationships/certificates | Get certificates relationship (\&quot;to-many\&quot;).
 [**clientsIdRelationshipsOwnersGet**](ClientsAPI.md#clientsidrelationshipsownersget) | **GET** /clients/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**clientsPost**](ClientsAPI.md#clientspost) | **POST** /clients | Create single client.
 
 
 # **clientsGet**
 ```swift
-    open class func clientsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_clientsGet]? = nil, completion: @escaping (_ data: ClientsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_clientsGet]? = nil) async throws -> ClientsMultiResourceDataDocument
 ```
 
 Get multiple clients.
@@ -26,20 +27,16 @@ Retrieves multiple clients by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: certificates, owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple clients.
-ClientsAPI.clientsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -47,8 +44,8 @@ ClientsAPI.clientsGet(filterOwnersId: filterOwnersId, include: include, includeL
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: certificates, owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
@@ -68,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdDelete**
 ```swift
-    open class func clientsIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func clientsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single client.
@@ -81,18 +78,14 @@ Deletes existing client.
 import OpenAPIClient
 
 let id = "id_example" // String | OAuth client identifier
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single client.
-ClientsAPI.clientsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -101,7 +94,7 @@ ClientsAPI.clientsIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | OAuth client identifier | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
 
 ### Return type
 
@@ -120,7 +113,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdGet**
 ```swift
-    open class func clientsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_clientsIdGet]? = nil, completion: @escaping (_ data: ClientsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_clientsIdGet]? = nil) async throws -> ClientsSingleResourceDataDocument
 ```
 
 Get single client.
@@ -133,19 +126,15 @@ Retrieves single client by id.
 import OpenAPIClient
 
 let id = "id_example" // String | OAuth client identifier
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: certificates, owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single client.
-ClientsAPI.clientsIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsIdGet(id: id, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -154,7 +143,7 @@ ClientsAPI.clientsIdGet(id: id, include: include, includeLinkage: includeLinkage
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | OAuth client identifier | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: certificates, owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
@@ -174,7 +163,7 @@ Name | Type | Description  | Notes
 
 # **clientsIdPatch**
 ```swift
-    open class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil, completion: @escaping (_ data: ClientsUpdateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsIdPatch(id: String, idempotencyKey: String? = nil, clientsUpdateOperationPayload: ClientsUpdateOperationPayload? = nil) async throws -> ClientsUpdateSingleResourceDataDocument
 ```
 
 Update single client.
@@ -187,19 +176,15 @@ Updates existing client.
 import OpenAPIClient
 
 let id = "id_example" // String | OAuth client identifier
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let clientsUpdateOperationPayload = ClientsUpdateOperation_Payload(data: ClientsUpdateOperation_Payload_Data(attributes: ClientsUpdateOperation_Payload_Data_Attributes(description: "description_example", name: "name_example", redirectUris: ["redirectUris_example"], scopes: ["scopes_example"]), id: "id_example", type: "type_example")) // ClientsUpdateOperationPayload |  (optional)
 
 // Update single client.
-ClientsAPI.clientsIdPatch(id: id, idempotencyKey: idempotencyKey, clientsUpdateOperationPayload: clientsUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsIdPatch(id: id, idempotencyKey: idempotencyKey, clientsUpdateOperationPayload: clientsUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -208,7 +193,7 @@ ClientsAPI.clientsIdPatch(id: id, idempotencyKey: idempotencyKey, clientsUpdateO
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | OAuth client identifier | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **clientsUpdateOperationPayload** | [**ClientsUpdateOperationPayload**](ClientsUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -226,9 +211,59 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **clientsIdRelationshipsCertificatesGet**
+```swift
+    open class func clientsIdRelationshipsCertificatesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ClientsCertificatesMultiRelationshipDataDocument
+```
+
+Get certificates relationship (\"to-many\").
+
+Retrieves certificates relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | OAuth client identifier
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: certificates (optional)
+let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+
+// Get certificates relationship (\"to-many\").
+do {
+    let response = try await ClientsAPI.clientsIdRelationshipsCertificatesGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | OAuth client identifier | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: certificates | [optional] 
+ **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+
+### Return type
+
+[**ClientsCertificatesMultiRelationshipDataDocument**](ClientsCertificatesMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **clientsIdRelationshipsOwnersGet**
 ```swift
-    open class func clientsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ClientsOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func clientsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ClientsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -245,15 +280,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-ClientsAPI.clientsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -282,7 +313,7 @@ Name | Type | Description  | Notes
 
 # **clientsPost**
 ```swift
-    open class func clientsPost(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil, completion: @escaping (_ data: ClientsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func clientsPost(idempotencyKey: String? = nil, clientsCreateOperationPayload: ClientsCreateOperationPayload? = nil) async throws -> ClientsCreateSingleResourceDataDocument
 ```
 
 Create single client.
@@ -294,19 +325,15 @@ Creates a new client.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let clientsCreateOperationPayload = ClientsCreateOperation_Payload(data: ClientsCreateOperation_Payload_Data(attributes: ClientsCreateOperation_Payload_Data_Attributes(description: "description_example", name: "name_example"), type: "type_example")) // ClientsCreateOperationPayload |  (optional)
 
 // Create single client.
-ClientsAPI.clientsPost(idempotencyKey: idempotencyKey, clientsCreateOperationPayload: clientsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ClientsAPI.clientsPost(idempotencyKey: idempotencyKey, clientsCreateOperationPayload: clientsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -314,7 +341,7 @@ ClientsAPI.clientsPost(idempotencyKey: idempotencyKey, clientsCreateOperationPay
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **clientsCreateOperationPayload** | [**ClientsCreateOperationPayload**](ClientsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

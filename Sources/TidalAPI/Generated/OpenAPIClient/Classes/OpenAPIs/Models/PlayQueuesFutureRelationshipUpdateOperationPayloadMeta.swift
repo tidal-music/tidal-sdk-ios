@@ -12,15 +12,23 @@ import AnyCodable
 
 public struct PlayQueuesFutureRelationshipUpdateOperationPayloadMeta: Codable, Hashable {
 
+    public enum Mode: String, Codable, CaseIterable {
+        case incremental = "INCREMENTAL"
+    }
+    /** Relationship mutation mode. INCREMENTAL updates selected existing entries without adding or removing memberships; REPLACE_ALL replaces the complete membership and its order where applicable. Omission defaults to INCREMENTAL. */
+    public var mode: Mode? = .incremental
     public var positionBefore: String
 
     public init(
+        mode: Mode? = .incremental,
         positionBefore: String
     ) {
+        self.mode = mode
         self.positionBefore = positionBefore
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case mode
         case positionBefore
     }
 
@@ -28,6 +36,7 @@ public struct PlayQueuesFutureRelationshipUpdateOperationPayloadMeta: Codable, H
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(mode, forKey: .mode)
         try container.encode(positionBefore, forKey: .positionBefore)
     }
 }

@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **stripeDashboardLinksGet**
 ```swift
-    open class func stripeDashboardLinksGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_stripeDashboardLinksGet]? = nil, completion: @escaping (_ data: StripeDashboardLinksMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func stripeDashboardLinksGet(filterOwnersId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_stripeDashboardLinksGet]? = nil) async throws -> StripeDashboardLinksMultiResourceDataDocument
 ```
 
 Get multiple stripeDashboardLinks.
@@ -22,20 +22,16 @@ Retrieves multiple stripeDashboardLinks by available filters, or without if appl
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterOwnersId = ["inner_example"] // [String] | User id. Use `me` for the authenticated user
+let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`.
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get multiple stripeDashboardLinks.
-StripeDashboardLinksAPI.stripeDashboardLinksGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await StripeDashboardLinksAPI.stripeDashboardLinksGet(filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -43,7 +39,7 @@ StripeDashboardLinksAPI.stripeDashboardLinksGet(filterOwnersId: filterOwnersId, 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterOwnersId** | [**[String]**](String.md) | User id. Use &#x60;me&#x60; for the authenticated user | 
+ **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
@@ -64,7 +60,7 @@ Name | Type | Description  | Notes
 
 # **stripeDashboardLinksIdRelationshipsOwnersGet**
 ```swift
-    open class func stripeDashboardLinksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: StripeDashboardLinksOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func stripeDashboardLinksIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> StripeDashboardLinksOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -81,15 +77,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-StripeDashboardLinksAPI.stripeDashboardLinksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await StripeDashboardLinksAPI.stripeDashboardLinksIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

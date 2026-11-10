@@ -12,17 +12,25 @@ import AnyCodable
 
 public struct AlbumsItemsRelationshipUpdateOperationPayloadMeta: Codable, Hashable {
 
+    public enum Mode: String, Codable, CaseIterable {
+        case incremental = "INCREMENTAL"
+    }
     public static let positionIndexRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
+    /** Relationship mutation mode. INCREMENTAL updates selected existing entries without adding or removing memberships; REPLACE_ALL replaces the complete membership and its order where applicable. Omission defaults to INCREMENTAL. */
+    public var mode: Mode? = .incremental
     /** 1-based index */
     public var positionIndex: Int
 
     public init(
+        mode: Mode? = .incremental,
         positionIndex: Int
     ) {
+        self.mode = mode
         self.positionIndex = positionIndex
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case mode
         case positionIndex
     }
 
@@ -30,6 +38,7 @@ public struct AlbumsItemsRelationshipUpdateOperationPayloadMeta: Codable, Hashab
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(mode, forKey: .mode)
         try container.encode(positionIndex, forKey: .positionIndex)
     }
 }

@@ -14,12 +14,19 @@ public struct TidalLyricsProvider: Codable, Hashable {
 
     public enum Source: String, Codable, CaseIterable {
         case tidal = "TIDAL"
-        case thirdParty = "THIRD_PARTY"
     }
     public var name: String?
-    public var source: Source?
+    public var source: Source
 
-    public enum CodingKeys: CodingKey, CaseIterable {
+    public init(
+        name: String? = nil,
+        source: Source
+    ) {
+        self.name = name
+        self.source = source
+    }
+
+    public enum CodingKeys: String, CodingKey, CaseIterable {
         case name
         case source
     }
@@ -29,6 +36,6 @@ public struct TidalLyricsProvider: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(name, forKey: .name)
-        try container.encodeIfPresent(source, forKey: .source)
+        try container.encode(source, forKey: .source)
     }
 }

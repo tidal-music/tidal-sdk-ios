@@ -79,7 +79,7 @@ internal class PlaylistGenerationSchedulesAPI {
      Delete single playlistGenerationSchedule.
      
      - parameter id: (path)  
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -100,7 +100,7 @@ internal class PlaylistGenerationSchedulesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path)  
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
     internal class func playlistGenerationSchedulesIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
@@ -193,7 +193,7 @@ internal class PlaylistGenerationSchedulesAPI {
      Update single playlistGenerationSchedule.
      
      - parameter id: (path)  
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationSchedulesUpdateOperationPayload: (body)  (optional)
      - returns: PlaylistGenerationSchedulesUpdateSingleResourceDataDocument
      */
@@ -215,7 +215,7 @@ internal class PlaylistGenerationSchedulesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path)  
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationSchedulesUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlaylistGenerationSchedulesUpdateSingleResourceDataDocument> 
      */
@@ -299,7 +299,7 @@ internal class PlaylistGenerationSchedulesAPI {
     /**
      Create single playlistGenerationSchedule.
      
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationSchedulesCreateOperationPayload: (body)  (optional)
      - returns: PlaylistGenerationSchedulesCreateSingleResourceDataDocument
      */
@@ -320,7 +320,7 @@ internal class PlaylistGenerationSchedulesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationSchedulesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlaylistGenerationSchedulesCreateSingleResourceDataDocument> 
      */

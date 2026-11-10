@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **artistBiographiesIdGet**
 ```swift
-    open class func artistBiographiesIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistBiographiesIdGet]? = nil, completion: @escaping (_ data: ArtistBiographiesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func artistBiographiesIdGet(id: String, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_artistBiographiesIdGet]? = nil) async throws -> ArtistBiographiesSingleResourceDataDocument
 ```
 
 Get single artistBiographie.
@@ -29,15 +29,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single artistBiographie.
-ArtistBiographiesAPI.artistBiographiesIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ArtistBiographiesAPI.artistBiographiesIdGet(id: id, countryCode: countryCode, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -67,7 +63,7 @@ Name | Type | Description  | Notes
 
 # **artistBiographiesIdPatch**
 ```swift
-    open class func artistBiographiesIdPatch(id: String, idempotencyKey: String? = nil, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func artistBiographiesIdPatch(id: String, idempotencyKey: String? = nil, artistBiographiesUpdateOperationPayload: ArtistBiographiesUpdateOperationPayload? = nil) async throws -> MutationResponseDocument
 ```
 
 Update single artistBiographie.
@@ -80,19 +76,15 @@ Updates existing artistBiographie.
 import OpenAPIClient
 
 let id = "id_example" // String | Artist biography id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let artistBiographiesUpdateOperationPayload = ArtistBiographiesUpdateOperation_Payload(data: ArtistBiographiesUpdateOperation_Payload_Data(attributes: ArtistBiographiesUpdateOperation_Payload_Data_Attributes(text: "text_example"), id: "id_example", type: "type_example")) // ArtistBiographiesUpdateOperationPayload |  (optional)
 
 // Update single artistBiographie.
-ArtistBiographiesAPI.artistBiographiesIdPatch(id: id, idempotencyKey: idempotencyKey, artistBiographiesUpdateOperationPayload: artistBiographiesUpdateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ArtistBiographiesAPI.artistBiographiesIdPatch(id: id, idempotencyKey: idempotencyKey, artistBiographiesUpdateOperationPayload: artistBiographiesUpdateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -101,7 +93,7 @@ ArtistBiographiesAPI.artistBiographiesIdPatch(id: id, idempotencyKey: idempotenc
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Artist biography id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **artistBiographiesUpdateOperationPayload** | [**ArtistBiographiesUpdateOperationPayload**](ArtistBiographiesUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -121,7 +113,7 @@ Name | Type | Description  | Notes
 
 # **artistBiographiesIdRelationshipsOwnersGet**
 ```swift
-    open class func artistBiographiesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: ArtistBiographiesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func artistBiographiesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ArtistBiographiesOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -138,15 +130,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-ArtistBiographiesAPI.artistBiographiesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ArtistBiographiesAPI.artistBiographiesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

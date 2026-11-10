@@ -13,40 +13,39 @@ import AnyCodable
 public struct ThirdPartyLyricsProvider: Codable, Hashable {
 
     public enum Source: String, Codable, CaseIterable {
-        case tidal = "TIDAL"
         case thirdParty = "THIRD_PARTY"
     }
-    public var name: String
-    public var source: Source?
     public var commonTrackId: String
     public var lyricsId: String
+    public var name: String
+    public var source: Source
 
     public init(
-        name: String,
-        source: Source? = nil,
         commonTrackId: String,
-        lyricsId: String
+        lyricsId: String,
+        name: String,
+        source: Source
     ) {
-        self.name = name
-        self.source = source
         self.commonTrackId = commonTrackId
         self.lyricsId = lyricsId
+        self.name = name
+        self.source = source
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
-        case name
-        case source
         case commonTrackId
         case lyricsId
+        case name
+        case source
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(name, forKey: .name)
-        try container.encodeIfPresent(source, forKey: .source)
         try container.encode(commonTrackId, forKey: .commonTrackId)
         try container.encode(lyricsId, forKey: .lyricsId)
+        try container.encode(name, forKey: .name)
+        try container.encode(source, forKey: .source)
     }
 }

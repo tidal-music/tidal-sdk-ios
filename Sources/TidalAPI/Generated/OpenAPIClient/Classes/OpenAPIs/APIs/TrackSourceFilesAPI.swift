@@ -16,21 +16,24 @@ internal class TrackSourceFilesAPI {
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_trackSourceFilesIdGet: String, CaseIterable {
+        case commentsummary = "commentSummary"
         case owners = "owners"
+        case reactionsummary = "reactionSummary"
     }
 
     /**
      Get single trackSourceFile.
      
      - parameter id: (path) Track source file id 
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: commentSummary, owners, reactionSummary (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TrackSourceFilesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
+    internal class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument {
         do {
-            return try await trackSourceFilesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage).execute().body
+            return try await trackSourceFilesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -44,12 +47,16 @@ internal class TrackSourceFilesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
      - parameter id: (path) Track source file id 
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: commentSummary, owners, reactionSummary (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TrackSourceFilesSingleResourceDataDocument> 
      */
-    internal class func trackSourceFilesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil) -> RequestBuilder<TrackSourceFilesSingleResourceDataDocument> {
+    internal class func trackSourceFilesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil, shareCode: String? = nil) -> RequestBuilder<TrackSourceFilesSingleResourceDataDocument> {
         var localVariablePath = "/trackSourceFiles/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -61,6 +68,7 @@ internal class TrackSourceFilesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -75,17 +83,73 @@ internal class TrackSourceFilesAPI {
     }
 
     /**
+     Get commentSummary relationship (\"to-one\").
+     
+     - parameter id: (path) Track source file id 
+     - parameter include: (query) Include related resources. Available relationships: commentSummary (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: TrackSourceFilesCommentSummarySingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func trackSourceFilesIdRelationshipsCommentSummaryGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesCommentSummarySingleRelationshipDataDocument {
+        do {
+            return try await trackSourceFilesIdRelationshipsCommentSummaryGetWithRequestBuilder(id: id, include: include, shareCode: shareCode).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get commentSummary relationship (\"to-one\").
+     - GET /trackSourceFiles/{id}/relationships/commentSummary
+     - Retrieves commentSummary relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Track source file id 
+     - parameter include: (query) Include related resources. Available relationships: commentSummary (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: RequestBuilder<TrackSourceFilesCommentSummarySingleRelationshipDataDocument> 
+     */
+    internal class func trackSourceFilesIdRelationshipsCommentSummaryGetWithRequestBuilder(id: String, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TrackSourceFilesCommentSummarySingleRelationshipDataDocument> {
+        var localVariablePath = "/trackSourceFiles/{id}/relationships/commentSummary"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TrackSourceFilesCommentSummarySingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Track source file id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TrackSourceFilesOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument {
+    internal class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument {
         do {
-            return try await trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+            return try await trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -102,9 +166,10 @@ internal class TrackSourceFilesAPI {
      - parameter id: (path) Track source file id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TrackSourceFilesOwnersMultiRelationshipDataDocument> 
      */
-    internal class func trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<TrackSourceFilesOwnersMultiRelationshipDataDocument> {
+    internal class func trackSourceFilesIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<TrackSourceFilesOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/trackSourceFiles/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -116,6 +181,7 @@ internal class TrackSourceFilesAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -130,9 +196,64 @@ internal class TrackSourceFilesAPI {
     }
 
     /**
+     Get reactionSummary relationship (\"to-one\").
+     
+     - parameter id: (path) Track source file id 
+     - parameter include: (query) Include related resources. Available relationships: reactionSummary (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: TrackSourceFilesReactionSummarySingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func trackSourceFilesIdRelationshipsReactionSummaryGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesReactionSummarySingleRelationshipDataDocument {
+        do {
+            return try await trackSourceFilesIdRelationshipsReactionSummaryGetWithRequestBuilder(id: id, include: include, shareCode: shareCode).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get reactionSummary relationship (\"to-one\").
+     - GET /trackSourceFiles/{id}/relationships/reactionSummary
+     - Retrieves reactionSummary relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Track source file id 
+     - parameter include: (query) Include related resources. Available relationships: reactionSummary (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: RequestBuilder<TrackSourceFilesReactionSummarySingleRelationshipDataDocument> 
+     */
+    internal class func trackSourceFilesIdRelationshipsReactionSummaryGetWithRequestBuilder(id: String, include: [String]? = nil, shareCode: String? = nil) -> RequestBuilder<TrackSourceFilesReactionSummarySingleRelationshipDataDocument> {
+        var localVariablePath = "/trackSourceFiles/{id}/relationships/reactionSummary"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TrackSourceFilesReactionSummarySingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Create single trackSourceFile.
      
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter trackSourceFilesCreateOperationPayload: (body)  (optional)
      - returns: TrackSourceFilesCreateSingleResourceDataDocument
      */
@@ -153,7 +274,7 @@ internal class TrackSourceFilesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter trackSourceFilesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<TrackSourceFilesCreateSingleResourceDataDocument> 
      */

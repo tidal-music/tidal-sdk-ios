@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Define the input and output directories
 input_dir="Config/input"
 output_dir="Generated"
@@ -70,10 +72,13 @@ rm -rf "$output_dir"/*
 mkdir -p "$output_dir"
 
 # Step 4: Loop through all JSON files in the input folder
+prepared_spec=$(mktemp -d)
+trap 'rm -rf "$prepared_spec"' EXIT
 for json_file in "$input_dir"/*.json; do
   echo "Generating Swift code for $(basename "$json_file")"
+  python3 Config/prepare_spec.py "$json_file" "$prepared_spec/spec.json"
   openapi-generator generate \
-    -i "$json_file" \
+    -i "$prepared_spec/spec.json" \
     -g swift5 \
     -o "$output_dir" \
     -c Config/openapi-config.yml \

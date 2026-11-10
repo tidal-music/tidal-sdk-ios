@@ -3,9 +3,11 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**backgroundColor** | **String** | Artist profile background colour override | [optional] 
 **contributionsEnabled** | **Bool** | Is the artist enabled for contributions? | [optional] 
 **contributionsSalesPitch** | **String** | Contributions sales pitch | [optional] 
 **externalLinks** | [ExternalLink] | Artist links external to TIDAL API | [optional] 
+**foregroundColor** | **String** | Artist profile foreground colour override | [optional] 
 **handle** | **String** | Artist handle | [optional] 
 **name** | **String** | Artist name | 
 **numberOfFollowers** | **Int** | Number of users in the followers relationship | [optional] 

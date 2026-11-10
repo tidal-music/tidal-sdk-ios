@@ -136,9 +136,9 @@ public enum UserCollectionFoldersAPITidal {
      
      - returns: UserCollectionFoldersItemsMultiRelationshipDataDocument
      */
-	public static func userCollectionFoldersIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, sort: [UserCollectionFoldersAPITidal.Sort_userCollectionFoldersIdRelationshipsItemsGet]? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserCollectionFoldersItemsMultiRelationshipDataDocument {
+	public static func userCollectionFoldersIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, sort: [UserCollectionFoldersAPITidal.Sort_userCollectionFoldersIdRelationshipsItemsGet]? = nil) async throws -> UserCollectionFoldersItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, sort: sort?.compactMap { $0.toUserCollectionFoldersAPIEnum() }, include: include, replaceMedia: replaceMedia)
+			UserCollectionFoldersAPI.userCollectionFoldersIdRelationshipsItemsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, sort: sort?.compactMap { $0.toUserCollectionFoldersAPIEnum() })
 		}
 	}
 

@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **priceConfigurationsGet**
 ```swift
-    open class func priceConfigurationsGet(filterId: [String], completion: @escaping (_ data: PriceConfigurationsMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func priceConfigurationsGet(filterId: [String]) async throws -> PriceConfigurationsMultiResourceDataDocument
 ```
 
 Get multiple priceConfigurations.
@@ -26,15 +26,11 @@ import OpenAPIClient
 let filterId = ["inner_example"] // [String] | List of price configurations IDs (e.g. `cHJpY2UtY29uZmlnLTEyMzpVUw`)
 
 // Get multiple priceConfigurations.
-PriceConfigurationsAPI.priceConfigurationsGet(filterId: filterId) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PriceConfigurationsAPI.priceConfigurationsGet(filterId: filterId)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -61,7 +57,7 @@ Name | Type | Description  | Notes
 
 # **priceConfigurationsIdGet**
 ```swift
-    open class func priceConfigurationsIdGet(id: String, completion: @escaping (_ data: PriceConfigurationsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func priceConfigurationsIdGet(id: String) async throws -> PriceConfigurationsSingleResourceDataDocument
 ```
 
 Get single priceConfiguration.
@@ -76,15 +72,11 @@ import OpenAPIClient
 let id = "id_example" // String | Price configuration id
 
 // Get single priceConfiguration.
-PriceConfigurationsAPI.priceConfigurationsIdGet(id: id) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PriceConfigurationsAPI.priceConfigurationsIdGet(id: id)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -111,7 +103,7 @@ Name | Type | Description  | Notes
 
 # **priceConfigurationsPost**
 ```swift
-    open class func priceConfigurationsPost(idempotencyKey: String? = nil, priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil, completion: @escaping (_ data: PriceConfigurationsCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func priceConfigurationsPost(idempotencyKey: String? = nil, priceConfigurationsCreateOperationPayload: PriceConfigurationsCreateOperationPayload? = nil) async throws -> PriceConfigurationsCreateSingleResourceDataDocument
 ```
 
 Create single priceConfiguration.
@@ -123,19 +115,15 @@ Creates a new priceConfiguration.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let priceConfigurationsCreateOperationPayload = PriceConfigurationsCreateOperation_Payload(data: PriceConfigurationsCreateOperation_Payload_Data(attributes: PriceConfigurationsCreateOperation_Payload_Data_Attributes(currency: "currency_example", price: "price_example"), relationships: PriceConfigurationsCreateOperation_Payload_Data_Relationships(subjects: PriceConfigurationsCreateOperation_Payload_Data_Relationships_Subjects(data: [PriceConfigurationsCreateOperation_Payload_Subjects(id: "id_example", type: "type_example")])), type: "type_example")) // PriceConfigurationsCreateOperationPayload |  (optional)
 
 // Create single priceConfiguration.
-PriceConfigurationsAPI.priceConfigurationsPost(idempotencyKey: idempotencyKey, priceConfigurationsCreateOperationPayload: priceConfigurationsCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await PriceConfigurationsAPI.priceConfigurationsPost(idempotencyKey: idempotencyKey, priceConfigurationsCreateOperationPayload: priceConfigurationsCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -143,7 +131,7 @@ PriceConfigurationsAPI.priceConfigurationsPost(idempotencyKey: idempotencyKey, p
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **priceConfigurationsCreateOperationPayload** | [**PriceConfigurationsCreateOperationPayload**](PriceConfigurationsCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

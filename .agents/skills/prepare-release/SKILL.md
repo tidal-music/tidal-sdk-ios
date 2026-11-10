@@ -79,6 +79,8 @@ The scripts that drive this live alongside the skill in [`scripts/`](scripts/) a
 
    Once the PR is merged into `main`, `trigger-releases.yml` detects the bump, runs lint + unit tests, and `create-release.yml` opens a **draft** GitHub Release tagged `X.Y.Z`. Edit the draft on GitHub and publish when ready.
 
+   If a release run fails, land the fix and manually run `trigger-releases.yml` on `main` to retry the current `version.txt` without another bump. The retry still requires lint and unit tests to pass; manual runs on other branches are skipped.
+
 ## Common pitfalls
 
 - **Editing `Sources/TidalAPI/Generated/**` by hand**. Don't — regenerate with `make api-generate` (or `Sources/TidalAPI/generate_and_clean.sh`) and include the regen as a `### Changed` entry.

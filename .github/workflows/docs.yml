@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-docs:
-    runs-on: macos-14
+    runs-on: macos-15
     name: Build documentation
     steps:
       - uses: actions/checkout@v4

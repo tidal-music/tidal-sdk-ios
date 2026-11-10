@@ -34,9 +34,21 @@ public enum SharesAPITidal {
      
      - returns: SharesMultiResourceDataDocument
      */
-	public static func sharesGet(filterCode: [String], include: [String]? = nil, includeLinkage: [SharesAPITidal.IncludeLinkage_sharesGet]? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
+	public static func sharesGet(filterCode: [String]? = nil, filterSelfAppliesTo: String? = nil, include: [String]? = nil, includeLinkage: [SharesAPITidal.IncludeLinkage_sharesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesGetWithRequestBuilder(filterCode: filterCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSharesAPIEnum() }, replaceMedia: replaceMedia)
+			SharesAPI.sharesGetWithRequestBuilder(filterCode: filterCode, filterSelfAppliesTo: filterSelfAppliesTo, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSharesAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Delete single share.
+     
+     - returns: MutationResponseDocument
+     */
+	public static func sharesIdDelete(id: String, idempotencyKey: String? = nil, revokeGrants: Bool? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			SharesAPI.sharesIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, revokeGrants: revokeGrants)
 		}
 	}
 
@@ -69,6 +81,18 @@ public enum SharesAPITidal {
 
 
 	/**
+     Update single share.
+     
+     - returns: SharesUpdateSingleResourceDataDocument
+     */
+	public static func sharesIdPatch(id: String, idempotencyKey: String? = nil, sharesUpdateOperationPayload: SharesUpdateOperationPayload? = nil) async throws -> SharesUpdateSingleResourceDataDocument {
+		return try await RequestHelper.createRequest {
+			SharesAPI.sharesIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, sharesUpdateOperationPayload: sharesUpdateOperationPayload)
+		}
+	}
+
+
+	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: SharesOwnersMultiRelationshipDataDocument
@@ -85,9 +109,9 @@ public enum SharesAPITidal {
      
      - returns: SharesSharedResourcesMultiRelationshipDataDocument
      */
-	public static func sharesIdRelationshipsSharedResourcesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> SharesSharedResourcesMultiRelationshipDataDocument {
+	public static func sharesIdRelationshipsSharedResourcesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SharesSharedResourcesMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SharesAPI.sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia)
+			SharesAPI.sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 

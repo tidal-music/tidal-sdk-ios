@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **trackFilesIdGet**
 ```swift
-    open class func trackFilesIdGet(id: String, formats: [Formats_trackFilesIdGet], usage: Usage_trackFilesIdGet, completion: @escaping (_ data: TrackFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackFilesIdGet(formats: [Formats_trackFilesIdGet], id: String, usage: Usage_trackFilesIdGet) async throws -> TrackFilesSingleResourceDataDocument
 ```
 
 Get single trackFile.
@@ -21,20 +21,16 @@ Retrieves single trackFile by id.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let id = "id_example" // String | Track file id
 let formats = ["formats_example"] // [String] | 
+let id = "id_example" // String | Track file id
 let usage = "usage_example" // String | 
 
 // Get single trackFile.
-TrackFilesAPI.trackFilesIdGet(id: id, formats: formats, usage: usage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TrackFilesAPI.trackFilesIdGet(formats: formats, id: id, usage: usage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -42,8 +38,8 @@ TrackFilesAPI.trackFilesIdGet(id: id, formats: formats, usage: usage) { (respons
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **String** | Track file id | 
  **formats** | [**[String]**](String.md) |  | 
+ **id** | **String** | Track file id | 
  **usage** | **String** |  | 
 
 ### Return type

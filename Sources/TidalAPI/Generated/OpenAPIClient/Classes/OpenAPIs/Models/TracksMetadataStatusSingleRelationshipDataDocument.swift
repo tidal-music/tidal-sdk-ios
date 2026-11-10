@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;tracksMetadataStatus&#x60;. */
 public struct TracksMetadataStatusSingleRelationshipDataDocument: Codable, Hashable {
 
     public var data: ResourceIdentifier?

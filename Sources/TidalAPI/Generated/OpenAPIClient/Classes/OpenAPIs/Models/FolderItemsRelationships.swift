@@ -12,23 +12,31 @@ import AnyCodable
 
 public struct FolderItemsRelationships: Codable, Hashable {
 
+    public var breadcrumb: FolderItemsBreadcrumbMultiRelationshipDataDocument?
     public var owners: FolderItemsOwnersMultiRelationshipDataDocument?
     public var parent: FolderItemsParentSingleRelationshipDataDocument?
+    public var sharingSummary: FolderItemsSharingSummarySingleRelationshipDataDocument?
     public var subject: FolderItemsSubjectSingleRelationshipDataDocument?
 
     public init(
+        breadcrumb: FolderItemsBreadcrumbMultiRelationshipDataDocument? = nil,
         owners: FolderItemsOwnersMultiRelationshipDataDocument? = nil,
         parent: FolderItemsParentSingleRelationshipDataDocument? = nil,
+        sharingSummary: FolderItemsSharingSummarySingleRelationshipDataDocument? = nil,
         subject: FolderItemsSubjectSingleRelationshipDataDocument? = nil
     ) {
+        self.breadcrumb = breadcrumb
         self.owners = owners
         self.parent = parent
+        self.sharingSummary = sharingSummary
         self.subject = subject
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case breadcrumb
         case owners
         case parent
+        case sharingSummary
         case subject
     }
 
@@ -36,8 +44,10 @@ public struct FolderItemsRelationships: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(breadcrumb, forKey: .breadcrumb)
         try container.encodeIfPresent(owners, forKey: .owners)
         try container.encodeIfPresent(parent, forKey: .parent)
+        try container.encodeIfPresent(sharingSummary, forKey: .sharingSummary)
         try container.encodeIfPresent(subject, forKey: .subject)
     }
 }

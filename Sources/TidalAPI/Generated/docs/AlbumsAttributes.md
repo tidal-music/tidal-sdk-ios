@@ -17,6 +17,7 @@ Name | Type | Description | Notes
 **numberOfItems** | **Int** | Number of items in album | 
 **numberOfVolumes** | **Int** | Number of volumes | 
 **popularity** | **Double** | Popularity (0.0 - 1.0) | 
+**published** | **Bool** | Whether the album is published and available to everyone. Present only for uploaded albums. | [optional] 
 **releaseDate** | **Date** | Release date (ISO-8601) | [optional] 
 **title** | **String** | Album title | 
 **type** | **String** | Album type. Deprecated: use &#39;albumType&#39; instead. This field will be removed in a future version. | [optional] 

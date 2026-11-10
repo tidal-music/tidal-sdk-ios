@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;playQueues&#x60;. */
 public struct UserPlaybackStatesPlayQueueSingleRelationshipDataDocument: Codable, Hashable {
 
     public var data: ResourceIdentifier?

@@ -13,6 +13,14 @@ import AnyCodable
 internal class PlaylistGenerationsAPI {
 
     /**
+     * enum for parameter generationView
+     */
+    public enum GenerationView_playlistGenerationsGet: String, CaseIterable {
+        case current = "CURRENT"
+        case latest = "LATEST"
+    }
+
+    /**
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_playlistGenerationsGet: String, CaseIterable {
@@ -25,15 +33,16 @@ internal class PlaylistGenerationsAPI {
      Get multiple playlistGenerations.
      
      - parameter filterPlaylistId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) 
+     - parameter generationView: (query) CURRENT selects the committed generation. LATEST selects the newest accepted attempt, regardless of status. New values may be added at any time. (optional, default to .current)
      - parameter include: (query) Include related resources. Available relationships: baseGeneration, playlist, trackPreferences (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: baseGeneration.trackPreferences (optional)
      - returns: PlaylistGenerationsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistGenerationsGet(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsMultiResourceDataDocument {
+    internal class func playlistGenerationsGet(filterPlaylistId: [String], generationView: GenerationView_playlistGenerationsGet? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsMultiResourceDataDocument {
         do {
-            return try await playlistGenerationsGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+            return try await playlistGenerationsGetWithRequestBuilder(filterPlaylistId: filterPlaylistId, generationView: generationView, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -48,12 +57,13 @@ internal class PlaylistGenerationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter filterPlaylistId: (query) Playlist id (e.g. &#x60;550e8400-e29b-41d4-a716-446655440000&#x60;) 
+     - parameter generationView: (query) CURRENT selects the committed generation. LATEST selects the newest accepted attempt, regardless of status. New values may be added at any time. (optional, default to .current)
      - parameter include: (query) Include related resources. Available relationships: baseGeneration, playlist, trackPreferences (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: baseGeneration.trackPreferences (optional)
      - returns: RequestBuilder<PlaylistGenerationsMultiResourceDataDocument> 
      */
-    internal class func playlistGenerationsGetWithRequestBuilder(filterPlaylistId: [String], include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationsMultiResourceDataDocument> {
+    internal class func playlistGenerationsGetWithRequestBuilder(filterPlaylistId: [String], generationView: GenerationView_playlistGenerationsGet? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_playlistGenerationsGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationsMultiResourceDataDocument> {
         let localVariablePath = "/playlistGenerations"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -61,6 +71,7 @@ internal class PlaylistGenerationsAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "filter[playlist.id]": (wrappedValue: filterPlaylistId.encodeToJSON(), isExplode: true),
+            "generationView": (wrappedValue: generationView?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
@@ -258,7 +269,7 @@ internal class PlaylistGenerationsAPI {
      Delete from trackPreferences relationship (\"to-many\").
      
      - parameter id: (path) Playlist generation id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: MutationResponseDocument
      */
@@ -280,7 +291,7 @@ internal class PlaylistGenerationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist generation id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationsTrackPreferencesRelationshipRemoveOperationPayload: (body)  (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
@@ -310,15 +321,15 @@ internal class PlaylistGenerationsAPI {
      Get trackPreferences relationship (\"to-many\").
      
      - parameter id: (path) Playlist generation id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: trackPreferences (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: trackPreferences (optional)
      - returns: PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func playlistGenerationsIdRelationshipsTrackPreferencesGet(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument {
+    internal class func playlistGenerationsIdRelationshipsTrackPreferencesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument {
         do {
-            return try await playlistGenerationsIdRelationshipsTrackPreferencesGetWithRequestBuilder(id: id, pageCursor: pageCursor, include: include, replaceMedia: replaceMedia).execute().body
+            return try await playlistGenerationsIdRelationshipsTrackPreferencesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -333,12 +344,12 @@ internal class PlaylistGenerationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist generation id 
-     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter include: (query) Include related resources. Available relationships: trackPreferences (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: trackPreferences (optional)
      - returns: RequestBuilder<PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument> 
      */
-    internal class func playlistGenerationsIdRelationshipsTrackPreferencesGetWithRequestBuilder(id: String, pageCursor: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument> {
+    internal class func playlistGenerationsIdRelationshipsTrackPreferencesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument> {
         var localVariablePath = "/playlistGenerations/{id}/relationships/trackPreferences"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -348,8 +359,8 @@ internal class PlaylistGenerationsAPI {
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
         ])
 
@@ -368,7 +379,7 @@ internal class PlaylistGenerationsAPI {
      Update trackPreferences relationship (\"to-many\").
      
      - parameter id: (path) Playlist generation id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: PlaylistGenerationsTrackPreferencesUpdateMultiRelationshipDataDocument
      */
@@ -385,12 +396,12 @@ internal class PlaylistGenerationsAPI {
     /**
      Update trackPreferences relationship (\"to-many\").
      - PATCH /playlistGenerations/{id}/relationships/trackPreferences
-     - Updates feedback for one existing track preference, leaving other entries unchanged. A missing entry returns 409. Returns the complete preference snapshot. Requires the current meta.preferenceVersion as meta.expectedPreferenceVersion; stale versions return 409.
+     - Incrementally updates feedback for one existing track preference, leaving other entries unchanged. Empty data is rejected; a missing entry returns 409. Returns the complete preference snapshot. Requires the current meta.preferenceVersion as meta.expectedPreferenceVersion; stale versions return 409.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist generation id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationsTrackPreferencesRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlaylistGenerationsTrackPreferencesUpdateMultiRelationshipDataDocument> 
      */
@@ -420,7 +431,7 @@ internal class PlaylistGenerationsAPI {
      Add to trackPreferences relationship (\"to-many\").
      
      - parameter id: (path) Playlist generation id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationsTrackPreferencesRelationshipAddOperationPayload: (body)  (optional)
      - returns: PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocument
      */
@@ -442,7 +453,7 @@ internal class PlaylistGenerationsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Playlist generation id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationsTrackPreferencesRelationshipAddOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlaylistGenerationsTrackPreferencesAddMultiRelationshipDataDocument> 
      */
@@ -471,7 +482,7 @@ internal class PlaylistGenerationsAPI {
     /**
      Create single playlistGeneration.
      
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationsCreateOperationPayload: (body)  (optional)
      - returns: PlaylistGenerationsCreateSingleResourceDataDocument
      */
@@ -492,7 +503,7 @@ internal class PlaylistGenerationsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter playlistGenerationsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<PlaylistGenerationsCreateSingleResourceDataDocument> 
      */

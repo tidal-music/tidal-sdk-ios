@@ -49,9 +49,9 @@ public enum SearchSuggestionsAPITidal {
      
      - returns: SearchSuggestionsMultiResourceDataDocument
      */
-	public static func searchSuggestionsGet(filterQuery: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsGet? = nil, countryCode: String? = nil, include: [String]? = nil, includeLinkage: [SearchSuggestionsAPITidal.IncludeLinkage_searchSuggestionsGet]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument {
+	public static func searchSuggestionsGet(filterQuery: String, countryCode: String? = nil, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsGet? = nil, include: [String]? = nil, includeLinkage: [SearchSuggestionsAPITidal.IncludeLinkage_searchSuggestionsGet]? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchSuggestionsAPI.searchSuggestionsGetWithRequestBuilder(filterQuery: filterQuery, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, includeLinkage: includeLinkage?.compactMap { $0.toSearchSuggestionsAPIEnum() }, replaceMedia: replaceMedia)
+			SearchSuggestionsAPI.searchSuggestionsGetWithRequestBuilder(filterQuery: filterQuery, countryCode: countryCode, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), include: include, includeLinkage: includeLinkage?.compactMap { $0.toSearchSuggestionsAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -76,9 +76,9 @@ public enum SearchSuggestionsAPITidal {
      
      - returns: SearchSuggestionsDirectHitsMultiRelationshipDataDocument
      */
-	public static func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsDirectHitsMultiRelationshipDataDocument {
+	public static func searchSuggestionsIdRelationshipsDirectHitsGet(id: String, countryCode: String? = nil, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdRelationshipsDirectHitsGet? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SearchSuggestionsDirectHitsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsDirectHitsGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -103,9 +103,9 @@ public enum SearchSuggestionsAPITidal {
      
      - returns: SearchSuggestionsHistoryMultiRelationshipDataDocument
      */
-	public static func searchSuggestionsIdRelationshipsHistoryGet(id: String, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsHistoryMultiRelationshipDataDocument {
+	public static func searchSuggestionsIdRelationshipsHistoryGet(id: String, countryCode: String? = nil, explicitFilter: SearchSuggestionsAPITidal.ExplicitFilter_searchSuggestionsIdRelationshipsHistoryGet? = nil, include: [String]? = nil, pageCursor: String? = nil) async throws -> SearchSuggestionsHistoryMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsHistoryGetWithRequestBuilder(id: id, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), countryCode: countryCode, include: include, pageCursor: pageCursor)
+			SearchSuggestionsAPI.searchSuggestionsIdRelationshipsHistoryGetWithRequestBuilder(id: id, countryCode: countryCode, explicitFilter: explicitFilter?.toSearchSuggestionsAPIEnum(), include: include, pageCursor: pageCursor)
 		}
 	}
 }

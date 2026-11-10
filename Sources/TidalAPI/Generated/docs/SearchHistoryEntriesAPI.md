@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **searchHistoryEntriesIdDelete**
 ```swift
-    open class func searchHistoryEntriesIdDelete(id: String, idempotencyKey: String? = nil, completion: @escaping (_ data: MutationResponseDocument?, _ error: Error?) -> Void)
+    open class func searchHistoryEntriesIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single searchHistoryEntrie.
@@ -22,18 +22,14 @@ Deletes existing searchHistoryEntrie.
 import OpenAPIClient
 
 let id = "id_example" // String | Canonical opaque identifier for a user's exact saved history query.
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 
 // Delete single searchHistoryEntrie.
-SearchHistoryEntriesAPI.searchHistoryEntriesIdDelete(id: id, idempotencyKey: idempotencyKey) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await SearchHistoryEntriesAPI.searchHistoryEntriesIdDelete(id: id, idempotencyKey: idempotencyKey)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -42,7 +38,7 @@ SearchHistoryEntriesAPI.searchHistoryEntriesIdDelete(id: id, idempotencyKey: ide
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Canonical opaque identifier for a user&#39;s exact saved history query. | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
 
 ### Return type
 

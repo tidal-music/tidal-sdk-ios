@@ -34,9 +34,9 @@ public enum ProviderProductInfosAPITidal {
      
      - returns: ProviderProductInfosMultiResourceDataDocument
      */
-	public static func providerProductInfosGet(filterProviderId: [String], countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil, includeLinkage: [ProviderProductInfosAPITidal.IncludeLinkage_providerProductInfosGet]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
+	public static func providerProductInfosGet(filterProviderId: [String], countryCode: String? = nil, filterBarcodeId: [String]? = nil, filterGrid: [String]? = nil, include: [String]? = nil, includeLinkage: [ProviderProductInfosAPITidal.IncludeLinkage_providerProductInfosGet]? = nil, replaceMedia: String? = nil) async throws -> ProviderProductInfosMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ProviderProductInfosAPI.providerProductInfosGetWithRequestBuilder(filterProviderId: filterProviderId, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterGrid: filterGrid, includeLinkage: includeLinkage?.compactMap { $0.toProviderProductInfosAPIEnum() }, replaceMedia: replaceMedia)
+			ProviderProductInfosAPI.providerProductInfosGetWithRequestBuilder(filterProviderId: filterProviderId, countryCode: countryCode, filterBarcodeId: filterBarcodeId, filterGrid: filterGrid, include: include, includeLinkage: includeLinkage?.compactMap { $0.toProviderProductInfosAPIEnum() }, replaceMedia: replaceMedia)
 		}
 	}
 

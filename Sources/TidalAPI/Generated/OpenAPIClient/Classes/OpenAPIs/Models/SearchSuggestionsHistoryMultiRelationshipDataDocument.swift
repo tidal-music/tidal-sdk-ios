@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;searchHistoryEntries&#x60;. */
 public struct SearchSuggestionsHistoryMultiRelationshipDataDocument: Codable, Hashable {
 
     public var data: [ResourceIdentifier]?

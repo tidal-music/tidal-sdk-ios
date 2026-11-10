@@ -16,14 +16,15 @@ internal class ClientsAPI {
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_clientsGet: String, CaseIterable {
+        case certificates = "certificates"
         case owners = "owners"
     }
 
     /**
      Get multiple clients.
      
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
+     - parameter include: (query) Include related resources. Available relationships: certificates, owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: ClientsMultiResourceDataDocument
      */
@@ -44,8 +45,8 @@ internal class ClientsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterOwnersId: (query) User id. Use &#x60;me&#x60; for the authenticated user 
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. 
+     - parameter include: (query) Include related resources. Available relationships: certificates, owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<ClientsMultiResourceDataDocument> 
      */
@@ -76,7 +77,7 @@ internal class ClientsAPI {
      Delete single client.
      
      - parameter id: (path) OAuth client identifier 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -97,7 +98,7 @@ internal class ClientsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) OAuth client identifier 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
     internal class func clientsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
@@ -125,6 +126,7 @@ internal class ClientsAPI {
      * enum for parameter includeLinkage
      */
     public enum IncludeLinkage_clientsIdGet: String, CaseIterable {
+        case certificates = "certificates"
         case owners = "owners"
     }
 
@@ -132,7 +134,7 @@ internal class ClientsAPI {
      Get single client.
      
      - parameter id: (path) OAuth client identifier 
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: certificates, owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: ClientsSingleResourceDataDocument
      */
@@ -154,7 +156,7 @@ internal class ClientsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) OAuth client identifier 
-     - parameter include: (query) Include related resources. Available relationships: owners (optional)
+     - parameter include: (query) Include related resources. Available relationships: certificates, owners (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<ClientsSingleResourceDataDocument> 
      */
@@ -187,7 +189,7 @@ internal class ClientsAPI {
      Update single client.
      
      - parameter id: (path) OAuth client identifier 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter clientsUpdateOperationPayload: (body)  (optional)
      - returns: ClientsUpdateSingleResourceDataDocument
      */
@@ -209,7 +211,7 @@ internal class ClientsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) OAuth client identifier 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter clientsUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<ClientsUpdateSingleResourceDataDocument> 
      */
@@ -233,6 +235,61 @@ internal class ClientsAPI {
         let localVariableRequestBuilder: RequestBuilder<ClientsUpdateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get certificates relationship (\"to-many\").
+     
+     - parameter id: (path) OAuth client identifier 
+     - parameter include: (query) Include related resources. Available relationships: certificates (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: ClientsCertificatesMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func clientsIdRelationshipsCertificatesGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> ClientsCertificatesMultiRelationshipDataDocument {
+        do {
+            return try await clientsIdRelationshipsCertificatesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get certificates relationship (\"to-many\").
+     - GET /clients/{id}/relationships/certificates
+     - Retrieves certificates relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) OAuth client identifier 
+     - parameter include: (query) Include related resources. Available relationships: certificates (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - returns: RequestBuilder<ClientsCertificatesMultiRelationshipDataDocument> 
+     */
+    internal class func clientsIdRelationshipsCertificatesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<ClientsCertificatesMultiRelationshipDataDocument> {
+        var localVariablePath = "/clients/{id}/relationships/certificates"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ClientsCertificatesMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**
@@ -293,7 +350,7 @@ internal class ClientsAPI {
     /**
      Create single client.
      
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter clientsCreateOperationPayload: (body)  (optional)
      - returns: ClientsCreateSingleResourceDataDocument
      */
@@ -314,7 +371,7 @@ internal class ClientsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
      - parameter clientsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<ClientsCreateSingleResourceDataDocument> 
      */

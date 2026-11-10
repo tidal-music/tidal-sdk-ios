@@ -10,6 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Target resource types: &#x60;albums&#x60;, &#x60;playlists&#x60;, &#x60;tracks&#x60;, &#x60;userCollectionTracks&#x60;, &#x60;videos&#x60;. */
 public struct OfflineTasksItemSingleRelationshipDataDocument: Codable, Hashable {
 
     public var data: OfflineTasksItemResourceIdentifier?

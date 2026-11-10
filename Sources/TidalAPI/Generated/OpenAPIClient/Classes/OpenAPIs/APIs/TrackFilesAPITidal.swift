@@ -55,9 +55,9 @@ public enum TrackFilesAPITidal {
      
      - returns: TrackFilesSingleResourceDataDocument
      */
-	public static func trackFilesIdGet(id: String, formats: [TrackFilesAPITidal.Formats_trackFilesIdGet], usage: TrackFilesAPITidal.Usage_trackFilesIdGet) async throws -> TrackFilesSingleResourceDataDocument {
+	public static func trackFilesIdGet(formats: [TrackFilesAPITidal.Formats_trackFilesIdGet], id: String, usage: TrackFilesAPITidal.Usage_trackFilesIdGet) async throws -> TrackFilesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			TrackFilesAPI.trackFilesIdGetWithRequestBuilder(id: id, formats: formats.compactMap { $0.toTrackFilesAPIEnum() }, usage: usage.toTrackFilesAPIEnum())
+			TrackFilesAPI.trackFilesIdGetWithRequestBuilder(formats: formats.compactMap { $0.toTrackFilesAPIEnum() }, id: id, usage: usage.toTrackFilesAPIEnum())
 		}
 	}
 }

@@ -29,9 +29,9 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
     public var role: String?
     public var selectedAlbums: [String]?
     public var selectedSingles: [String]?
-    public var socialLink: LinkObject?
+    public var socialLink: ManualArtistClaimsExternalLink?
     public var upcs: [String]?
-    public var websiteOrSocialLink: LinkObject
+    public var websiteOrSocialLink: ManualArtistClaimsExternalLink
 
     public init(
         acceptedTerms: Bool? = nil,
@@ -48,9 +48,9 @@ public struct ManualArtistClaimsCreateOperationPayloadDataAttributes: Codable, H
         role: String? = nil,
         selectedAlbums: [String]? = nil,
         selectedSingles: [String]? = nil,
-        socialLink: LinkObject? = nil,
+        socialLink: ManualArtistClaimsExternalLink? = nil,
         upcs: [String]? = nil,
-        websiteOrSocialLink: LinkObject
+        websiteOrSocialLink: ManualArtistClaimsExternalLink
     ) {
         self.acceptedTerms = acceptedTerms
         self.artistId = artistId

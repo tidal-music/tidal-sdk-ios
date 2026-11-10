@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | **AnyCodable** |  | [optional] 
+**attributes** | [**FolderItemsAttributes**](FolderItemsAttributes.md) |  | [optional] 
 **id** | **String** | Resource id | 
 **relationships** | [**FolderItemsRelationships**](FolderItemsRelationships.md) |  | [optional] 
 **type** | **String** | Resource type | 

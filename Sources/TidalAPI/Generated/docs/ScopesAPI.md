@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **scopesGet**
 ```swift
-    open class func scopesGet(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet], completion: @escaping (_ data: ScopesMultiResourceDataDocument?, _ error: Error?) -> Void)
+    open class func scopesGet(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet]) async throws -> ScopesMultiResourceDataDocument
 ```
 
 Get multiple scopes.
@@ -24,15 +24,11 @@ import OpenAPIClient
 let filterRequiredAccessTier = ["filterRequiredAccessTier_example"] // [String] | Filters scopes by their `requiredAccessTier`. (e.g. `THIRD_PARTY`)
 
 // Get multiple scopes.
-ScopesAPI.scopesGet(filterRequiredAccessTier: filterRequiredAccessTier) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await ScopesAPI.scopesGet(filterRequiredAccessTier: filterRequiredAccessTier)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

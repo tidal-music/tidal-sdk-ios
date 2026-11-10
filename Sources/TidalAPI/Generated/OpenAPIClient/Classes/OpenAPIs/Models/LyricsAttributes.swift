@@ -24,14 +24,14 @@ public struct LyricsAttributes: Codable, Hashable {
     }
     public var direction: Direction?
     public var lrcText: String?
-    public var provider: LyricsAttributesProvider?
+    public var provider: LyricsProvider?
     public var technicalStatus: TechnicalStatus
     public var text: String?
 
     public init(
         direction: Direction? = nil,
         lrcText: String? = nil,
-        provider: LyricsAttributesProvider? = nil,
+        provider: LyricsProvider? = nil,
         technicalStatus: TechnicalStatus,
         text: String? = nil
     ) {

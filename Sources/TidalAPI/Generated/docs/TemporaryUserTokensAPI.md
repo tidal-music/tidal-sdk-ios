@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **temporaryUserTokensIdGet**
 ```swift
-    open class func temporaryUserTokensIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_temporaryUserTokensIdGet]? = nil, completion: @escaping (_ data: TemporaryUserTokensSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func temporaryUserTokensIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_temporaryUserTokensIdGet]? = nil) async throws -> TemporaryUserTokensSingleResourceDataDocument
 ```
 
 Get single temporaryUserToken.
@@ -28,15 +28,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single temporaryUserToken.
-TemporaryUserTokensAPI.temporaryUserTokensIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TemporaryUserTokensAPI.temporaryUserTokensIdGet(id: id, include: include, includeLinkage: includeLinkage)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -65,7 +61,7 @@ Name | Type | Description  | Notes
 
 # **temporaryUserTokensIdRelationshipsOwnersGet**
 ```swift
-    open class func temporaryUserTokensIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TemporaryUserTokensOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func temporaryUserTokensIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> TemporaryUserTokensOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -82,15 +78,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 
 // Get owners relationship (\"to-many\").
-TemporaryUserTokensAPI.temporaryUserTokensIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TemporaryUserTokensAPI.temporaryUserTokensIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -119,7 +111,7 @@ Name | Type | Description  | Notes
 
 # **temporaryUserTokensPost**
 ```swift
-    open class func temporaryUserTokensPost(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil, completion: @escaping (_ data: TemporaryUserTokensCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func temporaryUserTokensPost(idempotencyKey: String? = nil, temporaryUserTokensCreateOperationPayload: TemporaryUserTokensCreateOperationPayload? = nil) async throws -> TemporaryUserTokensCreateSingleResourceDataDocument
 ```
 
 Create single temporaryUserToken.
@@ -131,19 +123,15 @@ Creates a new temporaryUserToken.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let temporaryUserTokensCreateOperationPayload = TemporaryUserTokensCreateOperation_Payload(data: TemporaryUserTokensCreateOperation_Payload_Data(type: "type_example")) // TemporaryUserTokensCreateOperationPayload |  (optional)
 
 // Create single temporaryUserToken.
-TemporaryUserTokensAPI.temporaryUserTokensPost(idempotencyKey: idempotencyKey, temporaryUserTokensCreateOperationPayload: temporaryUserTokensCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TemporaryUserTokensAPI.temporaryUserTokensPost(idempotencyKey: idempotencyKey, temporaryUserTokensCreateOperationPayload: temporaryUserTokensCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -151,7 +139,7 @@ TemporaryUserTokensAPI.temporaryUserTokensPost(idempotencyKey: idempotencyKey, t
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **temporaryUserTokensCreateOperationPayload** | [**TemporaryUserTokensCreateOperationPayload**](TemporaryUserTokensCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

@@ -1,11 +1,13 @@
 name: Trigger Releases
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
 
 jobs: 
   check-bump:
+    if: ${{ github.event_name != 'workflow_dispatch' || github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     name: Check For Version Bump
     outputs:
@@ -29,6 +31,9 @@ jobs:
             result="true"
           elif [ "$status" != "1" ]; then
             exit "$status"
+          elif [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            # Retry the current version after a failed release without another bump.
+            result="true"
           fi
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "bump_detected=$result" >> $GITHUB_OUTPUT

@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct PlaylistGenerationsCreateResource409ResponseBody: Codable, Hashable {
 
-    public var errors: [PlaylistGenerationsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner]
+    public var errors: [PlaylistGenerationsCreateResource409ResponseBodyErrorsInner]
 
     public init(
-        errors: [PlaylistGenerationsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner]
+        errors: [PlaylistGenerationsCreateResource409ResponseBodyErrorsInner]
     ) {
         self.errors = errors
     }

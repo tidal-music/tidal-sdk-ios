@@ -18,6 +18,8 @@ The API client code is generated from the TIDAL OpenAPI specifications. A Github
 
 The generation can also be triggered manually by following the steps below.
 
+Use `./generate_and_clean.sh` from this directory to regenerate locally (Python 3 and OpenAPI Generator are required). The script prepares a temporary copy of the spec to preserve quoted `Content-Type` parameters, including the JSON:API atomic extension. Keep this preprocessing step when updating the generator; the committed input spec stays unchanged.
+
 ### Use Github Actions:
 1. Run [Regenerate TidalApi Code](https://github.com/tidal-music/tidal-sdk-ios/actions/workflows/generate-tidal-api.yml)
 2. This action will create a pull request. Test and verify the changes before merging!

@@ -15,25 +15,6 @@ public enum AlbumsAPITidal {
 
 
 	/**
-	 * enum for parameter sort
-	 */
-	public enum Sort_albumsGet: String, CaseIterable {
-		case CreatedAtAsc = "createdAt"
-		case CreatedAtDesc = "-createdAt"
-		case TitleAsc = "title"
-		case TitleDesc = "-title"
-
-		func toAlbumsAPIEnum() -> AlbumsAPI.Sort_albumsGet {
-			switch self {
-			case .CreatedAtAsc: return .CreatedAtAsc
-			case .CreatedAtDesc: return .CreatedAtDesc
-			case .TitleAsc: return .TitleAsc
-			case .TitleDesc: return .TitleDesc
-			}
-		}
-	}
-
-	/**
 	 * enum for parameter includeLinkage
 	 */
 	public enum IncludeLinkage_albumsGet: String, CaseIterable {
@@ -71,13 +52,32 @@ public enum AlbumsAPITidal {
 	}
 
 	/**
+	 * enum for parameter sort
+	 */
+	public enum Sort_albumsGet: String, CaseIterable {
+		case CreatedAtAsc = "createdAt"
+		case CreatedAtDesc = "-createdAt"
+		case TitleAsc = "title"
+		case TitleDesc = "-title"
+
+		func toAlbumsAPIEnum() -> AlbumsAPI.Sort_albumsGet {
+			switch self {
+			case .CreatedAtAsc: return .CreatedAtAsc
+			case .CreatedAtDesc: return .CreatedAtDesc
+			case .TitleAsc: return .TitleAsc
+			case .TitleDesc: return .TitleDesc
+			}
+		}
+	}
+
+	/**
      Get multiple albums.
      
      - returns: AlbumsMultiResourceDataDocument
      */
-	public static func albumsGet(pageCursor: String? = nil, sort: [AlbumsAPITidal.Sort_albumsGet]? = nil, countryCode: String? = nil, include: [String]? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, includeLinkage: [AlbumsAPITidal.IncludeLinkage_albumsGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsMultiResourceDataDocument {
+	public static func albumsGet(countryCode: String? = nil, filterBarcodeId: [String]? = nil, filterId: [String]? = nil, filterOwnersId: [String]? = nil, include: [String]? = nil, includeLinkage: [AlbumsAPITidal.IncludeLinkage_albumsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil, sort: [AlbumsAPITidal.Sort_albumsGet]? = nil) async throws -> AlbumsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsGetWithRequestBuilder(pageCursor: pageCursor, sort: sort?.compactMap { $0.toAlbumsAPIEnum() }, countryCode: countryCode, include: include, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, includeLinkage: includeLinkage?.compactMap { $0.toAlbumsAPIEnum() }, replaceMedia: replaceMedia, shareCode: shareCode)
+			AlbumsAPI.albumsGetWithRequestBuilder(countryCode: countryCode, filterBarcodeId: filterBarcodeId, filterId: filterId, filterOwnersId: filterOwnersId, include: include, includeLinkage: includeLinkage?.compactMap { $0.toAlbumsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode, sort: sort?.compactMap { $0.toAlbumsAPIEnum() })
 		}
 	}
 
@@ -87,9 +87,9 @@ public enum AlbumsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func albumsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+	public static func albumsIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
+			AlbumsAPI.albumsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode)
 		}
 	}
 
@@ -148,9 +148,9 @@ public enum AlbumsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func albumsIdPatch(id: String, idempotencyKey: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func albumsIdPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsUpdateOperationPayload: AlbumsUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, albumsUpdateOperationPayload: albumsUpdateOperationPayload)
+			AlbumsAPI.albumsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsUpdateOperationPayload: albumsUpdateOperationPayload)
 		}
 	}
 
@@ -172,9 +172,21 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsArtistsMultiRelationshipDataDocument
      */
-	public static func albumsIdRelationshipsArtistsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsArtistsMultiRelationshipDataDocument {
+	public static func albumsIdRelationshipsArtistsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsArtistsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsArtistsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+			AlbumsAPI.albumsIdRelationshipsArtistsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
+		}
+	}
+
+
+	/**
+     Update artists relationship (\&quot;to-many\&quot;).
+     
+     - returns: MutationResponseDocument
+     */
+	public static func albumsIdRelationshipsArtistsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsArtistsRelationshipUpdateOperationPayload: AlbumsArtistsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsArtistsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsArtistsRelationshipUpdateOperationPayload: albumsArtistsRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -184,9 +196,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsCoverArtMultiRelationshipDataDocument
      */
-	public static func albumsIdRelationshipsCoverArtGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsCoverArtMultiRelationshipDataDocument {
+	public static func albumsIdRelationshipsCoverArtGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsCoverArtMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
+			AlbumsAPI.albumsIdRelationshipsCoverArtGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
 		}
 	}
 
@@ -196,9 +208,9 @@ public enum AlbumsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func albumsIdRelationshipsCoverArtPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsCoverArtRelationshipUpdateOperationPayload: AlbumsCoverArtRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload)
+			AlbumsAPI.albumsIdRelationshipsCoverArtPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsCoverArtRelationshipUpdateOperationPayload: albumsCoverArtRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -208,9 +220,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsGenresMultiRelationshipDataDocument
      */
-	public static func albumsIdRelationshipsGenresGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, shareCode: String? = nil) async throws -> AlbumsGenresMultiRelationshipDataDocument {
+	public static func albumsIdRelationshipsGenresGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsGenresMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsGenresGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, shareCode: shareCode)
+			AlbumsAPI.albumsIdRelationshipsGenresGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, shareCode: shareCode)
 		}
 	}
 
@@ -220,9 +232,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsItemsMultiRelationshipDataDocument
      */
-	public static func albumsIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsItemsMultiRelationshipDataDocument {
+	public static func albumsIdRelationshipsItemsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+			AlbumsAPI.albumsIdRelationshipsItemsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
@@ -232,9 +244,9 @@ public enum AlbumsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
+	public static func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload)
+			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -304,9 +316,9 @@ public enum AlbumsAPITidal {
      
      - returns: AlbumsSimilarAlbumsMultiRelationshipDataDocument
      */
-	public static func albumsIdRelationshipsSimilarAlbumsGet(id: String, pageCursor: String? = nil, countryCode: String? = nil, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsSimilarAlbumsMultiRelationshipDataDocument {
+	public static func albumsIdRelationshipsSimilarAlbumsGet(id: String, countryCode: String? = nil, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsSimilarAlbumsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGetWithRequestBuilder(id: id, pageCursor: pageCursor, countryCode: countryCode, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+			AlbumsAPI.albumsIdRelationshipsSimilarAlbumsGetWithRequestBuilder(id: id, countryCode: countryCode, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 

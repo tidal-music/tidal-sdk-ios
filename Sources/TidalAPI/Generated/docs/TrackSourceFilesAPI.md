@@ -5,13 +5,15 @@ All URIs are relative to *https://openapi.tidal.com/v2*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**trackSourceFilesIdGet**](TrackSourceFilesAPI.md#tracksourcefilesidget) | **GET** /trackSourceFiles/{id} | Get single trackSourceFile.
+[**trackSourceFilesIdRelationshipsCommentSummaryGet**](TrackSourceFilesAPI.md#tracksourcefilesidrelationshipscommentsummaryget) | **GET** /trackSourceFiles/{id}/relationships/commentSummary | Get commentSummary relationship (\&quot;to-one\&quot;).
 [**trackSourceFilesIdRelationshipsOwnersGet**](TrackSourceFilesAPI.md#tracksourcefilesidrelationshipsownersget) | **GET** /trackSourceFiles/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
+[**trackSourceFilesIdRelationshipsReactionSummaryGet**](TrackSourceFilesAPI.md#tracksourcefilesidrelationshipsreactionsummaryget) | **GET** /trackSourceFiles/{id}/relationships/reactionSummary | Get reactionSummary relationship (\&quot;to-one\&quot;).
 [**trackSourceFilesPost**](TrackSourceFilesAPI.md#tracksourcefilespost) | **POST** /trackSourceFiles | Create single trackSourceFile.
 
 
 # **trackSourceFilesIdGet**
 ```swift
-    open class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil, completion: @escaping (_ data: TrackSourceFilesSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackSourceFilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_trackSourceFilesIdGet]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesSingleResourceDataDocument
 ```
 
 Get single trackSourceFile.
@@ -24,19 +26,16 @@ Retrieves single trackSourceFile by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Track source file id
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: commentSummary, owners, reactionSummary (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get single trackSourceFile.
-TrackSourceFilesAPI.trackSourceFilesIdGet(id: id, include: include, includeLinkage: includeLinkage) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TrackSourceFilesAPI.trackSourceFilesIdGet(id: id, include: include, includeLinkage: includeLinkage, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -45,12 +44,63 @@ TrackSourceFilesAPI.trackSourceFilesIdGet(id: id, include: include, includeLinka
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Track source file id | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: commentSummary, owners, reactionSummary | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
 [**TrackSourceFilesSingleResourceDataDocument**](TrackSourceFilesSingleResourceDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **trackSourceFilesIdRelationshipsCommentSummaryGet**
+```swift
+    open class func trackSourceFilesIdRelationshipsCommentSummaryGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesCommentSummarySingleRelationshipDataDocument
+```
+
+Get commentSummary relationship (\"to-one\").
+
+Retrieves commentSummary relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Track source file id
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: commentSummary (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
+
+// Get commentSummary relationship (\"to-one\").
+do {
+    let response = try await TrackSourceFilesAPI.trackSourceFilesIdRelationshipsCommentSummaryGet(id: id, include: include, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Track source file id | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: commentSummary | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
+
+### Return type
+
+[**TrackSourceFilesCommentSummarySingleRelationshipDataDocument**](TrackSourceFilesCommentSummarySingleRelationshipDataDocument.md)
 
 ### Authorization
 
@@ -65,7 +115,7 @@ Name | Type | Description  | Notes
 
 # **trackSourceFilesIdRelationshipsOwnersGet**
 ```swift
-    open class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, completion: @escaping (_ data: TrackSourceFilesOwnersMultiRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func trackSourceFilesIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -80,17 +130,14 @@ import OpenAPIClient
 let id = "id_example" // String | Track source file id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get owners relationship (\"to-many\").
-TrackSourceFilesAPI.trackSourceFilesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TrackSourceFilesAPI.trackSourceFilesIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -101,6 +148,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Track source file id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -117,9 +165,59 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **trackSourceFilesIdRelationshipsReactionSummaryGet**
+```swift
+    open class func trackSourceFilesIdRelationshipsReactionSummaryGet(id: String, include: [String]? = nil, shareCode: String? = nil) async throws -> TrackSourceFilesReactionSummarySingleRelationshipDataDocument
+```
+
+Get reactionSummary relationship (\"to-one\").
+
+Retrieves reactionSummary relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Track source file id
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: reactionSummary (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
+
+// Get reactionSummary relationship (\"to-one\").
+do {
+    let response = try await TrackSourceFilesAPI.trackSourceFilesIdRelationshipsReactionSummaryGet(id: id, include: include, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Track source file id | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: reactionSummary | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
+
+### Return type
+
+[**TrackSourceFilesReactionSummarySingleRelationshipDataDocument**](TrackSourceFilesReactionSummarySingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **trackSourceFilesPost**
 ```swift
-    open class func trackSourceFilesPost(idempotencyKey: String? = nil, trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil, completion: @escaping (_ data: TrackSourceFilesCreateSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func trackSourceFilesPost(idempotencyKey: String? = nil, trackSourceFilesCreateOperationPayload: TrackSourceFilesCreateOperationPayload? = nil) async throws -> TrackSourceFilesCreateSingleResourceDataDocument
 ```
 
 Create single trackSourceFile.
@@ -131,19 +229,15 @@ Create a track source file. <p/> The response contains a upload link that must b
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. (optional)
+let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let trackSourceFilesCreateOperationPayload = TrackSourceFilesCreateOperation_Payload(data: TrackSourceFilesCreateOperation_Payload_Data(attributes: TrackSourceFilesCreateOperation_Payload_Data_Attributes(md5Hash: "md5Hash_example", size: 123), relationships: TrackSourceFilesCreateOperation_Payload_Data_Relationships(track: TrackSourceFilesCreateOperation_Payload_Data_Relationships_Track(data: TrackSourceFilesCreateOperation_Payload_Data_Relationships_Track_Data(id: "id_example", type: "type_example"), id: "id_example", type: "type_example")), type: "type_example")) // TrackSourceFilesCreateOperationPayload |  (optional)
 
 // Create single trackSourceFile.
-TrackSourceFilesAPI.trackSourceFilesPost(idempotencyKey: idempotencyKey, trackSourceFilesCreateOperationPayload: trackSourceFilesCreateOperationPayload) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await TrackSourceFilesAPI.trackSourceFilesPost(idempotencyKey: idempotencyKey, trackSourceFilesCreateOperationPayload: trackSourceFilesCreateOperationPayload)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -151,7 +245,7 @@ TrackSourceFilesAPI.trackSourceFilesPost(idempotencyKey: idempotencyKey, trackSo
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If a duplicate key is sent with the same payload, the original response is replayed. If the payload differs, a 422 error is returned. | [optional] 
+ **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
  **trackSourceFilesCreateOperationPayload** | [**TrackSourceFilesCreateOperationPayload**](TrackSourceFilesCreateOperationPayload.md) |  | [optional] 
 
 ### Return type

@@ -13,10 +13,13 @@ import AnyCodable
 public struct PlayQueuesCurrentResourceIdentifierMeta: Codable, Hashable {
 
     public static let itemIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public static let positionRevisionRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: 9007199254740991, exclusiveMaximum: false, multipleOf: nil)
     public var batchId: UUID
     public var itemId: String
     public var legacySource: LegacySource?
     public var position: String?
+    /** Position revision for this itemId; advances only on explicit position writes. */
+    public var positionRevision: Int64?
     public var positionUpdatedAt: Date?
     public var replacement: ReplacementProvenance?
     public var updatedByInstallationId: String?
@@ -26,6 +29,7 @@ public struct PlayQueuesCurrentResourceIdentifierMeta: Codable, Hashable {
         itemId: String,
         legacySource: LegacySource? = nil,
         position: String? = nil,
+        positionRevision: Int64? = nil,
         positionUpdatedAt: Date? = nil,
         replacement: ReplacementProvenance? = nil,
         updatedByInstallationId: String? = nil
@@ -34,6 +38,7 @@ public struct PlayQueuesCurrentResourceIdentifierMeta: Codable, Hashable {
         self.itemId = itemId
         self.legacySource = legacySource
         self.position = position
+        self.positionRevision = positionRevision
         self.positionUpdatedAt = positionUpdatedAt
         self.replacement = replacement
         self.updatedByInstallationId = updatedByInstallationId
@@ -44,6 +49,7 @@ public struct PlayQueuesCurrentResourceIdentifierMeta: Codable, Hashable {
         case itemId
         case legacySource
         case position
+        case positionRevision
         case positionUpdatedAt
         case replacement
         case updatedByInstallationId
@@ -57,6 +63,7 @@ public struct PlayQueuesCurrentResourceIdentifierMeta: Codable, Hashable {
         try container.encode(itemId, forKey: .itemId)
         try container.encodeIfPresent(legacySource, forKey: .legacySource)
         try container.encodeIfPresent(position, forKey: .position)
+        try container.encodeIfPresent(positionRevision, forKey: .positionRevision)
         try container.encodeIfPresent(positionUpdatedAt, forKey: .positionUpdatedAt)
         try container.encodeIfPresent(replacement, forKey: .replacement)
         try container.encodeIfPresent(updatedByInstallationId, forKey: .updatedByInstallationId)

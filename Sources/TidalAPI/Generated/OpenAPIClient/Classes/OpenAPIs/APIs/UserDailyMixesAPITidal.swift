@@ -32,9 +32,9 @@ public enum UserDailyMixesAPITidal {
      
      - returns: UserDailyMixesSingleResourceDataDocument
      */
-	public static func userDailyMixesIdGet(id: String, locale: String? = nil, include: [String]? = nil, includeLinkage: [UserDailyMixesAPITidal.IncludeLinkage_userDailyMixesIdGet]? = nil, replaceMedia: String? = nil) async throws -> UserDailyMixesSingleResourceDataDocument {
+	public static func userDailyMixesIdGet(id: String, include: [String]? = nil, includeLinkage: [UserDailyMixesAPITidal.IncludeLinkage_userDailyMixesIdGet]? = nil, locale: String? = nil, replaceMedia: String? = nil) async throws -> UserDailyMixesSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			UserDailyMixesAPI.userDailyMixesIdGetWithRequestBuilder(id: id, locale: locale, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserDailyMixesAPIEnum() }, replaceMedia: replaceMedia)
+			UserDailyMixesAPI.userDailyMixesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toUserDailyMixesAPIEnum() }, locale: locale, replaceMedia: replaceMedia)
 		}
 	}
 
@@ -44,9 +44,9 @@ public enum UserDailyMixesAPITidal {
      
      - returns: UserDailyMixesItemsMultiRelationshipDataDocument
      */
-	public static func userDailyMixesIdRelationshipsItemsGet(id: String, pageCursor: String? = nil, locale: String? = nil, include: [String]? = nil, replaceMedia: String? = nil) async throws -> UserDailyMixesItemsMultiRelationshipDataDocument {
+	public static func userDailyMixesIdRelationshipsItemsGet(id: String, include: [String]? = nil, locale: String? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> UserDailyMixesItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			UserDailyMixesAPI.userDailyMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, pageCursor: pageCursor, locale: locale, include: include, replaceMedia: replaceMedia)
+			UserDailyMixesAPI.userDailyMixesIdRelationshipsItemsGetWithRequestBuilder(id: id, include: include, locale: locale, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 }

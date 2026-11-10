@@ -14,11 +14,11 @@ public struct PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayl
 
     public static let dataRule = ArrayRule(minItems: 1, maxItems: 1, uniqueItems: false)
     public var data: [PlaylistGenerationsTrackPreferencesRelationshipPayloadData]
-    public var meta: PlaylistGenerationsTrackPreferencesRelationshipPayloadMeta
+    public var meta: PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayloadMeta
 
     public init(
         data: [PlaylistGenerationsTrackPreferencesRelationshipPayloadData],
-        meta: PlaylistGenerationsTrackPreferencesRelationshipPayloadMeta
+        meta: PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayloadMeta
     ) {
         self.data = data
         self.meta = meta

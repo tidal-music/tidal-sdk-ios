@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 # **creditsIdGet**
 ```swift
-    open class func creditsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_creditsIdGet]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CreditsSingleResourceDataDocument?, _ error: Error?) -> Void)
+    open class func creditsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_creditsIdGet]? = nil, replaceMedia: String? = nil) async throws -> CreditsSingleResourceDataDocument
 ```
 
 Get single credit.
@@ -29,15 +29,11 @@ let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated di
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artist.albums (optional)
 
 // Get single credit.
-CreditsAPI.creditsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CreditsAPI.creditsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -67,7 +63,7 @@ Name | Type | Description  | Notes
 
 # **creditsIdRelationshipsArtistGet**
 ```swift
-    open class func creditsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, completion: @escaping (_ data: CreditsArtistSingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func creditsIdRelationshipsArtistGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> CreditsArtistSingleRelationshipDataDocument
 ```
 
 Get artist relationship (\"to-one\").
@@ -84,15 +80,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artist.albums (optional)
 
 // Get artist relationship (\"to-one\").
-CreditsAPI.creditsIdRelationshipsArtistGet(id: id, include: include, replaceMedia: replaceMedia) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CreditsAPI.creditsIdRelationshipsArtistGet(id: id, include: include, replaceMedia: replaceMedia)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 
@@ -121,7 +113,7 @@ Name | Type | Description  | Notes
 
 # **creditsIdRelationshipsCategoryGet**
 ```swift
-    open class func creditsIdRelationshipsCategoryGet(id: String, include: [String]? = nil, completion: @escaping (_ data: CreditsCategorySingleRelationshipDataDocument?, _ error: Error?) -> Void)
+    open class func creditsIdRelationshipsCategoryGet(id: String, include: [String]? = nil) async throws -> CreditsCategorySingleRelationshipDataDocument
 ```
 
 Get category relationship (\"to-one\").
@@ -137,15 +129,11 @@ let id = "id_example" // String | Credit id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: category (optional)
 
 // Get category relationship (\"to-one\").
-CreditsAPI.creditsIdRelationshipsCategoryGet(id: id, include: include) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
+do {
+    let response = try await CreditsAPI.creditsIdRelationshipsCategoryGet(id: id, include: include)
+    dump(response)
+} catch {
+    print(error)
 }
 ```
 

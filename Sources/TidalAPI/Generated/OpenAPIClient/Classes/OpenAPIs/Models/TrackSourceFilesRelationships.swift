@@ -12,22 +12,32 @@ import AnyCodable
 
 public struct TrackSourceFilesRelationships: Codable, Hashable {
 
+    public var commentSummary: TrackSourceFilesCommentSummarySingleRelationshipDataDocument?
     public var owners: TrackSourceFilesOwnersMultiRelationshipDataDocument?
+    public var reactionSummary: TrackSourceFilesReactionSummarySingleRelationshipDataDocument?
 
     public init(
-        owners: TrackSourceFilesOwnersMultiRelationshipDataDocument? = nil
+        commentSummary: TrackSourceFilesCommentSummarySingleRelationshipDataDocument? = nil,
+        owners: TrackSourceFilesOwnersMultiRelationshipDataDocument? = nil,
+        reactionSummary: TrackSourceFilesReactionSummarySingleRelationshipDataDocument? = nil
     ) {
+        self.commentSummary = commentSummary
         self.owners = owners
+        self.reactionSummary = reactionSummary
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case commentSummary
         case owners
+        case reactionSummary
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(commentSummary, forKey: .commentSummary)
         try container.encodeIfPresent(owners, forKey: .owners)
+        try container.encodeIfPresent(reactionSummary, forKey: .reactionSummary)
     }
 }
