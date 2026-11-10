@@ -37,6 +37,7 @@ final class PlaybackInfoFetcher {
 		case .TRACK:
 			try await getTrackPlaybackInfo(
 				trackId: mediaProduct.productId,
+				shareCode: mediaProduct.shareCode,
 				playbackMode: playbackMode,
 				streamingSessionId: streamingSessionId
 			)
@@ -68,6 +69,7 @@ final class PlaybackInfoFetcher {
 private extension PlaybackInfoFetcher {
 	func getTrackPlaybackInfo(
 		trackId: String,
+		shareCode: String?,
 		playbackMode: PlaybackMode,
 		streamingSessionId: String
 	) async throws -> PlaybackInfo {
@@ -88,7 +90,8 @@ private extension PlaybackInfoFetcher {
 				id: trackId,
 				manifestType: .hls,
 				uriScheme: .data,
-				usage: playbackMode == .OFFLINE ? .download : .playback
+				usage: playbackMode == .OFFLINE ? .download : .playback,
+				shareCode: shareCode
 			)
 
 			let manifestData = manifestResponse.data
