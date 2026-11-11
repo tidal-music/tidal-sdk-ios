@@ -5,6 +5,57 @@ import Testing
 // MARK: - AtomicOperationsRequestTests
 
 struct AtomicOperationsRequestTests {
+	@Test
+	func retriesPreserveRequestBodyBytes() throws {
+		let item = AtomicOperationsRequestAtomicOperationsInner.atomicOperationsRequestAtomicOperationsInnerOneOf1(.init(
+			data: .init(
+				attributes: .init(description: "Tour merchandise", title: "Tour tee"), lid: "tee",
+				relationships: .init(sites: .init(data: [.init(id: "selected-site", type: .squaresites)])),
+				type: .squareitems
+			), op: .add
+		))
+		let variation = AtomicOperationsRequestAtomicOperationsInner.atomicOperationsRequestAtomicOperationsInnerOneOf(.init(
+			data: .init(
+				attributes: .init(name: "Medium", price: "16", stockTracked: true), lid: "medium",
+				relationships: .init(items: .init(data: [.init(lid: "tee", type: .squareitems)])),
+				type: .squareitemvariations
+			), op: .add
+		))
+		let payload = AtomicOperationsRequest(atomicOperations: [item, variation])
+		var firstBody: Data?
+		for _ in 0 ..< 32 {
+			let builder = SquareItemsAPI.operationsPostWithRequestBuilder(
+				idempotencyKey: "create-item", atomicOperationsRequest: payload
+			)
+			let request = try urlRequest(for: builder)
+			let body = try #require(request.httpBody)
+			if let firstBody {
+				#expect(body == firstBody)
+			} else {
+				firstBody = body
+			}
+			#expect(request.value(forHTTPHeaderField: "Idempotency-Key") == "create-item")
+			// Sorting object keys must preserve operation order and all submitted values.
+			#expect(try JSONDecoder().decode(AtomicOperationsRequest.self, from: body) == payload)
+		}
+	}
+
+	@Test
+	func untypedJSONRetriesPreserveRequestBodyBytes() throws {
+		let payload: Any = [
+			"data": ["id": "item", "type": "squareItems", "attributes": ["title": "Tour tee", "description": "Tour merchandise"]],
+			"meta": ["expectedRevision": 42],
+		]
+		let expectedBody = try JSONSerialization.data(withJSONObject: payload, options: [.prettyPrinted, .sortedKeys])
+		for _ in 0 ..< 32 {
+			let parameters = JSONEncodingHelper.encodingParameters(forEncodableObject: payload)
+			let request = JSONDataEncoding().encode(
+				URLRequest(url: URL(string: "https://example.invalid/v2/squareItems/item")!), with: parameters
+			)
+			#expect(request.httpBody == expectedBody)
+		}
+	}
+
 	@Test(arguments: [nil, "selected-tidal-site"] as [String?])
 	func creationIncludesOnlyAnExplicitPublicationTarget(siteID: String?) throws {
 		let operation = AtomicOperationsRequestAtomicOperationsInner.atomicOperationsRequestAtomicOperationsInnerOneOf1(.init(
