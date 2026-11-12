@@ -15,12 +15,12 @@ public struct ResourceGrantsCreateOperationPayloadData: Codable, Hashable {
     public enum ModelType: String, Codable, CaseIterable {
         case resourcegrants = "resourceGrants"
     }
-    public var attributes: ResourceGrantsCreateOperationPayloadDataAttributes
+    public var attributes: ResourceGrantsCreateOperationPayloadDataAttributes?
     public var relationships: ResourceGrantsCreateOperationPayloadDataRelationships
     public var type: ModelType
 
     public init(
-        attributes: ResourceGrantsCreateOperationPayloadDataAttributes,
+        attributes: ResourceGrantsCreateOperationPayloadDataAttributes? = nil,
         relationships: ResourceGrantsCreateOperationPayloadDataRelationships,
         type: ModelType
     ) {
@@ -39,7 +39,7 @@ public struct ResourceGrantsCreateOperationPayloadData: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(attributes, forKey: .attributes)
+        try container.encodeIfPresent(attributes, forKey: .attributes)
         try container.encode(relationships, forKey: .relationships)
         try container.encode(type, forKey: .type)
     }

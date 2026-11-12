@@ -204,7 +204,7 @@ Name | Type | Description  | Notes
 
 Update single album.
 
-Updates existing album.
+Updates existing album. A COLLABORATOR on the album may update it; changing accessType or barcodeId needs OWNER.
 
 ### Example
 ```swift
@@ -362,7 +362,7 @@ Name | Type | Description  | Notes
 
 Update artists relationship (\"to-many\").
 
-Sets the album's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the album. Only the album's owner can change its artists. Returns an acknowledgement.
+Sets the album's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the album. Owners and collaborators can change its artists. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -630,7 +630,7 @@ Name | Type | Description  | Notes
 
 Update items relationship (\"to-many\").
 
-Incrementally updates one existing track's 1-based track number to meta.positionIndex. Does not replace the album's items or add or remove tracks. Empty data is rejected. Returns an acknowledgement.
+Incrementally updates one existing track's 1-based track number to meta.positionIndex. Does not replace the album's items or add or remove tracks. Empty data is rejected. A COLLABORATOR on the album may reorder. Returns an acknowledgement.
 
 ### Example
 ```swift

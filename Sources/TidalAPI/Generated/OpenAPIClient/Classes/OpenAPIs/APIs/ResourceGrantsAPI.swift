@@ -26,6 +26,7 @@ internal class ResourceGrantsAPI {
      */
     public enum IncludeLinkage_resourceGrantsGet: String, CaseIterable {
         case grantee = "grantee"
+        case invitation = "invitation"
         case subject = "subject"
     }
 
@@ -36,7 +37,7 @@ internal class ResourceGrantsAPI {
      - parameter filterRole: (query) One of: VIEWER, COLLABORATOR, OWNER (e.g. &#x60;VIEWER&#x60;) (optional)
      - parameter filterSelfAppliesTo: (query) Album, track or folder owned by the caller; playlists return 400. Selects the live stored grants on the resource and its ancestor folders and albums, direct and from saved share links. Each grant keeps the subject it is stored on, so a grantee can have several; each grantee&#39;s OWNER grant is listed once, on its nearest node. Does not expand groups or bearer access or resolve effective permissions. Cannot be combined with other filters. Missing or non-owned resources return no records. Ordered by grantee, each grantee&#39;s nearest grants first; at most 20 grants per page. Also accepts &#x60;folders:me&#x60;. (optional)
      - parameter filterSubject: (query) Filter by subject. Required unless &#x60;filter[self][appliesTo]&#x60; is used. The subject&#39;s owner reads all its grants; other callers read only grants made directly to them. Also accepts &#x60;folders:me&#x60;. (optional)
-     - parameter include: (query) Include related resources. Available relationships: grantee, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: grantee, invitation, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: grantee.artist.albums (optional)
@@ -63,7 +64,7 @@ internal class ResourceGrantsAPI {
      - parameter filterRole: (query) One of: VIEWER, COLLABORATOR, OWNER (e.g. &#x60;VIEWER&#x60;) (optional)
      - parameter filterSelfAppliesTo: (query) Album, track or folder owned by the caller; playlists return 400. Selects the live stored grants on the resource and its ancestor folders and albums, direct and from saved share links. Each grant keeps the subject it is stored on, so a grantee can have several; each grantee&#39;s OWNER grant is listed once, on its nearest node. Does not expand groups or bearer access or resolve effective permissions. Cannot be combined with other filters. Missing or non-owned resources return no records. Ordered by grantee, each grantee&#39;s nearest grants first; at most 20 grants per page. Also accepts &#x60;folders:me&#x60;. (optional)
      - parameter filterSubject: (query) Filter by subject. Required unless &#x60;filter[self][appliesTo]&#x60; is used. The subject&#39;s owner reads all its grants; other callers read only grants made directly to them. Also accepts &#x60;folders:me&#x60;. (optional)
-     - parameter include: (query) Include related resources. Available relationships: grantee, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: grantee, invitation, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: grantee.artist.albums (optional)
@@ -151,6 +152,7 @@ internal class ResourceGrantsAPI {
      */
     public enum IncludeLinkage_resourceGrantsIdGet: String, CaseIterable {
         case grantee = "grantee"
+        case invitation = "invitation"
         case subject = "subject"
     }
 
@@ -158,7 +160,7 @@ internal class ResourceGrantsAPI {
      Get single resourceGrant.
      
      - parameter id: (path) Opaque resource grant ID 
-     - parameter include: (query) Include related resources. Available relationships: grantee, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: grantee, invitation, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: grantee.artist.albums (optional)
      - returns: ResourceGrantsSingleResourceDataDocument
@@ -181,7 +183,7 @@ internal class ResourceGrantsAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Opaque resource grant ID 
-     - parameter include: (query) Include related resources. Available relationships: grantee, subject (optional)
+     - parameter include: (query) Include related resources. Available relationships: grantee, invitation, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: grantee.artist.albums (optional)
      - returns: RequestBuilder<ResourceGrantsSingleResourceDataDocument> 
@@ -320,6 +322,61 @@ internal class ResourceGrantsAPI {
     }
 
     /**
+     Get invitation relationship (\"to-one\").
+     
+     - parameter id: (path) Opaque resource grant ID 
+     - parameter include: (query) Include related resources. Available relationships: invitation (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: invitation.subject (optional)
+     - returns: ResourceGrantsInvitationSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func resourceGrantsIdRelationshipsInvitationGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsInvitationSingleRelationshipDataDocument {
+        do {
+            return try await resourceGrantsIdRelationshipsInvitationGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get invitation relationship (\"to-one\").
+     - GET /resourceGrants/{id}/relationships/invitation
+     - Retrieves invitation relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Opaque resource grant ID 
+     - parameter include: (query) Include related resources. Available relationships: invitation (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: invitation.subject (optional)
+     - returns: RequestBuilder<ResourceGrantsInvitationSingleRelationshipDataDocument> 
+     */
+    internal class func resourceGrantsIdRelationshipsInvitationGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<ResourceGrantsInvitationSingleRelationshipDataDocument> {
+        var localVariablePath = "/resourceGrants/{id}/relationships/invitation"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<ResourceGrantsInvitationSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get subject relationship (\"to-one\").
      
      - parameter id: (path) Opaque resource grant ID 
@@ -394,7 +451,7 @@ internal class ResourceGrantsAPI {
     /**
      Create single resourceGrant.
      - POST /resourceGrants
-     - Creates a new resourceGrant.
+     - Create a direct grant from `role`, `subject` and `grantee`. Alternatively, redeem an invitation with only the `invitation` relationship: the caller receives the invitation's role on its subject, and the response is the caller's grant. Redeeming again returns the same grant. Every redemption, repeated ones included, needs a password-protected invitation's password and counts as a use of a limited invitation; password attempts are rate limited. The invitation's creator cannot redeem it.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

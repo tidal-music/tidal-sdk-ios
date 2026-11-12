@@ -280,7 +280,7 @@ internal class AlbumsAPI {
     /**
      Update single album.
      - PATCH /albums/{id}
-     - Updates existing album.
+     - Updates existing album. A COLLABORATOR on the album may update it; changing accessType or barcodeId needs OWNER.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -459,7 +459,7 @@ internal class AlbumsAPI {
     /**
      Update artists relationship (\"to-many\").
      - PATCH /albums/{id}/relationships/artists
-     - Sets the album's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the album. Only the album's owner can change its artists. Returns an acknowledgement.
+     - Sets the album's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the album. Owners and collaborators can change its artists. Returns an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -768,7 +768,7 @@ internal class AlbumsAPI {
     /**
      Update items relationship (\"to-many\").
      - PATCH /albums/{id}/relationships/items
-     - Incrementally updates one existing track's 1-based track number to meta.positionIndex. Does not replace the album's items or add or remove tracks. Empty data is rejected. Returns an acknowledgement.
+     - Incrementally updates one existing track's 1-based track number to meta.positionIndex. Does not replace the album's items or add or remove tracks. Empty data is rejected. A COLLABORATOR on the album may reorder. Returns an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

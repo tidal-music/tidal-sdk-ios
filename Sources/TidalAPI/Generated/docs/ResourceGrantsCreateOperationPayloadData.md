@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**attributes** | [**ResourceGrantsCreateOperationPayloadDataAttributes**](ResourceGrantsCreateOperationPayloadDataAttributes.md) |  | 
+**attributes** | [**ResourceGrantsCreateOperationPayloadDataAttributes**](ResourceGrantsCreateOperationPayloadDataAttributes.md) |  | [optional] 
 **relationships** | [**ResourceGrantsCreateOperationPayloadDataRelationships**](ResourceGrantsCreateOperationPayloadDataRelationships.md) |  | 
 **type** | **String** |  | 
 

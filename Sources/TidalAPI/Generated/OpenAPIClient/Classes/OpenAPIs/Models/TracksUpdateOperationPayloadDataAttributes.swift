@@ -57,7 +57,7 @@ public struct TracksUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public var bpm: Float?
     /** Explicit content */
     public var explicit: Bool?
-    /** An ISRC the rights holder already owns: the 12 characters ISO 3901 defines, without the hyphens of the display form. An ISRC set here can be replaced until the track is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The ISRC TIDAL assigns at the track's first sale is permanent. Omit the field to leave the ISRC unchanged. */
+    /** An ISRC the rights holder already owns: the 12 characters ISO 3901 defines, without the hyphens of the display form. An ISRC set here can be replaced until the track is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The ISRC TIDAL assigns at the track's first sale is permanent. Omit the field to leave the ISRC unchanged. Only the track's owners can set it. */
     public var isrc: String?
     public var key: Key?
     public var keyScale: KeyScale?
