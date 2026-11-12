@@ -12,6 +12,16 @@ enum ResourceType {
 	case userCollectionTracks
 }
 
+// MARK: - PendingOfflineCollection
+
+/// A collection the inventory lists as pending. `OfflineStore.resolvePendingCollections` gives it its stable `addedAt`.
+struct PendingOfflineCollection {
+	let catalogMetadata: OfflineCollection.Metadata
+	let artworkURL: URL?
+	/// The inventory's `meta.addedAt`, if the backend sent one.
+	let addedAt: Date?
+}
+
 // MARK: - StoreTrackTask
 
 struct StoreTrackTask {
@@ -186,19 +196,19 @@ protocol OfflineApiClientProtocol {
 	func getPendingCollections(
 		type: OfflineCollectionType,
 		cursor: String?
-	) async throws -> (collections: [OfflineCollection], cursor: String?)
-	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection?
+	) async throws -> (collections: [PendingOfflineCollection], cursor: String?)
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> PendingOfflineCollection?
 }
 
 extension OfflineApiClientProtocol {
 	func getPendingCollections(
 		type: OfflineCollectionType,
 		cursor: String?
-	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+	) async throws -> (collections: [PendingOfflineCollection], cursor: String?) {
 		([], nil)
 	}
 
-	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> PendingOfflineCollection? {
 		nil
 	}
 }
@@ -266,11 +276,11 @@ final class OfflineApiClient: OfflineApiClientProtocol {
 	func getPendingCollections(
 		type: OfflineCollectionType,
 		cursor: String?
-	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+	) async throws -> (collections: [PendingOfflineCollection], cursor: String?) {
 		try await fetchOfflineInventory(type: type, id: nil, cursor: cursor)
 	}
 
-	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> OfflineCollection? {
+	func getOfflineCollection(type: OfflineCollectionType, id: String) async throws -> PendingOfflineCollection? {
 		try await fetchOfflineInventory(type: type, id: id, cursor: nil).collections.first
 	}
 }
@@ -308,7 +318,7 @@ private extension OfflineApiClient {
 		type: OfflineCollectionType,
 		id: String?,
 		cursor: String?
-	) async throws -> (collections: [OfflineCollection], cursor: String?) {
+	) async throws -> (collections: [PendingOfflineCollection], cursor: String?) {
 		let response = try await InstallationsAPITidal.installationsIdRelationshipsOfflineInventoryGet(
 			filterType: [type.toFilterType],
 			id: installationId,
@@ -329,17 +339,16 @@ private extension OfflineApiClient {
 	func offlineCollection(
 		from identifier: InstallationsOfflineInventoryResourceIdentifier,
 		includedItems: IncludedItemsMap
-	) -> OfflineCollection? {
-		let addedAt = identifier.meta?.addedAt ?? Date()
+	) -> PendingOfflineCollection? {
+		let addedAt = identifier.meta?.addedAt
 		if identifier.type == "userCollectionTracks" {
-			return OfflineCollection(
+			return PendingOfflineCollection(
 				catalogMetadata: .userCollectionTracks(id: identifier.id),
 				artworkURL: nil,
-				state: .pending,
 				addedAt: addedAt
 			)
 		}
-		return includedItems.get(type: identifier.type, id: identifier.id)?.toOfflineCollection(state: .pending, addedAt: addedAt)
+		return includedItems.get(type: identifier.type, id: identifier.id)?.toPendingOfflineCollection(addedAt: addedAt)
 	}
 }
 
@@ -587,7 +596,7 @@ private class IncludedItem {
 		}?.meta?.addedAt
 	}
 
-	func toOfflineCollection(state: OfflineCollectionState, addedAt: Date) -> OfflineCollection? {
+	func toPendingOfflineCollection(addedAt: Date?) -> PendingOfflineCollection? {
 		let artwork = artworkObject
 		let artworkURL = artwork?.largestFileURL
 		switch resource {
@@ -601,14 +610,14 @@ private class IncludedItem {
 				explicit: album.attributes?.explicit ?? false,
 				backgroundColorHex: artwork?.attributes?.visualMetadata?.selectedPaletteColor
 			))
-			return OfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, state: state, addedAt: addedAt)
+			return PendingOfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, addedAt: addedAt)
 		case let .playlist(playlist):
 			let metadata = OfflineCollection.Metadata.playlist(OfflineCollection.PlaylistMetadata(
 				id: playlist.id,
 				title: playlist.attributes?.name ?? "",
 				backgroundColorHex: artwork?.attributes?.visualMetadata?.selectedPaletteColor
 			))
-			return OfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, state: state, addedAt: addedAt)
+			return PendingOfflineCollection(catalogMetadata: metadata, artworkURL: artworkURL, addedAt: addedAt)
 		default:
 			return nil
 		}

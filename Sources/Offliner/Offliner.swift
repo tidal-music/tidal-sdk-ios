@@ -135,10 +135,12 @@ public final class Offliner {
 				)
 				continuation.yield(local)
 
-				if let remote = try? await offlineApiClient.getOfflineCollection(
+				if let pending = try? await offlineApiClient.getOfflineCollection(
 					type: collectionType,
 					id: resourceId.stringValue
-				) {
+				),
+					let remote = try? await offlineStore.resolvePendingCollections([pending], collectionType: collectionType).first
+				{
 					continuation.yield(remote)
 				}
 
@@ -165,8 +167,10 @@ public final class Offliner {
 						cursor: nextCursor
 					)
 
-					if let page, !page.collections.isEmpty {
-						for item in page.collections {
+					if let page, !page.collections.isEmpty,
+					   let pending = try? await offlineStore.resolvePendingCollections(page.collections, collectionType: collectionType)
+					{
+						for item in pending {
 							collections.update(with: item)
 						}
 						continuation.yield(collections)
@@ -184,7 +188,8 @@ public final class Offliner {
 	/// Reads the offline collections of one type, and fails instead of returning a partial list.
 	///
 	/// Yields the local collections with `isComplete == false`, then the local collections merged with every
-	/// pending inventory page with `isComplete == true`, then finishes. Throws if the local read fails, before
+	/// pending inventory page with `isComplete == true`, then finishes. Both values are sorted by `addedAt`,
+	/// newest first, then by id. Throws if the local read fails, before
 	/// yielding anything, or if any inventory page fails, before yielding a complete value.
 	/// A local collection whose metadata can't be read is skipped.
 	public func offlineCollections(
@@ -193,13 +198,14 @@ public final class Offliner {
 		AsyncThrowingStream { continuation in
 			let task = Task {
 				do {
-					var collections = try await offlineStore.getCollections(collectionType: collectionType)
+					var collections = try await offlineStore.getCollections(collectionType: collectionType).sortedByAddedAt()
 					continuation.yield(OfflineCollectionsRead(collections: collections, isComplete: false))
 
 					var cursor: String?
 					repeat {
 						let page = try await offlineApiClient.getPendingCollections(type: collectionType, cursor: cursor)
-						for item in page.collections {
+						let pending = try await offlineStore.resolvePendingCollections(page.collections, collectionType: collectionType)
+						for item in pending {
 							if let index = collections.firstIndex(of: item) {
 								collections[index] = item
 							} else {
@@ -209,7 +215,7 @@ public final class Offliner {
 						cursor = page.cursor
 					} while cursor != nil
 
-					continuation.yield(OfflineCollectionsRead(collections: collections, isComplete: true))
+					continuation.yield(OfflineCollectionsRead(collections: collections.sortedByAddedAt(), isComplete: true))
 					continuation.finish()
 				} catch {
 					continuation.finish(throwing: error)
@@ -366,6 +372,8 @@ public final class Offliner {
 
 	public func download(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.addItem(type: collectionType.toResourceType, id: resourceId.stringValue)
+		// Not fatal: storing the collection records its addedAt if this fails.
+		try? offlineStore.recordCollectionAddedAt(collectionType: collectionType, resourceId: resourceId.stringValue, addedAt: Date())
 		await taskRunner.notifyCollectionChanged(collectionType: collectionType, resourceId: resourceId)
 		await taskRunner.run()
 	}
@@ -463,6 +471,15 @@ extension OfflineCollectionType {
 		case .albums: return .album
 		case .playlists: return .playlist
 		case .userCollectionTracks: return .userCollectionTracks
+		}
+	}
+}
+
+extension [OfflineCollection] {
+	/// Newest first. Collections added at the same time are ordered by id, so the order is the same on every read.
+	func sortedByAddedAt() -> [OfflineCollection] {
+		sorted { lhs, rhs in
+			lhs.addedAt == rhs.addedAt ? lhs.catalogMetadata.id < rhs.catalogMetadata.id : lhs.addedAt > rhs.addedAt
 		}
 	}
 }

@@ -2,14 +2,19 @@ import Foundation
 import GRDB
 
 enum Migrations {
-	static func run(_ dbQueue: DatabaseQueue) throws {
+	/// Runs every migration, or the migrations up to and including `identifier`.
+	static func run(_ dbQueue: DatabaseQueue, upTo identifier: String? = nil) throws {
 		var migrator = DatabaseMigrator()
 		for migration in try loadMigrations() {
 			migrator.registerMigration(migration.identifier) { database in
 				try database.execute(sql: migration.sql)
 			}
 		}
-		try migrator.migrate(dbQueue)
+		if let identifier {
+			try migrator.migrate(dbQueue, upTo: identifier)
+		} else {
+			try migrator.migrate(dbQueue)
+		}
 	}
 
 	private static func loadMigrations() throws -> [Migration] {
