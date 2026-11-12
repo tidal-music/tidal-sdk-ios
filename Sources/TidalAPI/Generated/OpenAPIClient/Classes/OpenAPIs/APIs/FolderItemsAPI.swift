@@ -407,7 +407,7 @@ internal class FolderItemsAPI {
     /**
      Update parent relationship (\"to-one\").
      - PATCH /folderItems/{id}/relationships/parent
-     - Moves the item to the supplied parent folder, replacing its previous parent. To move to the top level, supply the root folder explicitly; null data is rejected. Returns the new parent linkage.
+     - Moves the item to the supplied parent folder, replacing its previous parent. To move to the top level, supply the root folder explicitly; null data is rejected. The caller needs at least COLLABORATOR on the new parent. Within the item's tree they need OWNER on the item or COLLABORATOR on the folder holding it; only its creator moves it into another user's tree. Returns the new parent linkage.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

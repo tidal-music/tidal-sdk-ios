@@ -21,6 +21,7 @@ public struct ArtistsAttributes: Codable, Hashable {
     public static let foregroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
     public static let handleRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let numberOfFollowersRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
+    public static let numberOfFollowingRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Artist profile background colour override */
     public var backgroundColor: String?
     /** Is the artist enabled for contributions? */
@@ -37,6 +38,8 @@ public struct ArtistsAttributes: Codable, Hashable {
     public var name: String
     /** Number of users in the followers relationship */
     public var numberOfFollowers: Int?
+    /** Number of artists in the following relationship */
+    public var numberOfFollowing: Int?
     /** Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created profile, MIXED: claimed profile with both label and user content. May be null during rollout/backfill. */
     public var ownerType: OwnerType?
     /** Artist popularity (0.0 - 1.0) */
@@ -53,6 +56,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         handle: String? = nil,
         name: String,
         numberOfFollowers: Int? = nil,
+        numberOfFollowing: Int? = nil,
         ownerType: OwnerType? = nil,
         popularity: Double,
         spotlighted: Bool? = nil
@@ -65,6 +69,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         self.handle = handle
         self.name = name
         self.numberOfFollowers = numberOfFollowers
+        self.numberOfFollowing = numberOfFollowing
         self.ownerType = ownerType
         self.popularity = popularity
         self.spotlighted = spotlighted
@@ -79,6 +84,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         case handle
         case name
         case numberOfFollowers
+        case numberOfFollowing
         case ownerType
         case popularity
         case spotlighted
@@ -96,6 +102,7 @@ public struct ArtistsAttributes: Codable, Hashable {
         try container.encodeIfPresent(handle, forKey: .handle)
         try container.encode(name, forKey: .name)
         try container.encodeIfPresent(numberOfFollowers, forKey: .numberOfFollowers)
+        try container.encodeIfPresent(numberOfFollowing, forKey: .numberOfFollowing)
         try container.encodeIfPresent(ownerType, forKey: .ownerType)
         try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(spotlighted, forKey: .spotlighted)

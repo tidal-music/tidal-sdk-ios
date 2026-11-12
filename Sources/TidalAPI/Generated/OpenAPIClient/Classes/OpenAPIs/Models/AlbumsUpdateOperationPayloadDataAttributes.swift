@@ -28,7 +28,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
     /** Access type */
     public var accessType: AccessType?
     public var albumType: AlbumType?
-    /** A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13) with a valid GS1 check digit. A barcode set here can be replaced until the album is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The barcode TIDAL assigns at the album's first sale is permanent. Omit the field to leave the barcode unchanged. */
+    /** A barcode the rights holder already owns: a GTIN-12 or GTIN-13 (UPC-A or EAN-13) with a valid GS1 check digit. A barcode set here can be replaced until the album is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The barcode TIDAL assigns at the album's first sale is permanent. Omit the field to leave the barcode unchanged. Only the album's owners can set it. */
     public var barcodeId: String?
     public var copyright: Copyright?
     /** Explicit content */

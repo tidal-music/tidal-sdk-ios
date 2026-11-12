@@ -10,21 +10,26 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Either &#x60;subject&#x60; and &#x60;grantee&#x60; for a direct grant, or only &#x60;invitation&#x60; to redeem it. */
 public struct ResourceGrantsCreateOperationPayloadDataRelationships: Codable, Hashable {
 
-    public var grantee: ResourceGrantsGranteeLinkage
-    public var subject: ResourceGrantsSubjectLinkage
+    public var grantee: ResourceGrantsGranteeLinkage?
+    public var invitation: ResourceGrantsInvitationLinkage?
+    public var subject: ResourceGrantsSubjectLinkage?
 
     public init(
-        grantee: ResourceGrantsGranteeLinkage,
-        subject: ResourceGrantsSubjectLinkage
+        grantee: ResourceGrantsGranteeLinkage? = nil,
+        invitation: ResourceGrantsInvitationLinkage? = nil,
+        subject: ResourceGrantsSubjectLinkage? = nil
     ) {
         self.grantee = grantee
+        self.invitation = invitation
         self.subject = subject
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case grantee
+        case invitation
         case subject
     }
 
@@ -32,7 +37,8 @@ public struct ResourceGrantsCreateOperationPayloadDataRelationships: Codable, Ha
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(grantee, forKey: .grantee)
-        try container.encode(subject, forKey: .subject)
+        try container.encodeIfPresent(grantee, forKey: .grantee)
+        try container.encodeIfPresent(invitation, forKey: .invitation)
+        try container.encodeIfPresent(subject, forKey: .subject)
     }
 }
