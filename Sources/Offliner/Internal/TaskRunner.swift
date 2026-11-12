@@ -17,6 +17,7 @@ actor TaskRunner {
 
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
+	private let collectionEventBroadcaster: CollectionEventBroadcaster
 	private let network: Network
 
 	private var pendingTasks: [InternalTask] = []
@@ -42,10 +43,12 @@ actor TaskRunner {
 		mediaDownloader: MediaDownloaderProtocol,
 		licenseDownloader: LicenseDownloader,
 		trackManifestFetcher: TrackManifestFetcherProtocol,
-		videoManifestFetcher: VideoManifestFetcherProtocol
+		videoManifestFetcher: VideoManifestFetcherProtocol,
+		collectionEventBroadcaster: CollectionEventBroadcaster
 	) {
 		self.offlineApiClient = offlineApiClient
 		self.offlineStore = offlineStore
+		self.collectionEventBroadcaster = collectionEventBroadcaster
 		self.allowDownloadsOnExpensiveNetworks = configuration.allowDownloadsOnExpensiveNetworks
 		self.network = Network()
 
@@ -223,32 +226,43 @@ actor TaskRunner {
 		} catch {
 			Self.logger.error("Failed to mark task \(task.id, privacy: .public) as in progress, skipping it: \(error, privacy: .public)")
 			await task.download?.updateState(.failed)
-			finish(task)
+			finish(task, succeeded: false)
 			return
 		}
 
+		emitCollectionEvent(for: task, kind: .taskStarted)
 		await task.download?.updateState(.inProgress)
 
+		let succeeded: Bool
 		do {
 			try await task.run()
+			succeeded = true
 			await task.download?.updateState(.completed)
 			try? await offlineApiClient.updateTask(taskId: task.id, state: .completed)
 		} catch {
+			succeeded = false
 			Self.logger.error("Task \(task.id, privacy: .public) failed: \(error, privacy: .public)")
 			await task.download?.updateState(.failed)
 			try? await offlineApiClient.updateTask(taskId: task.id, state: .failed)
 		}
 
-		finish(task)
+		finish(task, succeeded: succeeded)
 	}
 
-	private func finish(_ task: InternalTask) {
+	private func emitCollectionEvent(for task: InternalTask, kind: OfflineCollectionEvent.Kind) {
+		guard let collection = task.relatedCollection else { return }
+		collectionEventBroadcaster.emit(OfflineCollectionEvent(collection: collection, kind: kind))
+	}
+
+	/// Called after the backend has been told the task's result, so a read triggered by the event sees it.
+	private func finish(_ task: InternalTask, succeeded: Bool) {
 		runningTasks.removeAll { $0 === task }
 		taskIds.remove(task.id)
 		if let download = task.download {
 			currentDownloads.removeAll { $0 === download }
 		}
 		notifyCollectionObservers { task.isDownloadTask(for: $0) }
+		emitCollectionEvent(for: task, kind: .taskFinished(succeeded: succeeded))
 	}
 }
 
@@ -298,6 +312,8 @@ protocol InternalTask: AnyObject {
 	var concurrencyKey: OfflineTaskConcurrencyKey { get }
 	/// The collection this task stores the collection itself or an item of, or `nil` for remove tasks.
 	var storedCollection: OfflineCollectionReference? { get }
+	/// The collection this task stores or removes the collection itself or an item of.
+	var relatedCollection: OfflineCollectionReference? { get }
 	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool
 	func run() async throws
 }
@@ -306,6 +322,8 @@ extension InternalTask {
 	var download: Download? { nil }
 
 	var storedCollection: OfflineCollectionReference? { download?.relatedCollection }
+
+	var relatedCollection: OfflineCollectionReference? { storedCollection }
 
 	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool {
 		download?.relatedCollection == collection

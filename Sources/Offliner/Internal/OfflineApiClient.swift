@@ -163,29 +163,6 @@ enum OfflineTask {
 	}
 }
 
-// MARK: - OfflineCollectionReference
-
-struct OfflineCollectionReference: Hashable, Sendable {
-	let collectionType: OfflineCollectionType
-	let resourceId: String
-
-	init(collectionType: OfflineCollectionType, resourceId: String) {
-		self.collectionType = collectionType
-		self.resourceId = collectionType == .userCollectionTracks ? ResourceId.me.stringValue : resourceId
-	}
-
-	init(collectionType: OfflineCollectionType, resourceId: ResourceId) {
-		self.init(collectionType: collectionType, resourceId: resourceId.stringValue)
-	}
-
-	init?(collectionResourceType: String, collectionResourceId: String) {
-		guard let collectionType = OfflineCollectionType(rawValue: collectionResourceType) else {
-			return nil
-		}
-		self.init(collectionType: collectionType, resourceId: collectionResourceId)
-	}
-}
-
 // MARK: - OfflineApiClientProtocol
 
 protocol OfflineApiClientProtocol {

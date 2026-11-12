@@ -186,6 +186,55 @@ public struct OfflineCollection: Hashable {
 	}
 }
 
+// MARK: - OfflineCollectionReference
+
+/// Identifies an offline collection. The user collection tracks are always identified as ``ResourceId/me``.
+public struct OfflineCollectionReference: Hashable, Sendable {
+	public let collectionType: OfflineCollectionType
+	public let resourceId: String
+
+	init(collectionType: OfflineCollectionType, resourceId: String) {
+		self.collectionType = collectionType
+		self.resourceId = collectionType == .userCollectionTracks ? ResourceId.me.stringValue : resourceId
+	}
+
+	public init(collectionType: OfflineCollectionType, resourceId: ResourceId) {
+		self.init(collectionType: collectionType, resourceId: resourceId.stringValue)
+	}
+
+	init?(collectionResourceType: String, collectionResourceId: String) {
+		guard let collectionType = OfflineCollectionType(rawValue: collectionResourceType) else {
+			return nil
+		}
+		self.init(collectionType: collectionType, resourceId: collectionResourceId)
+	}
+}
+
+// MARK: - OfflineCollectionEvent
+
+/// Something that happened to an offline collection. See ``Offliner/collectionEvents``.
+public struct OfflineCollectionEvent: Sendable, Hashable {
+	public enum Kind: Sendable, Hashable {
+		/// `download(collectionType:resourceId:)` added the collection to the inventory.
+		case requested
+		/// `remove(collectionType:resourceId:)` removed the collection from the inventory and the local store.
+		case removed
+		/// A task that stores or removes the collection, or one of its items, started.
+		case taskStarted
+		/// A task that stores or removes the collection, or one of its items, finished, and the backend has been
+		/// told its result.
+		case taskFinished(succeeded: Bool)
+	}
+
+	public let collection: OfflineCollectionReference
+	public let kind: Kind
+
+	public init(collection: OfflineCollectionReference, kind: Kind) {
+		self.collection = collection
+		self.kind = kind
+	}
+}
+
 // MARK: - OfflineCollectionsRead
 
 /// One value of ``Offliner/offlineCollections(collectionType:)``.

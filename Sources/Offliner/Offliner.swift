@@ -8,6 +8,7 @@ public final class Offliner {
 	private let offlineApiClient: OfflineApiClientProtocol
 	private let offlineStore: OfflineStore
 	private let taskRunner: TaskRunner
+	private let collectionEventBroadcaster = CollectionEventBroadcaster()
 	private let mediaDownloader: MediaDownloaderProtocol
 	private var trackManifestFetcher: TrackManifestFetcherProtocol
 
@@ -23,6 +24,15 @@ public final class Offliner {
 
 	public var newDownloads: AsyncStream<Download> {
 		taskRunner.newDownloads
+	}
+
+	/// Events for every offline collection. Each access returns a new stream that receives every event emitted
+	/// after it is created.
+	///
+	/// A `taskFinished` event is emitted after the backend has been told the task's result, so a read started from it
+	/// sees the backend's new state.
+	public var collectionEvents: AsyncStream<OfflineCollectionEvent> {
+		collectionEventBroadcaster.stream()
 	}
 
 	public var currentDownloads: [Download] {
@@ -60,7 +70,8 @@ public final class Offliner {
 			mediaDownloader: mediaDownloader,
 			licenseDownloader: licenseDownloader,
 			trackManifestFetcher: trackManifestFetcher,
-			videoManifestFetcher: videoManifestFetcher
+			videoManifestFetcher: videoManifestFetcher,
+			collectionEventBroadcaster: collectionEventBroadcaster
 		)
 
 		mediaDownloader.orphanedTaskHandler = { [weak self] taskId in
@@ -95,7 +106,8 @@ public final class Offliner {
 			mediaDownloader: mediaDownloader,
 			licenseDownloader: licenseDownloader,
 			trackManifestFetcher: trackManifestFetcher,
-			videoManifestFetcher: videoManifestFetcher
+			videoManifestFetcher: videoManifestFetcher,
+			collectionEventBroadcaster: collectionEventBroadcaster
 		)
 	}
 
@@ -400,6 +412,10 @@ public final class Offliner {
 		try offlineStore.clearPendingRemoval(OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId))
 		// Not fatal: storing the collection records its addedAt if this fails.
 		try? offlineStore.recordCollectionAddedAt(collectionType: collectionType, resourceId: resourceId.stringValue, addedAt: Date())
+		collectionEventBroadcaster.emit(OfflineCollectionEvent(
+			collection: OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId),
+			kind: .requested
+		))
 		await taskRunner.notifyCollectionChanged(collectionType: collectionType, resourceId: resourceId)
 		await taskRunner.run()
 	}
@@ -412,7 +428,9 @@ public final class Offliner {
 	/// Removes a collection. After this returns, local reads no longer contain it, and pending inventory reads
 	/// leave it out until the backend stops listing it. Throws if the backend request or the local delete fails.
 	///
-	/// Queued downloads of the collection are cancelled, and finish as ``Download/State/failed``.
+	/// Queued downloads of the collection are cancelled, and finish as ``Download/State/failed``. The
+	/// ``OfflineCollectionEvent/Kind/removed`` event is emitted before they fail. They are separate streams,
+	/// so a consumer can still receive the failures first.
 	public func remove(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId.stringValue)
 
@@ -425,6 +443,7 @@ public final class Offliner {
 				markPendingRemoval: true
 			)
 		}
+		collectionEventBroadcaster.emit(OfflineCollectionEvent(collection: collection, kind: .removed))
 		await taskRunner.cancelTasks(for: collection)
 		await taskRunner.notifyCollectionChanged(collectionType: collectionType, resourceId: resourceId)
 		await taskRunner.run()

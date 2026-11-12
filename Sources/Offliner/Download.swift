@@ -4,7 +4,8 @@ public actor Download {
 	public enum State {
 		case pending
 		case inProgress
-		/// The download failed, or was cancelled because its collection was removed.
+		/// The download failed, or was cancelled because its collection was removed. A cancelled download's
+		/// ``OfflineCollectionEvent/Kind/removed`` event is emitted before it fails.
 		case failed
 		case completed
 	}
@@ -18,7 +19,8 @@ public actor Download {
 	public nonisolated let artists: [String]
 	public nonisolated let imageURL: URL?
 	public nonisolated let events: AsyncStream<Event>
-	nonisolated let relatedCollection: OfflineCollectionReference?
+	/// The collection this download stores an item of.
+	public nonisolated let relatedCollection: OfflineCollectionReference?
 
 	private let continuation: AsyncStream<Event>.Continuation
 

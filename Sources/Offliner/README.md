@@ -128,6 +128,25 @@ activity metadata would be required for authoritative task state after a cold st
 Removal tasks are not surfaced as `.downloading`; callers can map this state directly to a download button label:
 `Download`, `Downloading...`, and `Downloaded`.
 
+#### Collection Events
+
+`collectionEvents` reports what happens to each offline collection. Every access returns a new stream, so several
+consumers can observe it. A `taskFinished` event is emitted after the backend has been told the task's result, so a
+collections read started from it sees the new state:
+
+```swift
+for await event in offliner.collectionEvents {
+    switch event.kind {
+    case .requested, .removed, .taskFinished:
+        reloadCollections(of: event.collection.collectionType)
+    case .taskStarted:
+        break
+    }
+}
+```
+
+A `Download`'s `relatedCollection` identifies the collection the downloaded item belongs to.
+
 #### Tracking Individual Download Progress
 
 Each `Download` is an actor that exposes an event stream for state changes and progress updates:
