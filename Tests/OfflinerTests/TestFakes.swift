@@ -404,6 +404,7 @@ actor SuspendingArtworkDownloader: ArtworkDownloaderProtocol {
 	private var startedContinuation: CheckedContinuation<Void, Never>?
 	private var resultContinuation: CheckedContinuation<URL?, Error>?
 	private var started = false
+	private(set) var lastURL: URL?
 
 	func waitUntilStarted() async {
 		if started {
@@ -419,6 +420,7 @@ actor SuspendingArtworkDownloader: ArtworkDownloaderProtocol {
 		let tempDir = FileManager.default.temporaryDirectory
 		let url = tempDir.appendingPathComponent("artwork-\(UUID().uuidString).jpg")
 		try? Data("artwork".utf8).write(to: url)
+		lastURL = url
 		let continuation = resultContinuation
 		resultContinuation = nil
 
@@ -523,6 +525,45 @@ actor SuspendingMediaDownloader: MediaDownloaderProtocol {
 
 			startedContinuation?.resume()
 		}
+	}
+}
+
+/// Holds every media download until `releaseAll()`, and records which tasks started one.
+actor GatedMediaDownloader: MediaDownloaderProtocol {
+	private var continuations: [CheckedContinuation<Void, Never>] = []
+	private var released = false
+	private(set) var startedTaskIds: [String] = []
+
+	nonisolated func handleBackgroundURLSessionEvents(identifier: String, completionHandler: @escaping () -> Void) {}
+
+	func waitUntilStarted(count: Int) async {
+		while startedTaskIds.count < count {
+			try? await Task.sleep(nanoseconds: 10_000_000)
+		}
+	}
+
+	func releaseAll() {
+		released = true
+		let continuations = continuations
+		self.continuations = []
+		continuations.forEach { $0.resume() }
+	}
+
+	func download(
+		taskId: String,
+		manifestURL: URL,
+		licenseDownloadResult: LicenseDownloadResult?,
+		title: String,
+		onProgress: @escaping @Sendable (Double) async -> Void
+	) async throws -> MediaDownloadResult {
+		startedTaskIds.append(taskId)
+		if !released {
+			await withCheckedContinuation { continuations.append($0) }
+		}
+
+		let url = FileManager.default.temporaryDirectory.appendingPathComponent("media-\(UUID().uuidString).m4a")
+		try Data("media".utf8).write(to: url)
+		return MediaDownloadResult(duration: 120, mediaLocation: url)
 	}
 }
 

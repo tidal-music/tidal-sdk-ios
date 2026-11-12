@@ -37,6 +37,10 @@ private final class InternalAlbumTask: InternalTask {
 		OfflineTaskConcurrencyKey(resourceType: OfflineCollectionType.albums.rawValue, resourceId: task.album.id)
 	}
 
+	var storedCollection: OfflineCollectionReference? {
+		OfflineCollectionReference(collectionType: .albums, resourceId: task.album.id)
+	}
+
 	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool {
 		collection.collectionType == .albums && collection.resourceId == task.album.id
 	}

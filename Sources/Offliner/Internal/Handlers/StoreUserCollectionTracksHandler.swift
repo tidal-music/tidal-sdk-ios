@@ -32,6 +32,10 @@ private final class InternalUserCollectionTracksTask: InternalTask {
 		)
 	}
 
+	var storedCollection: OfflineCollectionReference? {
+		OfflineCollectionReference(collectionType: .userCollectionTracks, resourceId: task.resolvedResourceId)
+	}
+
 	func isDownloadTask(for collection: OfflineCollectionReference) -> Bool {
 		collection.collectionType == .userCollectionTracks && collection.resourceId == task.resolvedResourceId
 	}

@@ -49,6 +49,11 @@ final class OfflineStore {
 		var replacedBookmarks: [Data] = []
 
 		try databaseQueue.inTransaction { database in
+			try checkNotPendingRemoval(
+				resourceType: result.collectionResourceType,
+				resourceId: result.collectionResourceId,
+				database: database
+			)
 			replacedBookmarks = try collectBookmarks(resourceType: result.resourceType, resourceId: result.resourceId, database: database)
 
 			try database.execute(
@@ -125,6 +130,7 @@ final class OfflineStore {
 		var replacedBookmarks: [Data] = []
 
 		try databaseQueue.inTransaction { database in
+			try checkNotPendingRemoval(resourceType: result.resourceType.rawValue, resourceId: result.resourceId, database: database)
 			replacedBookmarks = try collectBookmarks(resourceType: result.resourceType.rawValue, resourceId: result.resourceId, database: database)
 
 			try database.execute(
@@ -152,10 +158,22 @@ final class OfflineStore {
 		deleteFiles(for: replacedBookmarks)
 	}
 
-	func deleteCollection(resourceType: String, resourceId: String) throws {
+	/// Deletes a collection and its items. With `markPendingRemoval`, also records the collection as pending removal, so
+	/// running store tasks can't write it back and pending inventory reads skip it until the backend stops listing it.
+	func deleteCollection(resourceType: String, resourceId: String, markPendingRemoval: Bool = false, now: Date = Date()) throws {
 		var bookmarksToDelete: [Data] = []
 
 		try databaseQueue.inTransaction { database in
+			if markPendingRemoval {
+				try database.execute(
+					sql: """
+					INSERT INTO offline_collection_pending_removal (resource_type, resource_id, removed_at) VALUES (?, ?, ?)
+					ON CONFLICT (resource_type, resource_id) DO UPDATE SET removed_at = excluded.removed_at
+					""",
+					arguments: [resourceType, resourceId, now]
+				)
+			}
+
 			bookmarksToDelete = try collectBookmarks(resourceType: resourceType, resourceId: resourceId, database: database)
 
 			try database.execute(
@@ -179,6 +197,58 @@ final class OfflineStore {
 		deleteFiles(for: bookmarksToDelete)
 	}
 
+	func isPendingRemoval(_ collection: OfflineCollectionReference) throws -> Bool {
+		try databaseQueue.read { database in
+			try isPendingRemoval(resourceType: collection.collectionType.rawValue, resourceId: collection.resourceId, database: database)
+		}
+	}
+
+	func clearPendingRemoval(_ collection: OfflineCollectionReference) throws {
+		try databaseQueue.write { database in
+			try database.execute(
+				sql: "DELETE FROM offline_collection_pending_removal WHERE resource_type = ? AND resource_id = ?",
+				arguments: [collection.collectionType.rawValue, collection.resourceId]
+			)
+		}
+	}
+
+	/// Clears the pending removals that a complete inventory read no longer lists. Removals recorded at or after
+	/// `removedBefore` are kept, because the read may have started before the backend saw them.
+	func clearPendingRemovals(
+		collectionType: OfflineCollectionType,
+		listedResourceIds: Set<String>,
+		removedBefore: Date
+	) async throws {
+		let listed = Set(listedResourceIds.map { Self.collectionLocalResourceId(collectionType: collectionType, resourceId: $0) })
+		try await databaseQueue.write { database in
+			let removed = try String.fetchAll(
+				database,
+				sql: "SELECT resource_id FROM offline_collection_pending_removal WHERE resource_type = ? AND removed_at < ?",
+				arguments: [collectionType.rawValue, removedBefore]
+			)
+			for resourceId in removed where !listed.contains(resourceId) {
+				try database.execute(
+					sql: "DELETE FROM offline_collection_pending_removal WHERE resource_type = ? AND resource_id = ?",
+					arguments: [collectionType.rawValue, resourceId]
+				)
+			}
+		}
+	}
+
+	private func isPendingRemoval(resourceType: String, resourceId: String, database: GRDB.Database) throws -> Bool {
+		try Bool.fetchOne(
+			database,
+			sql: "SELECT EXISTS(SELECT 1 FROM offline_collection_pending_removal WHERE resource_type = ? AND resource_id = ?)",
+			arguments: [resourceType, resourceId]
+		) ?? false
+	}
+
+	private func checkNotPendingRemoval(resourceType: String, resourceId: String, database: GRDB.Database) throws {
+		if try isPendingRemoval(resourceType: resourceType, resourceId: resourceId, database: database) {
+			throw OfflineStoreError.collectionPendingRemoval
+		}
+	}
+
 	/// Records when a collection was added, unless it already has a value. The first value wins.
 	func recordCollectionAddedAt(collectionType: OfflineCollectionType, resourceId: String, addedAt: Date) throws {
 		try databaseQueue.write { database in
@@ -192,7 +262,8 @@ final class OfflineStore {
 	}
 
 	/// Gives each pending collection its recorded `addedAt`. A collection seen for the first time records the inventory's
-	/// value, or `now` if the inventory has none, so later reads return the same value.
+	/// value, or `now` if the inventory has none, so later reads return the same value. Collections pending removal are
+	/// left out: the backend lists them until this device has run their remove tasks.
 	func resolvePendingCollections(
 		_ pending: [PendingOfflineCollection],
 		collectionType: OfflineCollectionType,
@@ -201,8 +272,11 @@ final class OfflineStore {
 		guard !pending.isEmpty else { return [] }
 
 		return try await databaseQueue.write { database in
-			try pending.map { item in
+			try pending.compactMap { item in
 				let resourceId = Self.collectionLocalResourceId(collectionType: collectionType, resourceId: item.catalogMetadata.id)
+				if try self.isPendingRemoval(resourceType: collectionType.rawValue, resourceId: resourceId, database: database) {
+					return nil
+				}
 				try self.recordCollectionAddedAt(
 					resourceType: collectionType.rawValue,
 					resourceId: resourceId,
@@ -927,6 +1001,13 @@ private func decodeRelationshipAddedAt(_ string: String?) -> Date? {
 
 	formatter.formatOptions = [.withInternetDateTime]
 	return formatter.date(from: string)
+}
+
+// MARK: - OfflineStoreError
+
+enum OfflineStoreError: Error {
+	/// The collection was removed while a task for it was running, so the task's result was not stored.
+	case collectionPendingRemoval
 }
 
 // MARK: - FailedOfflineItem

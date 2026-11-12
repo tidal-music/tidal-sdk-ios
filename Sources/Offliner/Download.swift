@@ -4,6 +4,7 @@ public actor Download {
 	public enum State {
 		case pending
 		case inProgress
+		/// The download failed, or was cancelled because its collection was removed.
 		case failed
 		case completed
 	}

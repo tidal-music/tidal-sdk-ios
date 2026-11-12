@@ -156,16 +156,23 @@ public final class Offliner {
 	) -> AsyncStream<Set<OfflineCollection>> {
 		AsyncStream { continuation in
 			let task = Task {
+				let readStart = Date()
 				let local = (try? await offlineStore.getCollections(collectionType: collectionType)) ?? []
 				var collections = Set(local)
 				continuation.yield(collections)
 
+				var listedResourceIds: Set<String> = []
+				var isComplete = cursor == nil
 				var nextCursor: String? = cursor
 				repeat {
 					let page = try? await offlineApiClient.getPendingCollections(
 						type: collectionType,
 						cursor: nextCursor
 					)
+					if page == nil {
+						isComplete = false
+					}
+					listedResourceIds.formUnion(page?.collections.map(\.catalogMetadata.id) ?? [])
 
 					if let page, !page.collections.isEmpty,
 					   let pending = try? await offlineStore.resolvePendingCollections(page.collections, collectionType: collectionType)
@@ -179,6 +186,14 @@ public final class Offliner {
 					nextCursor = page?.cursor
 				} while nextCursor != nil
 
+				if isComplete {
+					try? await offlineStore.clearPendingRemovals(
+						collectionType: collectionType,
+						listedResourceIds: listedResourceIds,
+						removedBefore: readStart
+					)
+				}
+
 				continuation.finish()
 			}
 			continuation.onTermination = { _ in task.cancel() }
@@ -189,7 +204,8 @@ public final class Offliner {
 	///
 	/// Yields the local collections with `isComplete == false`, then the local collections merged with every
 	/// pending inventory page with `isComplete == true`, then finishes. Both values are sorted by `addedAt`,
-	/// newest first, then by id. Throws if the local read fails, before
+	/// newest first, then by id. A collection removed with ``remove(collectionType:resourceId:)`` is left out
+	/// while the inventory still lists it as pending. Throws if the local read fails, before
 	/// yielding anything, or if any inventory page fails, before yielding a complete value.
 	/// A local collection whose metadata can't be read is skipped.
 	public func offlineCollections(
@@ -198,12 +214,15 @@ public final class Offliner {
 		AsyncThrowingStream { continuation in
 			let task = Task {
 				do {
+					let readStart = Date()
 					var collections = try await offlineStore.getCollections(collectionType: collectionType).sortedByAddedAt()
 					continuation.yield(OfflineCollectionsRead(collections: collections, isComplete: false))
 
+					var listedResourceIds: Set<String> = []
 					var cursor: String?
 					repeat {
 						let page = try await offlineApiClient.getPendingCollections(type: collectionType, cursor: cursor)
+						listedResourceIds.formUnion(page.collections.map(\.catalogMetadata.id))
 						let pending = try await offlineStore.resolvePendingCollections(page.collections, collectionType: collectionType)
 						for item in pending {
 							if let index = collections.firstIndex(of: item) {
@@ -215,6 +234,12 @@ public final class Offliner {
 						cursor = page.cursor
 					} while cursor != nil
 
+					// Not fatal: an entry that isn't cleared now is cleared by a later complete read.
+					try? await offlineStore.clearPendingRemovals(
+						collectionType: collectionType,
+						listedResourceIds: listedResourceIds,
+						removedBefore: readStart
+					)
 					continuation.yield(OfflineCollectionsRead(collections: collections.sortedByAddedAt(), isComplete: true))
 					continuation.finish()
 				} catch {
@@ -372,6 +397,7 @@ public final class Offliner {
 
 	public func download(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.addItem(type: collectionType.toResourceType, id: resourceId.stringValue)
+		try offlineStore.clearPendingRemoval(OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId))
 		// Not fatal: storing the collection records its addedAt if this fails.
 		try? offlineStore.recordCollectionAddedAt(collectionType: collectionType, resourceId: resourceId.stringValue, addedAt: Date())
 		await taskRunner.notifyCollectionChanged(collectionType: collectionType, resourceId: resourceId)
@@ -383,15 +409,27 @@ public final class Offliner {
 		await taskRunner.run()
 	}
 
+	/// Removes a collection. After this returns, local reads no longer contain it, and pending inventory reads
+	/// leave it out until the backend stops listing it. Throws if the backend request or the local delete fails.
+	///
+	/// Queued downloads of the collection are cancelled, and finish as ``Download/State/failed``.
 	public func remove(collectionType: OfflineCollectionType, resourceId: ResourceId) async throws {
 		try await offlineApiClient.removeItem(type: collectionType.toResourceType, id: resourceId.stringValue)
+
+		let collection = OfflineCollectionReference(collectionType: collectionType, resourceId: resourceId)
 		// Optimistically update local availability; the remove task performs the same idempotent cleanup.
-		try? offlineStore.deleteCollection(
-			resourceType: collectionType.rawValue,
-			resourceId: collectionLocalResourceId(collectionType: collectionType, resourceId: resourceId)
-		)
+		let localDelete = Result {
+			try offlineStore.deleteCollection(
+				resourceType: collectionType.rawValue,
+				resourceId: collection.resourceId,
+				markPendingRemoval: true
+			)
+		}
+		await taskRunner.cancelTasks(for: collection)
 		await taskRunner.notifyCollectionChanged(collectionType: collectionType, resourceId: resourceId)
 		await taskRunner.run()
+
+		try localDelete.get()
 	}
 
 	private func localDownloadState(
@@ -415,8 +453,12 @@ public final class Offliner {
 				type: collectionType,
 				id: resourceId.stringValue
 			)
+			var isPending = false
+			if let pendingCollection {
+				isPending = try await !offlineStore.resolvePendingCollections([pendingCollection], collectionType: collectionType).isEmpty
+			}
 
-			return pendingCollection == nil
+			return !isPending
 				? await localDownloadState(collectionType: collectionType, resourceId: resourceId)
 				: .downloading
 		} catch {
