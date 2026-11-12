@@ -1,7 +1,10 @@
 import Foundation
 import GRDB
+import OSLog
 
 final class OfflineStore {
+	private static let logger = Logger(subsystem: "com.tidal.sdk.offliner", category: "OfflineStore")
+
 	private let databaseQueue: DatabaseQueue
 
 	static func searchKey(_ value: String) -> String {
@@ -325,14 +328,18 @@ final class OfflineStore {
 		}
 
 		var renewals: [BookmarkRenewal] = []
-		let collections = try rows.map { row in
-			let collectionType = OfflineCollectionType(rawValue: row["resource_type"])!
-
-			return OfflineCollection(
-				catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
-				artworkURL: try? Self.resolveBookmarkIfPresent(row, column: "artwork_bookmark", renewals: &renewals),
-				addedAt: row["created_at"]
-			)
+		var collections: [OfflineCollection] = []
+		for row in rows {
+			let resourceId: String = row["resource_id"]
+			do {
+				collections.append(OfflineCollection(
+					catalogMetadata: try OfflineCollection.Metadata.deserialize(collectionType: collectionType, json: row["catalog_metadata"]),
+					artworkURL: try? Self.resolveBookmarkIfPresent(row, column: "artwork_bookmark", renewals: &renewals),
+					addedAt: row["created_at"]
+				))
+			} catch {
+				Self.logger.error("Skipping offline collection \(resourceId, privacy: .public) with unreadable metadata: \(error, privacy: .public)")
+			}
 		}
 		try await storeRenewedBookmarks(renewals)
 
@@ -946,9 +953,19 @@ extension OfflineCollection.Metadata {
 			return .playlist(try decoder.decode(OfflineCollection.PlaylistMetadata.self, from: data))
 		case .userCollectionTracks:
 			let container = try decoder.decode([String: String].self, from: data)
-			return .userCollectionTracks(id: container["id"]!)
+			guard let id = container["id"] else {
+				throw DecodingError.keyNotFound(
+					DictionaryKey.id,
+					DecodingError.Context(codingPath: [], debugDescription: "Missing user collection tracks id")
+				)
+			}
+			return .userCollectionTracks(id: id)
 		}
 	}
+}
+
+private enum DictionaryKey: String, CodingKey {
+	case id
 }
 
 // MARK: - PlaybackMetadata Serialization

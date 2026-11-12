@@ -186,6 +186,20 @@ public struct OfflineCollection: Hashable {
 	}
 }
 
+// MARK: - OfflineCollectionsRead
+
+/// One value of ``Offliner/offlineCollections(collectionType:)``.
+public struct OfflineCollectionsRead {
+	public let collections: [OfflineCollection]
+	/// `false` for the local rows only; `true` once every pending inventory page has been merged in.
+	public let isComplete: Bool
+
+	public init(collections: [OfflineCollection], isComplete: Bool) {
+		self.collections = collections
+		self.isComplete = isComplete
+	}
+}
+
 public enum SortDirection: Hashable {
 	case ascending
 	case descending

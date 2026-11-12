@@ -21,6 +21,8 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		var completedTaskIds: [String] = []
 		var taskIdCounter: Int = 0
 		var pendingCollectionsPages: [(collections: [OfflineCollection], cursor: String?)] = []
+		var pendingCollectionsCallCount: Int = 0
+		var pendingCollectionsFailingCall: Int?
 		var pendingCollection: OfflineCollection?
 		var pendingCollectionResponses: [OfflineCollection?]?
 		var getOfflineCollectionError: Error?
@@ -41,6 +43,14 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		get { lock.withLock { storage.pendingCollectionsPages } }
 		set { lock.withLock { storage.pendingCollectionsPages = newValue } }
 	}
+
+	/// The 1-based `getPendingCollections` call that throws, or `nil` to never fail.
+	var pendingCollectionsFailingCall: Int? {
+		get { lock.withLock { storage.pendingCollectionsFailingCall } }
+		set { lock.withLock { storage.pendingCollectionsFailingCall = newValue } }
+	}
+
+	var pendingCollectionsCallCount: Int { lock.withLock { storage.pendingCollectionsCallCount } }
 
 	var pendingCollection: OfflineCollection? {
 		get { lock.withLock { storage.pendingCollection } }
@@ -199,7 +209,11 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 		type: OfflineCollectionType,
 		cursor: String?
 	) async throws -> (collections: [OfflineCollection], cursor: String?) {
-		lock.withLock {
+		try lock.withLock {
+			storage.pendingCollectionsCallCount += 1
+			if storage.pendingCollectionsCallCount == storage.pendingCollectionsFailingCall {
+				throw URLError(.timedOut)
+			}
 			guard !storage.pendingCollectionsPages.isEmpty else {
 				return ([], nil)
 			}

@@ -189,6 +189,20 @@ let allAlbums = try await offliner.getOfflineCollections(collectionType: .albums
 let allPlaylists = try await offliner.getOfflineCollections(collectionType: .playlists)
 ```
 
+`getOfflineCollections` ignores failures. To find out when a read is incomplete, use the throwing variant. It yields the
+local collections first (`isComplete == false`), then the collections merged with every pending inventory page
+(`isComplete == true`), and throws if the local read or any inventory page fails:
+
+```swift
+do {
+    for try await read in offliner.offlineCollections(collectionType: .albums) {
+        show(read.collections, isComplete: read.isComplete)
+    }
+} catch {
+    // Keep showing the last complete list
+}
+```
+
 ### Collection Items (Paginated)
 
 Get items within a collection using cursor-based pagination:
