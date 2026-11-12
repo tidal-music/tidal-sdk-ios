@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Generate unknown enum values and unknown resource types as `unknownDefaultOpenApi` instead of failing the whole response. Takes effect with the next API regeneration; exhaustive `switch` statements over generated enums and `IncludedInner` then need a new case (TidalAPI)
+
 ## [0.14.1] - 2026-11-11
 
 ### Fixed
