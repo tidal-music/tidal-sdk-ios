@@ -182,6 +182,9 @@ internal class ResourceGrantsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
      - parameter id: (path) Opaque resource grant ID 
      - parameter include: (query) Include related resources. Available relationships: grantee, invitation, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)

@@ -24,7 +24,7 @@ public struct ResourceGrantInvitationsCreateOperationPayloadDataAttributes: Coda
     public var maxUses: Int?
     /** Password a user must send to redeem. Never returned. Must be printable ASCII characters. Playlist invitations cannot have one; 400. */
     public var password: String?
-    /** Whether the code also gives VIEWER access to the subject, whatever the role, until the invitation expires. Previews are not yet supported, so true is rejected with 400. Defaults to false. */
+    /** Whether previewGrant gives VIEWER access to the subject, whatever the role, until the invitation expires. Defaults to false. */
     public var preview: Bool?
     /** Role a redemption grants. */
     public var role: Role

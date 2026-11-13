@@ -17,15 +17,25 @@ public struct ResourceGrantsAttributes: Codable, Hashable {
         case collaborator = "COLLABORATOR"
         case owner = "OWNER"
     }
+    /** Code of a bearer grant: whoever presents it as `shareCode` holds the role on the subject and everything below it. */
+    public var code: String?
+    /** Time a bearer grant stops applying. */
+    public var expiresAt: Date?
     public var role: Role
 
     public init(
+        code: String? = nil,
+        expiresAt: Date? = nil,
         role: Role
     ) {
+        self.code = code
+        self.expiresAt = expiresAt
         self.role = role
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case code
+        case expiresAt
         case role
     }
 
@@ -33,6 +43,8 @@ public struct ResourceGrantsAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(code, forKey: .code)
+        try container.encodeIfPresent(expiresAt, forKey: .expiresAt)
         try container.encode(role, forKey: .role)
     }
 }

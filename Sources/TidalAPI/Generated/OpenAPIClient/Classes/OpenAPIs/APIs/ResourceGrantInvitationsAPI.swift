@@ -107,7 +107,7 @@ internal class ResourceGrantInvitationsAPI {
     /**
      Delete single resourceGrantInvitation.
      - DELETE /resourceGrantInvitations/{id}
-     - Delete the invitation, ending redemption.
+     - Delete the invitation, ending redemption and its preview.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -231,7 +231,7 @@ internal class ResourceGrantInvitationsAPI {
     /**
      Update single resourceGrantInvitation.
      - PATCH /resourceGrantInvitations/{id}
-     - Set, change or remove the password. Users who redeemed keep their grants.
+     - Set, change or remove the password, or turn the preview on or off. Users who redeemed keep their grants.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

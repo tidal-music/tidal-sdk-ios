@@ -32,7 +32,7 @@ public struct ResourceGrantInvitationsAttributes: Codable, Hashable {
     public var password: String?
     /** Whether redemption requires a password. Only the owner and users with a role on the subject see a protected invitation's subject; others get null linkage. */
     public var passwordProtected: Bool
-    /** Whether the code also gives VIEWER access to the subject until the invitation expires, through previewGrant. Previews are not yet supported, so it is always false. */
+    /** Whether previewGrant gives VIEWER access to the subject until the invitation expires. */
     public var preview: Bool
     public var redemptionLink: LinkObject?
     /** Role a redemption grants. */

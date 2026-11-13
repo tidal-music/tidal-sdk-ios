@@ -77,7 +77,7 @@ Name | Type | Description  | Notes
 
 Delete single resourceGrantInvitation.
 
-Delete the invitation, ending redemption.
+Delete the invitation, ending redemption and its preview.
 
 ### Example
 ```swift
@@ -179,7 +179,7 @@ Name | Type | Description  | Notes
 
 Update single resourceGrantInvitation.
 
-Set, change or remove the password. Users who redeemed keep their grants.
+Set, change or remove the password, or turn the preview on or off. Users who redeemed keep their grants.
 
 ### Example
 ```swift
