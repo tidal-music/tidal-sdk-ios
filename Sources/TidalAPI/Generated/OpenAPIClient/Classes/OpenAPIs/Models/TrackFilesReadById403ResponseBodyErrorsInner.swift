@@ -12,12 +12,13 @@ import AnyCodable
 
 public struct TrackFilesReadById403ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case clientNotEntitled = "CLIENT_NOT_ENTITLED"
         case concurrentPlayback = "CONCURRENT_PLAYBACK"
         case geoRestricted = "GEO_RESTRICTED"
         case prerequisiteMissing = "PREREQUISITE_MISSING"
         case purchaseRequired = "PURCHASE_REQUIRED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

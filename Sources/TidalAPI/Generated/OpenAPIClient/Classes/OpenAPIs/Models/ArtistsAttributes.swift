@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct ArtistsAttributes: Codable, Hashable {
 
-    public enum OwnerType: String, Codable, CaseIterable {
+    public enum OwnerType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case label = "LABEL"
         case user = "USER"
         case mixed = "MIXED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let backgroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
     public static let foregroundColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")

@@ -12,16 +12,18 @@ import AnyCodable
 
 public struct UserCollectionSaveForLatersItemsRelationshipAddOperationResponseMetaSkippedItem: Codable, Hashable {
 
-    public enum Reason: String, Codable, CaseIterable {
+    public enum Reason: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case notFound = "NOT_FOUND"
         case alreadyPresent = "ALREADY_PRESENT"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case tracks = "tracks"
         case albums = "albums"
         case artists = "artists"
         case playlists = "playlists"
         case videos = "videos"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var id: String
     public var reason: Reason

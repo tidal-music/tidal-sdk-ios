@@ -13,9 +13,10 @@ import AnyCodable
 /** DRM data. Absence implies no DRM. */
 public struct DrmData: Codable, Hashable {
 
-    public enum DrmSystem: String, Codable, CaseIterable {
+    public enum DrmSystem: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case fairplay = "FAIRPLAY"
         case widevine = "WIDEVINE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var certificateUrl: String?
     public var drmSystem: DrmSystem?

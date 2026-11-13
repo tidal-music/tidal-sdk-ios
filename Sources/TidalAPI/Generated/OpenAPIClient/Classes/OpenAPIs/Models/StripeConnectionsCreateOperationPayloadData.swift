@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct StripeConnectionsCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case stripeconnections = "stripeConnections"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var attributes: StripeConnectionsCreateOperationPayloadDataAttributes?
     public var type: ModelType

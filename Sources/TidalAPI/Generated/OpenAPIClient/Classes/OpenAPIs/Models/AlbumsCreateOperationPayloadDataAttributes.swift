@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct AlbumsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum AlbumType: String, Codable, CaseIterable {
+    public enum AlbumType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case album = "ALBUM"
         case ep = "EP"
         case single = "SINGLE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     public static let versionRule = StringRule(minLength: nil, maxLength: 255, pattern: nil)

@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **copyright** | [**Copyright**](Copyright.md) |  | [optional] 
 **explicit** | **Bool** | Explicit content | [optional] 
 **explicitLyrics** | **Bool** | Explicit content. Deprecated: use &#39;explicit&#39; instead. This field will be removed in a future version. | [optional] 
+**published** | **Bool** | Whether the album is published to everyone. | [optional] 
 **releaseDate** | **Date** |  | [optional] 
 **title** | **String** |  | [optional] 
 **version** | **String** |  | [optional] 

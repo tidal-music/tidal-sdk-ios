@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct PlayQueuesFutureAddResourceIdentifier: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case tracks = "tracks"
         case videos = "videos"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var id: String
     public var type: ModelType

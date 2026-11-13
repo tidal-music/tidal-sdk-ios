@@ -12,11 +12,12 @@ import AnyCodable
 
 public struct AlbumsSuggestedCoverArtsMultiRelationshipDataDocumentMeta: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case pending = "PENDING"
         case processing = "PROCESSING"
         case error = "ERROR"
         case ok = "OK"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var status: Status?
 

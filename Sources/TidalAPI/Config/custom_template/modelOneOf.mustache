@@ -14,7 +14,7 @@
             try container.encode(value)
         {{/oneOf}}
         {{#oneOfUnknownDefaultCase}}
-        case unknownDefaultOpenApi(let type):
+        case .unknownDefaultOpenApi:
             try container.encodeNil()
         {{/oneOfUnknownDefaultCase}}
         }
@@ -37,7 +37,12 @@
             self = .{{#lambda.camelcase}}{{modelName}}{{/lambda.camelcase}}(value)
         {{/mappedModels}}
         default:
-            throw DecodingError.dataCorruptedError(forKey: .{{propertyName}}, in: container, debugDescription: "Unknown type: \\(type)")
+            {{#oneOfUnknownDefaultCase}}
+            self = .unknownDefaultOpenApi
+            {{/oneOfUnknownDefaultCase}}
+            {{^oneOfUnknownDefaultCase}}
+            throw DecodingError.dataCorruptedError(forKey: .{{propertyName}}, in: container, debugDescription: "Unknown type: \(type)")
+            {{/oneOfUnknownDefaultCase}}
         }
     }
     {{/propertyName}}
@@ -50,8 +55,13 @@
         }
         {{/oneOf}}
         
+        {{#oneOfUnknownDefaultCase}}
+        self = .unknownDefaultOpenApi
+        {{/oneOfUnknownDefaultCase}}
+        {{^oneOfUnknownDefaultCase}}
         let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unable to decode {{classname}}")
         throw DecodingError.dataCorrupted(context)
+        {{/oneOfUnknownDefaultCase}}
     }
     {{/propertyName}}
     {{/discriminator}}
@@ -64,8 +74,13 @@
         }
         {{/oneOf}}
         
+        {{#oneOfUnknownDefaultCase}}
+        self = .unknownDefaultOpenApi
+        {{/oneOfUnknownDefaultCase}}
+        {{^oneOfUnknownDefaultCase}}
         let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unable to decode {{classname}}")
         throw DecodingError.dataCorrupted(context)
+        {{/oneOfUnknownDefaultCase}}
     }
     {{/discriminator}}
 }

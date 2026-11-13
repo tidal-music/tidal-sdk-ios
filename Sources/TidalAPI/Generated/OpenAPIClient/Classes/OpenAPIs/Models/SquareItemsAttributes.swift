@@ -12,12 +12,14 @@ import AnyCodable
 
 public struct SquareItemsAttributes: Codable, Hashable {
 
-    public enum Currency: String, Codable, CaseIterable {
+    public enum Currency: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case usd = "USD"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Origin: String, Codable, CaseIterable {
+    public enum Origin: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case tidal = "TIDAL"
         case other = "OTHER"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let currencyRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let revisionRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: 9007199254740991, exclusiveMaximum: false, multipleOf: nil)

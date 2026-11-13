@@ -11,8 +11,9 @@ import AnyCodable
 #endif
 
 /** Reporting window preset. startDate and endDate give the actual data coverage */
-public enum ArtistStatisticsWindowPeriod: String, Codable, CaseIterable {
+public enum ArtistStatisticsWindowPeriod: String, Codable, CaseIterable, CaseIterableDefaultsLast {
     case p7D = "P7D"
     case p28D = "P28D"
     case p12M = "P12M"
+    case unknownDefaultOpenApi = "unknown_default_open_api"
 }

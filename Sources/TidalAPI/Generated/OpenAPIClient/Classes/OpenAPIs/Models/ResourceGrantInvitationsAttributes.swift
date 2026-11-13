@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct ResourceGrantInvitationsAttributes: Codable, Hashable {
 
-    public enum Role: String, Codable, CaseIterable {
+    public enum Role: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case viewer = "VIEWER"
         case collaborator = "COLLABORATOR"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let codeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let maxUsesRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: 100, exclusiveMaximum: false, multipleOf: nil)
@@ -32,7 +33,7 @@ public struct ResourceGrantInvitationsAttributes: Codable, Hashable {
     public var password: String?
     /** Whether redemption requires a password. Only the owner and users with a role on the subject see a protected invitation's subject; others get null linkage. */
     public var passwordProtected: Bool
-    /** Whether the code also gives VIEWER access to the subject until the invitation expires, through previewGrant. Previews are not yet supported, so it is always false. */
+    /** Whether previewGrant gives VIEWER access to the subject until the invitation expires. */
     public var preview: Bool
     public var redemptionLink: LinkObject?
     /** Role a redemption grants. */

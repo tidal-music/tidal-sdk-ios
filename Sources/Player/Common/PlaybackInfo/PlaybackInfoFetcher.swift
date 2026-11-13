@@ -316,7 +316,7 @@ private extension PlaybackInfoFetcher {
 			.FULL
 		case .preview:
 			.PREVIEW
-		case nil:
+		default:
 			.FULL
 		}
 	}
@@ -327,7 +327,7 @@ private extension PlaybackInfoFetcher {
 			.FULL
 		case .preview:
 			.PREVIEW
-		case nil:
+		default:
 			.FULL
 		}
 	}
@@ -344,6 +344,8 @@ private extension PlaybackInfoFetcher {
 			return .FULL_REQUIRES_PURCHASE
 		case .fullRequiresHigherAccessTier:
 			return .FULL_REQUIRES_HIGHER_ACCESS_TIER
+		default:
+			return nil
 		}
 	}
 
@@ -359,6 +361,8 @@ private extension PlaybackInfoFetcher {
 			return .FULL_REQUIRES_PURCHASE
 		case .fullRequiresHigherAccessTier:
 			return .FULL_REQUIRES_HIGHER_ACCESS_TIER
+		default:
+			return nil
 		}
 	}
 

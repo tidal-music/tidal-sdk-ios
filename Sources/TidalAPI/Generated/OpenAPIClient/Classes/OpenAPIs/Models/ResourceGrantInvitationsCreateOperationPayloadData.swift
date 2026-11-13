@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct ResourceGrantInvitationsCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case resourcegrantinvitations = "resourceGrantInvitations"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var attributes: ResourceGrantInvitationsCreateOperationPayloadDataAttributes
     public var relationships: ResourceGrantInvitationsCreateOperationPayloadDataRelationships

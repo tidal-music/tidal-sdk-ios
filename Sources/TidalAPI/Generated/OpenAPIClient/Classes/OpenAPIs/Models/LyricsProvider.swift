@@ -13,6 +13,7 @@ import AnyCodable
 public enum LyricsProvider: Codable, JSONEncodable, Hashable {
     case thirdPartyLyricsProvider(ThirdPartyLyricsProvider)
     case tidalLyricsProvider(TidalLyricsProvider)
+    case unknownDefaultOpenApi
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
@@ -21,6 +22,8 @@ public enum LyricsProvider: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .tidalLyricsProvider(let value):
             try container.encode(value)
+        case .unknownDefaultOpenApi:
+            try container.encodeNil()
         }
     }
     
@@ -40,7 +43,7 @@ public enum LyricsProvider: Codable, JSONEncodable, Hashable {
             let value = try TidalLyricsProvider(from: decoder)
             self = .tidalLyricsProvider(value)
         default:
-            throw DecodingError.dataCorruptedError(forKey: .source, in: container, debugDescription: "Unknown type: \\(type)")
+            self = .unknownDefaultOpenApi
         }
     }
 }

@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct PlaylistsItemsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case duplicateItemsInPlaylist = "DUPLICATE_ITEMS_IN_PLAYLIST"
         case idempotentRequestInProgress = "IDEMPOTENT_REQUEST_IN_PROGRESS"
         case tooManyItemsInPlaylist = "TOO_MANY_ITEMS_IN_PLAYLIST"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

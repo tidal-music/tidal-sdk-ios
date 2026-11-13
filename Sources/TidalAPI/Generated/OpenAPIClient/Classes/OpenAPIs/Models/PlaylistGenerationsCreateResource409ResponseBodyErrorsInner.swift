@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct PlaylistGenerationsCreateResource409ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case conflict = "CONFLICT"
         case idempotentRequestInProgress = "IDEMPOTENT_REQUEST_IN_PROGRESS"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

@@ -13,20 +13,22 @@ import AnyCodable
 /** Recoverable AI playlist generation progress snapshot */
 public struct PlaylistGenerationProgress: Codable, Hashable {
 
-    public enum CoverArtStatus: String, Codable, CaseIterable {
+    public enum CoverArtStatus: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case pending = "PENDING"
         case processing = "PROCESSING"
         case error = "ERROR"
         case ok = "OK"
         case skipped = "SKIPPED"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Stage: String, Codable, CaseIterable {
+    public enum Stage: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case planning = "PLANNING"
         case searching = "SEARCHING"
         case choosing = "CHOOSING"
         case committing = "COMMITTING"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let committedTrackCountRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public static let selectedTrackCountRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)

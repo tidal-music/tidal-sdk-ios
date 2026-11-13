@@ -13,8 +13,9 @@ import AnyCodable
 /** Publication target supplied on creation; reads use publishedInSelectedSite */
 public struct Site: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case squaresites = "squareSites"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String

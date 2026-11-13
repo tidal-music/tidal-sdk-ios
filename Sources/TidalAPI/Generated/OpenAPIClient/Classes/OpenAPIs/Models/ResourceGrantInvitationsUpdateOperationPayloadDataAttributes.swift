@@ -15,7 +15,7 @@ public struct ResourceGrantInvitationsUpdateOperationPayloadDataAttributes: Coda
     public static let passwordRule = StringRule(minLength: 6, maxLength: 128, pattern: "^[\\x20-\\x7E]*$")
     /** Password a user must send to redeem. Never returned. Must be printable ASCII characters. A value sets or changes it; null removes it; omitted leaves it unchanged. Playlist invitations cannot have one. */
     public var password: String?
-    /** Whether the code also gives VIEWER access to the subject, whatever the role, until the invitation expires. Previews are not yet supported, so true is rejected with 400. Omitted leaves it unchanged. */
+    /** Whether previewGrant gives VIEWER access to the subject, whatever the role, until the invitation expires. Omitted leaves it unchanged. */
     public var preview: Bool?
 
     public init(

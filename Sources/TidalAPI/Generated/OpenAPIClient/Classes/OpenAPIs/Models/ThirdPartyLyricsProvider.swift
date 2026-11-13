@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct ThirdPartyLyricsProvider: Codable, Hashable {
 
-    public enum Source: String, Codable, CaseIterable {
+    public enum Source: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case thirdParty = "THIRD_PARTY"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var commonTrackId: String
     public var lyricsId: String

@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct PurchasesAttributes: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case active = "ACTIVE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Datetime of purchase (ISO 8601) */
     public var createdAt: Date

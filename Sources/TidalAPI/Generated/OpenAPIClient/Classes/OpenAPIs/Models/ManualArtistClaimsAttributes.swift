@@ -12,11 +12,12 @@ import AnyCodable
 
 public struct ManualArtistClaimsAttributes: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case submitted = "SUBMITTED"
         case pending = "PENDING"
         case approved = "APPROVED"
         case rejected = "REJECTED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let artistIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let legalFirstNameRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)

@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct ResourceGrantsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum Role: String, Codable, CaseIterable {
+    public enum Role: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case viewer = "VIEWER"
         case collaborator = "COLLABORATOR"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var role: Role
 

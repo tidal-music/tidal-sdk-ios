@@ -12,11 +12,12 @@ import AnyCodable
 
 public struct PlaylistGenerationsAttributes: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case pending = "PENDING"
         case processing = "PROCESSING"
         case error = "ERROR"
         case ok = "OK"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let preferenceVersionRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public static let promptRule = StringRule(minLength: 1, maxLength: 1024, pattern: nil)

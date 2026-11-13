@@ -91,7 +91,7 @@ internal class ResourceGrantInvitationsAPI {
      
      - parameter id: (path) Invitation id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-     - parameter revokeGrants: (query) Also revoke the grants redemptions issued; access from other sources stays. Defaults to false. Not yet supported, so true is rejected with 400. (optional)
+     - parameter revokeGrants: (query) Also revoke the grants redemptions issued; access from other sources stays. Defaults to false. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -107,13 +107,13 @@ internal class ResourceGrantInvitationsAPI {
     /**
      Delete single resourceGrantInvitation.
      - DELETE /resourceGrantInvitations/{id}
-     - Delete the invitation, ending redemption.
+     - Delete the invitation, ending redemption and its preview.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Invitation id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-     - parameter revokeGrants: (query) Also revoke the grants redemptions issued; access from other sources stays. Defaults to false. Not yet supported, so true is rejected with 400. (optional)
+     - parameter revokeGrants: (query) Also revoke the grants redemptions issued; access from other sources stays. Defaults to false. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
     internal class func resourceGrantInvitationsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, revokeGrants: Bool? = nil) -> RequestBuilder<MutationResponseDocument> {
@@ -231,7 +231,7 @@ internal class ResourceGrantInvitationsAPI {
     /**
      Update single resourceGrantInvitation.
      - PATCH /resourceGrantInvitations/{id}
-     - Set, change or remove the password. Users who redeemed keep their grants.
+     - Set, change or remove the password, or turn the preview on or off. Users who redeemed keep their grants.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

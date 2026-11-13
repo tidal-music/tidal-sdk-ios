@@ -12,11 +12,12 @@ import AnyCodable
 
 public struct ClientsAttributes: Codable, Hashable {
 
-    public enum AccessTier: String, Codable, CaseIterable {
+    public enum AccessTier: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case thirdParty = "THIRD_PARTY"
         case thirdPartyProd = "THIRD_PARTY_PROD"
         case partner = "PARTNER"
         case _internal = "INTERNAL"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let scopesRule = ArrayRule(minItems: nil, maxItems: nil, uniqueItems: true)
     public var accessTier: AccessTier

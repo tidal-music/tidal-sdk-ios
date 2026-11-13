@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct UserFeedItemTrackSourceFileCommentedDetails: Codable, Hashable {
 
-    public enum ActivityType: String, Codable, CaseIterable {
+    public enum ActivityType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case trackSourceFileCommented = "TRACK_SOURCE_FILE_COMMENTED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Type of activity represented by the group */
     public var activityType: ActivityType

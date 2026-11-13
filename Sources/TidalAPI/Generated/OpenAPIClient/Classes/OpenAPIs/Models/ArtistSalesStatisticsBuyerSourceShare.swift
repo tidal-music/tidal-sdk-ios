@@ -12,12 +12,13 @@ import AnyCodable
 
 public struct ArtistSalesStatisticsBuyerSourceShare: Codable, Hashable {
 
-    public enum Source: String, Codable, CaseIterable {
+    public enum Source: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case albumAndTrackPages = "ALBUM_AND_TRACK_PAGES"
         case artistProfile = "ARTIST_PROFILE"
         case sharedLinks = "SHARED_LINKS"
         case tidalHome = "TIDAL_HOME"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let shareOfOrdersRule = NumericRule<Double>(minimum: 0, exclusiveMinimum: false, maximum: 1, exclusiveMaximum: false, multipleOf: nil)
     /** Share of orders */

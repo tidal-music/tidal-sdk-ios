@@ -12,20 +12,23 @@ import AnyCodable
 
 public struct DynamicModulesAttributes: Codable, Hashable {
 
-    public enum HeaderActions: String, Codable, CaseIterable {
+    public enum HeaderActions: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case spotlightInfo = "SPOTLIGHT_INFO"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum PreviewLayout: String, Codable, CaseIterable {
+    public enum PreviewLayout: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case grid = "GRID"
         case list = "LIST"
         case shortcut = "SHORTCUT"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum ViewAllLayout: String, Codable, CaseIterable {
+    public enum ViewAllLayout: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case grid = "GRID"
         case list = "LIST"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Actions available in the module header. SPOTLIGHT_INFO opens information about TIDAL Spotlight. Clients choose the presentation and ignore unsupported actions, including UNKNOWN. */
     public var headerActions: [HeaderActions]

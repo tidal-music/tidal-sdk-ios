@@ -13,9 +13,10 @@ import AnyCodable
 /** A grant recipient. Identify the Everyone group with &#x60;type&#x60; set to &#x60;groups&#x60; and &#x60;id&#x60; set to &#x60;everyone&#x60;; only albums can be granted to it. */
 public struct ResourceGrantsGrantee: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case users = "users"
         case groups = "groups"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var id: String
     public var type: ModelType

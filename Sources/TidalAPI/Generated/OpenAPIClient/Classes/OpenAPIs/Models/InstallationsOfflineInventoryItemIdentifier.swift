@@ -12,12 +12,13 @@ import AnyCodable
 
 public struct InstallationsOfflineInventoryItemIdentifier: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case tracks = "tracks"
         case videos = "videos"
         case albums = "albums"
         case playlists = "playlists"
         case usercollectiontracks = "userCollectionTracks"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Also accepts `me` when type is `userCollectionTracks`. */

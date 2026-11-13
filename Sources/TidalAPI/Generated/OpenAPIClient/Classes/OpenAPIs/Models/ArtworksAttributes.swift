@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct ArtworksAttributes: Codable, Hashable {
 
-    public enum MediaType: String, Codable, CaseIterable {
+    public enum MediaType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case image = "IMAGE"
         case video = "VIDEO"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Artwork files */
     public var files: [ArtworkFile]

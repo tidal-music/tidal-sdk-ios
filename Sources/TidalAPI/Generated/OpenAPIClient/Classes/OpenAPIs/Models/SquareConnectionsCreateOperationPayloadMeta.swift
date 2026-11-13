@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct SquareConnectionsCreateOperationPayloadMeta: Codable, Hashable {
 
-    public enum Platform: String, Codable, CaseIterable {
+    public enum Platform: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case web = "WEB"
         case android = "ANDROID"
         case ios = "IOS"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Client platform initiating Square onboarding. */
     public var platform: Platform

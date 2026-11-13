@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct SquareItemsCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case squareitems = "squareItems"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let lidRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var attributes: SquareItemsCreateOperationPayloadDataAttributes
