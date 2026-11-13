@@ -2,6 +2,8 @@ additionalProperties:
   useJsonEncodable: false
   responseAs: AsyncAwait
   identifiableModels: true
+  enumUnknownDefaultCase: true
+  oneOfUnknownDefaultCase: true
 
 embeddedTemplateDir: ./Config/custom_template
 templateDir: ./Config/custom_template
