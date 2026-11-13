@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-11-13
+
+### Added
+- Generated API code using spec version 1.10.252, including `published` on album updates, the issuing invitation on resource grants, and user data exports (TidalAPI)
+
 ### Changed
-- Generate unknown enum values and unknown resource types as `unknownDefaultOpenApi` instead of failing the whole response. Takes effect with the next API regeneration; exhaustive `switch` statements over generated enums and `IncludedInner` then need a new case (TidalAPI)
+- Generated enums and resource types decode unknown values as `unknownDefaultOpenApi` instead of failing the whole response. Exhaustive `switch` statements over generated enums and `IncludedInner` need a new case (TidalAPI)
+
+### Removed
+- `DynamicPagesResourceObjectMeta`, dropped from the spec (TidalAPI)
 
 ## [0.14.1] - 2026-11-11
 
