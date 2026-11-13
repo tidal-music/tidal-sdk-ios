@@ -36,6 +36,8 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
     /** Explicit content. Deprecated: use 'explicit' instead. This field will be removed in a future version. */
     @available(*, deprecated, message: "This property is deprecated.")
     public var explicitLyrics: Bool?
+    /** Whether the album is published to everyone. */
+    public var published: Bool?
     public var releaseDate: Date?
     public var title: String?
     public var version: String?
@@ -47,6 +49,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         copyright: Copyright? = nil,
         explicit: Bool? = nil,
         explicitLyrics: Bool? = nil,
+        published: Bool? = nil,
         releaseDate: Date? = nil,
         title: String? = nil,
         version: String? = nil
@@ -57,6 +60,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         self.copyright = copyright
         self.explicit = explicit
         self.explicitLyrics = explicitLyrics
+        self.published = published
         self.releaseDate = releaseDate
         self.title = title
         self.version = version
@@ -69,6 +73,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case copyright
         case explicit
         case explicitLyrics
+        case published
         case releaseDate
         case title
         case version
@@ -84,6 +89,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encodeIfPresent(explicit, forKey: .explicit)
         try container.encodeIfPresent(explicitLyrics, forKey: .explicitLyrics)
+        try container.encodeIfPresent(published, forKey: .published)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(version, forKey: .version)

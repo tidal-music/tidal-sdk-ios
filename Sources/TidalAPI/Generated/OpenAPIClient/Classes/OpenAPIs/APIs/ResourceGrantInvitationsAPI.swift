@@ -91,7 +91,7 @@ internal class ResourceGrantInvitationsAPI {
      
      - parameter id: (path) Invitation id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-     - parameter revokeGrants: (query) Also revoke the grants redemptions issued; access from other sources stays. Defaults to false. Not yet supported, so true is rejected with 400. (optional)
+     - parameter revokeGrants: (query) Also revoke the grants redemptions issued; access from other sources stays. Defaults to false. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -113,7 +113,7 @@ internal class ResourceGrantInvitationsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Invitation id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-     - parameter revokeGrants: (query) Also revoke the grants redemptions issued; access from other sources stays. Defaults to false. Not yet supported, so true is rejected with 400. (optional)
+     - parameter revokeGrants: (query) Also revoke the grants redemptions issued; access from other sources stays. Defaults to false. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
     internal class func resourceGrantInvitationsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, revokeGrants: Bool? = nil) -> RequestBuilder<MutationResponseDocument> {
