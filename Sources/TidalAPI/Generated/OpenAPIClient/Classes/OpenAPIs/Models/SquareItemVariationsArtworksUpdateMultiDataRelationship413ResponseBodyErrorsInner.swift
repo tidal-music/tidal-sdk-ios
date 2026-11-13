@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct SquareItemVariationsArtworksUpdateMultiDataRelationship413ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case artworkImageTooLarge = "ARTWORK_IMAGE_TOO_LARGE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

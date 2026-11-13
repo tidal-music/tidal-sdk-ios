@@ -105,6 +105,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case videoManifestsResourceObject(VideoManifestsResourceObject)
     case videosResourceObject(VideosResourceObject)
     case viewerContextsResourceObject(ViewerContextsResourceObject)
+    case unknownDefaultOpenApi
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
@@ -297,6 +298,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .viewerContextsResourceObject(let value):
             try container.encode(value)
+        case .unknownDefaultOpenApi:
+            try container.encodeNil()
         }
     }
     
@@ -592,7 +595,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             let value = try ViewerContextsResourceObject(from: decoder)
             self = .viewerContextsResourceObject(value)
         default:
-            throw DecodingError.dataCorruptedError(forKey: .type, in: container, debugDescription: "Unknown type: \\(type)")
+            self = .unknownDefaultOpenApi
         }
     }
 }
@@ -695,6 +698,7 @@ extension IncludedInner: Identifiable {
         case .videoManifestsResourceObject(let value): return value.id
         case .videosResourceObject(let value): return value.id
         case .viewerContextsResourceObject(let value): return value.id
+        case .unknownDefaultOpenApi: return "unknown"
         }
     }
 }

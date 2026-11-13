@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct SquareSitesItemsReadMultiDataRelationship409ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case missingItemsScope = "MISSING_ITEMS_SCOPE"
         case siteNotSelected = "SITE_NOT_SELECTED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

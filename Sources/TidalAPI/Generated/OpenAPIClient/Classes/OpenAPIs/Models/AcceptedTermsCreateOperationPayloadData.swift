@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct AcceptedTermsCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case acceptedterms = "acceptedTerms"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var relationships: AcceptedTermsCreateOperationPayloadDataRelationships
     public var type: ModelType

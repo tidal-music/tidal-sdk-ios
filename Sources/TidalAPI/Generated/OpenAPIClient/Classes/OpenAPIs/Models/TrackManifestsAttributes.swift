@@ -12,21 +12,24 @@ import AnyCodable
 
 public struct TrackManifestsAttributes: Codable, Hashable {
 
-    public enum Formats: String, Codable, CaseIterable {
+    public enum Formats: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case heaacv1 = "HEAACV1"
         case aaclc = "AACLC"
         case flac = "FLAC"
         case flacHires = "FLAC_HIRES"
         case eac3Joc = "EAC3_JOC"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum PreviewReason: String, Codable, CaseIterable {
+    public enum PreviewReason: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case fullRequiresSubscription = "FULL_REQUIRES_SUBSCRIPTION"
         case fullRequiresPurchase = "FULL_REQUIRES_PURCHASE"
         case fullRequiresHigherAccessTier = "FULL_REQUIRES_HIGHER_ACCESS_TIER"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum TrackPresentation: String, Codable, CaseIterable {
+    public enum TrackPresentation: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case full = "FULL"
         case preview = "PREVIEW"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var albumAudioNormalizationData: AudioNormalizationData?
     public var drmData: DrmData?

@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct SquareItemVariationsArtworksRelationshipUpdateOperationPayloadMeta: Codable, Hashable {
 
-    public enum Mode: String, Codable, CaseIterable {
+    public enum Mode: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case replaceAll = "REPLACE_ALL"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let expectedRevisionRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: 9007199254740991, exclusiveMaximum: false, multipleOf: nil)
     /** Observed variation revision, read from attributes.revision or the relationship's meta.revision; a stale revision returns 409 and changes nothing. Does not guard the parent item, sibling variations or inventory quantity */

@@ -13,10 +13,11 @@ import AnyCodable
 /** Color information extracted from artwork */
 public struct ArtworkVisualMetadata: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case _none = "NONE"
         case processing = "PROCESSING"
         case ok = "OK"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let selectedPaletteColorRule = StringRule(minLength: 1, maxLength: nil, pattern: "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
     /** BlurHash representation of the artwork for placeholder display */

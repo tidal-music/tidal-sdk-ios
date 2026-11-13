@@ -12,13 +12,14 @@ import AnyCodable
 
 public struct PlayQueuesFutureRelationshipAddOperationPayloadMeta: Codable, Hashable {
 
-    public enum Mode: String, Codable, CaseIterable {
+    public enum Mode: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case addToFront = "ADD_TO_FRONT"
         case addToBack = "ADD_TO_BACK"
         case addBefore = "ADD_BEFORE"
         case replaceAll = "REPLACE_ALL"
         case replaceAllAndCurrent = "REPLACE_ALL_AND_CURRENT"
         case addToFrontReplaceCurrent = "ADD_TO_FRONT_REPLACE_CURRENT"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var batchId: UUID?
     public var legacySource: LegacySource?

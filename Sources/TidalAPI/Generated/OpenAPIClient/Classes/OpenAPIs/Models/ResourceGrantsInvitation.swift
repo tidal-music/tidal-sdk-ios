@@ -13,8 +13,9 @@ import AnyCodable
 /** The invitation whose redemption issued the grant. */
 public struct ResourceGrantsInvitation: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case resourcegrantinvitations = "resourceGrantInvitations"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String

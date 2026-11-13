@@ -12,15 +12,17 @@ import AnyCodable
 
 public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum AccessType: String, Codable, CaseIterable {
+    public enum AccessType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum AlbumType: String, Codable, CaseIterable {
+    public enum AlbumType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case album = "ALBUM"
         case ep = "EP"
         case single = "SINGLE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let barcodeIdRule = StringRule(minLength: nil, maxLength: 13, pattern: "^$|^[0-9]{12,13}$")
     public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)

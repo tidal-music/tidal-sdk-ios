@@ -13,8 +13,9 @@ import AnyCodable
 /** One of your tracks was added to user playlists. &#x60;eventCount&#x60; is the number of distinct playlists it was added to in the item&#39;s day, not people; actors are never listed */
 public struct UserFeedItemTrackPlaylistedDetails: Codable, Hashable {
 
-    public enum ActivityType: String, Codable, CaseIterable {
+    public enum ActivityType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case trackPlaylisted = "TRACK_PLAYLISTED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Type of activity represented by the group */
     public var activityType: ActivityType

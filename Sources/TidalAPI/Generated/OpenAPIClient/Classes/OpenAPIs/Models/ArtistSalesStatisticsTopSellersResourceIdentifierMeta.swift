@@ -13,10 +13,11 @@ import AnyCodable
 /** netSalesAmount is the product&#39;s net sales in the window, in the relationship&#39;s currency */
 public struct ArtistSalesStatisticsTopSellersResourceIdentifierMeta: Codable, Hashable {
 
-    public enum Kind: String, Codable, CaseIterable {
+    public enum Kind: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case download = "DOWNLOAD"
         case merch = "MERCH"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let netSalesAmountRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$(?![\\s\\S])")
     public static let rankRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)

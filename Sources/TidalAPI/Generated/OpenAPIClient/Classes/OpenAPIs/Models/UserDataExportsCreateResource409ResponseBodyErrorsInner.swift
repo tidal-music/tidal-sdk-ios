@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct UserDataExportsCreateResource409ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case dataExportRequestedTooRecently = "DATA_EXPORT_REQUESTED_TOO_RECENTLY"
         case dataExportRequestInProgress = "DATA_EXPORT_REQUEST_IN_PROGRESS"
         case idempotentRequestInProgress = "IDEMPOTENT_REQUEST_IN_PROGRESS"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

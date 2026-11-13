@@ -24,6 +24,7 @@ public enum UserFeedItemActivityDetails: Codable, JSONEncodable, Hashable {
     case userFeedItemTrackPlayMilestoneDetails(UserFeedItemTrackPlayMilestoneDetails)
     case userFeedItemTrackPlaylistedDetails(UserFeedItemTrackPlaylistedDetails)
     case userFeedItemTrackSourceFileCommentedDetails(UserFeedItemTrackSourceFileCommentedDetails)
+    case unknownDefaultOpenApi
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
@@ -52,6 +53,8 @@ public enum UserFeedItemActivityDetails: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .userFeedItemTrackSourceFileCommentedDetails(let value):
             try container.encode(value)
+        case .unknownDefaultOpenApi:
+            try container.encodeNil()
         }
     }
     
@@ -101,7 +104,7 @@ public enum UserFeedItemActivityDetails: Codable, JSONEncodable, Hashable {
             let value = try UserFeedItemTrackSourceFileCommentedDetails(from: decoder)
             self = .userFeedItemTrackSourceFileCommentedDetails(value)
         default:
-            throw DecodingError.dataCorruptedError(forKey: .activityType, in: container, debugDescription: "Unknown type: \\(type)")
+            self = .unknownDefaultOpenApi
         }
     }
 }

@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct UserCollectionAlbumsItemsReadMultiDataRelationship403ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case unauthorized = "UNAUTHORIZED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

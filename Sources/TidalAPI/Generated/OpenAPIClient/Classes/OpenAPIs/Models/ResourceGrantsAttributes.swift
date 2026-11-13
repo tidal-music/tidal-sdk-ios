@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct ResourceGrantsAttributes: Codable, Hashable {
 
-    public enum Role: String, Codable, CaseIterable {
+    public enum Role: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case viewer = "VIEWER"
         case collaborator = "COLLABORATOR"
         case owner = "OWNER"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Code of a bearer grant: whoever presents it as `shareCode` holds the role on the subject and everything below it. */
     public var code: String?

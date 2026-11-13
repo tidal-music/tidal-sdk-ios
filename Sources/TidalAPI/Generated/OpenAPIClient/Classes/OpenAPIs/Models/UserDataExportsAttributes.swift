@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct UserDataExportsAttributes: Codable, Hashable {
 
-    public enum DataTypes: String, Codable, CaseIterable {
+    public enum DataTypes: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case albums = "ALBUMS"
         case artists = "ARTISTS"
         case artistClaims = "ARTIST_CLAIMS"
@@ -33,14 +33,16 @@ public struct UserDataExportsAttributes: Codable, Hashable {
         case userClient = "USER_CLIENT"
         case uploads = "UPLOADS"
         case videos = "VIDEOS"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case pending = "PENDING"
         case processing = "PROCESSING"
         case ok = "OK"
         case error = "ERROR"
         case expired = "EXPIRED"
         case cancelled = "CANCELLED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** When the export was requested */
     public var createdAt: Date

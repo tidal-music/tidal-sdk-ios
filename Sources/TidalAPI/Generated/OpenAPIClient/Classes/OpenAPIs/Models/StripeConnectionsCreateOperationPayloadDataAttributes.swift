@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct StripeConnectionsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum IntegrationType: String, Codable, CaseIterable {
+    public enum IntegrationType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case redirect = "REDIRECT"
         case embedded = "EMBEDDED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Deprecated: use meta.integrationType instead. */
     @available(*, deprecated, message: "This property is deprecated.")

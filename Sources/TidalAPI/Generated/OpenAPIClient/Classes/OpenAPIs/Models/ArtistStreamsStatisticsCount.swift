@@ -13,10 +13,11 @@ import AnyCodable
 /** A count in the window that may be withheld. value is present exactly when status is OK, and 0 is a measured zero */
 public struct ArtistStreamsStatisticsCount: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case ok = "OK"
         case suppressed = "SUPPRESSED"
         case unavailable = "UNAVAILABLE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let valueRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Status of artist statistics that may be withheld. OK: the data is present. SUPPRESSED: withheld because too few people are counted to show it. UNAVAILABLE: not available at the moment */

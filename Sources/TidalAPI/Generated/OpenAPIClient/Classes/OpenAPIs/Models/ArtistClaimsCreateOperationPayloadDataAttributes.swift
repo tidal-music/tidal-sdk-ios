@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct ArtistClaimsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum Provider: String, Codable, CaseIterable {
+    public enum Provider: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case distrokid = "DISTROKID"
         case cdbaby = "CDBABY"
         case tunecore = "TUNECORE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let artistIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var artistId: String

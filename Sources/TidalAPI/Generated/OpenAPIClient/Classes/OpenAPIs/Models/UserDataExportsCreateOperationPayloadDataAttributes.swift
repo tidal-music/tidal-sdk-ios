@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct UserDataExportsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum DataTypes: String, Codable, CaseIterable {
+    public enum DataTypes: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case albums = "ALBUMS"
         case artists = "ARTISTS"
         case artistClaims = "ARTIST_CLAIMS"
@@ -33,6 +33,7 @@ public struct UserDataExportsCreateOperationPayloadDataAttributes: Codable, Hash
         case userClient = "USER_CLIENT"
         case uploads = "UPLOADS"
         case videos = "VIDEOS"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let dataTypesRule = ArrayRule(minItems: 1, maxItems: 50, uniqueItems: false)
     /** Data types to export. Every data type when absent; when present, at least one is required. */

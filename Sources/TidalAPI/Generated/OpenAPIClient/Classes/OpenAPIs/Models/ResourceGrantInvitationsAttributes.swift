@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct ResourceGrantInvitationsAttributes: Codable, Hashable {
 
-    public enum Role: String, Codable, CaseIterable {
+    public enum Role: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case viewer = "VIEWER"
         case collaborator = "COLLABORATOR"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let codeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let maxUsesRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: 100, exclusiveMaximum: false, multipleOf: nil)

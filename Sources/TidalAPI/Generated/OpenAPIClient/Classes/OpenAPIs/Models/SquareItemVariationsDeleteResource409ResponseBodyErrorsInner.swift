@@ -12,12 +12,13 @@ import AnyCodable
 
 public struct SquareItemVariationsDeleteResource409ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case catalogVersionMismatch = "CATALOG_VERSION_MISMATCH"
         case conflict = "CONFLICT"
         case idempotentRequestInProgress = "IDEMPOTENT_REQUEST_IN_PROGRESS"
         case lastVariation = "LAST_VARIATION"
         case missingItemsScope = "MISSING_ITEMS_SCOPE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

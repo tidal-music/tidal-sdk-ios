@@ -12,13 +12,15 @@ import AnyCodable
 
 public struct ArtistClaimStatusesAttributes: Codable, Hashable {
 
-    public enum ClaimSources: String, Codable, CaseIterable {
+    public enum ClaimSources: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case artistClaims = "ARTIST_CLAIMS"
         case manualArtistClaims = "MANUAL_ARTIST_CLAIMS"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case claimInProgress = "CLAIM_IN_PROGRESS"
         case noActiveClaim = "NO_ACTIVE_CLAIM"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Claim sources contributing to the current status. Empty when there is no active claim. */
     public var claimSources: [ClaimSources]

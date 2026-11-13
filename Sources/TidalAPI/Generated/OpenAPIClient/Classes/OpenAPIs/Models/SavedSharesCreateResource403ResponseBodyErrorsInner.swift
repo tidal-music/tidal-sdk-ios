@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct SavedSharesCreateResource403ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case sharePasswordInvalid = "SHARE_PASSWORD_INVALID"
         case sharePasswordRequired = "SHARE_PASSWORD_REQUIRED"
         case unauthorized = "UNAUTHORIZED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

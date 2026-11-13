@@ -12,11 +12,12 @@ import AnyCodable
 
 public struct OfflineTasksUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum State: String, Codable, CaseIterable {
+    public enum State: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case pending = "PENDING"
         case inProgress = "IN_PROGRESS"
         case failed = "FAILED"
         case completed = "COMPLETED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** New state for the offline task */
     public var state: State

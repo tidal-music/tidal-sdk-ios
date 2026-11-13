@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct UserDataExportsCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case userdataexports = "userDataExports"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var attributes: UserDataExportsCreateOperationPayloadDataAttributes?
     public var type: ModelType

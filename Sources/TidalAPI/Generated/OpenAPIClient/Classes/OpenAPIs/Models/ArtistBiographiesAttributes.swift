@@ -12,13 +12,14 @@ import AnyCodable
 
 public struct ArtistBiographiesAttributes: Codable, Hashable {
 
-    public enum Source: String, Codable, CaseIterable {
+    public enum Source: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case tidal = "TIDAL"
         case tiVo = "TiVo"
         case musicBrainz = "MusicBrainz"
         case avex = "Avex"
         case artist = "Artist"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Boolean to indicate if the biography is editable (source = tidal or artist) */
     public var editable: Bool

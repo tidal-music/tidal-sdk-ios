@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct ArtistStreamsStatisticsAttributes: Codable, Hashable {
 
-    public enum BreakdownsStatus: String, Codable, CaseIterable {
+    public enum BreakdownsStatus: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case ok = "OK"
         case suppressed = "SUPPRESSED"
         case unavailable = "UNAVAILABLE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Status of artist statistics that may be withheld. OK: the data is present. SUPPRESSED: withheld because too few people are counted to show it. UNAVAILABLE: not available at the moment */
     public var breakdownsStatus: BreakdownsStatus
