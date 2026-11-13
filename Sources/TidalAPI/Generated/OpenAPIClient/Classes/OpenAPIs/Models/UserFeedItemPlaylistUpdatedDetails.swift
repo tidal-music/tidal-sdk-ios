@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct UserFeedItemPlaylistUpdatedDetails: Codable, Hashable {
 
-    public enum ActivityType: String, Codable, CaseIterable {
+    public enum ActivityType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case playlistUpdated = "PLAYLIST_UPDATED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let newItemCountRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Type of activity represented by the group */

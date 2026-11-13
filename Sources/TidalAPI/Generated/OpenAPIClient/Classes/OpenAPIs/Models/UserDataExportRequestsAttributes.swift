@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct UserDataExportRequestsAttributes: Codable, Hashable {
 
-    public enum FlowType: String, Codable, CaseIterable {
+    public enum FlowType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case gdpr = "GDPR"
         case ccpa = "CCPA"
         case coppa = "COPPA"
@@ -20,6 +20,7 @@ public struct UserDataExportRequestsAttributes: Codable, Hashable {
         case usPrivacyRegulation = "US_PRIVACY_REGULATION"
         case appi = "APPI"
         case retentionPolicy = "RETENTION_POLICY"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** The type of data export flow */
     public var flowType: FlowType

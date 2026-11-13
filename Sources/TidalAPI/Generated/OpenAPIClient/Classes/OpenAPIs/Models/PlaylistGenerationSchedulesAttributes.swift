@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct PlaylistGenerationSchedulesAttributes: Codable, Hashable {
 
-    public enum Frequency: String, Codable, CaseIterable {
+    public enum Frequency: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case weekly = "WEEKLY"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case active = "ACTIVE"
         case disabled = "DISABLED"
         case deleting = "DELETING"
@@ -23,8 +24,9 @@ public struct PlaylistGenerationSchedulesAttributes: Codable, Hashable {
         case updating = "UPDATING"
         case error = "ERROR"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Weekday: String, Codable, CaseIterable {
+    public enum Weekday: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case monday = "MONDAY"
         case tuesday = "TUESDAY"
         case wednesday = "WEDNESDAY"
@@ -32,6 +34,7 @@ public struct PlaylistGenerationSchedulesAttributes: Codable, Hashable {
         case friday = "FRIDAY"
         case saturday = "SATURDAY"
         case sunday = "SUNDAY"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let timeZoneRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     public var configurationVersion: Int

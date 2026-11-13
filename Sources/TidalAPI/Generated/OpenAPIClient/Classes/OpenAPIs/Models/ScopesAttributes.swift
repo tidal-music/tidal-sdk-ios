@@ -12,11 +12,12 @@ import AnyCodable
 
 public struct ScopesAttributes: Codable, Hashable {
 
-    public enum RequiredAccessTier: String, Codable, CaseIterable {
+    public enum RequiredAccessTier: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case thirdParty = "THIRD_PARTY"
         case thirdPartyProd = "THIRD_PARTY_PROD"
         case partner = "PARTNER"
         case _internal = "INTERNAL"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Text shown to the end user on the OAuth consent screen when this scope is requested. */
     public var consentText: String?

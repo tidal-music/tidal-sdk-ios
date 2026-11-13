@@ -12,12 +12,13 @@ import AnyCodable
 
 public struct StripeConnectionsAttributes: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case pendingRequirements = "PENDING_REQUIREMENTS"
         case underReview = "UNDER_REVIEW"
         case accepted = "ACCEPTED"
         case rejected = "REJECTED"
         case suspended = "SUSPENDED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Timestamp when the connection was created */
     public var createdAt: Date?

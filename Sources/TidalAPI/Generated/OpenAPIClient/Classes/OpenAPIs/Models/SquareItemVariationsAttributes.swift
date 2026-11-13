@@ -12,12 +12,14 @@ import AnyCodable
 
 public struct SquareItemVariationsAttributes: Codable, Hashable {
 
-    public enum Currency: String, Codable, CaseIterable {
+    public enum Currency: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case usd = "USD"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum PricingType: String, Codable, CaseIterable {
+    public enum PricingType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case fixed = "FIXED"
         case variable = "VARIABLE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let currencyRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let priceRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[+-]?(?:0*[0-9]{1,17}(?:\\.[0-9]{0,2})?|\\.[0-9]{1,2})$(?![\\s\\S])")

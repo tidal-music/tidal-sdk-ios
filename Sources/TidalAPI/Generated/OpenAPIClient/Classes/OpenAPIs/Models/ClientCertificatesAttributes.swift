@@ -12,17 +12,19 @@ import AnyCodable
 
 public struct ClientCertificatesAttributes: Codable, Hashable {
 
-    public enum CertificateStatus: String, Codable, CaseIterable {
+    public enum CertificateStatus: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case notIssued = "NOT_ISSUED"
         case active = "ACTIVE"
         case expired = "EXPIRED"
         case revoked = "REVOKED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum ProvisioningStatus: String, Codable, CaseIterable {
+    public enum ProvisioningStatus: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case pending = "PENDING"
         case processing = "PROCESSING"
         case ok = "OK"
         case error = "ERROR"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Time when the issued certificate expires */
     public var certificateExpiresAt: Date?

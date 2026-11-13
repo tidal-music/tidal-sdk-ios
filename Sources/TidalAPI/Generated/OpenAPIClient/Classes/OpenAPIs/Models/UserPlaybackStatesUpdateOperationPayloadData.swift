@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct UserPlaybackStatesUpdateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case userplaybackstates = "userPlaybackStates"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var attributes: UserPlaybackStatesUpdateOperationPayloadDataAttributes

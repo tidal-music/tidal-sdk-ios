@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct SubscriptionPriceChangeDecisionsAttributes: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case accepted = "ACCEPTED"
         case rejected = "REJECTED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** When the user decided. Absent when the consent was implicit (derived from the subscription start). */
     public var decidedAt: Date?

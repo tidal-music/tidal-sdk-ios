@@ -12,16 +12,18 @@ import AnyCodable
 
 public struct TrackFilesAttributes: Codable, Hashable {
 
-    public enum Format: String, Codable, CaseIterable {
+    public enum Format: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case heaacv1 = "HEAACV1"
         case aaclc = "AACLC"
         case flac = "FLAC"
         case flacHires = "FLAC_HIRES"
         case eac3Joc = "EAC3_JOC"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum TrackPresentation: String, Codable, CaseIterable {
+    public enum TrackPresentation: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case full = "FULL"
         case preview = "PREVIEW"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var albumAudioNormalizationData: AudioNormalizationData?
     /** File's audio format */

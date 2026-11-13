@@ -12,25 +12,29 @@ import AnyCodable
 
 public struct AlbumsAttributes: Codable, Hashable {
 
-    public enum AccessType: String, Codable, CaseIterable {
+    public enum AccessType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum AlbumType: String, Codable, CaseIterable {
+    public enum AlbumType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case album = "ALBUM"
         case ep = "EP"
         case single = "SINGLE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Availability: String, Codable, CaseIterable {
+    public enum Availability: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case stream = "STREAM"
         case dj = "DJ"
         case stem = "STEM"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case album = "ALBUM"
         case ep = "EP"
         case single = "SINGLE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let barcodeIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)

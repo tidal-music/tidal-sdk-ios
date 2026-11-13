@@ -91,6 +91,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userCollectionVideosResourceObject(UserCollectionVideosResourceObject)
     case userDailyMixesResourceObject(UserDailyMixesResourceObject)
     case userDataExportRequestsResourceObject(UserDataExportRequestsResourceObject)
+    case userDataExportsResourceObject(UserDataExportsResourceObject)
     case userDiscoveryMixesResourceObject(UserDiscoveryMixesResourceObject)
     case userFeedItemsResourceObject(UserFeedItemsResourceObject)
     case userFeedsResourceObject(UserFeedsResourceObject)
@@ -104,6 +105,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case videoManifestsResourceObject(VideoManifestsResourceObject)
     case videosResourceObject(VideosResourceObject)
     case viewerContextsResourceObject(ViewerContextsResourceObject)
+    case unknownDefaultOpenApi
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
@@ -268,6 +270,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .userDataExportRequestsResourceObject(let value):
             try container.encode(value)
+        case .userDataExportsResourceObject(let value):
+            try container.encode(value)
         case .userDiscoveryMixesResourceObject(let value):
             try container.encode(value)
         case .userFeedItemsResourceObject(let value):
@@ -294,6 +298,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .viewerContextsResourceObject(let value):
             try container.encode(value)
+        case .unknownDefaultOpenApi:
+            try container.encodeNil()
         }
     }
     
@@ -546,6 +552,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userDataExportRequests":
             let value = try UserDataExportRequestsResourceObject(from: decoder)
             self = .userDataExportRequestsResourceObject(value)
+        case "userDataExports":
+            let value = try UserDataExportsResourceObject(from: decoder)
+            self = .userDataExportsResourceObject(value)
         case "userDiscoveryMixes":
             let value = try UserDiscoveryMixesResourceObject(from: decoder)
             self = .userDiscoveryMixesResourceObject(value)
@@ -586,7 +595,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             let value = try ViewerContextsResourceObject(from: decoder)
             self = .viewerContextsResourceObject(value)
         default:
-            throw DecodingError.dataCorruptedError(forKey: .type, in: container, debugDescription: "Unknown type: \\(type)")
+            self = .unknownDefaultOpenApi
         }
     }
 }
@@ -675,6 +684,7 @@ extension IncludedInner: Identifiable {
         case .userCollectionVideosResourceObject(let value): return value.id
         case .userDailyMixesResourceObject(let value): return value.id
         case .userDataExportRequestsResourceObject(let value): return value.id
+        case .userDataExportsResourceObject(let value): return value.id
         case .userDiscoveryMixesResourceObject(let value): return value.id
         case .userFeedItemsResourceObject(let value): return value.id
         case .userFeedsResourceObject(let value): return value.id
@@ -688,6 +698,7 @@ extension IncludedInner: Identifiable {
         case .videoManifestsResourceObject(let value): return value.id
         case .videosResourceObject(let value): return value.id
         case .viewerContextsResourceObject(let value): return value.id
+        case .unknownDefaultOpenApi: return "unknown"
         }
     }
 }

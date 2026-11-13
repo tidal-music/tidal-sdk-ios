@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct UserRecommendationBlocksArtistsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case idempotentRequestInProgress = "IDEMPOTENT_REQUEST_IN_PROGRESS"
         case maximumNumberOfBlocksExceeded = "MAXIMUM_NUMBER_OF_BLOCKS_EXCEEDED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

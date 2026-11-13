@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct SubscriptionPriceChangeDecisionsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case accepted = "ACCEPTED"
         case rejected = "REJECTED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** The decision to record. A decision may only be created once — changing a rejection to an acceptance is a PATCH. */
     public var status: Status

@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct FoldersCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case folders = "folders"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var attributes: FoldersCreateOperationPayloadDataAttributes
     public var relationships: FoldersCreateOperationPayloadDataRelationships?

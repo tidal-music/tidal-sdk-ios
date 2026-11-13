@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct UserFeedItemCopyrightFlaggedDetails: Codable, Hashable {
 
-    public enum ActivityType: String, Codable, CaseIterable {
+    public enum ActivityType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case copyrightFlagged = "COPYRIGHT_FLAGGED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let matchCountRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Type of activity represented by the group */

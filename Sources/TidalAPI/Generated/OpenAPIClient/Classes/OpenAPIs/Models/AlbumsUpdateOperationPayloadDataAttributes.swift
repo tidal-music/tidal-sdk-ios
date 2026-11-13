@@ -12,15 +12,17 @@ import AnyCodable
 
 public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum AccessType: String, Codable, CaseIterable {
+    public enum AccessType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum AlbumType: String, Codable, CaseIterable {
+    public enum AlbumType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case album = "ALBUM"
         case ep = "EP"
         case single = "SINGLE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let barcodeIdRule = StringRule(minLength: nil, maxLength: 13, pattern: "^$|^[0-9]{12,13}$")
     public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
@@ -36,6 +38,8 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
     /** Explicit content. Deprecated: use 'explicit' instead. This field will be removed in a future version. */
     @available(*, deprecated, message: "This property is deprecated.")
     public var explicitLyrics: Bool?
+    /** Whether the album is published to everyone. */
+    public var published: Bool?
     public var releaseDate: Date?
     public var title: String?
     public var version: String?
@@ -47,6 +51,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         copyright: Copyright? = nil,
         explicit: Bool? = nil,
         explicitLyrics: Bool? = nil,
+        published: Bool? = nil,
         releaseDate: Date? = nil,
         title: String? = nil,
         version: String? = nil
@@ -57,6 +62,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         self.copyright = copyright
         self.explicit = explicit
         self.explicitLyrics = explicitLyrics
+        self.published = published
         self.releaseDate = releaseDate
         self.title = title
         self.version = version
@@ -69,6 +75,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case copyright
         case explicit
         case explicitLyrics
+        case published
         case releaseDate
         case title
         case version
@@ -84,6 +91,7 @@ public struct AlbumsUpdateOperationPayloadDataAttributes: Codable, Hashable {
         try container.encodeIfPresent(copyright, forKey: .copyright)
         try container.encodeIfPresent(explicit, forKey: .explicit)
         try container.encodeIfPresent(explicitLyrics, forKey: .explicitLyrics)
+        try container.encodeIfPresent(published, forKey: .published)
         try container.encodeIfPresent(releaseDate, forKey: .releaseDate)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(version, forKey: .version)

@@ -12,12 +12,13 @@ import AnyCodable
 
 public struct UsersAttributes: Codable, Hashable {
 
-    public enum DeveloperAccessTier: String, Codable, CaseIterable {
+    public enum DeveloperAccessTier: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case thirdParty = "THIRD_PARTY"
         case thirdPartyProd = "THIRD_PARTY_PROD"
         case partner = "PARTNER"
         case partnerTidalConnect = "PARTNER_TIDAL_CONNECT"
         case _internal = "INTERNAL"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** ISO 3166-1 alpha-2 country code */
     public var country: String

@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct PlaylistGenerationsTrackPreferencesRelationshipPayloadDataMeta: Codable, Hashable {
 
-    public enum Preference: String, Codable, CaseIterable {
+    public enum Preference: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case keep = "KEEP"
         case remove = "REMOVE"
         case moreLikeThis = "MORE_LIKE_THIS"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var preference: Preference
 

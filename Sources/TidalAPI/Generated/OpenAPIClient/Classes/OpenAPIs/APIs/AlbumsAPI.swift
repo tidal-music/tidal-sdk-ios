@@ -280,7 +280,7 @@ internal class AlbumsAPI {
     /**
      Update single album.
      - PATCH /albums/{id}
-     - Updates existing album. A COLLABORATOR on the album may update it; changing accessType or barcodeId needs OWNER.
+     - Updates existing album. A COLLABORATOR on the album may update it; changing accessType, published or barcodeId needs OWNER.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

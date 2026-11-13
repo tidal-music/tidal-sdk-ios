@@ -12,11 +12,12 @@ import AnyCodable
 
 public struct MissingTermsMeta: Codable, Hashable {
 
-    public enum MissingTermsTypes: String, Codable, CaseIterable {
+    public enum MissingTermsTypes: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case developer = "DEVELOPER"
         case uploadMarketplace = "UPLOAD_MARKETPLACE"
         case merchGuidelines = "MERCH_GUIDELINES"
         case tidalConnectDeveloper = "TIDAL_CONNECT_DEVELOPER"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let missingTermsTypesRule = ArrayRule(minItems: 1, maxItems: nil, uniqueItems: false)
     public var missingTermsTypes: [MissingTermsTypes]
