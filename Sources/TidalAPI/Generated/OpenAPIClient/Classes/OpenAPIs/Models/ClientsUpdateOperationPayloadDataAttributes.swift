@@ -12,18 +12,30 @@ import AnyCodable
 
 public struct ClientsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
+    public enum ClientPreset: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case standardThirdParty = "STANDARD_THIRD_PARTY"
+        case tidalConnectCd = "TIDAL_CONNECT_CD"
+        case tidalConnectHires = "TIDAL_CONNECT_HIRES"
+        case tidalConnectCdWithAtmos = "TIDAL_CONNECT_CD_WITH_ATMOS"
+        case tidalConnectHiresWithAtmos = "TIDAL_CONNECT_HIRES_WITH_ATMOS"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public static let scopesRule = ArrayRule(minItems: nil, maxItems: nil, uniqueItems: true)
+    /** Client preset defining default OAuth settings and supported audio formats. */
+    public var clientPreset: ClientPreset?
     public var description: String?
     public var name: String?
     public var redirectUris: [String]?
     public var scopes: Set<String>?
 
     public init(
+        clientPreset: ClientPreset? = nil,
         description: String? = nil,
         name: String? = nil,
         redirectUris: [String]? = nil,
         scopes: Set<String>? = nil
     ) {
+        self.clientPreset = clientPreset
         self.description = description
         self.name = name
         self.redirectUris = redirectUris
@@ -31,6 +43,7 @@ public struct ClientsUpdateOperationPayloadDataAttributes: Codable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case clientPreset
         case description
         case name
         case redirectUris
@@ -41,6 +54,7 @@ public struct ClientsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(clientPreset, forKey: .clientPreset)
         try container.encodeIfPresent(description, forKey: .description)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(redirectUris, forKey: .redirectUris)

@@ -19,8 +19,18 @@ public struct ClientsAttributes: Codable, Hashable {
         case _internal = "INTERNAL"
         case unknownDefaultOpenApi = "unknown_default_open_api"
     }
+    public enum ClientPreset: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case standardThirdParty = "STANDARD_THIRD_PARTY"
+        case tidalConnectCd = "TIDAL_CONNECT_CD"
+        case tidalConnectHires = "TIDAL_CONNECT_HIRES"
+        case tidalConnectCdWithAtmos = "TIDAL_CONNECT_CD_WITH_ATMOS"
+        case tidalConnectHiresWithAtmos = "TIDAL_CONNECT_HIRES_WITH_ATMOS"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public static let scopesRule = ArrayRule(minItems: nil, maxItems: nil, uniqueItems: true)
     public var accessTier: AccessTier
+    /** Client preset defining default OAuth settings and supported audio formats. */
+    public var clientPreset: ClientPreset
     public var clientSecret: String?
     public var createdAt: Date?
     public var description: String?
@@ -30,6 +40,7 @@ public struct ClientsAttributes: Codable, Hashable {
 
     public init(
         accessTier: AccessTier,
+        clientPreset: ClientPreset,
         clientSecret: String? = nil,
         createdAt: Date? = nil,
         description: String? = nil,
@@ -38,6 +49,7 @@ public struct ClientsAttributes: Codable, Hashable {
         scopes: Set<String>? = nil
     ) {
         self.accessTier = accessTier
+        self.clientPreset = clientPreset
         self.clientSecret = clientSecret
         self.createdAt = createdAt
         self.description = description
@@ -48,6 +60,7 @@ public struct ClientsAttributes: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case accessTier
+        case clientPreset
         case clientSecret
         case createdAt
         case description
@@ -61,6 +74,7 @@ public struct ClientsAttributes: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(accessTier, forKey: .accessTier)
+        try container.encode(clientPreset, forKey: .clientPreset)
         try container.encodeIfPresent(clientSecret, forKey: .clientSecret)
         try container.encodeIfPresent(createdAt, forKey: .createdAt)
         try container.encodeIfPresent(description, forKey: .description)

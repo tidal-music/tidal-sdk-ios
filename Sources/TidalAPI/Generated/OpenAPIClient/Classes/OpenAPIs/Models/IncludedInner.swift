@@ -72,6 +72,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case squareSitesResourceObject(SquareSitesResourceObject)
     case stripeConnectionsResourceObject(StripeConnectionsResourceObject)
     case stripeDashboardLinksResourceObject(StripeDashboardLinksResourceObject)
+    case studioHomeEventTilesResourceObject(StudioHomeEventTilesResourceObject)
+    case studioHomeInsightTilesResourceObject(StudioHomeInsightTilesResourceObject)
+    case studioHomeMerchTilesResourceObject(StudioHomeMerchTilesResourceObject)
+    case studioHomeMusicTilesResourceObject(StudioHomeMusicTilesResourceObject)
     case subscriptionPriceChangeDecisionsResourceObject(SubscriptionPriceChangeDecisionsResourceObject)
     case temporaryUserTokensResourceObject(TemporaryUserTokensResourceObject)
     case termsResourceObject(TermsResourceObject)
@@ -231,6 +235,14 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .stripeConnectionsResourceObject(let value):
             try container.encode(value)
         case .stripeDashboardLinksResourceObject(let value):
+            try container.encode(value)
+        case .studioHomeEventTilesResourceObject(let value):
+            try container.encode(value)
+        case .studioHomeInsightTilesResourceObject(let value):
+            try container.encode(value)
+        case .studioHomeMerchTilesResourceObject(let value):
+            try container.encode(value)
+        case .studioHomeMusicTilesResourceObject(let value):
             try container.encode(value)
         case .subscriptionPriceChangeDecisionsResourceObject(let value):
             try container.encode(value)
@@ -495,6 +507,18 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "stripeDashboardLinks":
             let value = try StripeDashboardLinksResourceObject(from: decoder)
             self = .stripeDashboardLinksResourceObject(value)
+        case "studioHomeEventTiles":
+            let value = try StudioHomeEventTilesResourceObject(from: decoder)
+            self = .studioHomeEventTilesResourceObject(value)
+        case "studioHomeInsightTiles":
+            let value = try StudioHomeInsightTilesResourceObject(from: decoder)
+            self = .studioHomeInsightTilesResourceObject(value)
+        case "studioHomeMerchTiles":
+            let value = try StudioHomeMerchTilesResourceObject(from: decoder)
+            self = .studioHomeMerchTilesResourceObject(value)
+        case "studioHomeMusicTiles":
+            let value = try StudioHomeMusicTilesResourceObject(from: decoder)
+            self = .studioHomeMusicTilesResourceObject(value)
         case "subscriptionPriceChangeDecisions":
             let value = try SubscriptionPriceChangeDecisionsResourceObject(from: decoder)
             self = .subscriptionPriceChangeDecisionsResourceObject(value)
@@ -665,6 +689,10 @@ extension IncludedInner: Identifiable {
         case .squareSitesResourceObject(let value): return value.id
         case .stripeConnectionsResourceObject(let value): return value.id
         case .stripeDashboardLinksResourceObject(let value): return value.id
+        case .studioHomeEventTilesResourceObject(let value): return value.id
+        case .studioHomeInsightTilesResourceObject(let value): return value.id
+        case .studioHomeMerchTilesResourceObject(let value): return value.id
+        case .studioHomeMusicTilesResourceObject(let value): return value.id
         case .subscriptionPriceChangeDecisionsResourceObject(let value): return value.id
         case .temporaryUserTokensResourceObject(let value): return value.id
         case .termsResourceObject(let value): return value.id
