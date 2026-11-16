@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **accessTier** | **String** |  | 
+**clientPreset** | **String** | Client preset defining default OAuth settings and supported audio formats. | 
 **clientSecret** | **String** |  | [optional] 
 **createdAt** | **Date** |  | [optional] 
 **description** | **String** |  | [optional] 
