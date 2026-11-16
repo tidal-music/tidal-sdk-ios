@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-11-16
+
+### Added
+- Studio Home tile resources (`studioHomeMerchTiles`, `studioHomeMusicTiles`, `studioHomeInsightTiles`, `studioHomeEventTiles`) and their read endpoints, so Studio Home modules can link a tile. The merch tile carries `requiredTerms` and an `items` relationship to `squareItems` (TidalAPI)
+
+### Changed
+- Generated API code using spec version 1.10.254 (TidalAPI)
+
 ## [0.14.2] - 2026-11-13
 
 ### Changed
