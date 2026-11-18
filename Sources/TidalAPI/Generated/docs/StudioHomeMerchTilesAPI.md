@@ -6,6 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**studioHomeMerchTilesIdGet**](StudioHomeMerchTilesAPI.md#studiohomemerchtilesidget) | **GET** /studioHomeMerchTiles/{id} | Get single studioHomeMerchTile.
 [**studioHomeMerchTilesIdRelationshipsItemsGet**](StudioHomeMerchTilesAPI.md#studiohomemerchtilesidrelationshipsitemsget) | **GET** /studioHomeMerchTiles/{id}/relationships/items | Get items relationship (\&quot;to-many\&quot;).
+[**studioHomeMerchTilesIdRelationshipsSquareConnectionGet**](StudioHomeMerchTilesAPI.md#studiohomemerchtilesidrelationshipssquareconnectionget) | **GET** /studioHomeMerchTiles/{id}/relationships/squareConnection | Get squareConnection relationship (\&quot;to-one\&quot;).
 
 
 # **studioHomeMerchTilesIdGet**
@@ -23,7 +24,7 @@ Retrieves single studioHomeMerchTile by id.
 import OpenAPIClient
 
 let id = "id_example" // String | Studio Home merch tile id. Use `me` for the authenticated user's resource
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: items (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: items, squareConnection (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 
 // Get single studioHomeMerchTile.
@@ -40,7 +41,7 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Studio Home merch tile id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: items | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: items, squareConnection | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
 
 ### Return type
@@ -96,6 +97,54 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**StudioHomeMerchTilesItemsMultiRelationshipDataDocument**](StudioHomeMerchTilesItemsMultiRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **studioHomeMerchTilesIdRelationshipsSquareConnectionGet**
+```swift
+    open class func studioHomeMerchTilesIdRelationshipsSquareConnectionGet(id: String, include: [String]? = nil) async throws -> StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument
+```
+
+Get squareConnection relationship (\"to-one\").
+
+The seller's Square connection; empty when they have none.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Studio Home merch tile id. Use `me` for the authenticated user's resource
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: squareConnection (optional)
+
+// Get squareConnection relationship (\"to-one\").
+do {
+    let response = try await StudioHomeMerchTilesAPI.studioHomeMerchTilesIdRelationshipsSquareConnectionGet(id: id, include: include)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Studio Home merch tile id. Use &#x60;me&#x60; for the authenticated user&#39;s resource | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: squareConnection | [optional] 
+
+### Return type
+
+[**StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument**](StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument.md)
 
 ### Authorization
 
