@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.1] - 2026-11-18
+
+### Changed
+- Generated API code using spec version 1.10.255, adding an `items` relationship and `/relationships/items` endpoint to `studioHomeMusicTiles` and `studioHomeInsightTiles` (TidalAPI)
+
 ## [0.15.0] - 2026-11-16
 
 ### Added
