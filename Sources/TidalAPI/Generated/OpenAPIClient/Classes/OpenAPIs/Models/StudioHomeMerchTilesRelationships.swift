@@ -13,15 +13,19 @@ import AnyCodable
 public struct StudioHomeMerchTilesRelationships: Codable, Hashable {
 
     public var items: StudioHomeMerchTilesItemsMultiRelationshipDataDocument?
+    public var squareConnection: StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument?
 
     public init(
-        items: StudioHomeMerchTilesItemsMultiRelationshipDataDocument? = nil
+        items: StudioHomeMerchTilesItemsMultiRelationshipDataDocument? = nil,
+        squareConnection: StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument? = nil
     ) {
         self.items = items
+        self.squareConnection = squareConnection
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case items
+        case squareConnection
     }
 
     // Encodable protocol methods
@@ -29,5 +33,6 @@ public struct StudioHomeMerchTilesRelationships: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(items, forKey: .items)
+        try container.encodeIfPresent(squareConnection, forKey: .squareConnection)
     }
 }

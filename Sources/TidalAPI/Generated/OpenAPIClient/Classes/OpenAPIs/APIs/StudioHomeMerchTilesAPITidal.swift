@@ -19,10 +19,12 @@ public enum StudioHomeMerchTilesAPITidal {
 	 */
 	public enum IncludeLinkage_studioHomeMerchTilesIdGet: String, CaseIterable {
 		case items = "items"
+		case squareconnection = "squareConnection"
 
 		func toStudioHomeMerchTilesAPIEnum() -> StudioHomeMerchTilesAPI.IncludeLinkage_studioHomeMerchTilesIdGet {
 			switch self {
 			case .items: return .items
+			case .squareconnection: return .squareconnection
 			}
 		}
 	}
@@ -47,6 +49,18 @@ public enum StudioHomeMerchTilesAPITidal {
 	public static func studioHomeMerchTilesIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> StudioHomeMerchTilesItemsMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			StudioHomeMerchTilesAPI.studioHomeMerchTilesIdRelationshipsItemsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+		}
+	}
+
+
+	/**
+     Get squareConnection relationship (\&quot;to-one\&quot;).
+     
+     - returns: StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument
+     */
+	public static func studioHomeMerchTilesIdRelationshipsSquareConnectionGet(id: String, include: [String]? = nil) async throws -> StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			StudioHomeMerchTilesAPI.studioHomeMerchTilesIdRelationshipsSquareConnectionGetWithRequestBuilder(id: id, include: include)
 		}
 	}
 }

@@ -40,9 +40,9 @@ public enum FolderItemsAPITidal {
      
      - returns: FolderItemsMultiResourceDataDocument
      */
-	public static func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSelfMatchesQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [FolderItemsAPITidal.IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
+	public static func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSelfMatchesQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [FolderItemsAPITidal.IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsGetWithRequestBuilder(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSelfMatchesQuery: filterSelfMatchesQuery, filterSubjectAlbumsPublished: filterSubjectAlbumsPublished, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage?.compactMap { $0.toFolderItemsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
+			FolderItemsAPI.folderItemsGetWithRequestBuilder(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSelfMatchesQuery: filterSelfMatchesQuery, filterSubjectAlbumsPublished: filterSubjectAlbumsPublished, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage?.compactMap { $0.toFolderItemsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
@@ -52,9 +52,9 @@ public enum FolderItemsAPITidal {
      
      - returns: MutationResponseDocument
      */
-	public static func folderItemsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+	public static func folderItemsIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey)
+			FolderItemsAPI.folderItemsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode)
 		}
 	}
 
@@ -85,9 +85,9 @@ public enum FolderItemsAPITidal {
      
      - returns: FolderItemsSingleResourceDataDocument
      */
-	public static func folderItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [FolderItemsAPITidal.IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSingleResourceDataDocument {
+	public static func folderItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [FolderItemsAPITidal.IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsSingleResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toFolderItemsAPIEnum() }, replaceMedia: replaceMedia)
+			FolderItemsAPI.folderItemsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage?.compactMap { $0.toFolderItemsAPIEnum() }, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
@@ -97,9 +97,9 @@ public enum FolderItemsAPITidal {
      
      - returns: FolderItemsBreadcrumbMultiRelationshipDataDocument
      */
-	public static func folderItemsIdRelationshipsBreadcrumbGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsBreadcrumbMultiRelationshipDataDocument {
+	public static func folderItemsIdRelationshipsBreadcrumbGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsBreadcrumbMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsIdRelationshipsBreadcrumbGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+			FolderItemsAPI.folderItemsIdRelationshipsBreadcrumbGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
@@ -109,9 +109,9 @@ public enum FolderItemsAPITidal {
      
      - returns: FolderItemsOwnersMultiRelationshipDataDocument
      */
-	public static func folderItemsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> FolderItemsOwnersMultiRelationshipDataDocument {
+	public static func folderItemsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> FolderItemsOwnersMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor)
+			FolderItemsAPI.folderItemsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
 		}
 	}
 
@@ -121,9 +121,9 @@ public enum FolderItemsAPITidal {
      
      - returns: FolderItemsParentSingleRelationshipDataDocument
      */
-	public static func folderItemsIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsParentSingleRelationshipDataDocument {
+	public static func folderItemsIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsParentSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsIdRelationshipsParentGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			FolderItemsAPI.folderItemsIdRelationshipsParentGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
@@ -133,9 +133,9 @@ public enum FolderItemsAPITidal {
      
      - returns: FolderItemsParentUpdateSingleRelationshipDataDocument
      */
-	public static func folderItemsIdRelationshipsParentPatch(id: String, idempotencyKey: String? = nil, folderItemsParentRelationshipUpdateOperationPayload: FolderItemsParentRelationshipUpdateOperationPayload? = nil) async throws -> FolderItemsParentUpdateSingleRelationshipDataDocument {
+	public static func folderItemsIdRelationshipsParentPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, folderItemsParentRelationshipUpdateOperationPayload: FolderItemsParentRelationshipUpdateOperationPayload? = nil) async throws -> FolderItemsParentUpdateSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsIdRelationshipsParentPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, folderItemsParentRelationshipUpdateOperationPayload: folderItemsParentRelationshipUpdateOperationPayload)
+			FolderItemsAPI.folderItemsIdRelationshipsParentPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, folderItemsParentRelationshipUpdateOperationPayload: folderItemsParentRelationshipUpdateOperationPayload)
 		}
 	}
 
@@ -145,9 +145,9 @@ public enum FolderItemsAPITidal {
      
      - returns: FolderItemsSharingSummarySingleRelationshipDataDocument
      */
-	public static func folderItemsIdRelationshipsSharingSummaryGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSharingSummarySingleRelationshipDataDocument {
+	public static func folderItemsIdRelationshipsSharingSummaryGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsSharingSummarySingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsIdRelationshipsSharingSummaryGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			FolderItemsAPI.folderItemsIdRelationshipsSharingSummaryGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
@@ -157,9 +157,9 @@ public enum FolderItemsAPITidal {
      
      - returns: FolderItemsSubjectSingleRelationshipDataDocument
      */
-	public static func folderItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSubjectSingleRelationshipDataDocument {
+	public static func folderItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsSubjectSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
-			FolderItemsAPI.folderItemsIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+			FolderItemsAPI.folderItemsIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 

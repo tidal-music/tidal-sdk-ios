@@ -478,6 +478,9 @@ internal class FoldersAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
      - parameter include: (query) Include related resources. Available relationships: preview (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)

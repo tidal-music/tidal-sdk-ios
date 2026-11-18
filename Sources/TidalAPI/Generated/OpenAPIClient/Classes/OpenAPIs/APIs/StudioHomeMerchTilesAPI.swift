@@ -17,13 +17,14 @@ internal class StudioHomeMerchTilesAPI {
      */
     public enum IncludeLinkage_studioHomeMerchTilesIdGet: String, CaseIterable {
         case items = "items"
+        case squareconnection = "squareConnection"
     }
 
     /**
      Get single studioHomeMerchTile.
      
      - parameter id: (path) Studio Home merch tile id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, squareConnection (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: StudioHomeMerchTilesSingleResourceDataDocument
      */
@@ -45,7 +46,7 @@ internal class StudioHomeMerchTilesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Studio Home merch tile id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter include: (query) Include related resources. Available relationships: items, squareConnection (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - returns: RequestBuilder<StudioHomeMerchTilesSingleResourceDataDocument> 
      */
@@ -125,6 +126,58 @@ internal class StudioHomeMerchTilesAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<StudioHomeMerchTilesItemsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get squareConnection relationship (\"to-one\").
+     
+     - parameter id: (path) Studio Home merch tile id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter include: (query) Include related resources. Available relationships: squareConnection (optional)
+     - returns: StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func studioHomeMerchTilesIdRelationshipsSquareConnectionGet(id: String, include: [String]? = nil) async throws -> StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument {
+        do {
+            return try await studioHomeMerchTilesIdRelationshipsSquareConnectionGetWithRequestBuilder(id: id, include: include).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get squareConnection relationship (\"to-one\").
+     - GET /studioHomeMerchTiles/{id}/relationships/squareConnection
+     - The seller's Square connection; empty when they have none.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Studio Home merch tile id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter include: (query) Include related resources. Available relationships: squareConnection (optional)
+     - returns: RequestBuilder<StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument> 
+     */
+    internal class func studioHomeMerchTilesIdRelationshipsSquareConnectionGetWithRequestBuilder(id: String, include: [String]? = nil) -> RequestBuilder<StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument> {
+        var localVariablePath = "/studioHomeMerchTiles/{id}/relationships/squareConnection"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
