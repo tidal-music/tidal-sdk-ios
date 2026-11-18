@@ -14,7 +14,6 @@ public struct SquareConnectionsCapability: Codable, Hashable {
 
     public enum Name: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case sites = "SITES"
-        case items = "ITEMS"
         case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
