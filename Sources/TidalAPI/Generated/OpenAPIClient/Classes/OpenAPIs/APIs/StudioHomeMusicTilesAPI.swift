@@ -13,15 +13,25 @@ import AnyCodable
 internal class StudioHomeMusicTilesAPI {
 
     /**
+     * enum for parameter includeLinkage
+     */
+    public enum IncludeLinkage_studioHomeMusicTilesIdGet: String, CaseIterable {
+        case items = "items"
+    }
+
+    /**
      Get single studioHomeMusicTile.
      
      - parameter id: (path) Studio Home music tile id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: StudioHomeMusicTilesSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func studioHomeMusicTilesIdGet(id: String) async throws -> StudioHomeMusicTilesSingleResourceDataDocument {
+    internal class func studioHomeMusicTilesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_studioHomeMusicTilesIdGet]? = nil, replaceMedia: String? = nil) async throws -> StudioHomeMusicTilesSingleResourceDataDocument {
         do {
-            return try await studioHomeMusicTilesIdGetWithRequestBuilder(id: id).execute().body
+            return try await studioHomeMusicTilesIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -36,9 +46,12 @@ internal class StudioHomeMusicTilesAPI {
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Studio Home music tile id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
      - returns: RequestBuilder<StudioHomeMusicTilesSingleResourceDataDocument> 
      */
-    internal class func studioHomeMusicTilesIdGetWithRequestBuilder(id: String) -> RequestBuilder<StudioHomeMusicTilesSingleResourceDataDocument> {
+    internal class func studioHomeMusicTilesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_studioHomeMusicTilesIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<StudioHomeMusicTilesSingleResourceDataDocument> {
         var localVariablePath = "/studioHomeMusicTiles/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -46,7 +59,12 @@ internal class StudioHomeMusicTilesAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             :
@@ -55,6 +73,64 @@ internal class StudioHomeMusicTilesAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<StudioHomeMusicTilesSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get items relationship (\"to-many\").
+     
+     - parameter id: (path) Studio Home music tile id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
+     - returns: StudioHomeMusicTilesItemsMultiRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func studioHomeMusicTilesIdRelationshipsItemsGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> StudioHomeMusicTilesItemsMultiRelationshipDataDocument {
+        do {
+            return try await studioHomeMusicTilesIdRelationshipsItemsGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get items relationship (\"to-many\").
+     - GET /studioHomeMusicTiles/{id}/relationships/items
+     - The user's uploaded albums, newest first.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Studio Home music tile id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter include: (query) Include related resources. Available relationships: items (optional)
+     - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: items (optional)
+     - returns: RequestBuilder<StudioHomeMusicTilesItemsMultiRelationshipDataDocument> 
+     */
+    internal class func studioHomeMusicTilesIdRelationshipsItemsGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<StudioHomeMusicTilesItemsMultiRelationshipDataDocument> {
+        var localVariablePath = "/studioHomeMusicTiles/{id}/relationships/items"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<StudioHomeMusicTilesItemsMultiRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
