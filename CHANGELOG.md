@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.2] - 2026-11-18
+
+### Added
+- `squareConnection` relationship on `studioHomeMerchTiles`, with its `/relationships/squareConnection` endpoint and `include=squareConnection`, so the merch tile can carry the seller's Square connection status (TidalAPI)
+- `ITEMS` capability name for `squareConnections` capabilities (TidalAPI)
+- Optional `shareCode` parameter on the `folderItems` and `folders` endpoints (TidalAPI)
+
+### Changed
+- Generated API code using spec version 1.10.257 (TidalAPI)
+
 ## [0.15.1] - 2026-11-18
 
 ### Changed
