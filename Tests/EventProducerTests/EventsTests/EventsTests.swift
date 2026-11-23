@@ -23,7 +23,7 @@ final class EventsTests: XCTestCase {
 
 	private var eventSender = TidalEventSender.shared
 	private let testAccessToken = "testAccessToken"
-	private let queue = EventQueue()
+	private let queue = EventQueue.shared
 	private let monitoring = Monitoring(monitoringQueue: .init())
 	private var headerHelper: HeaderHelper!
 	private let maxDiskUsageBytes = 204_800

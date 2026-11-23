@@ -29,12 +29,13 @@ final class EventScheduler: Scheduler {
 		consumerUri: String?,
 		maxDiskUsageBytes: Int? = EventConfig.defaultQueueMaxDiskUsageBytes,
 		eventQueue: EventQueue,
-		monitoring: Monitoring
+		monitoring: Monitoring,
+		transport: @escaping HTTPTransport = NetworkingService.urlSessionTransport
 	) {
 		self.consumerUri = consumerUri
 		self.maxDiskUsageBytes = maxDiskUsageBytes
 		self.eventQueue = eventQueue
-		networkService = NetworkingService(consumerUri: consumerUri)
+		networkService = NetworkingService(consumerUri: consumerUri, transport: transport)
 		self.monitoring = monitoring
 	}
 

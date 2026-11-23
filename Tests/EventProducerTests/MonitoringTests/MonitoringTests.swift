@@ -29,7 +29,7 @@ final class MonitoringTests: XCTestCase {
 	}
 
 	private var mockMonitoringScheduler: MonitoringScheduler {
-		MonitoringScheduler(consumerUri: "https://consumer.uri", monitoring: sut, eventQueue: .init())
+		MonitoringScheduler(consumerUri: "https://consumer.uri", monitoring: sut, eventQueue: .shared)
 	}
 
 	override func setUp() {

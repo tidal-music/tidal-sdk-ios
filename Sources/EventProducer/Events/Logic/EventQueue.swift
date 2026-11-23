@@ -4,8 +4,14 @@ import SWXMLHash
 
 actor EventQueue {
 	static let databaseName = "EventQueueDatabase.sqlite"
+	static let shared = EventQueue(databaseURL: FileManagerHelper.shared.eventQueueDatabaseURL)
 
+	private let databaseURL: URL?
 	private var _dbQueue: DatabaseQueue?
+
+	init(databaseURL: URL?) {
+		self.databaseURL = databaseURL
+	}
 
 	private var dbQueue: DatabaseQueue {
 		get throws {
@@ -13,7 +19,7 @@ actor EventQueue {
 				return _dbQueue
 			}
 
-			guard let databaseURL = FileManagerHelper.shared.eventQueueDatabaseURL else {
+			guard let databaseURL else {
 				throw EventProducerError.eventQueueDatabaseURLFailure
 			}
 

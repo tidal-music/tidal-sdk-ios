@@ -38,7 +38,7 @@ public final class TidalEventSender: EventSender {
 	// MARK: - Init
 
 	public init() {
-		self.eventQueue = EventQueue()
+		self.eventQueue = EventQueue.shared
 		self.monitoringQueue = MonitoringQueue()
 		self.monitoring = Monitoring(monitoringQueue: monitoringQueue)
 		self.eventSubmitter = EventSubmitter(eventsQueue: eventQueue, monitoring: monitoring)
