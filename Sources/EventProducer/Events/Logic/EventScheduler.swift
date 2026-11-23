@@ -58,12 +58,11 @@ final class EventScheduler: Scheduler {
 	}
 
 	func sendAllEvents(headerHelper: HeaderHelper) async throws {
-		let heldElsewhere = try await sendUnclaimedEvents(headerHelper: headerHelper)
-		guard !heldElsewhere.isEmpty else {
-			return
+		var heldElsewhere = try await sendUnclaimedEvents(headerHelper: headerHelper)
+		while !heldElsewhere.isEmpty {
+			await eventQueue.waitUntilReleased(heldElsewhere)
+			heldElsewhere = try await sendUnclaimedEvents(headerHelper: headerHelper)
 		}
-		await eventQueue.waitUntilReleased(heldElsewhere)
-		try await sendUnclaimedEvents(headerHelper: headerHelper)
 	}
 
 	@discardableResult

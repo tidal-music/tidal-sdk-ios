@@ -125,8 +125,9 @@ public final class TidalEventSender: EventSender {
 
 	/// Sends every queued event, for example when the app moves to the background.
 	///
-	/// When the periodic flush is already sending some of the events, this call sends the rest at once, then waits for that
-	/// flush to finish and sends again any event it left queued. It returns once all of these sends have finished.
+	/// When another flush is already sending some of the events, this call sends the rest at once, then waits for that
+	/// flush to finish and sends again any event it left queued. It repeats this until no other flush holds a queued event,
+	/// and returns once all of these sends have finished.
 	/// - Throws: An error when a send fails. The undelivered events stay queued for a later flush.
 	public func sendAllEvents() async throws {
 		let headerHelper = HeaderHelper(credentialsProvider: config?.credentialsProvider)
