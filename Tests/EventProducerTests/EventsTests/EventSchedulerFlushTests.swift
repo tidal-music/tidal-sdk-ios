@@ -25,12 +25,12 @@ final class EventSchedulerFlushTests: XCTestCase {
 	private let databaseURL = FileManager.default.temporaryDirectory
 		.appendingPathComponent("EventSchedulerFlushTests-\(UUID().uuidString).sqlite")
 	private var queue: EventQueue!
-	private var consumer: FirstRequestHoldingConsumer!
+	private var consumer: HoldingConsumer!
 
 	override func setUp() async throws {
 		try await super.setUp()
 		queue = EventQueue(databaseURL: databaseURL)
-		consumer = FirstRequestHoldingConsumer()
+		consumer = HoldingConsumer(heldRequestCount: 1)
 	}
 
 	override func tearDown() async throws {
@@ -46,7 +46,7 @@ final class EventSchedulerFlushTests: XCTestCase {
 		async let firstFlush: Void = firstScheduler.timerTriggered(headerHelper: headerHelper)
 		try await waitUntilReceived(events[0].id)
 		try await secondScheduler.timerTriggered(headerHelper: headerHelper)
-		await consumer.releaseHeldRequest()
+		await consumer.releaseRequest(0)
 		try await firstFlush
 
 		let receivedIDs = await consumer.receivedIDs
@@ -72,7 +72,7 @@ final class EventSchedulerFlushTests: XCTestCase {
 		let returnedWhileTimerFlushWasHeld = await appFlushReturned.isSet
 		XCTAssertFalse(returnedWhileTimerFlushWasHeld)
 
-		await consumer.releaseHeldRequest()
+		await consumer.releaseRequest(0)
 		try await timerFlush
 		try await appFlush.value
 
@@ -91,7 +91,7 @@ final class EventSchedulerFlushTests: XCTestCase {
 		let appEvents = try await enqueueEvents(count: 1)
 		let appFlush = Task { try await scheduler.sendAllEvents(headerHelper: headerHelper) }
 		try await waitUntilReceived(appEvents[0].id)
-		await consumer.failHeldRequest()
+		await consumer.failRequest(0)
 		do {
 			try await timerFlush
 			XCTFail("The timer flush should fail")
@@ -102,6 +102,42 @@ final class EventSchedulerFlushTests: XCTestCase {
 		XCTAssertEqual(receivedIDs.sorted(), (timerEvents + timerEvents + appEvents).map(\.id).sorted())
 		let leftoverEvents = try await queue.getAllEvents()
 		XCTAssertTrue(leftoverEvents.isEmpty)
+	}
+
+	func testAppFlushWaitsForATimerFlushThatClaimsNewEventsWhileItWaits() async throws {
+		consumer = HoldingConsumer(heldRequestCount: 3)
+		let (firstTimerRequest, appRequest, secondTimerRequest) = (0, 1, 2)
+		let firstTimerEvents = try await enqueueEvents(count: 2)
+		let scheduler = makeScheduler()
+
+		async let firstTimerFlush: Void = scheduler.timerTriggered(headerHelper: headerHelper)
+		try await waitUntilReceived(firstTimerEvents[0].id)
+		let appEvents = try await enqueueEvents(count: 1)
+		let appFlush = Task { try await scheduler.sendAllEvents(headerHelper: headerHelper) }
+		try await waitUntilReceived(appEvents[0].id)
+		let secondTimerEvents = try await enqueueEvents(count: 1)
+		async let secondTimerFlush: Void = scheduler.timerTriggered(headerHelper: headerHelper)
+		try await waitUntilReceived(secondTimerEvents[0].id)
+
+		await consumer.releaseRequest(appRequest)
+		await consumer.failRequest(firstTimerRequest)
+		do {
+			try await firstTimerFlush
+			XCTFail("The first timer flush should fail")
+		} catch {}
+		try await waitUntilReceived(firstTimerEvents[0].id, times: 2)
+		await consumer.failRequest(secondTimerRequest)
+		do {
+			try await secondTimerFlush
+			XCTFail("The second timer flush should fail")
+		} catch {}
+		try await appFlush.value
+
+		let leftoverEvents = try await queue.getAllEvents()
+		XCTAssertEqual(leftoverEvents.map(\.id), [])
+		let receivedIDs = await consumer.receivedIDs
+		let expectedIDs = firstTimerEvents + appEvents + secondTimerEvents + firstTimerEvents + secondTimerEvents
+		XCTAssertEqual(receivedIDs.sorted(), expectedIDs.map(\.id).sorted())
 	}
 
 	func testCancelledFlushLeavesItsEventsForTheNextFlush() async throws {
@@ -139,12 +175,12 @@ final class EventSchedulerFlushTests: XCTestCase {
 		return events
 	}
 
-	private func waitUntilReceived(_ id: String) async throws {
+	private func waitUntilReceived(_ id: String, times: Int = 1) async throws {
 		let deadline = Date().addingTimeInterval(2)
-		while await !consumer.receivedIDs.contains(id) {
+		while await consumer.receivedIDs.filter({ $0 == id }).count < times {
 			guard Date() < deadline else {
 				XCTFail("Event \(id) never reached the consumer")
-				await consumer.releaseHeldRequest()
+				await consumer.stopHolding()
 				return
 			}
 			try await Task.sleep(nanoseconds: 10_000_000)
@@ -162,24 +198,30 @@ private actor Flag {
 	}
 }
 
-// MARK: - FirstRequestHoldingConsumer
+// MARK: - HoldingConsumer
 
-private actor FirstRequestHoldingConsumer: HTTPTransport {
+private actor HoldingConsumer: HTTPTransport {
 	private(set) var receivedIDs: [String] = []
-	private var hasHeldARequest = false
-	private var isReleased = false
-	private var heldRequest: CheckedContinuation<Void, Error>?
+	private var heldRequestCount: Int
+	private var requestCount = 0
+	private var heldRequests: [Int: CheckedContinuation<Void, Error>] = [:]
+	private var outcomesBeforeArrival: [Int: Result<Void, Error>] = [:]
+
+	init(heldRequestCount: Int) {
+		self.heldRequestCount = heldRequestCount
+	}
 
 	func send(_ request: URLRequest) async throws -> (Data, URLResponse) {
 		let ids = Self.eventIDs(in: request)
 		receivedIDs.append(contentsOf: ids)
+		let index = requestCount
+		requestCount += 1
 
-		if !hasHeldARequest {
-			hasHeldARequest = true
+		if index < heldRequestCount {
 			try await withTaskCancellationHandler {
-				try await holdUntilReleased()
+				try await hold(index)
 			} onCancel: {
-				Task { await self.cancelHeldRequest() }
+				Task { await self.resolve(index, with: .failure(CancellationError())) }
 			}
 		}
 
@@ -189,29 +231,34 @@ private actor FirstRequestHoldingConsumer: HTTPTransport {
 		return (Data(xml.utf8), response)
 	}
 
-	func releaseHeldRequest() {
-		isReleased = true
-		heldRequest?.resume()
-		heldRequest = nil
+	func releaseRequest(_ index: Int) {
+		resolve(index, with: .success(()))
 	}
 
-	private func holdUntilReleased() async throws {
+	func failRequest(_ index: Int) {
+		resolve(index, with: .failure(URLError(.networkConnectionLost)))
+	}
+
+	func stopHolding() {
+		heldRequestCount = 0
+		heldRequests.values.forEach { $0.resume() }
+		heldRequests = [:]
+	}
+
+	private func hold(_ index: Int) async throws {
 		try Task.checkCancellation()
-		guard !isReleased else {
-			return
+		if let outcome = outcomesBeforeArrival.removeValue(forKey: index) {
+			return try outcome.get()
 		}
-		try await withCheckedThrowingContinuation { heldRequest = $0 }
+		try await withCheckedThrowingContinuation { heldRequests[index] = $0 }
 	}
 
-	func failHeldRequest() {
-		isReleased = true
-		heldRequest?.resume(throwing: URLError(.networkConnectionLost))
-		heldRequest = nil
-	}
-
-	private func cancelHeldRequest() {
-		heldRequest?.resume(throwing: CancellationError())
-		heldRequest = nil
+	private func resolve(_ index: Int, with outcome: Result<Void, Error>) {
+		if let heldRequest = heldRequests.removeValue(forKey: index) {
+			heldRequest.resume(with: outcome)
+		} else {
+			outcomesBeforeArrival[index] = outcome
+		}
 	}
 
 	private static func eventIDs(in request: URLRequest) -> [String] {
