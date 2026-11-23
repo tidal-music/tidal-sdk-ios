@@ -43,9 +43,9 @@ final class EventSchedulerFlushTests: XCTestCase {
 		let firstScheduler = makeScheduler()
 		let secondScheduler = makeScheduler()
 
-		async let firstFlush: Void = firstScheduler.sendAllEvents(headerHelper: headerHelper)
+		async let firstFlush: Void = firstScheduler.timerTriggered(headerHelper: headerHelper)
 		try await waitUntilReceived(events[0].id)
-		try await secondScheduler.sendAllEvents(headerHelper: headerHelper)
+		try await secondScheduler.timerTriggered(headerHelper: headerHelper)
 		await consumer.releaseHeldRequest()
 		try await firstFlush
 
@@ -55,20 +55,51 @@ final class EventSchedulerFlushTests: XCTestCase {
 		XCTAssertTrue(leftoverEvents.isEmpty)
 	}
 
-	func testAppFlushDuringSlowTimerFlushSendsNewEventsWithoutWaiting() async throws {
+	func testAppFlushDuringHeldTimerFlushSendsNewEventsAndReturnsOnceTimerEventsAreDelivered() async throws {
 		let timerEvents = try await enqueueEvents(count: 2)
 		let scheduler = makeScheduler()
 
-		async let timerFlush: Void = scheduler.sendAllEvents(headerHelper: headerHelper)
+		async let timerFlush: Void = scheduler.timerTriggered(headerHelper: headerHelper)
 		try await waitUntilReceived(timerEvents[0].id)
 		let appEvents = try await enqueueEvents(count: 1)
-		async let appFlush: Void = scheduler.sendAllEvents(headerHelper: headerHelper)
+		let appFlushReturned = Flag()
+		let appFlush = Task {
+			try await scheduler.sendAllEvents(headerHelper: headerHelper)
+			await appFlushReturned.set()
+		}
 		try await waitUntilReceived(appEvents[0].id)
+		try await Task.sleep(nanoseconds: 200_000_000)
+		let returnedWhileTimerFlushWasHeld = await appFlushReturned.isSet
+		XCTAssertFalse(returnedWhileTimerFlushWasHeld)
+
 		await consumer.releaseHeldRequest()
-		_ = try await (timerFlush, appFlush)
+		try await timerFlush
+		try await appFlush.value
 
 		let receivedIDs = await consumer.receivedIDs
 		XCTAssertEqual(receivedIDs.sorted(), (timerEvents + appEvents).map(\.id).sorted())
+		let leftoverEvents = try await queue.getAllEvents()
+		XCTAssertTrue(leftoverEvents.isEmpty)
+	}
+
+	func testAppFlushDuringFailedTimerFlushResendsTheTimerEvents() async throws {
+		let timerEvents = try await enqueueEvents(count: 2)
+		let scheduler = makeScheduler()
+
+		async let timerFlush: Void = scheduler.timerTriggered(headerHelper: headerHelper)
+		try await waitUntilReceived(timerEvents[0].id)
+		let appEvents = try await enqueueEvents(count: 1)
+		let appFlush = Task { try await scheduler.sendAllEvents(headerHelper: headerHelper) }
+		try await waitUntilReceived(appEvents[0].id)
+		await consumer.failHeldRequest()
+		do {
+			try await timerFlush
+			XCTFail("The timer flush should fail")
+		} catch {}
+		try await appFlush.value
+
+		let receivedIDs = await consumer.receivedIDs
+		XCTAssertEqual(receivedIDs.sorted(), (timerEvents + timerEvents + appEvents).map(\.id).sorted())
 		let leftoverEvents = try await queue.getAllEvents()
 		XCTAssertTrue(leftoverEvents.isEmpty)
 	}
@@ -121,6 +152,16 @@ final class EventSchedulerFlushTests: XCTestCase {
 	}
 }
 
+// MARK: - Flag
+
+private actor Flag {
+	private(set) var isSet = false
+
+	func set() {
+		isSet = true
+	}
+}
+
 // MARK: - FirstRequestHoldingConsumer
 
 private actor FirstRequestHoldingConsumer: HTTPTransport {
@@ -160,6 +201,12 @@ private actor FirstRequestHoldingConsumer: HTTPTransport {
 			return
 		}
 		try await withCheckedThrowingContinuation { heldRequest = $0 }
+	}
+
+	func failHeldRequest() {
+		isReleased = true
+		heldRequest?.resume(throwing: URLError(.networkConnectionLost))
+		heldRequest = nil
 	}
 
 	private func cancelHeldRequest() {
