@@ -21,52 +21,82 @@ final class EventSchedulerFlushTests: XCTestCase {
 		}
 	}
 
-	private let queue = EventQueue()
 	private let headerHelper = HeaderHelper(credentialsProvider: AnonymousCredentialsProvider())
-	private var scheduler: EventScheduler!
+	private let databaseURL = FileManager.default.temporaryDirectory
+		.appendingPathComponent("EventSchedulerFlushTests-\(UUID().uuidString).sqlite")
+	private var queue: EventQueue!
+	private var consumer: FakeEventConsumer!
 
 	override func setUp() async throws {
 		try await super.setUp()
-		try await queue.deleteAllEvents()
-		EventBatchURLProtocol.reset()
-		URLProtocol.registerClass(EventBatchURLProtocol.self)
-		scheduler = EventScheduler(
-			consumerUri: "https://\(EventBatchURLProtocol.host)",
-			eventQueue: queue,
-			monitoring: Monitoring(monitoringQueue: .init())
-		)
+		queue = EventQueue(databaseURL: databaseURL)
+		consumer = FakeEventConsumer()
 	}
 
 	override func tearDown() async throws {
-		URLProtocol.unregisterClass(EventBatchURLProtocol.self)
-		try await queue.deleteAllEvents()
+		try? FileManager.default.removeItem(at: databaseURL)
 		try await super.tearDown()
 	}
 
-	func testConcurrentFlushesSendEachEventOnce() async throws {
+	func testSchedulersSharingAQueueSendEachEventOnce() async throws {
 		let events = try await enqueueEvents(count: 3)
+		let firstScheduler = makeScheduler()
+		let secondScheduler = makeScheduler()
 
-		async let timerFlush: Void = scheduler.sendAllEvents(headerHelper: headerHelper)
-		async let appFlush: Void = scheduler.sendAllEvents(headerHelper: headerHelper)
-		_ = try await (timerFlush, appFlush)
+		async let firstFlush: Void = firstScheduler.sendAllEvents(headerHelper: headerHelper)
+		try await waitUntilReceived(events[0].id)
+		try await secondScheduler.sendAllEvents(headerHelper: headerHelper)
+		await consumer.releaseHeldRequest()
+		try await firstFlush
 
-		XCTAssertEqual(EventBatchURLProtocol.sentIDs.sorted(), events.map(\.id).sorted())
+		let receivedIDs = await consumer.receivedIDs
+		XCTAssertEqual(receivedIDs.sorted(), events.map(\.id).sorted())
 		let leftoverEvents = try await queue.getAllEvents()
 		XCTAssertTrue(leftoverEvents.isEmpty)
 	}
 
-	func testEventEnqueuedDuringFlushIsSentByNextFlush() async throws {
-		let earlyEvents = try await enqueueEvents(count: 2)
+	func testAppFlushDuringSlowTimerFlushSendsNewEventsWithoutWaiting() async throws {
+		let timerEvents = try await enqueueEvents(count: 2)
+		let scheduler = makeScheduler()
 
-		async let firstFlush: Void = scheduler.sendAllEvents(headerHelper: headerHelper)
-		try await waitUntilFirstRequestArrives()
-		let lateEvents = try await enqueueEvents(count: 1)
-		try await scheduler.sendAllEvents(headerHelper: headerHelper)
-		try await firstFlush
+		async let timerFlush: Void = scheduler.sendAllEvents(headerHelper: headerHelper)
+		try await waitUntilReceived(timerEvents[0].id)
+		let appEvents = try await enqueueEvents(count: 1)
+		async let appFlush: Void = scheduler.sendAllEvents(headerHelper: headerHelper)
+		try await waitUntilReceived(appEvents[0].id)
+		await consumer.releaseHeldRequest()
+		_ = try await (timerFlush, appFlush)
 
-		XCTAssertEqual(EventBatchURLProtocol.sentIDs.sorted(), (earlyEvents + lateEvents).map(\.id).sorted())
+		let receivedIDs = await consumer.receivedIDs
+		XCTAssertEqual(receivedIDs.sorted(), (timerEvents + appEvents).map(\.id).sorted())
 		let leftoverEvents = try await queue.getAllEvents()
 		XCTAssertTrue(leftoverEvents.isEmpty)
+	}
+
+	func testCancelledFlushLeavesItsEventsForTheNextFlush() async throws {
+		let events = try await enqueueEvents(count: 2)
+		let scheduler = makeScheduler()
+
+		let cancelledFlush = Task { try await scheduler.sendAllEvents(headerHelper: headerHelper) }
+		try await waitUntilReceived(events[0].id)
+		cancelledFlush.cancel()
+		_ = await cancelledFlush.result
+		try await scheduler.sendAllEvents(headerHelper: headerHelper)
+
+		let receivedIDs = await consumer.receivedIDs
+		XCTAssertEqual(receivedIDs.sorted(), (events + events).map(\.id).sorted())
+		let leftoverEvents = try await queue.getAllEvents()
+		XCTAssertTrue(leftoverEvents.isEmpty)
+	}
+
+	private func makeScheduler() -> EventScheduler {
+		let consumer = consumer!
+		return EventScheduler(
+			consumerUri: "https://consumer.invalid",
+			eventQueue: queue,
+			monitoring: Monitoring(monitoringQueue: .init()),
+			transport: { try await consumer.respond(to: $0) }
+		)
 	}
 
 	private func enqueueEvents(count: Int) async throws -> [Event] {
@@ -79,11 +109,12 @@ final class EventSchedulerFlushTests: XCTestCase {
 		return events
 	}
 
-	private func waitUntilFirstRequestArrives() async throws {
-		let deadline = Date().addingTimeInterval(5)
-		while EventBatchURLProtocol.sentIDs.isEmpty {
+	private func waitUntilReceived(_ id: String) async throws {
+		let deadline = Date().addingTimeInterval(2)
+		while await !consumer.receivedIDs.contains(id) {
 			guard Date() < deadline else {
-				XCTFail("The first flush never reached the network")
+				XCTFail("Event \(id) never reached the consumer")
+				await consumer.releaseHeldRequest()
 				return
 			}
 			try await Task.sleep(nanoseconds: 10_000_000)
@@ -91,73 +122,57 @@ final class EventSchedulerFlushTests: XCTestCase {
 	}
 }
 
-// MARK: - EventBatchURLProtocol
+// MARK: - FakeEventConsumer
 
-private final class EventBatchURLProtocol: URLProtocol {
-	static let host = "event-scheduler-flush-tests.invalid"
-	private static let overlapWindow: TimeInterval = 0.3
-	private static let lock = NSLock()
-	private static var receivedIDs: [String] = []
+/// Accepts every event it receives, and holds the response to its first request until `releaseHeldRequest()` or until the
+/// sending task is cancelled.
+private actor FakeEventConsumer {
+	private(set) var receivedIDs: [String] = []
+	private var hasHeldARequest = false
+	private var isReleased = false
+	private var heldRequest: CheckedContinuation<Void, Error>?
 
-	static var sentIDs: [String] {
-		lock.lock()
-		defer { lock.unlock() }
-		return receivedIDs
-	}
+	func respond(to request: URLRequest) async throws -> (Data, URLResponse) {
+		let ids = Self.eventIDs(in: request)
+		receivedIDs.append(contentsOf: ids)
 
-	static func reset() {
-		lock.lock()
-		receivedIDs = []
-		lock.unlock()
-	}
-
-	override static func canInit(with request: URLRequest) -> Bool {
-		request.url?.host == host
-	}
-
-	override static func canonicalRequest(for request: URLRequest) -> URLRequest {
-		request
-	}
-
-	override func startLoading() {
-		let ids = Self.eventIDs(in: Self.body(of: request))
-		Self.lock.lock()
-		Self.receivedIDs.append(contentsOf: ids)
-		Self.lock.unlock()
+		if !hasHeldARequest {
+			hasHeldARequest = true
+			try await withTaskCancellationHandler {
+				try await holdUntilReleased()
+			} onCancel: {
+				Task { await self.cancelHeldRequest() }
+			}
+		}
 
 		let entries = ids.map { "<SendMessageBatchResultEntry><Id>\($0)</Id></SendMessageBatchResultEntry>" }.joined()
 		let xml = "<SendMessageBatchResponse><SendMessageBatchResult>\(entries)</SendMessageBatchResult></SendMessageBatchResponse>"
 		let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
-
-		DispatchQueue.global().asyncAfter(deadline: .now() + Self.overlapWindow) { [self] in
-			client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-			client?.urlProtocol(self, didLoad: Data(xml.utf8))
-			client?.urlProtocolDidFinishLoading(self)
-		}
+		return (Data(xml.utf8), response)
 	}
 
-	override func stopLoading() {}
-
-	private static func body(of request: URLRequest) -> String {
-		guard let stream = request.httpBodyStream else {
-			return ""
-		}
-		stream.open()
-		defer { stream.close() }
-		var data = Data()
-		var buffer = [UInt8](repeating: 0, count: 4096)
-		while stream.hasBytesAvailable {
-			let read = stream.read(&buffer, maxLength: buffer.count)
-			guard read > 0 else {
-				break
-			}
-			data.append(buffer, count: read)
-		}
-		return String(data: data, encoding: .utf8) ?? ""
+	func releaseHeldRequest() {
+		isReleased = true
+		heldRequest?.resume()
+		heldRequest = nil
 	}
 
-	private static func eventIDs(in body: String) -> [String] {
-		body.split(separator: "&").compactMap { pair in
+	private func holdUntilReleased() async throws {
+		guard !isReleased, !Task.isCancelled else {
+			try Task.checkCancellation()
+			return
+		}
+		try await withCheckedThrowingContinuation { heldRequest = $0 }
+	}
+
+	private func cancelHeldRequest() {
+		heldRequest?.resume(throwing: CancellationError())
+		heldRequest = nil
+	}
+
+	private static func eventIDs(in request: URLRequest) -> [String] {
+		let body = request.httpBody.flatMap { String(data: $0, encoding: .utf8) } ?? ""
+		return body.split(separator: "&").compactMap { pair in
 			let parts = pair.split(separator: "=", maxSplits: 1)
 			guard parts.count == 2, parts[0].hasPrefix("SendMessageBatchRequestEntry."), parts[0].hasSuffix(".Id") else {
 				return nil
