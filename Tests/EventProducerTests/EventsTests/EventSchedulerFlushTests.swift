@@ -90,12 +90,11 @@ final class EventSchedulerFlushTests: XCTestCase {
 	}
 
 	private func makeScheduler() -> EventScheduler {
-		let consumer = consumer!
-		return EventScheduler(
+		EventScheduler(
 			consumerUri: "https://consumer.invalid",
 			eventQueue: queue,
 			monitoring: Monitoring(monitoringQueue: .init()),
-			transport: { try await consumer.respond(to: $0) }
+			transport: consumer
 		)
 	}
 
@@ -124,13 +123,13 @@ final class EventSchedulerFlushTests: XCTestCase {
 
 // MARK: - FirstRequestHoldingConsumer
 
-private actor FirstRequestHoldingConsumer {
+private actor FirstRequestHoldingConsumer: HTTPTransport {
 	private(set) var receivedIDs: [String] = []
 	private var hasHeldARequest = false
 	private var isReleased = false
 	private var heldRequest: CheckedContinuation<Void, Error>?
 
-	func respond(to request: URLRequest) async throws -> (Data, URLResponse) {
+	func send(_ request: URLRequest) async throws -> (Data, URLResponse) {
 		let ids = Self.eventIDs(in: request)
 		receivedIDs.append(contentsOf: ids)
 

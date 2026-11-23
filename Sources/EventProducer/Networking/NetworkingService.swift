@@ -1,12 +1,24 @@
 import Foundation
 
-typealias HTTPTransport = @Sendable (URLRequest) async throws -> (Data, URLResponse)
+// MARK: - HTTPTransport
+
+protocol HTTPTransport: Sendable {
+	func send(_ request: URLRequest) async throws -> (Data, URLResponse)
+}
+
+// MARK: - URLSession + HTTPTransport
+
+extension URLSession: HTTPTransport {
+	func send(_ request: URLRequest) async throws -> (Data, URLResponse) {
+		try await data(for: request)
+	}
+}
+
+// MARK: - NetworkingService
 
 struct NetworkingService {
-	static let urlSessionTransport: HTTPTransport = { try await URLSession.shared.data(for: $0) }
-
 	var consumerUri: String?
-	var transport: HTTPTransport = urlSessionTransport
+	var transport: any HTTPTransport = URLSession.shared
 
 	func sendEventBatch(endpoint: Endpoint) async throws -> Data {
 		guard let consumerUri,
@@ -15,7 +27,7 @@ struct NetworkingService {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
 
-		let (data, response) = try await transport(request)
+		let (data, response) = try await transport.send(request)
 
 		guard let httpResponse = response as? HTTPURLResponse else {
 			throw NSError(domain: "Request Failed", code: 0, userInfo: nil)

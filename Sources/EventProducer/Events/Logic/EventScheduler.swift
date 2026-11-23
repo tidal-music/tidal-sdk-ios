@@ -29,7 +29,7 @@ final class EventScheduler: Scheduler {
 		maxDiskUsageBytes: Int? = EventConfig.defaultQueueMaxDiskUsageBytes,
 		eventQueue: EventQueue,
 		monitoring: Monitoring,
-		transport: @escaping HTTPTransport = NetworkingService.urlSessionTransport
+		transport: any HTTPTransport = URLSession.shared
 	) {
 		self.consumerUri = consumerUri
 		self.maxDiskUsageBytes = maxDiskUsageBytes
