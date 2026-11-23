@@ -8,6 +8,7 @@ actor EventQueue {
 
 	private let databaseURL: URL?
 	private var _dbQueue: DatabaseQueue?
+	private var inFlightEventIDs: Set<String> = []
 
 	init(databaseURL: URL?) {
 		self.databaseURL = databaseURL
@@ -65,6 +66,21 @@ actor EventQueue {
 		try await dbQueue.read { db in
 			try EventPersistentObject.fetchAll(db).map { $0.toEvent() }
 		}
+	}
+
+	/// The read is synchronous so that no other call on this actor runs between the read and the claim. Otherwise a flush
+	/// could delete and release an event that this read has already returned, and the event would be sent again.
+	func claimQueuedEvents() throws -> [Event] {
+		let storedEvents = try dbQueue.read { db in
+			try EventPersistentObject.fetchAll(db).map { $0.toEvent() }
+		}
+		let unclaimedEvents = storedEvents.filter { !inFlightEventIDs.contains($0.id) }
+		inFlightEventIDs.formUnion(unclaimedEvents.map(\.id))
+		return unclaimedEvents
+	}
+
+	func release(_ events: [Event]) {
+		inFlightEventIDs.subtract(events.map(\.id))
 	}
 
 	/// Removes events from local database

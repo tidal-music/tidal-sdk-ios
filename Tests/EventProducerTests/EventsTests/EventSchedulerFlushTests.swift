@@ -25,12 +25,12 @@ final class EventSchedulerFlushTests: XCTestCase {
 	private let databaseURL = FileManager.default.temporaryDirectory
 		.appendingPathComponent("EventSchedulerFlushTests-\(UUID().uuidString).sqlite")
 	private var queue: EventQueue!
-	private var consumer: FakeEventConsumer!
+	private var consumer: FirstRequestHoldingConsumer!
 
 	override func setUp() async throws {
 		try await super.setUp()
 		queue = EventQueue(databaseURL: databaseURL)
-		consumer = FakeEventConsumer()
+		consumer = FirstRequestHoldingConsumer()
 	}
 
 	override func tearDown() async throws {
@@ -122,11 +122,9 @@ final class EventSchedulerFlushTests: XCTestCase {
 	}
 }
 
-// MARK: - FakeEventConsumer
+// MARK: - FirstRequestHoldingConsumer
 
-/// Accepts every event it receives, and holds the response to its first request until `releaseHeldRequest()` or until the
-/// sending task is cancelled.
-private actor FakeEventConsumer {
+private actor FirstRequestHoldingConsumer {
 	private(set) var receivedIDs: [String] = []
 	private var hasHeldARequest = false
 	private var isReleased = false
@@ -158,8 +156,8 @@ private actor FakeEventConsumer {
 	}
 
 	private func holdUntilReleased() async throws {
-		guard !isReleased, !Task.isCancelled else {
-			try Task.checkCancellation()
+		try Task.checkCancellation()
+		guard !isReleased else {
 			return
 		}
 		try await withCheckedThrowingContinuation { heldRequest = $0 }

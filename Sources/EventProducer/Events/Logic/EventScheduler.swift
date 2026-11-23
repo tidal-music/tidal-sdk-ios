@@ -16,7 +16,6 @@ final class EventScheduler: Scheduler {
 	private let eventQueue: EventQueue
 	private let networkService: NetworkingService
 	private var monitoring: Monitoring
-	private let flushes = SerialTaskQueue()
 
 	var schedulingTime: TimeInterval {
 		switch BuildEnvironment.system {
@@ -58,18 +57,22 @@ final class EventScheduler: Scheduler {
 		}
 	}
 
-	/// Fetches all events from the local storage, and sends them to the backend in batches.
 	func sendAllEvents(headerHelper: HeaderHelper) async throws {
-		try await flushes.run { [self] in
-			try await sendQueuedEvents(headerHelper: headerHelper)
+		let claimedEvents = try await eventQueue.claimQueuedEvents()
+		var sendError: Error?
+		do {
+			try await send(claimedEvents, headerHelper: headerHelper)
+		} catch {
+			sendError = error
+		}
+		await eventQueue.release(claimedEvents)
+		if let sendError {
+			throw sendError
 		}
 	}
 
-	private func sendQueuedEvents(headerHelper: HeaderHelper) async throws {
-		let allEvents = try await eventQueue.getAllEvents()
-		let batches = allEvents.chunkedBy(Constants.batchSize)
-
-		for batch in batches {
+	private func send(_ events: [Event], headerHelper: HeaderHelper) async throws {
+		for batch in events.chunkedBy(Constants.batchSize) {
 			let allowedBatchSize = getAllowedBatch(batch)
 			guard !allowedBatchSize.isEmpty else {
 				throw EventProducerError.eventSendBatchRequestFailure("Limit Exceeded")
@@ -190,26 +193,6 @@ final class EventScheduler: Scheduler {
 			parameters["\(baseHeaderPrefix).\(Parameters.valueDatatype.rawValue)"] = Parameters.string.rawValue.encoded()
 		}
 		return parameters
-	}
-}
-
-// MARK: - SerialTaskQueue
-
-private actor SerialTaskQueue {
-	private var lastOperation: Task<Void, Error>?
-
-	func run(_ operation: @escaping () async throws -> Void) async throws {
-		let previousOperation = lastOperation
-		let currentOperation = Task {
-			_ = await previousOperation?.result
-			try await operation()
-		}
-		lastOperation = currentOperation
-		try await withTaskCancellationHandler {
-			try await currentOperation.value
-		} onCancel: {
-			currentOperation.cancel()
-		}
 	}
 }
 
