@@ -9,6 +9,7 @@ actor EventQueue {
 	private let databaseURL: URL?
 	private var _dbQueue: DatabaseQueue?
 	private var inFlightEventIDs: Set<String> = []
+	private var releaseWaiters: [CheckedContinuation<Void, Never>] = []
 
 	init(databaseURL: URL?) {
 		self.databaseURL = databaseURL
@@ -70,17 +71,27 @@ actor EventQueue {
 
 	/// The read is synchronous so that no other call on this actor runs between the read and the claim. Otherwise a flush
 	/// could delete and release an event that this read has already returned, and the event would be sent again.
-	func claimQueuedEvents() throws -> [Event] {
+	func claimQueuedEvents() throws -> (claimed: [Event], heldElsewhere: Set<String>) {
 		let storedEvents = try dbQueue.read { db in
 			try EventPersistentObject.fetchAll(db).map { $0.toEvent() }
 		}
-		let unclaimedEvents = storedEvents.filter { !inFlightEventIDs.contains($0.id) }
-		inFlightEventIDs.formUnion(unclaimedEvents.map(\.id))
-		return unclaimedEvents
+		let heldElsewhere = Set(storedEvents.map(\.id)).intersection(inFlightEventIDs)
+		let claimed = storedEvents.filter { !heldElsewhere.contains($0.id) }
+		inFlightEventIDs.formUnion(claimed.map(\.id))
+		return (claimed, heldElsewhere)
 	}
 
 	func release(_ events: [Event]) {
 		inFlightEventIDs.subtract(events.map(\.id))
+		let waiters = releaseWaiters
+		releaseWaiters = []
+		waiters.forEach { $0.resume() }
+	}
+
+	func waitUntilReleased(_ eventIDs: Set<String>) async {
+		while !inFlightEventIDs.isDisjoint(with: eventIDs) {
+			await withCheckedContinuation { releaseWaiters.append($0) }
+		}
 	}
 
 	/// Removes events from local database

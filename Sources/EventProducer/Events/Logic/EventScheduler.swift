@@ -49,7 +49,7 @@ final class EventScheduler: Scheduler {
 
 	func timerTriggered(headerHelper: HeaderHelper) async throws {
 		do {
-			try await sendAllEvents(headerHelper: headerHelper)
+			try await sendUnclaimedEvents(headerHelper: headerHelper)
 		} catch let EventProducerError.unauthorized(code) {
 			_ = try await headerHelper.credentialsProvider?.getCredentials(apiErrorSubStatus: code.description)
 		} catch {
@@ -58,7 +58,17 @@ final class EventScheduler: Scheduler {
 	}
 
 	func sendAllEvents(headerHelper: HeaderHelper) async throws {
-		let claimedEvents = try await eventQueue.claimQueuedEvents()
+		let heldElsewhere = try await sendUnclaimedEvents(headerHelper: headerHelper)
+		guard !heldElsewhere.isEmpty else {
+			return
+		}
+		await eventQueue.waitUntilReleased(heldElsewhere)
+		try await sendUnclaimedEvents(headerHelper: headerHelper)
+	}
+
+	@discardableResult
+	private func sendUnclaimedEvents(headerHelper: HeaderHelper) async throws -> Set<String> {
+		let (claimedEvents, heldElsewhere) = try await eventQueue.claimQueuedEvents()
 		var sendError: Error?
 		do {
 			try await send(claimedEvents, headerHelper: headerHelper)
@@ -69,6 +79,7 @@ final class EventScheduler: Scheduler {
 		if let sendError {
 			throw sendError
 		}
+		return heldElsewhere
 	}
 
 	private func send(_ events: [Event], headerHelper: HeaderHelper) async throws {
