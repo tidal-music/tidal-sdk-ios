@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 # **scopesGet**
 ```swift
-    open class func scopesGet(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet]) async throws -> ScopesMultiResourceDataDocument
+    open class func scopesGet(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet]? = nil, filterRequiredAccessTierSatisfiedBy: FilterRequiredAccessTierSatisfiedBy_scopesGet? = nil) async throws -> ScopesMultiResourceDataDocument
 ```
 
 Get multiple scopes.
@@ -21,11 +21,12 @@ Retrieves multiple scopes by available filters, or without if applicable.
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import OpenAPIClient
 
-let filterRequiredAccessTier = ["filterRequiredAccessTier_example"] // [String] | Filters scopes by their `requiredAccessTier`. (e.g. `THIRD_PARTY`)
+let filterRequiredAccessTier = ["filterRequiredAccessTier_example"] // [String] | Filters scopes by their required client access tier. (e.g. `THIRD_PARTY`) (optional)
+let filterRequiredAccessTierSatisfiedBy = "filterRequiredAccessTierSatisfiedBy_example" // String | Selects scopes whose required access tier is satisfied by the client tier. (e.g. `PARTNER`) (optional)
 
 // Get multiple scopes.
 do {
-    let response = try await ScopesAPI.scopesGet(filterRequiredAccessTier: filterRequiredAccessTier)
+    let response = try await ScopesAPI.scopesGet(filterRequiredAccessTier: filterRequiredAccessTier, filterRequiredAccessTierSatisfiedBy: filterRequiredAccessTierSatisfiedBy)
     dump(response)
 } catch {
     print(error)
@@ -36,7 +37,8 @@ do {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filterRequiredAccessTier** | [**[String]**](String.md) | Filters scopes by their &#x60;requiredAccessTier&#x60;. (e.g. &#x60;THIRD_PARTY&#x60;) | 
+ **filterRequiredAccessTier** | [**[String]**](String.md) | Filters scopes by their required client access tier. (e.g. &#x60;THIRD_PARTY&#x60;) | [optional] 
+ **filterRequiredAccessTierSatisfiedBy** | **String** | Selects scopes whose required access tier is satisfied by the client tier. (e.g. &#x60;PARTNER&#x60;) | [optional] 
 
 ### Return type
 

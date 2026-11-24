@@ -19,16 +19,20 @@ public struct StudioHomeMusicTilesAttributes: Codable, Hashable {
         case tidalConnectDeveloper = "TIDAL_CONNECT_DEVELOPER"
         case unknownDefaultOpenApi = "unknown_default_open_api"
     }
+    public var contentCounts: StudioHomeMusicTilesAttributesContentCounts
     /** Terms types the user must accept before using this tile; empty when none are missing. */
     public var requiredTerms: [RequiredTerms]
 
     public init(
+        contentCounts: StudioHomeMusicTilesAttributesContentCounts,
         requiredTerms: [RequiredTerms]
     ) {
+        self.contentCounts = contentCounts
         self.requiredTerms = requiredTerms
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case contentCounts
         case requiredTerms
     }
 
@@ -36,6 +40,7 @@ public struct StudioHomeMusicTilesAttributes: Codable, Hashable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(contentCounts, forKey: .contentCounts)
         try container.encode(requiredTerms, forKey: .requiredTerms)
     }
 }
