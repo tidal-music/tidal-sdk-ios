@@ -1,7 +1,24 @@
 import Foundation
 
+// MARK: - HTTPTransport
+
+protocol HTTPTransport: Sendable {
+	func send(_ request: URLRequest) async throws -> (Data, URLResponse)
+}
+
+// MARK: - URLSession + HTTPTransport
+
+extension URLSession: HTTPTransport {
+	func send(_ request: URLRequest) async throws -> (Data, URLResponse) {
+		try await data(for: request)
+	}
+}
+
+// MARK: - NetworkingService
+
 struct NetworkingService {
 	var consumerUri: String?
+	var transport: any HTTPTransport = URLSession.shared
 
 	func sendEventBatch(endpoint: Endpoint) async throws -> Data {
 		guard let consumerUri,
@@ -10,7 +27,7 @@ struct NetworkingService {
 			throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
 		}
 
-		let (data, response) = try await URLSession.shared.data(for: request)
+		let (data, response) = try await transport.send(request)
 
 		guard let httpResponse = response as? HTTPURLResponse else {
 			throw NSError(domain: "Request Failed", code: 0, userInfo: nil)

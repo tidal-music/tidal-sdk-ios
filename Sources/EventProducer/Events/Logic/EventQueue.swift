@@ -4,8 +4,16 @@ import SWXMLHash
 
 actor EventQueue {
 	static let databaseName = "EventQueueDatabase.sqlite"
+	static let shared = EventQueue(databaseURL: FileManagerHelper.shared.eventQueueDatabaseURL)
 
+	private let databaseURL: URL?
 	private var _dbQueue: DatabaseQueue?
+	private var inFlightEventIDs: Set<String> = []
+	private var releaseWaiters: [CheckedContinuation<Void, Never>] = []
+
+	init(databaseURL: URL?) {
+		self.databaseURL = databaseURL
+	}
 
 	private var dbQueue: DatabaseQueue {
 		get throws {
@@ -13,7 +21,7 @@ actor EventQueue {
 				return _dbQueue
 			}
 
-			guard let databaseURL = FileManagerHelper.shared.eventQueueDatabaseURL else {
+			guard let databaseURL else {
 				throw EventProducerError.eventQueueDatabaseURLFailure
 			}
 
@@ -58,6 +66,31 @@ actor EventQueue {
 	func getAllEvents() async throws -> [Event] {
 		try await dbQueue.read { db in
 			try EventPersistentObject.fetchAll(db).map { $0.toEvent() }
+		}
+	}
+
+	/// The read is synchronous so that no other call on this actor runs between the read and the claim. Otherwise a flush
+	/// could delete and release an event that this read has already returned, and the event would be sent again.
+	func claimQueuedEvents() throws -> (claimed: [Event], heldElsewhere: Set<String>) {
+		let storedEvents = try dbQueue.read { db in
+			try EventPersistentObject.fetchAll(db).map { $0.toEvent() }
+		}
+		let heldElsewhere = Set(storedEvents.map(\.id)).intersection(inFlightEventIDs)
+		let claimed = storedEvents.filter { !heldElsewhere.contains($0.id) }
+		inFlightEventIDs.formUnion(claimed.map(\.id))
+		return (claimed, heldElsewhere)
+	}
+
+	func release(_ events: [Event]) {
+		inFlightEventIDs.subtract(events.map(\.id))
+		let waiters = releaseWaiters
+		releaseWaiters = []
+		waiters.forEach { $0.resume() }
+	}
+
+	func waitUntilReleased(_ eventIDs: Set<String>) async {
+		while !inFlightEventIDs.isDisjoint(with: eventIDs) {
+			await withCheckedContinuation { releaseWaiters.append($0) }
 		}
 	}
 
