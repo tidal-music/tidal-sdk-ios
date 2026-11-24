@@ -23,15 +23,26 @@ internal class ScopesAPI {
     }
 
     /**
+     * enum for parameter filterRequiredAccessTierSatisfiedBy
+     */
+    public enum FilterRequiredAccessTierSatisfiedBy_scopesGet: String, CaseIterable {
+        case thirdParty = "THIRD_PARTY"
+        case thirdPartyProd = "THIRD_PARTY_PROD"
+        case partner = "PARTNER"
+        case _internal = "INTERNAL"
+    }
+
+    /**
      Get multiple scopes.
      
-     - parameter filterRequiredAccessTier: (query) Filters scopes by their &#x60;requiredAccessTier&#x60;. (e.g. &#x60;THIRD_PARTY&#x60;) 
+     - parameter filterRequiredAccessTier: (query) Filters scopes by their required client access tier. (e.g. &#x60;THIRD_PARTY&#x60;) (optional)
+     - parameter filterRequiredAccessTierSatisfiedBy: (query) Selects scopes whose required access tier is satisfied by the client tier. (e.g. &#x60;PARTNER&#x60;) (optional)
      - returns: ScopesMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func scopesGet(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet]) async throws -> ScopesMultiResourceDataDocument {
+    internal class func scopesGet(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet]? = nil, filterRequiredAccessTierSatisfiedBy: FilterRequiredAccessTierSatisfiedBy_scopesGet? = nil) async throws -> ScopesMultiResourceDataDocument {
         do {
-            return try await scopesGetWithRequestBuilder(filterRequiredAccessTier: filterRequiredAccessTier).execute().body
+            return try await scopesGetWithRequestBuilder(filterRequiredAccessTier: filterRequiredAccessTier, filterRequiredAccessTierSatisfiedBy: filterRequiredAccessTierSatisfiedBy).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -45,17 +56,19 @@ internal class ScopesAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
-     - parameter filterRequiredAccessTier: (query) Filters scopes by their &#x60;requiredAccessTier&#x60;. (e.g. &#x60;THIRD_PARTY&#x60;) 
+     - parameter filterRequiredAccessTier: (query) Filters scopes by their required client access tier. (e.g. &#x60;THIRD_PARTY&#x60;) (optional)
+     - parameter filterRequiredAccessTierSatisfiedBy: (query) Selects scopes whose required access tier is satisfied by the client tier. (e.g. &#x60;PARTNER&#x60;) (optional)
      - returns: RequestBuilder<ScopesMultiResourceDataDocument> 
      */
-    internal class func scopesGetWithRequestBuilder(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet]) -> RequestBuilder<ScopesMultiResourceDataDocument> {
+    internal class func scopesGetWithRequestBuilder(filterRequiredAccessTier: [FilterRequiredAccessTier_scopesGet]? = nil, filterRequiredAccessTierSatisfiedBy: FilterRequiredAccessTierSatisfiedBy_scopesGet? = nil) -> RequestBuilder<ScopesMultiResourceDataDocument> {
         let localVariablePath = "/scopes"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
-            "filter[requiredAccessTier]": (wrappedValue: filterRequiredAccessTier.encodeToJSON(), isExplode: true),
+            "filter[requiredAccessTier]": (wrappedValue: filterRequiredAccessTier?.encodeToJSON(), isExplode: true),
+            "filter[requiredAccessTier][satisfiedBy]": (wrappedValue: filterRequiredAccessTierSatisfiedBy?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
