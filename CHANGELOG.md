@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.3] - 2026-11-24
+
+### Added
+- Required `contentCounts` attribute (`albums`, `folders`) on `studioHomeMusicTiles`, with the totals of the user's uploads at every folder level (TidalAPI)
+- `filter[requiredAccessTier][satisfiedBy]` parameter on the `scopes` endpoint (TidalAPI)
+
+### Changed
+- `filter[requiredAccessTier]` on the `scopes` endpoint is now optional (TidalAPI)
+- Generated API code using spec version 1.10.260 (TidalAPI)
+
 ## [0.15.2] - 2026-11-18
 
 ### Added
