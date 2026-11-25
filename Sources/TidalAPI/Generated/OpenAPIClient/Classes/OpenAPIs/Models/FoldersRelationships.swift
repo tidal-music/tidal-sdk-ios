@@ -16,20 +16,17 @@ public struct FoldersRelationships: Codable, Hashable {
     public var owners: FoldersOwnersMultiRelationshipDataDocument?
     public var parent: FoldersParentSingleRelationshipDataDocument?
     public var preview: FoldersPreviewMultiRelationshipDataDocument?
-    public var shares: FoldersSharesMultiRelationshipDataDocument?
 
     public init(
         children: FoldersChildrenMultiRelationshipDataDocument? = nil,
         owners: FoldersOwnersMultiRelationshipDataDocument? = nil,
         parent: FoldersParentSingleRelationshipDataDocument? = nil,
-        preview: FoldersPreviewMultiRelationshipDataDocument? = nil,
-        shares: FoldersSharesMultiRelationshipDataDocument? = nil
+        preview: FoldersPreviewMultiRelationshipDataDocument? = nil
     ) {
         self.children = children
         self.owners = owners
         self.parent = parent
         self.preview = preview
-        self.shares = shares
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -37,7 +34,6 @@ public struct FoldersRelationships: Codable, Hashable {
         case owners
         case parent
         case preview
-        case shares
     }
 
     // Encodable protocol methods
@@ -48,6 +44,5 @@ public struct FoldersRelationships: Codable, Hashable {
         try container.encodeIfPresent(owners, forKey: .owners)
         try container.encodeIfPresent(parent, forKey: .parent)
         try container.encodeIfPresent(preview, forKey: .preview)
-        try container.encodeIfPresent(shares, forKey: .shares)
     }
 }

@@ -24,7 +24,7 @@ internal class SharesAPI {
      Get multiple shares.
      
      - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) (optional)
-     - parameter filterSelfAppliesTo: (query) Album, track or folder owned by the caller. Selects undeleted, unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an ancestor folder. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. Also accepts &#x60;folders:me&#x60;. (optional)
+     - parameter filterSelfAppliesTo: (query) Album or track owned by the caller. Selects undeleted, unexpired links on the resource or its album. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. (optional)
      - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -52,7 +52,7 @@ internal class SharesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) (optional)
-     - parameter filterSelfAppliesTo: (query) Album, track or folder owned by the caller. Selects undeleted, unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an ancestor folder. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. Also accepts &#x60;folders:me&#x60;. (optional)
+     - parameter filterSelfAppliesTo: (query) Album or track owned by the caller. Selects undeleted, unexpired links on the resource or its album. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. (optional)
      - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -399,7 +399,7 @@ internal class SharesAPI {
     /**
      Create single share.
      - POST /shares
-     - Creates a new share.
+     - Creates a new share. Deprecated for playlists: use `resourceGrantInvitations` instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

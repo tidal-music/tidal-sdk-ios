@@ -22,7 +22,6 @@ public enum FoldersAPITidal {
 		case owners = "owners"
 		case parent = "parent"
 		case preview = "preview"
-		case shares = "shares"
 
 		func toFoldersAPIEnum() -> FoldersAPI.IncludeLinkage_foldersGet {
 			switch self {
@@ -30,7 +29,6 @@ public enum FoldersAPITidal {
 			case .owners: return .owners
 			case .parent: return .parent
 			case .preview: return .preview
-			case .shares: return .shares
 			}
 		}
 	}
@@ -67,7 +65,6 @@ public enum FoldersAPITidal {
 		case owners = "owners"
 		case parent = "parent"
 		case preview = "preview"
-		case shares = "shares"
 
 		func toFoldersAPIEnum() -> FoldersAPI.IncludeLinkage_foldersIdGet {
 			switch self {
@@ -75,7 +72,6 @@ public enum FoldersAPITidal {
 			case .owners: return .owners
 			case .parent: return .parent
 			case .preview: return .preview
-			case .shares: return .shares
 			}
 		}
 	}
@@ -148,18 +144,6 @@ public enum FoldersAPITidal {
 	public static func foldersIdRelationshipsPreviewGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersPreviewMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			FoldersAPI.foldersIdRelationshipsPreviewGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
-		}
-	}
-
-
-	/**
-     Get shares relationship (\&quot;to-many\&quot;).
-     
-     - returns: FoldersSharesMultiRelationshipDataDocument
-     */
-	public static func foldersIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersSharesMultiRelationshipDataDocument {
-		return try await RequestHelper.createRequest {
-			FoldersAPI.foldersIdRelationshipsSharesGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 
