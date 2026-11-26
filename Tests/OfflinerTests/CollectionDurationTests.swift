@@ -16,7 +16,7 @@ final class CollectionDurationTests: OfflinerTestCase {
 		backend.enqueueTasks([
 			.storeAlbum(StoreAlbumTask(
 				id: "task-collection",
-				album: AlbumsResourceObject(id: albumId, type: "albums"),
+				album: AlbumsResourceObject(id: albumId, type: .albums),
 				artists: [],
 				artwork: nil
 			)),
@@ -47,7 +47,7 @@ final class CollectionDurationTests: OfflinerTestCase {
 		backend.enqueueTasks([
 			.storeAlbum(StoreAlbumTask(
 				id: "task-collection",
-				album: AlbumsResourceObject(id: albumId, type: "albums"),
+				album: AlbumsResourceObject(id: albumId, type: .albums),
 				artists: [],
 				artwork: nil
 			)),
@@ -95,7 +95,7 @@ final class CollectionDurationTests: OfflinerTestCase {
 
 		return StoreTrackTask(
 			id: id,
-			track: TracksResourceObject(attributes: attributes, id: trackId, type: "tracks"),
+			track: TracksResourceObject(attributes: attributes, id: trackId, type: .tracks),
 			artists: [],
 			artwork: nil,
 			collectionResourceType: "albums",

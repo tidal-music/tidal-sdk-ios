@@ -20,14 +20,14 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let collectionTask = StoreAlbumTask(
 			id: "offline-task-100",
-			album: AlbumsResourceObject(id: albumId, type: "albums"),
+			album: AlbumsResourceObject(id: albumId, type: .albums),
 			artists: [],
 			artwork: nil
 		)
 
 		let itemTask1 = StoreTrackTask(
 			id: "offline-task-101",
-			track: TracksResourceObject(id: "track-1", type: "tracks"),
+			track: TracksResourceObject(id: "track-1", type: .tracks),
 			artists: [],
 			artwork: nil,
 			collectionResourceType: "albums",
@@ -37,7 +37,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		)
 		let itemTask2 = StoreTrackTask(
 			id: "offline-task-102",
-			track: TracksResourceObject(id: "track-2", type: "tracks"),
+			track: TracksResourceObject(id: "track-2", type: .tracks),
 			artists: [],
 			artwork: nil,
 			collectionResourceType: "albums",
@@ -47,7 +47,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		)
 		let itemTask3 = StoreTrackTask(
 			id: "offline-task-103",
-			track: TracksResourceObject(id: "track-3", type: "tracks"),
+			track: TracksResourceObject(id: "track-3", type: .tracks),
 			artists: [],
 			artwork: nil,
 			collectionResourceType: "albums",
@@ -102,7 +102,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let collectionTask = StoreAlbumTask(
 			id: "offline-task-300",
-			album: AlbumsResourceObject(id: albumId, type: "albums"),
+			album: AlbumsResourceObject(id: albumId, type: .albums),
 			artists: [],
 			artwork: nil
 		)
@@ -111,7 +111,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		for i in 1 ... 3 {
 			tasks.append(.storeTrack(StoreTrackTask(
 				id: "offline-task-30\(i)",
-				track: TracksResourceObject(id: "track-\(i)", type: "tracks"),
+				track: TracksResourceObject(id: "track-\(i)", type: .tracks),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -151,7 +151,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let collectionTask = StoreAlbumTask(
 			id: "empty-collection-task-id",
-			album: AlbumsResourceObject(id: "album-empty", type: "albums"),
+			album: AlbumsResourceObject(id: "album-empty", type: .albums),
 			artists: [],
 			artwork: nil
 		)
@@ -184,7 +184,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 
 		let collectionTask = StoreAlbumTask(
 			id: "offline-task-200",
-			album: AlbumsResourceObject(id: albumId, type: "albums"),
+			album: AlbumsResourceObject(id: albumId, type: .albums),
 			artists: [],
 			artwork: nil
 		)
@@ -193,7 +193,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		for i in 1 ... 5 {
 			tasks.append(.storeTrack(StoreTrackTask(
 				id: "offline-task-20\(i)",
-				track: TracksResourceObject(id: "track-\(i)", type: "tracks"),
+				track: TracksResourceObject(id: "track-\(i)", type: .tracks),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -248,13 +248,13 @@ final class CollectionItemsTests: OfflinerTestCase {
 		backend.enqueueTasks([
 			.storeAlbum(StoreAlbumTask(
 				id: "offline-task-300",
-				album: AlbumsResourceObject(id: albumId, type: "albums"),
+				album: AlbumsResourceObject(id: albumId, type: .albums),
 				artists: [],
 				artwork: nil
 			)),
 			.storeTrack(StoreTrackTask(
 				id: "offline-task-301",
-				track: TracksResourceObject(id: "v1-track-1", type: "tracks"),
+				track: TracksResourceObject(id: "v1-track-1", type: .tracks),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -264,7 +264,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 			)),
 			.storeTrack(StoreTrackTask(
 				id: "offline-task-302",
-				track: TracksResourceObject(id: "v1-track-2", type: "tracks"),
+				track: TracksResourceObject(id: "v1-track-2", type: .tracks),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -274,7 +274,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 			)),
 			.storeTrack(StoreTrackTask(
 				id: "offline-task-303",
-				track: TracksResourceObject(id: "v2-track-1", type: "tracks"),
+				track: TracksResourceObject(id: "v2-track-1", type: .tracks),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -316,7 +316,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 		backend.enqueueTasks([
 			.storeAlbum(StoreAlbumTask(
 				id: "offline-task-400",
-				album: AlbumsResourceObject(id: albumId, type: "albums"),
+				album: AlbumsResourceObject(id: albumId, type: .albums),
 				artists: [],
 				artwork: nil
 			)),
@@ -348,13 +348,13 @@ final class CollectionItemsTests: OfflinerTestCase {
 		backend.enqueueTasks([
 			.storeAlbum(StoreAlbumTask(
 				id: "offline-task-400",
-				album: AlbumsResourceObject(id: albumId, type: "albums"),
+				album: AlbumsResourceObject(id: albumId, type: .albums),
 				artists: [],
 				artwork: nil
 			)),
 			.storeTrack(StoreTrackTask(
 				id: "offline-task-401",
-				track: TracksResourceObject(id: "track-1", type: "tracks"),
+				track: TracksResourceObject(id: "track-1", type: .tracks),
 				artists: [],
 				artwork: nil,
 				collectionResourceType: "albums",
@@ -709,7 +709,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 				title: title
 			),
 			id: id,
-			type: "tracks"
+			type: .tracks
 		)
 	}
 
@@ -727,7 +727,7 @@ final class CollectionItemsTests: OfflinerTestCase {
 				title: title
 			),
 			id: id,
-			type: "albums"
+			type: .albums
 		)
 	}
 }

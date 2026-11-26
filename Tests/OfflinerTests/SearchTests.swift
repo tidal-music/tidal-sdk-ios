@@ -437,13 +437,13 @@ final class SearchTests: OfflinerTestCase {
 					title: title
 				),
 				id: trackId,
-				type: "tracks"
+				type: .tracks
 			),
 			artists: artistNames.enumerated().map { index, name in
 				ArtistsResourceObject(
 					attributes: ArtistsAttributes(name: name, popularity: 0),
 					id: "artist-\(trackId)-\(index)",
-					type: "artists"
+					type: .artists
 				)
 			},
 			artwork: nil,
@@ -475,13 +475,13 @@ final class SearchTests: OfflinerTestCase {
 					title: title
 				),
 				id: albumId,
-				type: "albums"
+				type: .albums
 			),
 			artists: artistNames.enumerated().map { index, name in
 				ArtistsResourceObject(
 					attributes: ArtistsAttributes(name: name, popularity: 0),
 					id: "artist-\(albumId)-\(index)",
-					type: "artists"
+					type: .artists
 				)
 			},
 			artwork: nil
