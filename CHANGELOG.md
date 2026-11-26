@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-11-26
+
+### Added
+- `ownerAgeRestricted` and `ownerAgeRestriction` (`MINOR`, `NO_BIRTHDAY`) attributes on `artists`, so clients can tell when an artist profile's owner is age-restricted (TidalAPI)
+- `numberOfChildren` attribute on `folders` (TidalAPI)
+- `followers` on `ArtistStreamsStatisticsSeriesPoint` (TidalAPI)
+
+### Changed
+- Resource objects' `type` is now a per-resource `ModelType` enum (e.g. `ArtistsResourceObject.ModelType.artists`) instead of a `String` (TidalAPI)
+- Relationships on resource objects now use new `*RelationshipObject` types (`data` and `links`) instead of `*RelationshipDataDocument`; the data documents returned by relationship endpoints are unchanged (TidalAPI)
+- `SavedSharesCreateResource403ResponseBody` and `SavedSharesCreateResource429ResponseBody` now reuse the shared `ResourceGrantsCreateResource*ResponseBodyErrorsInner` error types (TidalAPI)
+- Generated API code using spec version 1.10.272 (TidalAPI)
+
+### Removed
+- `shares` relationship on `folders` and its `GET /folders/{id}/relationships/shares` endpoint; `folders` can no longer be passed as a shared resource when creating a share (TidalAPI)
+- `PATCH /resourceGrantInvitations/{id}` endpoint and its `ResourceGrantInvitationsUpdateOperationPayload*` models (TidalAPI)
+- `SavedSharesCreateResource403ResponseBodyErrorsInner` and `SavedSharesCreateResource429ResponseBodyErrorsInner` models (TidalAPI)
+
 ## [0.15.3] - 2026-11-24
 
 ### Added
