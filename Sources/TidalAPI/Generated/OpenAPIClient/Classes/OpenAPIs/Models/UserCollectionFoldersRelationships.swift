@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct UserCollectionFoldersRelationships: Codable, Hashable {
 
-    public var items: UserCollectionFoldersItemsMultiRelationshipDataDocument?
-    public var owners: UserCollectionFoldersOwnersMultiRelationshipDataDocument?
-    public var userCollection: UserCollectionFoldersUserCollectionSingleRelationshipDataDocument?
+    public var items: UserCollectionFoldersItemsMultiRelationshipObject?
+    public var owners: UserCollectionFoldersOwnersMultiRelationshipObject?
+    public var userCollection: UserCollectionFoldersUserCollectionSingleRelationshipObject?
 
     public init(
-        items: UserCollectionFoldersItemsMultiRelationshipDataDocument? = nil,
-        owners: UserCollectionFoldersOwnersMultiRelationshipDataDocument? = nil,
-        userCollection: UserCollectionFoldersUserCollectionSingleRelationshipDataDocument? = nil
+        items: UserCollectionFoldersItemsMultiRelationshipObject? = nil,
+        owners: UserCollectionFoldersOwnersMultiRelationshipObject? = nil,
+        userCollection: UserCollectionFoldersUserCollectionSingleRelationshipObject? = nil
     ) {
         self.items = items
         self.owners = owners

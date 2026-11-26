@@ -1004,7 +1004,7 @@ Name | Type | Description  | Notes
 
 Get shares relationship (\"to-many\").
 
-The track's share links, active and expired, newest first.
+The track's share links, active and expired, newest first. Deprecated: use `resourceGrantInvitations` instead.
 
 ### Example
 ```swift

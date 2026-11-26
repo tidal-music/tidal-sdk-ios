@@ -12,16 +12,16 @@ import AnyCodable
 
 public struct ViewerContextsRelationships: Codable, Hashable {
 
-    public var comments: ViewerContextsCommentsMultiRelationshipDataDocument?
-    public var reactions: ViewerContextsReactionsMultiRelationshipDataDocument?
-    public var subject: ViewerContextsSubjectSingleRelationshipDataDocument?
-    public var viewer: ViewerContextsViewerSingleRelationshipDataDocument?
+    public var comments: ViewerContextsCommentsMultiRelationshipObject?
+    public var reactions: ViewerContextsReactionsMultiRelationshipObject?
+    public var subject: ViewerContextsSubjectSingleRelationshipObject?
+    public var viewer: ViewerContextsViewerSingleRelationshipObject?
 
     public init(
-        comments: ViewerContextsCommentsMultiRelationshipDataDocument? = nil,
-        reactions: ViewerContextsReactionsMultiRelationshipDataDocument? = nil,
-        subject: ViewerContextsSubjectSingleRelationshipDataDocument? = nil,
-        viewer: ViewerContextsViewerSingleRelationshipDataDocument? = nil
+        comments: ViewerContextsCommentsMultiRelationshipObject? = nil,
+        reactions: ViewerContextsReactionsMultiRelationshipObject? = nil,
+        subject: ViewerContextsSubjectSingleRelationshipObject? = nil,
+        viewer: ViewerContextsViewerSingleRelationshipObject? = nil
     ) {
         self.comments = comments
         self.reactions = reactions

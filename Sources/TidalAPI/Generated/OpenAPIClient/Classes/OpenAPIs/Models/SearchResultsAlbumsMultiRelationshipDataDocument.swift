@@ -10,27 +10,26 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Target resource types: &#x60;albums&#x60;. */
 public struct SearchResultsAlbumsMultiRelationshipDataDocument: Codable, Hashable {
 
     public var data: [SearchResultsAlbumsResourceIdentifier]?
-    public var included: [IncludedInner]?
     public var links: Links
+    public var included: [IncludedInner]?
 
     public init(
         data: [SearchResultsAlbumsResourceIdentifier]? = nil,
-        included: [IncludedInner]? = nil,
-        links: Links
+        links: Links,
+        included: [IncludedInner]? = nil
     ) {
         self.data = data
-        self.included = included
         self.links = links
+        self.included = included
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case data
-        case included
         case links
+        case included
     }
 
     // Encodable protocol methods
@@ -38,7 +37,7 @@ public struct SearchResultsAlbumsMultiRelationshipDataDocument: Codable, Hashabl
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(data, forKey: .data)
-        try container.encodeIfPresent(included, forKey: .included)
         try container.encode(links, forKey: .links)
+        try container.encodeIfPresent(included, forKey: .included)
     }
 }

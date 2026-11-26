@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct StripeConnectionsRelationships: Codable, Hashable {
 
-    public var owners: StripeConnectionsOwnersMultiRelationshipDataDocument?
+    public var owners: StripeConnectionsOwnersMultiRelationshipObject?
 
     public init(
-        owners: StripeConnectionsOwnersMultiRelationshipDataDocument? = nil
+        owners: StripeConnectionsOwnersMultiRelationshipObject? = nil
     ) {
         self.owners = owners
     }

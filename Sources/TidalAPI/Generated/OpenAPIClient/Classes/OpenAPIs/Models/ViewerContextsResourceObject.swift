@@ -12,19 +12,22 @@ import AnyCodable
 
 public struct ViewerContextsResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case viewercontexts = "viewerContexts"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: ViewerContextsAttributes?
     /** Resource id */
     public var id: String
     public var relationships: ViewerContextsRelationships?
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: ViewerContextsAttributes? = nil,
         id: String,
         relationships: ViewerContextsRelationships? = nil,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

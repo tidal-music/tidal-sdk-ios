@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct SquareSitesRelationships: Codable, Hashable {
 
-    public var items: SquareSitesItemsMultiRelationshipDataDocument?
+    public var items: SquareSitesItemsMultiRelationshipObject?
 
     public init(
-        items: SquareSitesItemsMultiRelationshipDataDocument? = nil
+        items: SquareSitesItemsMultiRelationshipObject? = nil
     ) {
         self.items = items
     }

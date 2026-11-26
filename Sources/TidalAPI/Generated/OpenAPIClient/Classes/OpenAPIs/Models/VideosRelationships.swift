@@ -12,26 +12,26 @@ import AnyCodable
 
 public struct VideosRelationships: Codable, Hashable {
 
-    public var albums: VideosAlbumsMultiRelationshipDataDocument?
-    public var artists: VideosArtistsMultiRelationshipDataDocument?
-    public var credits: VideosCreditsMultiRelationshipDataDocument?
-    public var providers: VideosProvidersMultiRelationshipDataDocument?
-    public var replacement: VideosReplacementSingleRelationshipDataDocument?
-    public var similarVideos: VideosSimilarVideosMultiRelationshipDataDocument?
-    public var suggestedVideos: VideosSuggestedVideosMultiRelationshipDataDocument?
-    public var thumbnailArt: VideosThumbnailArtMultiRelationshipDataDocument?
-    public var usageRules: VideosUsageRulesSingleRelationshipDataDocument?
+    public var albums: VideosAlbumsMultiRelationshipObject?
+    public var artists: VideosArtistsMultiRelationshipObject?
+    public var credits: VideosCreditsMultiRelationshipObject?
+    public var providers: VideosProvidersMultiRelationshipObject?
+    public var replacement: VideosReplacementSingleRelationshipObject?
+    public var similarVideos: VideosSimilarVideosMultiRelationshipObject?
+    public var suggestedVideos: VideosSuggestedVideosMultiRelationshipObject?
+    public var thumbnailArt: VideosThumbnailArtMultiRelationshipObject?
+    public var usageRules: VideosUsageRulesSingleRelationshipObject?
 
     public init(
-        albums: VideosAlbumsMultiRelationshipDataDocument? = nil,
-        artists: VideosArtistsMultiRelationshipDataDocument? = nil,
-        credits: VideosCreditsMultiRelationshipDataDocument? = nil,
-        providers: VideosProvidersMultiRelationshipDataDocument? = nil,
-        replacement: VideosReplacementSingleRelationshipDataDocument? = nil,
-        similarVideos: VideosSimilarVideosMultiRelationshipDataDocument? = nil,
-        suggestedVideos: VideosSuggestedVideosMultiRelationshipDataDocument? = nil,
-        thumbnailArt: VideosThumbnailArtMultiRelationshipDataDocument? = nil,
-        usageRules: VideosUsageRulesSingleRelationshipDataDocument? = nil
+        albums: VideosAlbumsMultiRelationshipObject? = nil,
+        artists: VideosArtistsMultiRelationshipObject? = nil,
+        credits: VideosCreditsMultiRelationshipObject? = nil,
+        providers: VideosProvidersMultiRelationshipObject? = nil,
+        replacement: VideosReplacementSingleRelationshipObject? = nil,
+        similarVideos: VideosSimilarVideosMultiRelationshipObject? = nil,
+        suggestedVideos: VideosSuggestedVideosMultiRelationshipObject? = nil,
+        thumbnailArt: VideosThumbnailArtMultiRelationshipObject? = nil,
+        usageRules: VideosUsageRulesSingleRelationshipObject? = nil
     ) {
         self.albums = albums
         self.artists = artists

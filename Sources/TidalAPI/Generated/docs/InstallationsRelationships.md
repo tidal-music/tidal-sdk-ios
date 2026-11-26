@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**offlineInventory** | [**InstallationsOfflineInventoryMultiRelationshipDataDocument**](InstallationsOfflineInventoryMultiRelationshipDataDocument.md) |  | [optional] 
-**owners** | [**InstallationsOwnersMultiRelationshipDataDocument**](InstallationsOwnersMultiRelationshipDataDocument.md) |  | [optional] 
+**offlineInventory** | [**InstallationsOfflineInventoryMultiRelationshipObject**](InstallationsOfflineInventoryMultiRelationshipObject.md) |  | [optional] 
+**owners** | [**InstallationsOwnersMultiRelationshipObject**](InstallationsOwnersMultiRelationshipObject.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

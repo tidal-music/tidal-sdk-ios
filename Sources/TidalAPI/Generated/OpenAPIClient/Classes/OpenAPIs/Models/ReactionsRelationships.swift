@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct ReactionsRelationships: Codable, Hashable {
 
-    public var author: ReactionsAuthorSingleRelationshipDataDocument?
-    public var owners: ReactionsOwnersMultiRelationshipDataDocument?
-    public var subject: ReactionsSubjectSingleRelationshipDataDocument?
+    public var author: ReactionsAuthorSingleRelationshipObject?
+    public var owners: ReactionsOwnersMultiRelationshipObject?
+    public var subject: ReactionsSubjectSingleRelationshipObject?
 
     public init(
-        author: ReactionsAuthorSingleRelationshipDataDocument? = nil,
-        owners: ReactionsOwnersMultiRelationshipDataDocument? = nil,
-        subject: ReactionsSubjectSingleRelationshipDataDocument? = nil
+        author: ReactionsAuthorSingleRelationshipObject? = nil,
+        owners: ReactionsOwnersMultiRelationshipObject? = nil,
+        subject: ReactionsSubjectSingleRelationshipObject? = nil
     ) {
         self.author = author
         self.owners = owners

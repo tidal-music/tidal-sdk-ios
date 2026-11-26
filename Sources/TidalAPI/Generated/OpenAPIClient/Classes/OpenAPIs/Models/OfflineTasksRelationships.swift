@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct OfflineTasksRelationships: Codable, Hashable {
 
-    public var collection: OfflineTasksCollectionSingleRelationshipDataDocument?
-    public var item: OfflineTasksItemSingleRelationshipDataDocument?
-    public var owners: OfflineTasksOwnersMultiRelationshipDataDocument?
+    public var collection: OfflineTasksCollectionSingleRelationshipObject?
+    public var item: OfflineTasksItemSingleRelationshipObject?
+    public var owners: OfflineTasksOwnersMultiRelationshipObject?
 
     public init(
-        collection: OfflineTasksCollectionSingleRelationshipDataDocument? = nil,
-        item: OfflineTasksItemSingleRelationshipDataDocument? = nil,
-        owners: OfflineTasksOwnersMultiRelationshipDataDocument? = nil
+        collection: OfflineTasksCollectionSingleRelationshipObject? = nil,
+        item: OfflineTasksItemSingleRelationshipObject? = nil,
+        owners: OfflineTasksOwnersMultiRelationshipObject? = nil
     ) {
         self.collection = collection
         self.item = item

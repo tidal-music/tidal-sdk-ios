@@ -12,24 +12,21 @@ import AnyCodable
 
 public struct FoldersRelationships: Codable, Hashable {
 
-    public var children: FoldersChildrenMultiRelationshipDataDocument?
-    public var owners: FoldersOwnersMultiRelationshipDataDocument?
-    public var parent: FoldersParentSingleRelationshipDataDocument?
-    public var preview: FoldersPreviewMultiRelationshipDataDocument?
-    public var shares: FoldersSharesMultiRelationshipDataDocument?
+    public var children: FoldersChildrenMultiRelationshipObject?
+    public var owners: FoldersOwnersMultiRelationshipObject?
+    public var parent: FoldersParentSingleRelationshipObject?
+    public var preview: FoldersPreviewMultiRelationshipObject?
 
     public init(
-        children: FoldersChildrenMultiRelationshipDataDocument? = nil,
-        owners: FoldersOwnersMultiRelationshipDataDocument? = nil,
-        parent: FoldersParentSingleRelationshipDataDocument? = nil,
-        preview: FoldersPreviewMultiRelationshipDataDocument? = nil,
-        shares: FoldersSharesMultiRelationshipDataDocument? = nil
+        children: FoldersChildrenMultiRelationshipObject? = nil,
+        owners: FoldersOwnersMultiRelationshipObject? = nil,
+        parent: FoldersParentSingleRelationshipObject? = nil,
+        preview: FoldersPreviewMultiRelationshipObject? = nil
     ) {
         self.children = children
         self.owners = owners
         self.parent = parent
         self.preview = preview
-        self.shares = shares
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -37,7 +34,6 @@ public struct FoldersRelationships: Codable, Hashable {
         case owners
         case parent
         case preview
-        case shares
     }
 
     // Encodable protocol methods
@@ -48,6 +44,5 @@ public struct FoldersRelationships: Codable, Hashable {
         try container.encodeIfPresent(owners, forKey: .owners)
         try container.encodeIfPresent(parent, forKey: .parent)
         try container.encodeIfPresent(preview, forKey: .preview)
-        try container.encodeIfPresent(shares, forKey: .shares)
     }
 }

@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct StudioHomeMusicTilesRelationships: Codable, Hashable {
 
-    public var items: StudioHomeMusicTilesItemsMultiRelationshipDataDocument?
+    public var items: StudioHomeMusicTilesItemsMultiRelationshipObject?
 
     public init(
-        items: StudioHomeMusicTilesItemsMultiRelationshipDataDocument? = nil
+        items: StudioHomeMusicTilesItemsMultiRelationshipObject? = nil
     ) {
         self.items = items
     }

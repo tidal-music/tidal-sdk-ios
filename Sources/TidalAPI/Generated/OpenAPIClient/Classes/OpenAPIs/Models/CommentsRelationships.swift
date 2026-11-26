@@ -12,20 +12,20 @@ import AnyCodable
 
 public struct CommentsRelationships: Codable, Hashable {
 
-    public var author: CommentsAuthorSingleRelationshipDataDocument?
-    public var commentSummary: CommentsCommentSummarySingleRelationshipDataDocument?
-    public var owners: CommentsOwnersMultiRelationshipDataDocument?
-    public var reactionSummary: CommentsReactionSummarySingleRelationshipDataDocument?
-    public var rootSubject: CommentsRootSubjectSingleRelationshipDataDocument?
-    public var subject: CommentsSubjectSingleRelationshipDataDocument?
+    public var author: CommentsAuthorSingleRelationshipObject?
+    public var commentSummary: CommentsCommentSummarySingleRelationshipObject?
+    public var owners: CommentsOwnersMultiRelationshipObject?
+    public var reactionSummary: CommentsReactionSummarySingleRelationshipObject?
+    public var rootSubject: CommentsRootSubjectSingleRelationshipObject?
+    public var subject: CommentsSubjectSingleRelationshipObject?
 
     public init(
-        author: CommentsAuthorSingleRelationshipDataDocument? = nil,
-        commentSummary: CommentsCommentSummarySingleRelationshipDataDocument? = nil,
-        owners: CommentsOwnersMultiRelationshipDataDocument? = nil,
-        reactionSummary: CommentsReactionSummarySingleRelationshipDataDocument? = nil,
-        rootSubject: CommentsRootSubjectSingleRelationshipDataDocument? = nil,
-        subject: CommentsSubjectSingleRelationshipDataDocument? = nil
+        author: CommentsAuthorSingleRelationshipObject? = nil,
+        commentSummary: CommentsCommentSummarySingleRelationshipObject? = nil,
+        owners: CommentsOwnersMultiRelationshipObject? = nil,
+        reactionSummary: CommentsReactionSummarySingleRelationshipObject? = nil,
+        rootSubject: CommentsRootSubjectSingleRelationshipObject? = nil,
+        subject: CommentsSubjectSingleRelationshipObject? = nil
     ) {
         self.author = author
         self.commentSummary = commentSummary

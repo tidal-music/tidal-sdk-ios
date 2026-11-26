@@ -16,7 +16,6 @@ public struct SharesCreateOperationPayloadDataRelationshipsSharedResourcesData: 
         case tracks = "tracks"
         case albums = "albums"
         case playlists = "playlists"
-        case folders = "folders"
         case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var id: String

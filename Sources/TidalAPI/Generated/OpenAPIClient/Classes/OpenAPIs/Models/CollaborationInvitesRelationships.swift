@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct CollaborationInvitesRelationships: Codable, Hashable {
 
-    public var owners: CollaborationInvitesOwnersMultiRelationshipDataDocument?
-    public var subject: CollaborationInvitesSubjectSingleRelationshipDataDocument?
+    public var owners: CollaborationInvitesOwnersMultiRelationshipObject?
+    public var subject: CollaborationInvitesSubjectSingleRelationshipObject?
 
     public init(
-        owners: CollaborationInvitesOwnersMultiRelationshipDataDocument? = nil,
-        subject: CollaborationInvitesSubjectSingleRelationshipDataDocument? = nil
+        owners: CollaborationInvitesOwnersMultiRelationshipObject? = nil,
+        subject: CollaborationInvitesSubjectSingleRelationshipObject? = nil
     ) {
         self.owners = owners
         self.subject = subject

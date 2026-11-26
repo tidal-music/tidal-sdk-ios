@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct ReactionSummariesRelationships: Codable, Hashable {
 
-    public var subject: ReactionSummariesSubjectSingleRelationshipDataDocument?
+    public var subject: ReactionSummariesSubjectSingleRelationshipObject?
 
     public init(
-        subject: ReactionSummariesSubjectSingleRelationshipDataDocument? = nil
+        subject: ReactionSummariesSubjectSingleRelationshipObject? = nil
     ) {
         self.subject = subject
     }

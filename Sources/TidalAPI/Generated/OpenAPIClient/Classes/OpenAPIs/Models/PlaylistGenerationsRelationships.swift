@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct PlaylistGenerationsRelationships: Codable, Hashable {
 
-    public var baseGeneration: PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument?
-    public var playlist: PlaylistGenerationsPlaylistSingleRelationshipDataDocument?
-    public var trackPreferences: PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument?
+    public var baseGeneration: PlaylistGenerationsBaseGenerationSingleRelationshipObject?
+    public var playlist: PlaylistGenerationsPlaylistSingleRelationshipObject?
+    public var trackPreferences: PlaylistGenerationsTrackPreferencesMultiRelationshipObject?
 
     public init(
-        baseGeneration: PlaylistGenerationsBaseGenerationSingleRelationshipDataDocument? = nil,
-        playlist: PlaylistGenerationsPlaylistSingleRelationshipDataDocument? = nil,
-        trackPreferences: PlaylistGenerationsTrackPreferencesMultiRelationshipDataDocument? = nil
+        baseGeneration: PlaylistGenerationsBaseGenerationSingleRelationshipObject? = nil,
+        playlist: PlaylistGenerationsPlaylistSingleRelationshipObject? = nil,
+        trackPreferences: PlaylistGenerationsTrackPreferencesMultiRelationshipObject? = nil
     ) {
         self.baseGeneration = baseGeneration
         self.playlist = playlist

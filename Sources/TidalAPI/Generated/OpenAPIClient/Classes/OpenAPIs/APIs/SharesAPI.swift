@@ -24,13 +24,14 @@ internal class SharesAPI {
      Get multiple shares.
      
      - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) (optional)
-     - parameter filterSelfAppliesTo: (query) Album, track or folder owned by the caller. Selects undeleted, unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an ancestor folder. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. Also accepts &#x60;folders:me&#x60;. (optional)
+     - parameter filterSelfAppliesTo: (query) Album or track owned by the caller. Selects undeleted, unexpired links on the resource or its album. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. (optional)
      - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: SharesMultiResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func sharesGet(filterCode: [String]? = nil, filterSelfAppliesTo: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SharesMultiResourceDataDocument {
         do {
@@ -52,13 +53,14 @@ internal class SharesAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter filterCode: (query) A share code (e.g. &#x60;xyz&#x60;) (optional)
-     - parameter filterSelfAppliesTo: (query) Album, track or folder owned by the caller. Selects undeleted, unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an ancestor folder. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. Also accepts &#x60;folders:me&#x60;. (optional)
+     - parameter filterSelfAppliesTo: (query) Album or track owned by the caller. Selects undeleted, unexpired links on the resource or its album. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. (optional)
      - parameter include: (query) Include related resources. Available relationships: owners, sharedResources (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: RequestBuilder<SharesMultiResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func sharesGetWithRequestBuilder(filterCode: [String]? = nil, filterSelfAppliesTo: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesMultiResourceDataDocument> {
         let localVariablePath = "/shares"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
@@ -93,6 +95,7 @@ internal class SharesAPI {
      - parameter revokeGrants: (query) Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
      - returns: MutationResponseDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func sharesIdDelete(id: String, idempotencyKey: String? = nil, revokeGrants: Bool? = nil) async throws -> MutationResponseDocument {
         do {
@@ -106,7 +109,7 @@ internal class SharesAPI {
     /**
      Delete single share.
      - DELETE /shares/{id}
-     - Delete share. Effectively revokes bearer access and acceptance.
+     - Delete share. Effectively revokes bearer access and acceptance. Deprecated: use `resourceGrantInvitations` instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -115,6 +118,7 @@ internal class SharesAPI {
      - parameter revokeGrants: (query) Also revoke the access granted to everyone who saved this share; access from other sources stays. Defaults to false. Not supported for playlist shares or for owners not yet on the access store; there true is rejected with 400. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func sharesIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, revokeGrants: Bool? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/shares/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -156,6 +160,7 @@ internal class SharesAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: SharesSingleResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func sharesIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesIdGet]? = nil, replaceMedia: String? = nil) async throws -> SharesSingleResourceDataDocument {
         do {
@@ -182,6 +187,7 @@ internal class SharesAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: RequestBuilder<SharesSingleResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func sharesIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_sharesIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesSingleResourceDataDocument> {
         var localVariablePath = "/shares/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -216,6 +222,7 @@ internal class SharesAPI {
      - parameter sharesUpdateOperationPayload: (body)  (optional)
      - returns: SharesUpdateSingleResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func sharesIdPatch(id: String, idempotencyKey: String? = nil, sharesUpdateOperationPayload: SharesUpdateOperationPayload? = nil) async throws -> SharesUpdateSingleResourceDataDocument {
         do {
@@ -229,7 +236,7 @@ internal class SharesAPI {
     /**
      Update single share.
      - PATCH /shares/{id}
-     - Set, change or remove the share's password. Setting one also removes BEARER access; removing one leaves the access modes unchanged. Existing savers keep their access.
+     - Set, change or remove the share's password. Setting one also removes BEARER access; removing one leaves the access modes unchanged. Existing savers keep their access. Deprecated: use `resourceGrantInvitations` instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -238,6 +245,7 @@ internal class SharesAPI {
      - parameter sharesUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<SharesUpdateSingleResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func sharesIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, sharesUpdateOperationPayload: SharesUpdateOperationPayload? = nil) -> RequestBuilder<SharesUpdateSingleResourceDataDocument> {
         var localVariablePath = "/shares/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -327,6 +335,7 @@ internal class SharesAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: SharesSharedResourcesMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func sharesIdRelationshipsSharedResourcesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> SharesSharedResourcesMultiRelationshipDataDocument {
         do {
@@ -353,6 +362,7 @@ internal class SharesAPI {
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharedResources (optional)
      - returns: RequestBuilder<SharesSharedResourcesMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func sharesIdRelationshipsSharedResourcesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<SharesSharedResourcesMultiRelationshipDataDocument> {
         var localVariablePath = "/shares/{id}/relationships/sharedResources"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
@@ -386,6 +396,7 @@ internal class SharesAPI {
      - parameter sharesCreateOperationPayload: (body)  (optional)
      - returns: SharesCreateSingleResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func sharesPost(idempotencyKey: String? = nil, sharesCreateOperationPayload: SharesCreateOperationPayload? = nil) async throws -> SharesCreateSingleResourceDataDocument {
         do {
@@ -399,7 +410,7 @@ internal class SharesAPI {
     /**
      Create single share.
      - POST /shares
-     - Creates a new share.
+     - Creates a new share. Deprecated: use `resourceGrantInvitations` instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -407,6 +418,7 @@ internal class SharesAPI {
      - parameter sharesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<SharesCreateSingleResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func sharesPostWithRequestBuilder(idempotencyKey: String? = nil, sharesCreateOperationPayload: SharesCreateOperationPayload? = nil) -> RequestBuilder<SharesCreateSingleResourceDataDocument> {
         let localVariablePath = "/shares"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath

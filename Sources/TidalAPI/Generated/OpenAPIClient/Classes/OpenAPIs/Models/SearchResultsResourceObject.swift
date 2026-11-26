@@ -12,19 +12,22 @@ import AnyCodable
 
 public struct SearchResultsResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case searchresults = "searchResults"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: SearchResultsAttributes?
     /** Resource id */
     public var id: String
     public var relationships: SearchResultsRelationships?
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: SearchResultsAttributes? = nil,
         id: String,
         relationships: SearchResultsRelationships? = nil,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

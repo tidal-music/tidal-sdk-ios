@@ -12,19 +12,22 @@ import AnyCodable
 
 public struct UserCollectionTracksResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case usercollectiontracks = "userCollectionTracks"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: UserCollectionTracksAttributes?
     /** Resource id */
     public var id: String
     public var relationships: UserCollectionTracksRelationships?
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: UserCollectionTracksAttributes? = nil,
         id: String,
         relationships: UserCollectionTracksRelationships? = nil,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

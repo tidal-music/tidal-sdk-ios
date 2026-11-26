@@ -19,6 +19,7 @@ internal class SavedSharesAPI {
      - parameter savedSharesCreateOperationPayload: (body)  (optional)
      - returns: SavedSharesCreateSingleResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func savedSharesPost(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil) async throws -> SavedSharesCreateSingleResourceDataDocument {
         do {
@@ -32,7 +33,7 @@ internal class SavedSharesAPI {
     /**
      Create single savedShare.
      - POST /savedShares
-     - Redeem an active share with VOUCHER access mode for its offered role. A share without VOUCHER mode returns 403. Every save, repeated ones included, needs a password-protected share's password and counts as a use of a limited share; password attempts are rate limited.
+     - Redeem an active share for its offered role. Every save, repeated ones included, needs a password-protected share's password and counts as a use of a limited share; password attempts are rate limited. The share's creator cannot save it. Deprecated: use `POST /resourceGrants` with an `invitation` relationship instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -40,6 +41,7 @@ internal class SavedSharesAPI {
      - parameter savedSharesCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<SavedSharesCreateSingleResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func savedSharesPostWithRequestBuilder(idempotencyKey: String? = nil, savedSharesCreateOperationPayload: SavedSharesCreateOperationPayload? = nil) -> RequestBuilder<SavedSharesCreateSingleResourceDataDocument> {
         let localVariablePath = "/savedShares"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath

@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct DynamicPagesRelationships: Codable, Hashable {
 
-    public var modules: DynamicPagesModulesMultiRelationshipDataDocument?
-    public var subject: DynamicPagesSubjectSingleRelationshipDataDocument?
+    public var modules: DynamicPagesModulesMultiRelationshipObject?
+    public var subject: DynamicPagesSubjectSingleRelationshipObject?
 
     public init(
-        modules: DynamicPagesModulesMultiRelationshipDataDocument? = nil,
-        subject: DynamicPagesSubjectSingleRelationshipDataDocument? = nil
+        modules: DynamicPagesModulesMultiRelationshipObject? = nil,
+        subject: DynamicPagesSubjectSingleRelationshipObject? = nil
     ) {
         self.modules = modules
         self.subject = subject

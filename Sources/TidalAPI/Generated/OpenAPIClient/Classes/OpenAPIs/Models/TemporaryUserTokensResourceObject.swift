@@ -12,19 +12,22 @@ import AnyCodable
 
 public struct TemporaryUserTokensResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case temporaryusertokens = "temporaryUserTokens"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: AnyCodable?
     /** Resource id */
     public var id: String
     public var relationships: TemporaryUserTokensRelationships?
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: AnyCodable? = nil,
         id: String,
         relationships: TemporaryUserTokensRelationships? = nil,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

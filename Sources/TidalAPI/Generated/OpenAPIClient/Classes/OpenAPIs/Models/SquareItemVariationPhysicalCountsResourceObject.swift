@@ -12,17 +12,20 @@ import AnyCodable
 
 public struct SquareItemVariationPhysicalCountsResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case squareitemvariationphysicalcounts = "squareItemVariationPhysicalCounts"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: SquareItemVariationPhysicalCountsAttributes?
     /** Resource id */
     public var id: String
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: SquareItemVariationPhysicalCountsAttributes? = nil,
         id: String,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

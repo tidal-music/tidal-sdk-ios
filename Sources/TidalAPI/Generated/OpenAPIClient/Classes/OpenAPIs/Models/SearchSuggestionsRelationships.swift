@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct SearchSuggestionsRelationships: Codable, Hashable {
 
-    public var directHits: SearchSuggestionsDirectHitsMultiRelationshipDataDocument?
-    public var history: SearchSuggestionsHistoryMultiRelationshipDataDocument?
+    public var directHits: SearchSuggestionsDirectHitsMultiRelationshipObject?
+    public var history: SearchSuggestionsHistoryMultiRelationshipObject?
 
     public init(
-        directHits: SearchSuggestionsDirectHitsMultiRelationshipDataDocument? = nil,
-        history: SearchSuggestionsHistoryMultiRelationshipDataDocument? = nil
+        directHits: SearchSuggestionsDirectHitsMultiRelationshipObject? = nil,
+        history: SearchSuggestionsHistoryMultiRelationshipObject? = nil
     ) {
         self.directHits = directHits
         self.history = history

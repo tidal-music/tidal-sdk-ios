@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct StudioHomeInsightTilesRelationships: Codable, Hashable {
 
-    public var items: StudioHomeInsightTilesItemsMultiRelationshipDataDocument?
+    public var items: StudioHomeInsightTilesItemsMultiRelationshipObject?
 
     public init(
-        items: StudioHomeInsightTilesItemsMultiRelationshipDataDocument? = nil
+        items: StudioHomeInsightTilesItemsMultiRelationshipObject? = nil
     ) {
         self.items = items
     }

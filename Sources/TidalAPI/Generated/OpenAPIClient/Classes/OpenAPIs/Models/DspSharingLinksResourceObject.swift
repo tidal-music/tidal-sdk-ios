@@ -12,19 +12,22 @@ import AnyCodable
 
 public struct DspSharingLinksResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case dspsharinglinks = "dspSharingLinks"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: DspSharingLinksAttributes?
     /** Resource id */
     public var id: String
     public var relationships: DspSharingLinksRelationships?
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: DspSharingLinksAttributes? = nil,
         id: String,
         relationships: DspSharingLinksRelationships? = nil,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

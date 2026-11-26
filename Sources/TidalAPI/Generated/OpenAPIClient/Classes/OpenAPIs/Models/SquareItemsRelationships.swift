@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct SquareItemsRelationships: Codable, Hashable {
 
-    public var artworks: SquareItemsArtworksMultiRelationshipDataDocument?
-    public var owners: SquareItemsOwnersMultiRelationshipDataDocument?
-    public var variations: SquareItemsVariationsMultiRelationshipDataDocument?
+    public var artworks: SquareItemsArtworksMultiRelationshipObject?
+    public var owners: SquareItemsOwnersMultiRelationshipObject?
+    public var variations: SquareItemsVariationsMultiRelationshipObject?
 
     public init(
-        artworks: SquareItemsArtworksMultiRelationshipDataDocument? = nil,
-        owners: SquareItemsOwnersMultiRelationshipDataDocument? = nil,
-        variations: SquareItemsVariationsMultiRelationshipDataDocument? = nil
+        artworks: SquareItemsArtworksMultiRelationshipObject? = nil,
+        owners: SquareItemsOwnersMultiRelationshipObject? = nil,
+        variations: SquareItemsVariationsMultiRelationshipObject? = nil
     ) {
         self.artworks = artworks
         self.owners = owners

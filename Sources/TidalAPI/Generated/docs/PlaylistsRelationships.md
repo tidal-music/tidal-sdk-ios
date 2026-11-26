@@ -3,14 +3,14 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**collaboratorProfiles** | [**PlaylistsCollaboratorProfilesMultiRelationshipDataDocument**](PlaylistsCollaboratorProfilesMultiRelationshipDataDocument.md) |  | [optional] 
-**collaborators** | [**PlaylistsCollaboratorsMultiRelationshipDataDocument**](PlaylistsCollaboratorsMultiRelationshipDataDocument.md) |  | [optional] 
-**coverArt** | [**PlaylistsCoverArtMultiRelationshipDataDocument**](PlaylistsCoverArtMultiRelationshipDataDocument.md) |  | [optional] 
-**curators** | [**PlaylistsCuratorsMultiRelationshipDataDocument**](PlaylistsCuratorsMultiRelationshipDataDocument.md) |  | [optional] 
-**items** | [**PlaylistsItemsMultiRelationshipDataDocument**](PlaylistsItemsMultiRelationshipDataDocument.md) |  | [optional] 
-**ownerProfiles** | [**PlaylistsOwnerProfilesMultiRelationshipDataDocument**](PlaylistsOwnerProfilesMultiRelationshipDataDocument.md) |  | [optional] 
-**owners** | [**PlaylistsOwnersMultiRelationshipDataDocument**](PlaylistsOwnersMultiRelationshipDataDocument.md) |  | [optional] 
-**suggestedCoverArts** | [**PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument**](PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument.md) |  | [optional] 
+**collaboratorProfiles** | [**PlaylistsCollaboratorProfilesMultiRelationshipObject**](PlaylistsCollaboratorProfilesMultiRelationshipObject.md) |  | [optional] 
+**collaborators** | [**PlaylistsCollaboratorsMultiRelationshipObject**](PlaylistsCollaboratorsMultiRelationshipObject.md) |  | [optional] 
+**coverArt** | [**PlaylistsCoverArtMultiRelationshipObject**](PlaylistsCoverArtMultiRelationshipObject.md) |  | [optional] 
+**curators** | [**PlaylistsCuratorsMultiRelationshipObject**](PlaylistsCuratorsMultiRelationshipObject.md) |  | [optional] 
+**items** | [**PlaylistsItemsMultiRelationshipObject**](PlaylistsItemsMultiRelationshipObject.md) |  | [optional] 
+**ownerProfiles** | [**PlaylistsOwnerProfilesMultiRelationshipObject**](PlaylistsOwnerProfilesMultiRelationshipObject.md) |  | [optional] 
+**owners** | [**PlaylistsOwnersMultiRelationshipObject**](PlaylistsOwnersMultiRelationshipObject.md) |  | [optional] 
+**suggestedCoverArts** | [**PlaylistsSuggestedCoverArtsMultiRelationshipObject**](PlaylistsSuggestedCoverArtsMultiRelationshipObject.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

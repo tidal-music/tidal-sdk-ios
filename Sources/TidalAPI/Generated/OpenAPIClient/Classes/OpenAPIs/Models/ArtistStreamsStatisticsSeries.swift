@@ -10,7 +10,7 @@ import Foundation
 import AnyCodable
 #endif
 
-/** Plays per bucket */
+/** Plays and follower count per bucket */
 public struct ArtistStreamsStatisticsSeries: Codable, Hashable {
 
     public var bucketPeriod: ArtistStatisticsBucketPeriod?

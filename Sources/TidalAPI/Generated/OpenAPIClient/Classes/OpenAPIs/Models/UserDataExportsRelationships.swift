@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct UserDataExportsRelationships: Codable, Hashable {
 
-    public var owners: UserDataExportsOwnersMultiRelationshipDataDocument?
+    public var owners: UserDataExportsOwnersMultiRelationshipObject?
 
     public init(
-        owners: UserDataExportsOwnersMultiRelationshipDataDocument? = nil
+        owners: UserDataExportsOwnersMultiRelationshipObject? = nil
     ) {
         self.owners = owners
     }

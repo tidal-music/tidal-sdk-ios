@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**modules** | [**DynamicPagesModulesMultiRelationshipDataDocument**](DynamicPagesModulesMultiRelationshipDataDocument.md) |  | [optional] 
-**subject** | [**DynamicPagesSubjectSingleRelationshipDataDocument**](DynamicPagesSubjectSingleRelationshipDataDocument.md) |  | [optional] 
+**modules** | [**DynamicPagesModulesMultiRelationshipObject**](DynamicPagesModulesMultiRelationshipObject.md) |  | [optional] 
+**subject** | [**DynamicPagesSubjectSingleRelationshipObject**](DynamicPagesSubjectSingleRelationshipObject.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

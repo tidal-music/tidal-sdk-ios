@@ -12,19 +12,22 @@ import AnyCodable
 
 public struct StripeConnectionsResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case stripeconnections = "stripeConnections"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: StripeConnectionsAttributes?
     /** Resource id */
     public var id: String
     public var relationships: StripeConnectionsRelationships?
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: StripeConnectionsAttributes? = nil,
         id: String,
         relationships: StripeConnectionsRelationships? = nil,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

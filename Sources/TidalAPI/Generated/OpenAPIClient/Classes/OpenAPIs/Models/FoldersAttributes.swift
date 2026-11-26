@@ -13,21 +13,27 @@ import AnyCodable
 public struct FoldersAttributes: Codable, Hashable {
 
     public static let nameRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
+    public static let numberOfChildrenRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Whether this is the root folder. */
     public var isRoot: Bool
     public var name: String
+    /** Number of items in the folder's children relationship. */
+    public var numberOfChildren: Int?
 
     public init(
         isRoot: Bool,
-        name: String
+        name: String,
+        numberOfChildren: Int? = nil
     ) {
         self.isRoot = isRoot
         self.name = name
+        self.numberOfChildren = numberOfChildren
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case isRoot
         case name
+        case numberOfChildren
     }
 
     // Encodable protocol methods
@@ -36,5 +42,6 @@ public struct FoldersAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(isRoot, forKey: .isRoot)
         try container.encode(name, forKey: .name)
+        try container.encodeIfPresent(numberOfChildren, forKey: .numberOfChildren)
     }
 }

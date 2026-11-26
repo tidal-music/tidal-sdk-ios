@@ -12,19 +12,22 @@ import AnyCodable
 
 public struct CommentSummariesResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case commentsummaries = "commentSummaries"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: CommentSummariesAttributes?
     /** Resource id */
     public var id: String
     public var relationships: CommentSummariesRelationships?
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: CommentSummariesAttributes? = nil,
         id: String,
         relationships: CommentSummariesRelationships? = nil,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

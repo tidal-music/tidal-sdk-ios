@@ -12,19 +12,22 @@ import AnyCodable
 
 public struct DynamicPagesResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case dynamicpages = "dynamicPages"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: DynamicPagesAttributes?
     /** Resource id */
     public var id: String
     public var relationships: DynamicPagesRelationships?
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: DynamicPagesAttributes? = nil,
         id: String,
         relationships: DynamicPagesRelationships? = nil,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

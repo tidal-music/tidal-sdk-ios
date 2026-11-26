@@ -28,7 +28,7 @@ Retrieves multiple shares by available filters, or without if applicable.
 import OpenAPIClient
 
 let filterCode = ["inner_example"] // [String] | A share code (e.g. `xyz`) (optional)
-let filterSelfAppliesTo = "filterSelfAppliesTo_example" // String | Album, track or folder owned by the caller. Selects undeleted, unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an ancestor folder. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. Also accepts `folders:me`. (optional)
+let filterSelfAppliesTo = "filterSelfAppliesTo_example" // String | Album or track owned by the caller. Selects undeleted, unexpired links on the resource or its album. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, sharedResources (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -48,7 +48,7 @@ do {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterCode** | [**[String]**](String.md) | A share code (e.g. &#x60;xyz&#x60;) | [optional] 
- **filterSelfAppliesTo** | **String** | Album, track or folder owned by the caller. Selects undeleted, unexpired links on the resource or an ancestor album, and VOUCHER-enabled links on an ancestor folder. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. Also accepts &#x60;folders:me&#x60;. | [optional] 
+ **filterSelfAppliesTo** | **String** | Album or track owned by the caller. Selects undeleted, unexpired links on the resource or its album. Exhausted links are included. Each link keeps its own sharedResources. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then share ID; at most 20 links per page. | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, sharedResources | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
@@ -76,7 +76,7 @@ Name | Type | Description  | Notes
 
 Delete single share.
 
-Delete share. Effectively revokes bearer access and acceptance.
+Delete share. Effectively revokes bearer access and acceptance. Deprecated: use `resourceGrantInvitations` instead.
 
 ### Example
 ```swift
@@ -178,7 +178,7 @@ Name | Type | Description  | Notes
 
 Update single share.
 
-Set, change or remove the share's password. Setting one also removes BEARER access; removing one leaves the access modes unchanged. Existing savers keep their access.
+Set, change or remove the share's password. Setting one also removes BEARER access; removing one leaves the access modes unchanged. Existing savers keep their access. Deprecated: use `resourceGrantInvitations` instead.
 
 ### Example
 ```swift
@@ -330,7 +330,7 @@ Name | Type | Description  | Notes
 
 Create single share.
 
-Creates a new share.
+Creates a new share. Deprecated: use `resourceGrantInvitations` instead.
 
 ### Example
 ```swift

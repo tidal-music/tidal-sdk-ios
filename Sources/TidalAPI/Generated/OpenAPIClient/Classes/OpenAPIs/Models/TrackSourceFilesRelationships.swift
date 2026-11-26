@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct TrackSourceFilesRelationships: Codable, Hashable {
 
-    public var commentSummary: TrackSourceFilesCommentSummarySingleRelationshipDataDocument?
-    public var owners: TrackSourceFilesOwnersMultiRelationshipDataDocument?
-    public var reactionSummary: TrackSourceFilesReactionSummarySingleRelationshipDataDocument?
+    public var commentSummary: TrackSourceFilesCommentSummarySingleRelationshipObject?
+    public var owners: TrackSourceFilesOwnersMultiRelationshipObject?
+    public var reactionSummary: TrackSourceFilesReactionSummarySingleRelationshipObject?
 
     public init(
-        commentSummary: TrackSourceFilesCommentSummarySingleRelationshipDataDocument? = nil,
-        owners: TrackSourceFilesOwnersMultiRelationshipDataDocument? = nil,
-        reactionSummary: TrackSourceFilesReactionSummarySingleRelationshipDataDocument? = nil
+        commentSummary: TrackSourceFilesCommentSummarySingleRelationshipObject? = nil,
+        owners: TrackSourceFilesOwnersMultiRelationshipObject? = nil,
+        reactionSummary: TrackSourceFilesReactionSummarySingleRelationshipObject? = nil
     ) {
         self.commentSummary = commentSummary
         self.owners = owners

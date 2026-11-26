@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct UserFeedItemsRelationships: Codable, Hashable {
 
-    public var actors: UserFeedItemsActorsMultiRelationshipDataDocument?
-    public var subject: UserFeedItemsSubjectSingleRelationshipDataDocument?
+    public var actors: UserFeedItemsActorsMultiRelationshipObject?
+    public var subject: UserFeedItemsSubjectSingleRelationshipObject?
 
     public init(
-        actors: UserFeedItemsActorsMultiRelationshipDataDocument? = nil,
-        subject: UserFeedItemsSubjectSingleRelationshipDataDocument? = nil
+        actors: UserFeedItemsActorsMultiRelationshipObject? = nil,
+        subject: UserFeedItemsSubjectSingleRelationshipObject? = nil
     ) {
         self.actors = actors
         self.subject = subject

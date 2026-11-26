@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct ArtistClaimsRelationships: Codable, Hashable {
 
-    public var acceptedArtists: ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument?
-    public var owners: ArtistClaimsOwnersMultiRelationshipDataDocument?
-    public var recommendedArtists: ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument?
+    public var acceptedArtists: ArtistClaimsAcceptedArtistsMultiRelationshipObject?
+    public var owners: ArtistClaimsOwnersMultiRelationshipObject?
+    public var recommendedArtists: ArtistClaimsRecommendedArtistsMultiRelationshipObject?
 
     public init(
-        acceptedArtists: ArtistClaimsAcceptedArtistsMultiRelationshipDataDocument? = nil,
-        owners: ArtistClaimsOwnersMultiRelationshipDataDocument? = nil,
-        recommendedArtists: ArtistClaimsRecommendedArtistsMultiRelationshipDataDocument? = nil
+        acceptedArtists: ArtistClaimsAcceptedArtistsMultiRelationshipObject? = nil,
+        owners: ArtistClaimsOwnersMultiRelationshipObject? = nil,
+        recommendedArtists: ArtistClaimsRecommendedArtistsMultiRelationshipObject? = nil
     ) {
         self.acceptedArtists = acceptedArtists
         self.owners = owners

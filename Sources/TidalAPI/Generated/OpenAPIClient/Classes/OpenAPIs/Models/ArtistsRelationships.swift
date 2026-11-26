@@ -12,38 +12,38 @@ import AnyCodable
 
 public struct ArtistsRelationships: Codable, Hashable {
 
-    public var albums: ArtistsAlbumsMultiRelationshipDataDocument?
-    public var bannerArt: ArtistsBannerArtMultiRelationshipDataDocument?
-    public var biography: ArtistsBiographySingleRelationshipDataDocument?
-    public var claimStatus: ArtistsClaimStatusSingleRelationshipDataDocument?
-    public var followers: ArtistsFollowersMultiRelationshipDataDocument?
-    public var following: ArtistsFollowingMultiRelationshipDataDocument?
-    public var logoArt: ArtistsLogoArtMultiRelationshipDataDocument?
-    public var owners: ArtistsOwnersMultiRelationshipDataDocument?
-    public var profileArt: ArtistsProfileArtMultiRelationshipDataDocument?
-    public var radio: ArtistsRadioMultiRelationshipDataDocument?
-    public var roles: ArtistsRolesMultiRelationshipDataDocument?
-    public var similarArtists: ArtistsSimilarArtistsMultiRelationshipDataDocument?
-    public var trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument?
-    public var tracks: ArtistsTracksMultiRelationshipDataDocument?
-    public var videos: ArtistsVideosMultiRelationshipDataDocument?
+    public var albums: ArtistsAlbumsMultiRelationshipObject?
+    public var bannerArt: ArtistsBannerArtMultiRelationshipObject?
+    public var biography: ArtistsBiographySingleRelationshipObject?
+    public var claimStatus: ArtistsClaimStatusSingleRelationshipObject?
+    public var followers: ArtistsFollowersMultiRelationshipObject?
+    public var following: ArtistsFollowingMultiRelationshipObject?
+    public var logoArt: ArtistsLogoArtMultiRelationshipObject?
+    public var owners: ArtistsOwnersMultiRelationshipObject?
+    public var profileArt: ArtistsProfileArtMultiRelationshipObject?
+    public var radio: ArtistsRadioMultiRelationshipObject?
+    public var roles: ArtistsRolesMultiRelationshipObject?
+    public var similarArtists: ArtistsSimilarArtistsMultiRelationshipObject?
+    public var trackProviders: ArtistsTrackProvidersMultiRelationshipObject?
+    public var tracks: ArtistsTracksMultiRelationshipObject?
+    public var videos: ArtistsVideosMultiRelationshipObject?
 
     public init(
-        albums: ArtistsAlbumsMultiRelationshipDataDocument? = nil,
-        bannerArt: ArtistsBannerArtMultiRelationshipDataDocument? = nil,
-        biography: ArtistsBiographySingleRelationshipDataDocument? = nil,
-        claimStatus: ArtistsClaimStatusSingleRelationshipDataDocument? = nil,
-        followers: ArtistsFollowersMultiRelationshipDataDocument? = nil,
-        following: ArtistsFollowingMultiRelationshipDataDocument? = nil,
-        logoArt: ArtistsLogoArtMultiRelationshipDataDocument? = nil,
-        owners: ArtistsOwnersMultiRelationshipDataDocument? = nil,
-        profileArt: ArtistsProfileArtMultiRelationshipDataDocument? = nil,
-        radio: ArtistsRadioMultiRelationshipDataDocument? = nil,
-        roles: ArtistsRolesMultiRelationshipDataDocument? = nil,
-        similarArtists: ArtistsSimilarArtistsMultiRelationshipDataDocument? = nil,
-        trackProviders: ArtistsTrackProvidersMultiRelationshipDataDocument? = nil,
-        tracks: ArtistsTracksMultiRelationshipDataDocument? = nil,
-        videos: ArtistsVideosMultiRelationshipDataDocument? = nil
+        albums: ArtistsAlbumsMultiRelationshipObject? = nil,
+        bannerArt: ArtistsBannerArtMultiRelationshipObject? = nil,
+        biography: ArtistsBiographySingleRelationshipObject? = nil,
+        claimStatus: ArtistsClaimStatusSingleRelationshipObject? = nil,
+        followers: ArtistsFollowersMultiRelationshipObject? = nil,
+        following: ArtistsFollowingMultiRelationshipObject? = nil,
+        logoArt: ArtistsLogoArtMultiRelationshipObject? = nil,
+        owners: ArtistsOwnersMultiRelationshipObject? = nil,
+        profileArt: ArtistsProfileArtMultiRelationshipObject? = nil,
+        radio: ArtistsRadioMultiRelationshipObject? = nil,
+        roles: ArtistsRolesMultiRelationshipObject? = nil,
+        similarArtists: ArtistsSimilarArtistsMultiRelationshipObject? = nil,
+        trackProviders: ArtistsTrackProvidersMultiRelationshipObject? = nil,
+        tracks: ArtistsTracksMultiRelationshipObject? = nil,
+        videos: ArtistsVideosMultiRelationshipObject? = nil
     ) {
         self.albums = albums
         self.bannerArt = bannerArt
