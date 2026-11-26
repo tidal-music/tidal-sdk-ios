@@ -50,7 +50,8 @@ public extension MediaProduct {
 			return true
 		}
 		switch (lhs, rhs) {
-		case (is StoredMediaProduct, is StoredMediaProduct):
+		case (is StoredMediaProduct, is StoredMediaProduct),
+		     (is TrackSourceFileMediaProduct, is TrackSourceFileMediaProduct):
 			return true
 		default:
 			return false
@@ -63,6 +64,7 @@ public extension MediaProduct {
 extension MediaProduct: Equatable {
 	public static func == (lhs: MediaProduct, rhs: MediaProduct) -> Bool {
 		areSameSubtype(lhs: lhs, rhs: rhs) &&
+			lhs.sourceFileIdentifier == rhs.sourceFileIdentifier &&
 			lhs.productId == rhs.productId &&
 			lhs.productType == rhs.productType &&
 			lhs.referenceId == rhs.referenceId &&

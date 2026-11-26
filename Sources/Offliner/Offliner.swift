@@ -395,6 +395,8 @@ extension Offliner: OfflineItemProvider {
 		case .TRACK: mediaType = .tracks
 		case .VIDEO: mediaType = .videos
 		case .UC: return nil
+		// Online only; returning before the lookup also avoids triggering a download of the owning track below.
+		case .TRACK_SOURCE_FILE: return nil
 		}
 
 		do {

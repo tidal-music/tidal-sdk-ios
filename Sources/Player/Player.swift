@@ -288,10 +288,7 @@ public extension Player {
 		let time = PlayerWorld.timeProvider.timestamp()
 		queue.dispatch {
 			self.playerEngine.play(timestamp: time)
-
-			SafeTask {
-				await self.streamingPrivilegesHandler.notify()
-			}
+			self.claimStreamingPrivileges()
 		}
 	}
 
@@ -306,10 +303,7 @@ public extension Player {
 			self.streamingPrivilegesHandler.delegate = self.playerEngine
 
 			self.playerEngine.play(timestamp: time)
-
-			SafeTask {
-				await self.streamingPrivilegesHandler.notify()
-			}
+			self.claimStreamingPrivileges()
 		}
 	}
 
@@ -406,6 +400,15 @@ public extension Player {
 }
 
 private extension Player {
+	func claimStreamingPrivileges() {
+		guard playerEngine.claimsStreamingPrivilegesOnPlay else {
+			return
+		}
+		SafeTask {
+			await self.streamingPrivilegesHandler.notify()
+		}
+	}
+
 	func instantiatedPlayerEngine(_ notificationsHandler: NotificationsHandler?) -> PlayerEngine {
 		Player.newPlayerEngine(
 			playerURLSession,

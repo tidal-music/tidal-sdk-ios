@@ -78,7 +78,8 @@ final class PlayerItem {
 			sessionType: sessionType,
 			sessionProductType: mediaProduct.productType.rawValue,
 			sessionProductId: mediaProduct.productId,
-			sessionTags: sessionTags.isEmpty ? nil : sessionTags
+			sessionTags: sessionTags.isEmpty ? nil : sessionTags,
+			sessionSourceFileId: mediaProduct.sourceFileIdentifier
 		), extras: mediaProduct.extras)
 	}
 
@@ -395,7 +396,8 @@ private extension PlayerItem {
 			endTimestamp: endTimestamp,
 			tags: tags,
 			errorMessage: endInfo.message,
-			errorCode: endInfo.code
+			errorCode: endInfo.code,
+			sourceFileId: playedSourceFileId
 		))
 	}
 
@@ -428,8 +430,14 @@ private extension PlayerItem {
 			sourceId: mediaProduct.playLogSource?.sourceId,
 			actions: metrics.actions,
 			endTimestamp: endTimestamp,
-			endAssetPosition: endAssetPosition
+			endAssetPosition: endAssetPosition,
+			sourceFileId: playedSourceFileId
 		), extras: mediaProduct.extras)
+	}
+
+	/// The source file the manifest was served from, else the requested one; nil when neither is known.
+	var playedSourceFileId: String? {
+		metadata?.sourceFileId ?? mediaProduct.sourceFileIdentifier
 	}
 
 	func emitOfflinePlay() {

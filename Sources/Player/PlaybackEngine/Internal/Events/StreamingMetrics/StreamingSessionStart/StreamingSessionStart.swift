@@ -33,6 +33,8 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 	let sessionProductType: String
 	let sessionProductId: String
 	let sessionTags: [SessionTag]?
+	/// Set only for ``ProductType/TRACK_SOURCE_FILE``; omitted from the payload when nil.
+	let sessionSourceFileId: String?
 
 	private enum CodingKeys: String, CodingKey {
 		case streamingSessionId
@@ -51,6 +53,7 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 		case sessionProductType
 		case sessionProductId
 		case sessionTags
+		case sessionSourceFileId
 	}
 
 	init(
@@ -62,7 +65,8 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 		sessionType: SessionType,
 		sessionProductType: String,
 		sessionProductId: String,
-		sessionTags: [SessionTag]? = nil
+		sessionTags: [SessionTag]? = nil,
+		sessionSourceFileId: String? = nil
 	) {
 		self.streamingSessionId = streamingSessionId
 		self.startReason = startReason
@@ -79,6 +83,7 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 		self.sessionProductType = sessionProductType
 		self.sessionProductId = sessionProductId
 		self.sessionTags = sessionTags
+		self.sessionSourceFileId = sessionSourceFileId
 	}
 
 	func encode(to encoder: Encoder) throws {
@@ -99,6 +104,7 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 		try container.encode(sessionProductId, forKey: .sessionProductId)
 		try container.encode(streamingSessionId, forKey: .streamingSessionId)
 		try container.encode(sessionTags, forKey: .sessionTags)
+		try container.encodeIfPresent(sessionSourceFileId, forKey: .sessionSourceFileId)
 	}
 
 	init(from decoder: Decoder) throws {
@@ -118,5 +124,6 @@ struct StreamingSessionStart: StreamingMetricsEvent {
 		sessionProductType = try container.decode(String.self, forKey: .sessionProductType)
 		sessionProductId = try container.decode(String.self, forKey: .sessionProductId)
 		sessionTags = try container.decodeIfPresent([SessionTag].self, forKey: .sessionTags)
+		sessionSourceFileId = try container.decodeIfPresent(String.self, forKey: .sessionSourceFileId)
 	}
 }

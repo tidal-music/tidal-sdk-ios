@@ -22,7 +22,13 @@ public final class OfflineEngine {
 		self.downloader.setObserver(observer: self)
 	}
 
+	// Source files are online only and share productId with their track, so these refuse them to leave the track alone.
+
 	public func offline(mediaProduct: MediaProduct) -> Bool {
+		guard mediaProduct.productType != .TRACK_SOURCE_FILE else {
+			return false
+		}
+
 		guard let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId) else {
 			notificationsHandler?.offliningStarted(for: mediaProduct)
 			downloader.download(mediaProduct: mediaProduct, sessionType: .DOWNLOAD)
@@ -40,11 +46,17 @@ public final class OfflineEngine {
 	}
 
 	public func cancelOffline(mediaProduct: MediaProduct) -> Bool {
-		downloader.cancel(mediaProduct: mediaProduct)
+		guard mediaProduct.productType != .TRACK_SOURCE_FILE else {
+			return false
+		}
+
+		return downloader.cancel(mediaProduct: mediaProduct)
 	}
 
 	public func deleteOffline(mediaProduct: MediaProduct) -> Bool {
-		guard let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId) else {
+		guard mediaProduct.productType != .TRACK_SOURCE_FILE,
+		      let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId)
+		else {
 			return false
 		}
 
@@ -60,7 +72,9 @@ public final class OfflineEngine {
 	}
 
 	public func getOfflineState(mediaProduct: MediaProduct) -> OfflineState {
-		guard let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId) else {
+		guard mediaProduct.productType != .TRACK_SOURCE_FILE,
+		      let offlineEntry = try? offlineStorage.get(key: mediaProduct.productId)
+		else {
 			return .NOT_OFFLINED
 		}
 		return offlineEntry.state.publicState
