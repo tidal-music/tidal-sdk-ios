@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct AcceptedTermsRelationships: Codable, Hashable {
 
-    public var owners: AcceptedTermsOwnersMultiRelationshipDataDocument?
-    public var terms: AcceptedTermsTermsSingleRelationshipDataDocument?
+    public var owners: AcceptedTermsOwnersMultiRelationshipObject?
+    public var terms: AcceptedTermsTermsSingleRelationshipObject?
 
     public init(
-        owners: AcceptedTermsOwnersMultiRelationshipDataDocument? = nil,
-        terms: AcceptedTermsTermsSingleRelationshipDataDocument? = nil
+        owners: AcceptedTermsOwnersMultiRelationshipObject? = nil,
+        terms: AcceptedTermsTermsSingleRelationshipObject? = nil
     ) {
         self.owners = owners
         self.terms = terms

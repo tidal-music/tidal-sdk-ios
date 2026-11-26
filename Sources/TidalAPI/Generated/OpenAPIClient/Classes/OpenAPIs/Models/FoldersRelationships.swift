@@ -12,16 +12,16 @@ import AnyCodable
 
 public struct FoldersRelationships: Codable, Hashable {
 
-    public var children: FoldersChildrenMultiRelationshipDataDocument?
-    public var owners: FoldersOwnersMultiRelationshipDataDocument?
-    public var parent: FoldersParentSingleRelationshipDataDocument?
-    public var preview: FoldersPreviewMultiRelationshipDataDocument?
+    public var children: FoldersChildrenMultiRelationshipObject?
+    public var owners: FoldersOwnersMultiRelationshipObject?
+    public var parent: FoldersParentSingleRelationshipObject?
+    public var preview: FoldersPreviewMultiRelationshipObject?
 
     public init(
-        children: FoldersChildrenMultiRelationshipDataDocument? = nil,
-        owners: FoldersOwnersMultiRelationshipDataDocument? = nil,
-        parent: FoldersParentSingleRelationshipDataDocument? = nil,
-        preview: FoldersPreviewMultiRelationshipDataDocument? = nil
+        children: FoldersChildrenMultiRelationshipObject? = nil,
+        owners: FoldersOwnersMultiRelationshipObject? = nil,
+        parent: FoldersParentSingleRelationshipObject? = nil,
+        preview: FoldersPreviewMultiRelationshipObject? = nil
     ) {
         self.children = children
         self.owners = owners

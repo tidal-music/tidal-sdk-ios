@@ -211,58 +211,6 @@ internal class ResourceGrantInvitationsAPI {
     }
 
     /**
-     Update single resourceGrantInvitation.
-     
-     - parameter id: (path) Invitation id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-     - parameter resourceGrantInvitationsUpdateOperationPayload: (body)  (optional)
-     - returns: ResourceGrantInvitationsUpdateSingleResourceDataDocument
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func resourceGrantInvitationsIdPatch(id: String, idempotencyKey: String? = nil, resourceGrantInvitationsUpdateOperationPayload: ResourceGrantInvitationsUpdateOperationPayload? = nil) async throws -> ResourceGrantInvitationsUpdateSingleResourceDataDocument {
-        do {
-            return try await resourceGrantInvitationsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, resourceGrantInvitationsUpdateOperationPayload: resourceGrantInvitationsUpdateOperationPayload).execute().body
-        } catch let httpError as HTTPErrorResponse {
-            throw ErrorResponse.fromHTTPError(httpError)
-        }
-        // URLError and other errors propagate as-is
-    }
-
-    /**
-     Update single resourceGrantInvitation.
-     - PATCH /resourceGrantInvitations/{id}
-     - Set, change or remove the password, or turn the preview on or off. Users who redeemed keep their grants.
-     - OAuth:
-       - type: oauth2
-       - name: Authorization_Code_PKCE
-     - parameter id: (path) Invitation id 
-     - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-     - parameter resourceGrantInvitationsUpdateOperationPayload: (body)  (optional)
-     - returns: RequestBuilder<ResourceGrantInvitationsUpdateSingleResourceDataDocument> 
-     */
-    internal class func resourceGrantInvitationsIdPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, resourceGrantInvitationsUpdateOperationPayload: ResourceGrantInvitationsUpdateOperationPayload? = nil) -> RequestBuilder<ResourceGrantInvitationsUpdateSingleResourceDataDocument> {
-        var localVariablePath = "/resourceGrantInvitations/{id}"
-        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
-        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: resourceGrantInvitationsUpdateOperationPayload)
-
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/vnd.api+json",
-            "Idempotency-Key": idempotencyKey?.encodeToJSON(),
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<ResourceGrantInvitationsUpdateSingleResourceDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
-
-        return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
-    }
-
-    /**
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Invitation id 

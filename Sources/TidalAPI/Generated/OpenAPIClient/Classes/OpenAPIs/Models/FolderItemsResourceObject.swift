@@ -12,19 +12,22 @@ import AnyCodable
 
 public struct FolderItemsResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case folderitems = "folderItems"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: FolderItemsAttributes?
     /** Resource id */
     public var id: String
     public var relationships: FolderItemsRelationships?
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: FolderItemsAttributes? = nil,
         id: String,
         relationships: FolderItemsRelationships? = nil,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

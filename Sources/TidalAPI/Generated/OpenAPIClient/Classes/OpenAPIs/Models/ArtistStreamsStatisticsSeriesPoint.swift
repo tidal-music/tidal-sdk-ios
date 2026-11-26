@@ -12,21 +12,27 @@ import AnyCodable
 
 public struct ArtistStreamsStatisticsSeriesPoint: Codable, Hashable {
 
+    public static let followersRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public static let playsRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** First day of the bucket */
     public var date: Date
+    /** Follower count at the end of the bucket, as known when the statistics were computed. Earlier points can change between updates */
+    public var followers: Int64?
     public var plays: Int64
 
     public init(
         date: Date,
+        followers: Int64? = nil,
         plays: Int64
     ) {
         self.date = date
+        self.followers = followers
         self.plays = plays
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case date
+        case followers
         case plays
     }
 
@@ -35,6 +41,7 @@ public struct ArtistStreamsStatisticsSeriesPoint: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(date, forKey: .date)
+        try container.encodeIfPresent(followers, forKey: .followers)
         try container.encode(plays, forKey: .plays)
     }
 }

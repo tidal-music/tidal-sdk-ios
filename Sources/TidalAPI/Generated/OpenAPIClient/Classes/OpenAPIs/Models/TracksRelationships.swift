@@ -12,44 +12,44 @@ import AnyCodable
 
 public struct TracksRelationships: Codable, Hashable {
 
-    public var albums: TracksAlbumsMultiRelationshipDataDocument?
-    public var artists: TracksArtistsMultiRelationshipDataDocument?
-    public var credits: TracksCreditsMultiRelationshipDataDocument?
-    public var download: TracksDownloadSingleRelationshipDataDocument?
-    public var genres: TracksGenresMultiRelationshipDataDocument?
-    public var lyrics: TracksLyricsMultiRelationshipDataDocument?
-    public var metadataStatus: TracksMetadataStatusSingleRelationshipDataDocument?
-    public var owners: TracksOwnersMultiRelationshipDataDocument?
-    public var priceConfig: TracksPriceConfigSingleRelationshipDataDocument?
-    public var providers: TracksProvidersMultiRelationshipDataDocument?
-    public var radio: TracksRadioMultiRelationshipDataDocument?
-    public var replacement: TracksReplacementSingleRelationshipDataDocument?
-    public var shares: TracksSharesMultiRelationshipDataDocument?
-    public var similarTracks: TracksSimilarTracksMultiRelationshipDataDocument?
-    public var sourceFile: TracksSourceFileSingleRelationshipDataDocument?
-    public var suggestedTracks: TracksSuggestedTracksMultiRelationshipDataDocument?
-    public var trackStatistics: TracksTrackStatisticsSingleRelationshipDataDocument?
-    public var usageRules: TracksUsageRulesSingleRelationshipDataDocument?
+    public var albums: TracksAlbumsMultiRelationshipObject?
+    public var artists: TracksArtistsMultiRelationshipObject?
+    public var credits: TracksCreditsMultiRelationshipObject?
+    public var download: TracksDownloadSingleRelationshipObject?
+    public var genres: TracksGenresMultiRelationshipObject?
+    public var lyrics: TracksLyricsMultiRelationshipObject?
+    public var metadataStatus: TracksMetadataStatusSingleRelationshipObject?
+    public var owners: TracksOwnersMultiRelationshipObject?
+    public var priceConfig: TracksPriceConfigSingleRelationshipObject?
+    public var providers: TracksProvidersMultiRelationshipObject?
+    public var radio: TracksRadioMultiRelationshipObject?
+    public var replacement: TracksReplacementSingleRelationshipObject?
+    public var shares: TracksSharesMultiRelationshipObject?
+    public var similarTracks: TracksSimilarTracksMultiRelationshipObject?
+    public var sourceFile: TracksSourceFileSingleRelationshipObject?
+    public var suggestedTracks: TracksSuggestedTracksMultiRelationshipObject?
+    public var trackStatistics: TracksTrackStatisticsSingleRelationshipObject?
+    public var usageRules: TracksUsageRulesSingleRelationshipObject?
 
     public init(
-        albums: TracksAlbumsMultiRelationshipDataDocument? = nil,
-        artists: TracksArtistsMultiRelationshipDataDocument? = nil,
-        credits: TracksCreditsMultiRelationshipDataDocument? = nil,
-        download: TracksDownloadSingleRelationshipDataDocument? = nil,
-        genres: TracksGenresMultiRelationshipDataDocument? = nil,
-        lyrics: TracksLyricsMultiRelationshipDataDocument? = nil,
-        metadataStatus: TracksMetadataStatusSingleRelationshipDataDocument? = nil,
-        owners: TracksOwnersMultiRelationshipDataDocument? = nil,
-        priceConfig: TracksPriceConfigSingleRelationshipDataDocument? = nil,
-        providers: TracksProvidersMultiRelationshipDataDocument? = nil,
-        radio: TracksRadioMultiRelationshipDataDocument? = nil,
-        replacement: TracksReplacementSingleRelationshipDataDocument? = nil,
-        shares: TracksSharesMultiRelationshipDataDocument? = nil,
-        similarTracks: TracksSimilarTracksMultiRelationshipDataDocument? = nil,
-        sourceFile: TracksSourceFileSingleRelationshipDataDocument? = nil,
-        suggestedTracks: TracksSuggestedTracksMultiRelationshipDataDocument? = nil,
-        trackStatistics: TracksTrackStatisticsSingleRelationshipDataDocument? = nil,
-        usageRules: TracksUsageRulesSingleRelationshipDataDocument? = nil
+        albums: TracksAlbumsMultiRelationshipObject? = nil,
+        artists: TracksArtistsMultiRelationshipObject? = nil,
+        credits: TracksCreditsMultiRelationshipObject? = nil,
+        download: TracksDownloadSingleRelationshipObject? = nil,
+        genres: TracksGenresMultiRelationshipObject? = nil,
+        lyrics: TracksLyricsMultiRelationshipObject? = nil,
+        metadataStatus: TracksMetadataStatusSingleRelationshipObject? = nil,
+        owners: TracksOwnersMultiRelationshipObject? = nil,
+        priceConfig: TracksPriceConfigSingleRelationshipObject? = nil,
+        providers: TracksProvidersMultiRelationshipObject? = nil,
+        radio: TracksRadioMultiRelationshipObject? = nil,
+        replacement: TracksReplacementSingleRelationshipObject? = nil,
+        shares: TracksSharesMultiRelationshipObject? = nil,
+        similarTracks: TracksSimilarTracksMultiRelationshipObject? = nil,
+        sourceFile: TracksSourceFileSingleRelationshipObject? = nil,
+        suggestedTracks: TracksSuggestedTracksMultiRelationshipObject? = nil,
+        trackStatistics: TracksTrackStatisticsSingleRelationshipObject? = nil,
+        usageRules: TracksUsageRulesSingleRelationshipObject? = nil
     ) {
         self.albums = albums
         self.artists = artists

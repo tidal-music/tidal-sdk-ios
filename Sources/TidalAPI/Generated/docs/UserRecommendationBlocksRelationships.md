@@ -3,10 +3,10 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**artists** | [**UserRecommendationBlocksArtistsMultiRelationshipDataDocument**](UserRecommendationBlocksArtistsMultiRelationshipDataDocument.md) |  | [optional] 
-**owners** | [**UserRecommendationBlocksOwnersMultiRelationshipDataDocument**](UserRecommendationBlocksOwnersMultiRelationshipDataDocument.md) |  | [optional] 
-**tracks** | [**UserRecommendationBlocksTracksMultiRelationshipDataDocument**](UserRecommendationBlocksTracksMultiRelationshipDataDocument.md) |  | [optional] 
-**videos** | [**UserRecommendationBlocksVideosMultiRelationshipDataDocument**](UserRecommendationBlocksVideosMultiRelationshipDataDocument.md) |  | [optional] 
+**artists** | [**UserRecommendationBlocksArtistsMultiRelationshipObject**](UserRecommendationBlocksArtistsMultiRelationshipObject.md) |  | [optional] 
+**owners** | [**UserRecommendationBlocksOwnersMultiRelationshipObject**](UserRecommendationBlocksOwnersMultiRelationshipObject.md) |  | [optional] 
+**tracks** | [**UserRecommendationBlocksTracksMultiRelationshipObject**](UserRecommendationBlocksTracksMultiRelationshipObject.md) |  | [optional] 
+**videos** | [**UserRecommendationBlocksVideosMultiRelationshipObject**](UserRecommendationBlocksVideosMultiRelationshipObject.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

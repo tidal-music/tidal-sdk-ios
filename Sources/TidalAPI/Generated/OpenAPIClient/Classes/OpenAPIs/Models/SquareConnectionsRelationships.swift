@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct SquareConnectionsRelationships: Codable, Hashable {
 
-    public var selectedSite: SquareConnectionsSelectedSiteSingleRelationshipDataDocument?
-    public var sites: SquareConnectionsSitesMultiRelationshipDataDocument?
+    public var selectedSite: SquareConnectionsSelectedSiteSingleRelationshipObject?
+    public var sites: SquareConnectionsSitesMultiRelationshipObject?
 
     public init(
-        selectedSite: SquareConnectionsSelectedSiteSingleRelationshipDataDocument? = nil,
-        sites: SquareConnectionsSitesMultiRelationshipDataDocument? = nil
+        selectedSite: SquareConnectionsSelectedSiteSingleRelationshipObject? = nil,
+        sites: SquareConnectionsSitesMultiRelationshipObject? = nil
     ) {
         self.selectedSite = selectedSite
         self.sites = sites

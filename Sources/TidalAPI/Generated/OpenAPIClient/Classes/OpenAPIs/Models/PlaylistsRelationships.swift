@@ -13,25 +13,25 @@ import AnyCodable
 public struct PlaylistsRelationships: Codable, Hashable {
 
     @available(*, deprecated, message: "This property is deprecated.")
-    public var collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument?
-    public var collaborators: PlaylistsCollaboratorsMultiRelationshipDataDocument?
-    public var coverArt: PlaylistsCoverArtMultiRelationshipDataDocument?
-    public var curators: PlaylistsCuratorsMultiRelationshipDataDocument?
-    public var items: PlaylistsItemsMultiRelationshipDataDocument?
+    public var collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipObject?
+    public var collaborators: PlaylistsCollaboratorsMultiRelationshipObject?
+    public var coverArt: PlaylistsCoverArtMultiRelationshipObject?
+    public var curators: PlaylistsCuratorsMultiRelationshipObject?
+    public var items: PlaylistsItemsMultiRelationshipObject?
     @available(*, deprecated, message: "This property is deprecated.")
-    public var ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipDataDocument?
-    public var owners: PlaylistsOwnersMultiRelationshipDataDocument?
-    public var suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument?
+    public var ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipObject?
+    public var owners: PlaylistsOwnersMultiRelationshipObject?
+    public var suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipObject?
 
     public init(
-        collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipDataDocument? = nil,
-        collaborators: PlaylistsCollaboratorsMultiRelationshipDataDocument? = nil,
-        coverArt: PlaylistsCoverArtMultiRelationshipDataDocument? = nil,
-        curators: PlaylistsCuratorsMultiRelationshipDataDocument? = nil,
-        items: PlaylistsItemsMultiRelationshipDataDocument? = nil,
-        ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipDataDocument? = nil,
-        owners: PlaylistsOwnersMultiRelationshipDataDocument? = nil,
-        suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipDataDocument? = nil
+        collaboratorProfiles: PlaylistsCollaboratorProfilesMultiRelationshipObject? = nil,
+        collaborators: PlaylistsCollaboratorsMultiRelationshipObject? = nil,
+        coverArt: PlaylistsCoverArtMultiRelationshipObject? = nil,
+        curators: PlaylistsCuratorsMultiRelationshipObject? = nil,
+        items: PlaylistsItemsMultiRelationshipObject? = nil,
+        ownerProfiles: PlaylistsOwnerProfilesMultiRelationshipObject? = nil,
+        owners: PlaylistsOwnersMultiRelationshipObject? = nil,
+        suggestedCoverArts: PlaylistsSuggestedCoverArtsMultiRelationshipObject? = nil
     ) {
         self.collaboratorProfiles = collaboratorProfiles
         self.collaborators = collaborators

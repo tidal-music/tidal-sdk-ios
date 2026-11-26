@@ -12,19 +12,22 @@ import AnyCodable
 
 public struct CreditsResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case credits = "credits"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: CreditsAttributes?
     /** Resource id */
     public var id: String
     public var relationships: CreditsRelationships?
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: CreditsAttributes? = nil,
         id: String,
         relationships: CreditsRelationships? = nil,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

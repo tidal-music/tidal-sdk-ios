@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**artworks** | [**SquareItemVariationsArtworksMultiRelationshipDataDocument**](SquareItemVariationsArtworksMultiRelationshipDataDocument.md) |  | [optional] 
-**owners** | [**SquareItemVariationsOwnersMultiRelationshipDataDocument**](SquareItemVariationsOwnersMultiRelationshipDataDocument.md) |  | [optional] 
+**artworks** | [**SquareItemVariationsArtworksMultiRelationshipObject**](SquareItemVariationsArtworksMultiRelationshipObject.md) |  | [optional] 
+**owners** | [**SquareItemVariationsOwnersMultiRelationshipObject**](SquareItemVariationsOwnersMultiRelationshipObject.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

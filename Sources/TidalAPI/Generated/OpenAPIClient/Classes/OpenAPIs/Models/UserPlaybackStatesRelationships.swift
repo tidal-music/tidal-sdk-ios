@@ -12,16 +12,16 @@ import AnyCodable
 
 public struct UserPlaybackStatesRelationships: Codable, Hashable {
 
-    public var activePlayer: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument?
-    public var availablePlayers: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument?
-    public var changeEventStream: UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument?
-    public var playQueue: UserPlaybackStatesPlayQueueSingleRelationshipDataDocument?
+    public var activePlayer: UserPlaybackStatesActivePlayerSingleRelationshipObject?
+    public var availablePlayers: UserPlaybackStatesAvailablePlayersMultiRelationshipObject?
+    public var changeEventStream: UserPlaybackStatesChangeEventStreamSingleRelationshipObject?
+    public var playQueue: UserPlaybackStatesPlayQueueSingleRelationshipObject?
 
     public init(
-        activePlayer: UserPlaybackStatesActivePlayerSingleRelationshipDataDocument? = nil,
-        availablePlayers: UserPlaybackStatesAvailablePlayersMultiRelationshipDataDocument? = nil,
-        changeEventStream: UserPlaybackStatesChangeEventStreamSingleRelationshipDataDocument? = nil,
-        playQueue: UserPlaybackStatesPlayQueueSingleRelationshipDataDocument? = nil
+        activePlayer: UserPlaybackStatesActivePlayerSingleRelationshipObject? = nil,
+        availablePlayers: UserPlaybackStatesAvailablePlayersMultiRelationshipObject? = nil,
+        changeEventStream: UserPlaybackStatesChangeEventStreamSingleRelationshipObject? = nil,
+        playQueue: UserPlaybackStatesPlayQueueSingleRelationshipObject? = nil
     ) {
         self.activePlayer = activePlayer
         self.availablePlayers = availablePlayers

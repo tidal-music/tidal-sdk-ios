@@ -85,18 +85,6 @@ public enum ResourceGrantInvitationsAPITidal {
 
 
 	/**
-     Update single resourceGrantInvitation.
-     
-     - returns: ResourceGrantInvitationsUpdateSingleResourceDataDocument
-     */
-	public static func resourceGrantInvitationsIdPatch(id: String, idempotencyKey: String? = nil, resourceGrantInvitationsUpdateOperationPayload: ResourceGrantInvitationsUpdateOperationPayload? = nil) async throws -> ResourceGrantInvitationsUpdateSingleResourceDataDocument {
-		return try await RequestHelper.createRequest {
-			ResourceGrantInvitationsAPI.resourceGrantInvitationsIdPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, resourceGrantInvitationsUpdateOperationPayload: resourceGrantInvitationsUpdateOperationPayload)
-		}
-	}
-
-
-	/**
      Get owners relationship (\&quot;to-many\&quot;).
      
      - returns: ResourceGrantInvitationsOwnersMultiRelationshipDataDocument

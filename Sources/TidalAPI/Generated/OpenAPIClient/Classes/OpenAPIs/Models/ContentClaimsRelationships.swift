@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct ContentClaimsRelationships: Codable, Hashable {
 
-    public var claimedResource: ContentClaimsClaimedResourceSingleRelationshipDataDocument?
-    public var claimingArtist: ContentClaimsClaimingArtistSingleRelationshipDataDocument?
-    public var owners: ContentClaimsOwnersMultiRelationshipDataDocument?
+    public var claimedResource: ContentClaimsClaimedResourceSingleRelationshipObject?
+    public var claimingArtist: ContentClaimsClaimingArtistSingleRelationshipObject?
+    public var owners: ContentClaimsOwnersMultiRelationshipObject?
 
     public init(
-        claimedResource: ContentClaimsClaimedResourceSingleRelationshipDataDocument? = nil,
-        claimingArtist: ContentClaimsClaimingArtistSingleRelationshipDataDocument? = nil,
-        owners: ContentClaimsOwnersMultiRelationshipDataDocument? = nil
+        claimedResource: ContentClaimsClaimedResourceSingleRelationshipObject? = nil,
+        claimingArtist: ContentClaimsClaimingArtistSingleRelationshipObject? = nil,
+        owners: ContentClaimsOwnersMultiRelationshipObject? = nil
     ) {
         self.claimedResource = claimedResource
         self.claimingArtist = claimingArtist

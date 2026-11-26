@@ -12,14 +12,14 @@ import AnyCodable
 
 public struct ResourceGrantInvitationsRelationships: Codable, Hashable {
 
-    public var owners: ResourceGrantInvitationsOwnersMultiRelationshipDataDocument?
-    public var previewGrant: ResourceGrantInvitationsPreviewGrantSingleRelationshipDataDocument?
-    public var subject: ResourceGrantInvitationsSubjectSingleRelationshipDataDocument?
+    public var owners: ResourceGrantInvitationsOwnersMultiRelationshipObject?
+    public var previewGrant: ResourceGrantInvitationsPreviewGrantSingleRelationshipObject?
+    public var subject: ResourceGrantInvitationsSubjectSingleRelationshipObject?
 
     public init(
-        owners: ResourceGrantInvitationsOwnersMultiRelationshipDataDocument? = nil,
-        previewGrant: ResourceGrantInvitationsPreviewGrantSingleRelationshipDataDocument? = nil,
-        subject: ResourceGrantInvitationsSubjectSingleRelationshipDataDocument? = nil
+        owners: ResourceGrantInvitationsOwnersMultiRelationshipObject? = nil,
+        previewGrant: ResourceGrantInvitationsPreviewGrantSingleRelationshipObject? = nil,
+        subject: ResourceGrantInvitationsSubjectSingleRelationshipObject? = nil
     ) {
         self.owners = owners
         self.previewGrant = previewGrant

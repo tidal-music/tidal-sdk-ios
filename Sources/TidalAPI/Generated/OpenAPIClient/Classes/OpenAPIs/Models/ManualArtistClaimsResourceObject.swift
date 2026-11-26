@@ -12,17 +12,20 @@ import AnyCodable
 
 public struct ManualArtistClaimsResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case manualartistclaims = "manualArtistClaims"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: ManualArtistClaimsAttributes?
     /** Resource id */
     public var id: String
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: ManualArtistClaimsAttributes? = nil,
         id: String,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

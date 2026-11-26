@@ -12,18 +12,18 @@ import AnyCodable
 
 public struct PlayQueuesRelationships: Codable, Hashable {
 
-    public var changeEventStream: PlayQueuesChangeEventStreamSingleRelationshipDataDocument?
-    public var current: PlayQueuesCurrentSingleRelationshipDataDocument?
-    public var future: PlayQueuesFutureMultiRelationshipDataDocument?
-    public var owners: PlayQueuesOwnersMultiRelationshipDataDocument?
-    public var past: PlayQueuesPastMultiRelationshipDataDocument?
+    public var changeEventStream: PlayQueuesChangeEventStreamSingleRelationshipObject?
+    public var current: PlayQueuesCurrentSingleRelationshipObject?
+    public var future: PlayQueuesFutureMultiRelationshipObject?
+    public var owners: PlayQueuesOwnersMultiRelationshipObject?
+    public var past: PlayQueuesPastMultiRelationshipObject?
 
     public init(
-        changeEventStream: PlayQueuesChangeEventStreamSingleRelationshipDataDocument? = nil,
-        current: PlayQueuesCurrentSingleRelationshipDataDocument? = nil,
-        future: PlayQueuesFutureMultiRelationshipDataDocument? = nil,
-        owners: PlayQueuesOwnersMultiRelationshipDataDocument? = nil,
-        past: PlayQueuesPastMultiRelationshipDataDocument? = nil
+        changeEventStream: PlayQueuesChangeEventStreamSingleRelationshipObject? = nil,
+        current: PlayQueuesCurrentSingleRelationshipObject? = nil,
+        future: PlayQueuesFutureMultiRelationshipObject? = nil,
+        owners: PlayQueuesOwnersMultiRelationshipObject? = nil,
+        past: PlayQueuesPastMultiRelationshipObject? = nil
     ) {
         self.changeEventStream = changeEventStream
         self.current = current

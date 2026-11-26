@@ -12,16 +12,16 @@ import AnyCodable
 
 public struct UserRecommendationBlocksRelationships: Codable, Hashable {
 
-    public var artists: UserRecommendationBlocksArtistsMultiRelationshipDataDocument?
-    public var owners: UserRecommendationBlocksOwnersMultiRelationshipDataDocument?
-    public var tracks: UserRecommendationBlocksTracksMultiRelationshipDataDocument?
-    public var videos: UserRecommendationBlocksVideosMultiRelationshipDataDocument?
+    public var artists: UserRecommendationBlocksArtistsMultiRelationshipObject?
+    public var owners: UserRecommendationBlocksOwnersMultiRelationshipObject?
+    public var tracks: UserRecommendationBlocksTracksMultiRelationshipObject?
+    public var videos: UserRecommendationBlocksVideosMultiRelationshipObject?
 
     public init(
-        artists: UserRecommendationBlocksArtistsMultiRelationshipDataDocument? = nil,
-        owners: UserRecommendationBlocksOwnersMultiRelationshipDataDocument? = nil,
-        tracks: UserRecommendationBlocksTracksMultiRelationshipDataDocument? = nil,
-        videos: UserRecommendationBlocksVideosMultiRelationshipDataDocument? = nil
+        artists: UserRecommendationBlocksArtistsMultiRelationshipObject? = nil,
+        owners: UserRecommendationBlocksOwnersMultiRelationshipObject? = nil,
+        tracks: UserRecommendationBlocksTracksMultiRelationshipObject? = nil,
+        videos: UserRecommendationBlocksVideosMultiRelationshipObject? = nil
     ) {
         self.artists = artists
         self.owners = owners

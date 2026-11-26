@@ -7,7 +7,6 @@ Method | HTTP request | Description
 [**resourceGrantInvitationsGet**](ResourceGrantInvitationsAPI.md#resourcegrantinvitationsget) | **GET** /resourceGrantInvitations | Get multiple resourceGrantInvitations.
 [**resourceGrantInvitationsIdDelete**](ResourceGrantInvitationsAPI.md#resourcegrantinvitationsiddelete) | **DELETE** /resourceGrantInvitations/{id} | Delete single resourceGrantInvitation.
 [**resourceGrantInvitationsIdGet**](ResourceGrantInvitationsAPI.md#resourcegrantinvitationsidget) | **GET** /resourceGrantInvitations/{id} | Get single resourceGrantInvitation.
-[**resourceGrantInvitationsIdPatch**](ResourceGrantInvitationsAPI.md#resourcegrantinvitationsidpatch) | **PATCH** /resourceGrantInvitations/{id} | Update single resourceGrantInvitation.
 [**resourceGrantInvitationsIdRelationshipsOwnersGet**](ResourceGrantInvitationsAPI.md#resourcegrantinvitationsidrelationshipsownersget) | **GET** /resourceGrantInvitations/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**resourceGrantInvitationsIdRelationshipsPreviewGrantGet**](ResourceGrantInvitationsAPI.md#resourcegrantinvitationsidrelationshipspreviewgrantget) | **GET** /resourceGrantInvitations/{id}/relationships/previewGrant | Get previewGrant relationship (\&quot;to-one\&quot;).
 [**resourceGrantInvitationsIdRelationshipsSubjectGet**](ResourceGrantInvitationsAPI.md#resourcegrantinvitationsidrelationshipssubjectget) | **GET** /resourceGrantInvitations/{id}/relationships/subject | Get subject relationship (\&quot;to-one\&quot;).
@@ -168,56 +167,6 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: application/vnd.api+json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **resourceGrantInvitationsIdPatch**
-```swift
-    open class func resourceGrantInvitationsIdPatch(id: String, idempotencyKey: String? = nil, resourceGrantInvitationsUpdateOperationPayload: ResourceGrantInvitationsUpdateOperationPayload? = nil) async throws -> ResourceGrantInvitationsUpdateSingleResourceDataDocument
-```
-
-Update single resourceGrantInvitation.
-
-Set, change or remove the password, or turn the preview on or off. Users who redeemed keep their grants.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let id = "id_example" // String | Invitation id
-let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let resourceGrantInvitationsUpdateOperationPayload = ResourceGrantInvitationsUpdateOperation_Payload(data: ResourceGrantInvitationsUpdateOperation_Payload_Data(attributes: ResourceGrantInvitationsUpdateOperation_Payload_Data_Attributes(password: "password_example", preview: false), id: "id_example", type: "type_example")) // ResourceGrantInvitationsUpdateOperationPayload |  (optional)
-
-// Update single resourceGrantInvitation.
-do {
-    let response = try await ResourceGrantInvitationsAPI.resourceGrantInvitationsIdPatch(id: id, idempotencyKey: idempotencyKey, resourceGrantInvitationsUpdateOperationPayload: resourceGrantInvitationsUpdateOperationPayload)
-    dump(response)
-} catch {
-    print(error)
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **String** | Invitation id | 
- **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
- **resourceGrantInvitationsUpdateOperationPayload** | [**ResourceGrantInvitationsUpdateOperationPayload**](ResourceGrantInvitationsUpdateOperationPayload.md) |  | [optional] 
-
-### Return type
-
-[**ResourceGrantInvitationsUpdateSingleResourceDataDocument**](ResourceGrantInvitationsUpdateSingleResourceDataDocument.md)
-
-### Authorization
-
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
-
-### HTTP request headers
-
- - **Content-Type**: application/vnd.api+json
  - **Accept**: application/vnd.api+json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

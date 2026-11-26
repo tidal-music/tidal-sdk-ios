@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct StudioHomeMerchTilesRelationships: Codable, Hashable {
 
-    public var items: StudioHomeMerchTilesItemsMultiRelationshipDataDocument?
-    public var squareConnection: StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument?
+    public var items: StudioHomeMerchTilesItemsMultiRelationshipObject?
+    public var squareConnection: StudioHomeMerchTilesSquareConnectionSingleRelationshipObject?
 
     public init(
-        items: StudioHomeMerchTilesItemsMultiRelationshipDataDocument? = nil,
-        squareConnection: StudioHomeMerchTilesSquareConnectionSingleRelationshipDataDocument? = nil
+        items: StudioHomeMerchTilesItemsMultiRelationshipObject? = nil,
+        squareConnection: StudioHomeMerchTilesSquareConnectionSingleRelationshipObject? = nil
     ) {
         self.items = items
         self.squareConnection = squareConnection

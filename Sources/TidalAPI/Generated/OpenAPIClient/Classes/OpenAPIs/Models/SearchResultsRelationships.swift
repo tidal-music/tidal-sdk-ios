@@ -12,20 +12,20 @@ import AnyCodable
 
 public struct SearchResultsRelationships: Codable, Hashable {
 
-    public var albums: SearchResultsAlbumsMultiRelationshipDataDocument?
-    public var artists: SearchResultsArtistsMultiRelationshipDataDocument?
-    public var playlists: SearchResultsPlaylistsMultiRelationshipDataDocument?
-    public var topHits: SearchResultsTopHitsMultiRelationshipDataDocument?
-    public var tracks: SearchResultsTracksMultiRelationshipDataDocument?
-    public var videos: SearchResultsVideosMultiRelationshipDataDocument?
+    public var albums: SearchResultsAlbumsMultiRelationshipObject?
+    public var artists: SearchResultsArtistsMultiRelationshipObject?
+    public var playlists: SearchResultsPlaylistsMultiRelationshipObject?
+    public var topHits: SearchResultsTopHitsMultiRelationshipObject?
+    public var tracks: SearchResultsTracksMultiRelationshipObject?
+    public var videos: SearchResultsVideosMultiRelationshipObject?
 
     public init(
-        albums: SearchResultsAlbumsMultiRelationshipDataDocument? = nil,
-        artists: SearchResultsArtistsMultiRelationshipDataDocument? = nil,
-        playlists: SearchResultsPlaylistsMultiRelationshipDataDocument? = nil,
-        topHits: SearchResultsTopHitsMultiRelationshipDataDocument? = nil,
-        tracks: SearchResultsTracksMultiRelationshipDataDocument? = nil,
-        videos: SearchResultsVideosMultiRelationshipDataDocument? = nil
+        albums: SearchResultsAlbumsMultiRelationshipObject? = nil,
+        artists: SearchResultsArtistsMultiRelationshipObject? = nil,
+        playlists: SearchResultsPlaylistsMultiRelationshipObject? = nil,
+        topHits: SearchResultsTopHitsMultiRelationshipObject? = nil,
+        tracks: SearchResultsTracksMultiRelationshipObject? = nil,
+        videos: SearchResultsVideosMultiRelationshipObject? = nil
     ) {
         self.albums = albums
         self.artists = artists

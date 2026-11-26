@@ -12,18 +12,18 @@ import AnyCodable
 
 public struct FolderItemsRelationships: Codable, Hashable {
 
-    public var breadcrumb: FolderItemsBreadcrumbMultiRelationshipDataDocument?
-    public var owners: FolderItemsOwnersMultiRelationshipDataDocument?
-    public var parent: FolderItemsParentSingleRelationshipDataDocument?
-    public var sharingSummary: FolderItemsSharingSummarySingleRelationshipDataDocument?
-    public var subject: FolderItemsSubjectSingleRelationshipDataDocument?
+    public var breadcrumb: FolderItemsBreadcrumbMultiRelationshipObject?
+    public var owners: FolderItemsOwnersMultiRelationshipObject?
+    public var parent: FolderItemsParentSingleRelationshipObject?
+    public var sharingSummary: FolderItemsSharingSummarySingleRelationshipObject?
+    public var subject: FolderItemsSubjectSingleRelationshipObject?
 
     public init(
-        breadcrumb: FolderItemsBreadcrumbMultiRelationshipDataDocument? = nil,
-        owners: FolderItemsOwnersMultiRelationshipDataDocument? = nil,
-        parent: FolderItemsParentSingleRelationshipDataDocument? = nil,
-        sharingSummary: FolderItemsSharingSummarySingleRelationshipDataDocument? = nil,
-        subject: FolderItemsSubjectSingleRelationshipDataDocument? = nil
+        breadcrumb: FolderItemsBreadcrumbMultiRelationshipObject? = nil,
+        owners: FolderItemsOwnersMultiRelationshipObject? = nil,
+        parent: FolderItemsParentSingleRelationshipObject? = nil,
+        sharingSummary: FolderItemsSharingSummarySingleRelationshipObject? = nil,
+        subject: FolderItemsSubjectSingleRelationshipObject? = nil
     ) {
         self.breadcrumb = breadcrumb
         self.owners = owners

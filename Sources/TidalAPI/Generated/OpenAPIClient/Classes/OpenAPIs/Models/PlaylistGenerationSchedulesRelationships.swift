@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct PlaylistGenerationSchedulesRelationships: Codable, Hashable {
 
-    public var playlist: PlaylistGenerationSchedulesPlaylistSingleRelationshipDataDocument?
+    public var playlist: PlaylistGenerationSchedulesPlaylistSingleRelationshipObject?
 
     public init(
-        playlist: PlaylistGenerationSchedulesPlaylistSingleRelationshipDataDocument? = nil
+        playlist: PlaylistGenerationSchedulesPlaylistSingleRelationshipObject? = nil
     ) {
         self.playlist = playlist
     }

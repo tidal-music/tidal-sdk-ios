@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct ArtistSalesStatisticsRelationships: Codable, Hashable {
 
-    public var artist: ArtistSalesStatisticsArtistSingleRelationshipDataDocument?
-    public var topSellers: ArtistSalesStatisticsTopSellersMultiRelationshipDataDocument?
+    public var artist: ArtistSalesStatisticsArtistSingleRelationshipObject?
+    public var topSellers: ArtistSalesStatisticsTopSellersMultiRelationshipObject?
 
     public init(
-        artist: ArtistSalesStatisticsArtistSingleRelationshipDataDocument? = nil,
-        topSellers: ArtistSalesStatisticsTopSellersMultiRelationshipDataDocument? = nil
+        artist: ArtistSalesStatisticsArtistSingleRelationshipObject? = nil,
+        topSellers: ArtistSalesStatisticsTopSellersMultiRelationshipObject? = nil
     ) {
         self.artist = artist
         self.topSellers = topSellers

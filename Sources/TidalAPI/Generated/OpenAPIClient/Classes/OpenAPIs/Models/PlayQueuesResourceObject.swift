@@ -12,19 +12,22 @@ import AnyCodable
 
 public struct PlayQueuesResourceObject: Codable, Hashable {
 
-    public static let typeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case playqueues = "playQueues"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public var attributes: PlayQueuesAttributes?
     /** Resource id */
     public var id: String
     public var relationships: PlayQueuesRelationships?
     /** Resource type */
-    public var type: String
+    public var type: ModelType
 
     public init(
         attributes: PlayQueuesAttributes? = nil,
         id: String,
         relationships: PlayQueuesRelationships? = nil,
-        type: String
+        type: ModelType
     ) {
         self.attributes = attributes
         self.id = id

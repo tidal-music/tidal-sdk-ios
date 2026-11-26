@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**items** | [**UserCollectionTracksItemsMultiRelationshipDataDocument**](UserCollectionTracksItemsMultiRelationshipDataDocument.md) |  | [optional] 
-**owners** | [**UserCollectionTracksOwnersMultiRelationshipDataDocument**](UserCollectionTracksOwnersMultiRelationshipDataDocument.md) |  | [optional] 
+**items** | [**UserCollectionTracksItemsMultiRelationshipObject**](UserCollectionTracksItemsMultiRelationshipObject.md) |  | [optional] 
+**owners** | [**UserCollectionTracksOwnersMultiRelationshipObject**](UserCollectionTracksOwnersMultiRelationshipObject.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

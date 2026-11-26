@@ -12,12 +12,12 @@ import AnyCodable
 
 public struct ArtworkLibrariesRelationships: Codable, Hashable {
 
-    public var artworks: ArtworkLibrariesArtworksMultiRelationshipDataDocument?
-    public var randomArtwork: ArtworkLibrariesRandomArtworkSingleRelationshipDataDocument?
+    public var artworks: ArtworkLibrariesArtworksMultiRelationshipObject?
+    public var randomArtwork: ArtworkLibrariesRandomArtworkSingleRelationshipObject?
 
     public init(
-        artworks: ArtworkLibrariesArtworksMultiRelationshipDataDocument? = nil,
-        randomArtwork: ArtworkLibrariesRandomArtworkSingleRelationshipDataDocument? = nil
+        artworks: ArtworkLibrariesArtworksMultiRelationshipObject? = nil,
+        randomArtwork: ArtworkLibrariesRandomArtworkSingleRelationshipObject? = nil
     ) {
         self.artworks = artworks
         self.randomArtwork = randomArtwork

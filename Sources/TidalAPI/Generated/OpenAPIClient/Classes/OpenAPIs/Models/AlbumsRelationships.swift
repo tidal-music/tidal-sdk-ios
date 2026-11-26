@@ -12,34 +12,34 @@ import AnyCodable
 
 public struct AlbumsRelationships: Codable, Hashable {
 
-    public var albumStatistics: AlbumsAlbumStatisticsSingleRelationshipDataDocument?
-    public var artists: AlbumsArtistsMultiRelationshipDataDocument?
-    public var coverArt: AlbumsCoverArtMultiRelationshipDataDocument?
-    public var genres: AlbumsGenresMultiRelationshipDataDocument?
-    public var items: AlbumsItemsMultiRelationshipDataDocument?
-    public var owners: AlbumsOwnersMultiRelationshipDataDocument?
-    public var priceConfig: AlbumsPriceConfigSingleRelationshipDataDocument?
-    public var providers: AlbumsProvidersMultiRelationshipDataDocument?
-    public var replacement: AlbumsReplacementSingleRelationshipDataDocument?
-    public var shares: AlbumsSharesMultiRelationshipDataDocument?
-    public var similarAlbums: AlbumsSimilarAlbumsMultiRelationshipDataDocument?
-    public var suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument?
-    public var usageRules: AlbumsUsageRulesSingleRelationshipDataDocument?
+    public var albumStatistics: AlbumsAlbumStatisticsSingleRelationshipObject?
+    public var artists: AlbumsArtistsMultiRelationshipObject?
+    public var coverArt: AlbumsCoverArtMultiRelationshipObject?
+    public var genres: AlbumsGenresMultiRelationshipObject?
+    public var items: AlbumsItemsMultiRelationshipObject?
+    public var owners: AlbumsOwnersMultiRelationshipObject?
+    public var priceConfig: AlbumsPriceConfigSingleRelationshipObject?
+    public var providers: AlbumsProvidersMultiRelationshipObject?
+    public var replacement: AlbumsReplacementSingleRelationshipObject?
+    public var shares: AlbumsSharesMultiRelationshipObject?
+    public var similarAlbums: AlbumsSimilarAlbumsMultiRelationshipObject?
+    public var suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipObject?
+    public var usageRules: AlbumsUsageRulesSingleRelationshipObject?
 
     public init(
-        albumStatistics: AlbumsAlbumStatisticsSingleRelationshipDataDocument? = nil,
-        artists: AlbumsArtistsMultiRelationshipDataDocument? = nil,
-        coverArt: AlbumsCoverArtMultiRelationshipDataDocument? = nil,
-        genres: AlbumsGenresMultiRelationshipDataDocument? = nil,
-        items: AlbumsItemsMultiRelationshipDataDocument? = nil,
-        owners: AlbumsOwnersMultiRelationshipDataDocument? = nil,
-        priceConfig: AlbumsPriceConfigSingleRelationshipDataDocument? = nil,
-        providers: AlbumsProvidersMultiRelationshipDataDocument? = nil,
-        replacement: AlbumsReplacementSingleRelationshipDataDocument? = nil,
-        shares: AlbumsSharesMultiRelationshipDataDocument? = nil,
-        similarAlbums: AlbumsSimilarAlbumsMultiRelationshipDataDocument? = nil,
-        suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipDataDocument? = nil,
-        usageRules: AlbumsUsageRulesSingleRelationshipDataDocument? = nil
+        albumStatistics: AlbumsAlbumStatisticsSingleRelationshipObject? = nil,
+        artists: AlbumsArtistsMultiRelationshipObject? = nil,
+        coverArt: AlbumsCoverArtMultiRelationshipObject? = nil,
+        genres: AlbumsGenresMultiRelationshipObject? = nil,
+        items: AlbumsItemsMultiRelationshipObject? = nil,
+        owners: AlbumsOwnersMultiRelationshipObject? = nil,
+        priceConfig: AlbumsPriceConfigSingleRelationshipObject? = nil,
+        providers: AlbumsProvidersMultiRelationshipObject? = nil,
+        replacement: AlbumsReplacementSingleRelationshipObject? = nil,
+        shares: AlbumsSharesMultiRelationshipObject? = nil,
+        similarAlbums: AlbumsSimilarAlbumsMultiRelationshipObject? = nil,
+        suggestedCoverArts: AlbumsSuggestedCoverArtsMultiRelationshipObject? = nil,
+        usageRules: AlbumsUsageRulesSingleRelationshipObject? = nil
     ) {
         self.albumStatistics = albumStatistics
         self.artists = artists
