@@ -47,12 +47,12 @@ struct ArtworkSelectionTests {
 
 	@Test
 	func returnsNoURLWithoutAttributes() {
-		let artwork = ArtworksResourceObject(id: "artwork", type: "artworks")
+		let artwork = ArtworksResourceObject(id: "artwork", type: .artworks)
 
 		#expect(artwork.largestFileURL == nil)
 	}
 
 	private func makeArtwork(files: [ArtworkFile]) -> ArtworksResourceObject {
-		ArtworksResourceObject(attributes: .init(files: files, mediaType: .image), id: "artwork", type: "artworks")
+		ArtworksResourceObject(attributes: .init(files: files, mediaType: .image), id: "artwork", type: .artworks)
 	}
 }

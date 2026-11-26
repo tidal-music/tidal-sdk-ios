@@ -76,7 +76,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 			case .track:
 				let task = StoreTrackTask(
 					id: taskId,
-					track: TracksResourceObject(id: id, type: "tracks"),
+					track: TracksResourceObject(id: id, type: .tracks),
 					artists: [],
 					artwork: nil,
 					collectionResourceType: "albums",
@@ -89,7 +89,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 			case .video:
 				let task = StoreVideoTask(
 					id: taskId,
-					video: VideosResourceObject(id: id, type: "videos"),
+					video: VideosResourceObject(id: id, type: .videos),
 					artists: [],
 					artwork: nil,
 					collectionResourceType: "albums",
@@ -102,7 +102,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 			case .album:
 				let task = StoreAlbumTask(
 					id: taskId,
-					album: AlbumsResourceObject(id: id, type: "albums"),
+					album: AlbumsResourceObject(id: id, type: .albums),
 					artists: [],
 					artwork: nil
 				)
@@ -111,7 +111,7 @@ final class StubOfflineApiClient: OfflineApiClientProtocol {
 			case .playlist:
 				let task = StorePlaylistTask(
 					id: taskId,
-					playlist: PlaylistsResourceObject(id: id, type: "playlists"),
+					playlist: PlaylistsResourceObject(id: id, type: .playlists),
 					artwork: nil
 				)
 				storage.tasks.append(.storePlaylist(task))

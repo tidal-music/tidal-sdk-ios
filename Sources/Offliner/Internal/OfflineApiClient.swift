@@ -433,17 +433,17 @@ private final class IncludedItemsMap {
 		for item in included {
 			switch item {
 			case let .tracksResourceObject(track):
-				add(IncludedItem(resource: .track(track)), type: track.type, id: track.id)
+				add(IncludedItem(resource: .track(track)), type: track.type.rawValue, id: track.id)
 			case let .videosResourceObject(video):
-				add(IncludedItem(resource: .video(video)), type: video.type, id: video.id)
+				add(IncludedItem(resource: .video(video)), type: video.type.rawValue, id: video.id)
 			case let .albumsResourceObject(album):
-				add(IncludedItem(resource: .album(album)), type: album.type, id: album.id)
+				add(IncludedItem(resource: .album(album)), type: album.type.rawValue, id: album.id)
 			case let .playlistsResourceObject(playlist):
-				add(IncludedItem(resource: .playlist(playlist)), type: playlist.type, id: playlist.id)
+				add(IncludedItem(resource: .playlist(playlist)), type: playlist.type.rawValue, id: playlist.id)
 			case let .artworksResourceObject(artwork):
-				add(IncludedItem(resource: .artwork(artwork)), type: artwork.type, id: artwork.id)
+				add(IncludedItem(resource: .artwork(artwork)), type: artwork.type.rawValue, id: artwork.id)
 			case let .artistsResourceObject(artist):
-				add(IncludedItem(resource: .artist(artist)), type: artist.type, id: artist.id)
+				add(IncludedItem(resource: .artist(artist)), type: artist.type.rawValue, id: artist.id)
 			default:
 				break
 			}
@@ -454,7 +454,7 @@ private final class IncludedItemsMap {
 		for item in included {
 			switch item {
 			case let .tracksResourceObject(track):
-				guard let includedItem = get(type: track.type, id: track.id),
+				guard let includedItem = get(type: track.type.rawValue, id: track.id),
 				      let rels = track.relationships
 				else {
 					continue
@@ -463,7 +463,7 @@ private final class IncludedItemsMap {
 				wireRelationships(for: includedItem, album: album, artists: rels.artists?.data, coverArt: nil)
 
 			case let .videosResourceObject(video):
-				guard let includedItem = get(type: video.type, id: video.id),
+				guard let includedItem = get(type: video.type.rawValue, id: video.id),
 				      let rels = video.relationships
 				else {
 					continue
@@ -472,7 +472,7 @@ private final class IncludedItemsMap {
 				wireRelationships(for: includedItem, album: album, artists: rels.artists?.data, coverArt: rels.thumbnailArt?.data)
 
 			case let .albumsResourceObject(album):
-				guard let includedItem = get(type: album.type, id: album.id),
+				guard let includedItem = get(type: album.type.rawValue, id: album.id),
 				      let rels = album.relationships
 				else {
 					continue
@@ -480,7 +480,7 @@ private final class IncludedItemsMap {
 				wireRelationships(for: includedItem, album: nil, artists: rels.artists?.data, coverArt: rels.coverArt?.data)
 
 			case let .playlistsResourceObject(playlist):
-				guard let includedItem = get(type: playlist.type, id: playlist.id),
+				guard let includedItem = get(type: playlist.type.rawValue, id: playlist.id),
 				      let rels = playlist.relationships
 				else {
 					continue

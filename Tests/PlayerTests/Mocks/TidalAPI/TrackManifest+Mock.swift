@@ -25,7 +25,7 @@ extension TrackManifestsSingleResourceDataDocument {
 		let data = TrackManifestsResourceObject(
 			attributes: attributes,
 			id: trackId,
-			type: "trackManifests"
+			type: .trackmanifests
 		)
 		
 		let links = Links(_self: "")

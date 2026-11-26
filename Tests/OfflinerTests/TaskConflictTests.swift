@@ -63,7 +63,7 @@ final class TaskConflictTests: OfflinerTestCase {
 	private func storeTrackTask(id: String, trackId: String) -> StoreTrackTask {
 		StoreTrackTask(
 			id: id,
-			track: TracksResourceObject(id: trackId, type: "tracks"),
+			track: TracksResourceObject(id: trackId, type: .tracks),
 			artists: [],
 			artwork: nil,
 			collectionResourceType: "albums",
