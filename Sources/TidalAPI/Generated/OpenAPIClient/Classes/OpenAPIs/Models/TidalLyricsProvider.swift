@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct TidalLyricsProvider: Codable, Hashable {
 
-    public enum Source: String, Codable, CaseIterable {
+    public enum Source: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case tidal = "TIDAL"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var name: String?
     public var source: Source

@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct FolderItemsAttributes: Codable, Hashable {
 
-    public enum ItemStatus: String, Codable, CaseIterable {
+    public enum ItemStatus: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case ok = "OK"
         case deleted = "DELETED"
         case noAccess = "NO_ACCESS"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var itemStatus: ItemStatus
     /** Whether this item references a subject in another owner's tree, regardless of its current availability. */

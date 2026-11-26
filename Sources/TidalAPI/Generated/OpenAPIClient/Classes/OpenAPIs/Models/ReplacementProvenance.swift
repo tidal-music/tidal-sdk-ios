@@ -13,10 +13,11 @@ import AnyCodable
 /** Relationship replacement projection provenance. ORIGINAL retains the requested identifier as the applicable resource, REPLACED projects another identifier, and NOT_REPLACED retains the requested identifier because no applicable replacement exists. */
 public struct ReplacementProvenance: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case original = "ORIGINAL"
         case replaced = "REPLACED"
         case notReplaced = "NOT_REPLACED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var original: ReplacementOriginalIdentifier?
     public var status: Status

@@ -18,6 +18,7 @@ public struct ErrorObject: Codable, Hashable {
     public var detail: String?
     /** unique identifier for this particular occurrence of the problem */
     public var id: String?
+    public var meta: AnyCodable?
     public var source: ErrorObjectSource?
     /** HTTP status code applicable to this problem */
     public var status: String?
@@ -26,12 +27,14 @@ public struct ErrorObject: Codable, Hashable {
         code: String? = nil,
         detail: String? = nil,
         id: String? = nil,
+        meta: AnyCodable? = nil,
         source: ErrorObjectSource? = nil,
         status: String? = nil
     ) {
         self.code = code
         self.detail = detail
         self.id = id
+        self.meta = meta
         self.source = source
         self.status = status
     }
@@ -40,6 +43,7 @@ public struct ErrorObject: Codable, Hashable {
         case code
         case detail
         case id
+        case meta
         case source
         case status
     }
@@ -51,6 +55,7 @@ public struct ErrorObject: Codable, Hashable {
         try container.encodeIfPresent(code, forKey: .code)
         try container.encodeIfPresent(detail, forKey: .detail)
         try container.encodeIfPresent(id, forKey: .id)
+        try container.encodeIfPresent(meta, forKey: .meta)
         try container.encodeIfPresent(source, forKey: .source)
         try container.encodeIfPresent(status, forKey: .status)
     }

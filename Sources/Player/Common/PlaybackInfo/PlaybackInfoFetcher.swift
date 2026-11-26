@@ -57,6 +57,7 @@ final class PlaybackInfoFetcher {
 		case .TRACK:
 			try await getTrackPlaybackInfo(
 				trackId: mediaProduct.productId,
+				shareCode: mediaProduct.shareCode,
 				playbackMode: playbackMode,
 				streamingSessionId: streamingSessionId
 			)
@@ -104,6 +105,7 @@ private extension PlaybackInfoFetcher {
 	/// The info's `sourceFileId` is the one the manifest says it was served from, else the requested one.
 	func getTrackPlaybackInfo(
 		trackId: String,
+		shareCode: String? = nil,
 		sourceFileId: String? = nil,
 		playbackMode: PlaybackMode,
 		streamingSessionId: String
@@ -128,7 +130,8 @@ private extension PlaybackInfoFetcher {
 					id: trackId,
 					manifestType: .hls,
 					uriScheme: .data,
-					usage: playbackMode == .OFFLINE ? .download : .playback
+					usage: playbackMode == .OFFLINE ? .download : .playback,
+					shareCode: shareCode
 				)
 			}
 
@@ -355,7 +358,7 @@ private extension PlaybackInfoFetcher {
 			.FULL
 		case .preview:
 			.PREVIEW
-		case nil:
+		default:
 			.FULL
 		}
 	}
@@ -366,7 +369,7 @@ private extension PlaybackInfoFetcher {
 			.FULL
 		case .preview:
 			.PREVIEW
-		case nil:
+		default:
 			.FULL
 		}
 	}
@@ -383,6 +386,8 @@ private extension PlaybackInfoFetcher {
 			return .FULL_REQUIRES_PURCHASE
 		case .fullRequiresHigherAccessTier:
 			return .FULL_REQUIRES_HIGHER_ACCESS_TIER
+		default:
+			return nil
 		}
 	}
 
@@ -398,6 +403,8 @@ private extension PlaybackInfoFetcher {
 			return .FULL_REQUIRES_PURCHASE
 		case .fullRequiresHigherAccessTier:
 			return .FULL_REQUIRES_HIGHER_ACCESS_TIER
+		default:
+			return nil
 		}
 	}
 

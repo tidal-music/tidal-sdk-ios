@@ -7,7 +7,8 @@ public extension MediaProduct {
 		referenceId: String? = nil,
 		progressSource: Source? = nil,
 		playLogSource: Source? = nil,
-		extras: Extras? = nil
+		extras: Extras? = nil,
+		shareCode: String? = nil
 	) -> MediaProduct {
 		MediaProduct(
 			productType: productType,
@@ -15,7 +16,8 @@ public extension MediaProduct {
 			referenceId: referenceId,
 			progressSource: progressSource,
 			playLogSource: playLogSource,
-			extras: extras
+			extras: extras,
+			shareCode: shareCode
 		)
 	}
 }

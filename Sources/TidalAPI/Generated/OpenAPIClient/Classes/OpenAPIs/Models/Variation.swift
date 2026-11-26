@@ -13,8 +13,9 @@ import AnyCodable
 /** The variation whose physical stock was counted */
 public struct Variation: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case squareitemvariations = "squareItemVariations"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var id: String
     public var type: ModelType

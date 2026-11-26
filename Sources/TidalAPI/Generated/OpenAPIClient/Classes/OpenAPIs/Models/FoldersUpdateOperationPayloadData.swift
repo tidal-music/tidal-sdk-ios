@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct FoldersUpdateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case folders = "folders"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var attributes: FoldersUpdateOperationPayloadDataAttributes
     /** Also accepts `me`. */

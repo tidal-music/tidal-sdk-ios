@@ -13,7 +13,7 @@ import AnyCodable
 /** metadata about an external link */
 public struct ExternalLinkMeta: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case tidalSharing = "TIDAL_SHARING"
         case tidalUserSharing = "TIDAL_USER_SHARING"
         case tidalAutoplayAndroid = "TIDAL_AUTOPLAY_ANDROID"
@@ -29,6 +29,7 @@ public struct ExternalLinkMeta: Codable, Hashable {
         case artistClaimProviderRedirect = "ARTIST_CLAIM_PROVIDER_REDIRECT"
         case stripeAuthorizationRedirect = "STRIPE_AUTHORIZATION_REDIRECT"
         case squareAuthorizationRedirect = "SQUARE_AUTHORIZATION_REDIRECT"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var type: ModelType
 

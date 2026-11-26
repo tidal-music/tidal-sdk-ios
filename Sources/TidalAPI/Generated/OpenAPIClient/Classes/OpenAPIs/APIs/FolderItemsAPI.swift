@@ -37,12 +37,13 @@ internal class FolderItemsAPI {
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: FolderItemsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSelfMatchesQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
+    internal class func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSelfMatchesQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsMultiResourceDataDocument {
         do {
-            return try await folderItemsGetWithRequestBuilder(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSelfMatchesQuery: filterSelfMatchesQuery, filterSubjectAlbumsPublished: filterSubjectAlbumsPublished, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
+            return try await folderItemsGetWithRequestBuilder(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSelfMatchesQuery: filterSelfMatchesQuery, filterSubjectAlbumsPublished: filterSubjectAlbumsPublished, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -67,9 +68,10 @@ internal class FolderItemsAPI {
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<FolderItemsMultiResourceDataDocument> 
      */
-    internal class func folderItemsGetWithRequestBuilder(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSelfMatchesQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsMultiResourceDataDocument> {
+    internal class func folderItemsGetWithRequestBuilder(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSelfMatchesQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<FolderItemsMultiResourceDataDocument> {
         let localVariablePath = "/folderItems"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -87,6 +89,7 @@ internal class FolderItemsAPI {
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -105,12 +108,13 @@ internal class FolderItemsAPI {
      
      - parameter id: (path) Folder item id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: MutationResponseDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func folderItemsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument {
+    internal class func folderItemsIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument {
         do {
-            return try await folderItemsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey).execute().body
+            return try await folderItemsIdDeleteWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -126,9 +130,10 @@ internal class FolderItemsAPI {
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder item id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<MutationResponseDocument> 
      */
-    internal class func folderItemsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil) -> RequestBuilder<MutationResponseDocument> {
+    internal class func folderItemsIdDeleteWithRequestBuilder(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) -> RequestBuilder<MutationResponseDocument> {
         var localVariablePath = "/folderItems/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -136,7 +141,10 @@ internal class FolderItemsAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Idempotency-Key": idempotencyKey?.encodeToJSON(),
@@ -167,12 +175,13 @@ internal class FolderItemsAPI {
      - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, sharingSummary, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: FolderItemsSingleResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func folderItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSingleResourceDataDocument {
+    internal class func folderItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsSingleResourceDataDocument {
         do {
-            return try await folderItemsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia).execute().body
+            return try await folderItemsIdGetWithRequestBuilder(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -186,13 +195,17 @@ internal class FolderItemsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
      - parameter id: (path) Folder item id 
      - parameter include: (query) Include related resources. Available relationships: breadcrumb, owners, parent, sharingSummary, subject (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<FolderItemsSingleResourceDataDocument> 
      */
-    internal class func folderItemsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsSingleResourceDataDocument> {
+    internal class func folderItemsIdGetWithRequestBuilder(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<FolderItemsSingleResourceDataDocument> {
         var localVariablePath = "/folderItems/{id}"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -205,6 +218,7 @@ internal class FolderItemsAPI {
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "includeLinkage": (wrappedValue: includeLinkage?.encodeToJSON(), isExplode: false),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -225,12 +239,13 @@ internal class FolderItemsAPI {
      - parameter include: (query) Include related resources. Available relationships: breadcrumb (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: FolderItemsBreadcrumbMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func folderItemsIdRelationshipsBreadcrumbGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsBreadcrumbMultiRelationshipDataDocument {
+    internal class func folderItemsIdRelationshipsBreadcrumbGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsBreadcrumbMultiRelationshipDataDocument {
         do {
-            return try await folderItemsIdRelationshipsBreadcrumbGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia).execute().body
+            return try await folderItemsIdRelationshipsBreadcrumbGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -248,9 +263,10 @@ internal class FolderItemsAPI {
      - parameter include: (query) Include related resources. Available relationships: breadcrumb (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<FolderItemsBreadcrumbMultiRelationshipDataDocument> 
      */
-    internal class func folderItemsIdRelationshipsBreadcrumbGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsBreadcrumbMultiRelationshipDataDocument> {
+    internal class func folderItemsIdRelationshipsBreadcrumbGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<FolderItemsBreadcrumbMultiRelationshipDataDocument> {
         var localVariablePath = "/folderItems/{id}/relationships/breadcrumb"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -263,6 +279,7 @@ internal class FolderItemsAPI {
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -282,12 +299,13 @@ internal class FolderItemsAPI {
      - parameter id: (path) Folder item id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: FolderItemsOwnersMultiRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func folderItemsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> FolderItemsOwnersMultiRelationshipDataDocument {
+    internal class func folderItemsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> FolderItemsOwnersMultiRelationshipDataDocument {
         do {
-            return try await folderItemsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor).execute().body
+            return try await folderItemsIdRelationshipsOwnersGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -301,12 +319,16 @@ internal class FolderItemsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
      - parameter id: (path) Folder item id 
      - parameter include: (query) Include related resources. Available relationships: owners (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<FolderItemsOwnersMultiRelationshipDataDocument> 
      */
-    internal class func folderItemsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil) -> RequestBuilder<FolderItemsOwnersMultiRelationshipDataDocument> {
+    internal class func folderItemsIdRelationshipsOwnersGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) -> RequestBuilder<FolderItemsOwnersMultiRelationshipDataDocument> {
         var localVariablePath = "/folderItems/{id}/relationships/owners"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -318,6 +340,7 @@ internal class FolderItemsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "page[cursor]": (wrappedValue: pageCursor?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -337,12 +360,13 @@ internal class FolderItemsAPI {
      - parameter id: (path) Folder item id 
      - parameter include: (query) Include related resources. Available relationships: parent (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: FolderItemsParentSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func folderItemsIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsParentSingleRelationshipDataDocument {
+    internal class func folderItemsIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsParentSingleRelationshipDataDocument {
         do {
-            return try await folderItemsIdRelationshipsParentGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await folderItemsIdRelationshipsParentGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -359,9 +383,10 @@ internal class FolderItemsAPI {
      - parameter id: (path) Folder item id 
      - parameter include: (query) Include related resources. Available relationships: parent (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<FolderItemsParentSingleRelationshipDataDocument> 
      */
-    internal class func folderItemsIdRelationshipsParentGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsParentSingleRelationshipDataDocument> {
+    internal class func folderItemsIdRelationshipsParentGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<FolderItemsParentSingleRelationshipDataDocument> {
         var localVariablePath = "/folderItems/{id}/relationships/parent"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -373,6 +398,7 @@ internal class FolderItemsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -391,13 +417,14 @@ internal class FolderItemsAPI {
      
      - parameter id: (path) Folder item id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - parameter folderItemsParentRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: FolderItemsParentUpdateSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func folderItemsIdRelationshipsParentPatch(id: String, idempotencyKey: String? = nil, folderItemsParentRelationshipUpdateOperationPayload: FolderItemsParentRelationshipUpdateOperationPayload? = nil) async throws -> FolderItemsParentUpdateSingleRelationshipDataDocument {
+    internal class func folderItemsIdRelationshipsParentPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, folderItemsParentRelationshipUpdateOperationPayload: FolderItemsParentRelationshipUpdateOperationPayload? = nil) async throws -> FolderItemsParentUpdateSingleRelationshipDataDocument {
         do {
-            return try await folderItemsIdRelationshipsParentPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, folderItemsParentRelationshipUpdateOperationPayload: folderItemsParentRelationshipUpdateOperationPayload).execute().body
+            return try await folderItemsIdRelationshipsParentPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, folderItemsParentRelationshipUpdateOperationPayload: folderItemsParentRelationshipUpdateOperationPayload).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -407,16 +434,17 @@ internal class FolderItemsAPI {
     /**
      Update parent relationship (\"to-one\").
      - PATCH /folderItems/{id}/relationships/parent
-     - Moves the item to the supplied parent folder, replacing its previous parent. To move to the top level, supply the root folder explicitly; null data is rejected. Returns the new parent linkage.
+     - Moves the item to the supplied parent folder, replacing its previous parent. To move to the top level, supply the root folder explicitly; null data is rejected. The caller needs at least COLLABORATOR on the new parent. Within the item's tree they need OWNER on the item or COLLABORATOR on the folder holding it; only its creator moves it into another user's tree. Returns the new parent linkage.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
      - parameter id: (path) Folder item id 
      - parameter idempotencyKey: (header) Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - parameter folderItemsParentRelationshipUpdateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<FolderItemsParentUpdateSingleRelationshipDataDocument> 
      */
-    internal class func folderItemsIdRelationshipsParentPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, folderItemsParentRelationshipUpdateOperationPayload: FolderItemsParentRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<FolderItemsParentUpdateSingleRelationshipDataDocument> {
+    internal class func folderItemsIdRelationshipsParentPatchWithRequestBuilder(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, folderItemsParentRelationshipUpdateOperationPayload: FolderItemsParentRelationshipUpdateOperationPayload? = nil) -> RequestBuilder<FolderItemsParentUpdateSingleRelationshipDataDocument> {
         var localVariablePath = "/folderItems/{id}/relationships/parent"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -424,7 +452,10 @@ internal class FolderItemsAPI {
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: folderItemsParentRelationshipUpdateOperationPayload)
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/vnd.api+json",
@@ -444,12 +475,13 @@ internal class FolderItemsAPI {
      - parameter id: (path) Folder item id 
      - parameter include: (query) Include related resources. Available relationships: sharingSummary (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharingSummary.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: FolderItemsSharingSummarySingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func folderItemsIdRelationshipsSharingSummaryGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSharingSummarySingleRelationshipDataDocument {
+    internal class func folderItemsIdRelationshipsSharingSummaryGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsSharingSummarySingleRelationshipDataDocument {
         do {
-            return try await folderItemsIdRelationshipsSharingSummaryGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await folderItemsIdRelationshipsSharingSummaryGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -466,9 +498,10 @@ internal class FolderItemsAPI {
      - parameter id: (path) Folder item id 
      - parameter include: (query) Include related resources. Available relationships: sharingSummary (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharingSummary.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<FolderItemsSharingSummarySingleRelationshipDataDocument> 
      */
-    internal class func folderItemsIdRelationshipsSharingSummaryGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsSharingSummarySingleRelationshipDataDocument> {
+    internal class func folderItemsIdRelationshipsSharingSummaryGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<FolderItemsSharingSummarySingleRelationshipDataDocument> {
         var localVariablePath = "/folderItems/{id}/relationships/sharingSummary"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -480,6 +513,7 @@ internal class FolderItemsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -499,12 +533,13 @@ internal class FolderItemsAPI {
      - parameter id: (path) Folder item id 
      - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: FolderItemsSubjectSingleRelationshipDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    internal class func folderItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSubjectSingleRelationshipDataDocument {
+    internal class func folderItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsSubjectSingleRelationshipDataDocument {
         do {
-            return try await folderItemsIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia).execute().body
+            return try await folderItemsIdRelationshipsSubjectGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
         } catch let httpError as HTTPErrorResponse {
             throw ErrorResponse.fromHTTPError(httpError)
         }
@@ -518,12 +553,16 @@ internal class FolderItemsAPI {
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
+     - OAuth:
+       - type: oauth2
+       - name: Client_Credentials
      - parameter id: (path) Folder item id 
      - parameter include: (query) Include related resources. Available relationships: subject (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<FolderItemsSubjectSingleRelationshipDataDocument> 
      */
-    internal class func folderItemsIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil) -> RequestBuilder<FolderItemsSubjectSingleRelationshipDataDocument> {
+    internal class func folderItemsIdRelationshipsSubjectGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<FolderItemsSubjectSingleRelationshipDataDocument> {
         var localVariablePath = "/folderItems/{id}/relationships/subject"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
         let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -535,6 +574,7 @@ internal class FolderItemsAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
             "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [

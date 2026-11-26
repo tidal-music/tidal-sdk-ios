@@ -12,12 +12,13 @@ import AnyCodable
 
 public struct CommentsAttributes: Codable, Hashable {
 
-    public enum ModerationStatus: String, Codable, CaseIterable {
+    public enum ModerationStatus: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case notModerated = "NOT_MODERATED"
         case flagged = "FLAGGED"
         case takenDown = "TAKEN_DOWN"
         case ok = "OK"
         case error = "ERROR"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let messageRule = StringRule(minLength: 1, maxLength: 2000, pattern: nil)
     /** Datetime when the comment was created (ISO 8601) */

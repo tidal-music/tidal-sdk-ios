@@ -13,6 +13,7 @@ import AnyCodable
 public enum AtomicOperationsResponseAtomicResultsInner: Codable, JSONEncodable, Hashable {
     case atomicOperationsResponseAtomicResultsInnerOneOf(AtomicOperationsResponseAtomicResultsInnerOneOf)
     case atomicOperationsResponseAtomicResultsInnerOneOf1(AtomicOperationsResponseAtomicResultsInnerOneOf1)
+    case unknownDefaultOpenApi
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
@@ -21,6 +22,8 @@ public enum AtomicOperationsResponseAtomicResultsInner: Codable, JSONEncodable, 
             try container.encode(value)
         case .atomicOperationsResponseAtomicResultsInnerOneOf1(let value):
             try container.encode(value)
+        case .unknownDefaultOpenApi:
+            try container.encodeNil()
         }
     }
     
@@ -34,8 +37,7 @@ public enum AtomicOperationsResponseAtomicResultsInner: Codable, JSONEncodable, 
             return
         }
         
-        let context = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unable to decode AtomicOperationsResponseAtomicResultsInner")
-        throw DecodingError.dataCorrupted(context)
+        self = .unknownDefaultOpenApi
     }
 }
 

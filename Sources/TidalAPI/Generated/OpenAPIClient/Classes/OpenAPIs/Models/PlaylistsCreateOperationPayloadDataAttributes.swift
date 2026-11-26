@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct PlaylistsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum AccessType: String, Codable, CaseIterable {
+    public enum AccessType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let descriptionRule = StringRule(minLength: nil, maxLength: 500, pattern: nil)
     public static let nameRule = StringRule(minLength: 1, maxLength: 250, pattern: nil)

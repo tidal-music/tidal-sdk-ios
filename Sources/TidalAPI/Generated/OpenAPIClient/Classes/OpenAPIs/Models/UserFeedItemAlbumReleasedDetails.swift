@@ -12,12 +12,14 @@ import AnyCodable
 
 public struct UserFeedItemAlbumReleasedDetails: Codable, Hashable {
 
-    public enum ActivityType: String, Codable, CaseIterable {
+    public enum ActivityType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case albumReleased = "ALBUM_RELEASED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum ReleaseSource: String, Codable, CaseIterable {
+    public enum ReleaseSource: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case label = "LABEL"
         case upload = "UPLOAD"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Type of activity represented by the group */
     public var activityType: ActivityType

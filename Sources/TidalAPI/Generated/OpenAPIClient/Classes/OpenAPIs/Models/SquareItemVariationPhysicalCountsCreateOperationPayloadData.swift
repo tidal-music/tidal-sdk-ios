@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct SquareItemVariationPhysicalCountsCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case squareitemvariationphysicalcounts = "squareItemVariationPhysicalCounts"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var attributes: SquareItemVariationPhysicalCountsCreateOperationPayloadDataAttributes
     public var relationships: SquareItemVariationPhysicalCountsCreateOperationPayloadDataRelationships

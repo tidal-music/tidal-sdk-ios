@@ -12,12 +12,14 @@ import AnyCodable
 
 public struct SquareConnectionsCapability: Codable, Hashable {
 
-    public enum Name: String, Codable, CaseIterable {
+    public enum Name: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case sites = "SITES"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case granted = "GRANTED"
         case requiresReauth = "REQUIRES_REAUTH"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** The capability name */
     public var name: Name

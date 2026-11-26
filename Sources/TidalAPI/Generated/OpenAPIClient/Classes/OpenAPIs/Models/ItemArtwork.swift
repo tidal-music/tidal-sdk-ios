@@ -13,8 +13,9 @@ import AnyCodable
 /** Item photos in Square&#39;s display order, including photos without an available URL; the first is the primary photo */
 public struct ItemArtwork: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case artworks = "artworks"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String

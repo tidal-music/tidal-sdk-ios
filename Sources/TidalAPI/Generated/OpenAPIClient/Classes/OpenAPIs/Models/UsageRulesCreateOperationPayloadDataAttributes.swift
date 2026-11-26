@@ -12,23 +12,26 @@ import AnyCodable
 
 public struct UsageRulesCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum Free: String, Codable, CaseIterable {
+    public enum Free: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case stream = "STREAM"
         case dj = "DJ"
         case stem = "STEM"
         case download = "DOWNLOAD"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Paid: String, Codable, CaseIterable {
+    public enum Paid: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case stream = "STREAM"
         case dj = "DJ"
         case stem = "STEM"
         case download = "DOWNLOAD"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Subscription: String, Codable, CaseIterable {
+    public enum Subscription: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case stream = "STREAM"
         case dj = "DJ"
         case stem = "STEM"
         case download = "DOWNLOAD"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let countryCodeRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var countryCode: String?

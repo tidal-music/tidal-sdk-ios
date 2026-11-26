@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct SquareConnectionsCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case squareconnections = "squareConnections"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var type: ModelType
 

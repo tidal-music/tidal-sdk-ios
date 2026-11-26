@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct DynamicPagesAttributes: Codable, Hashable {
 
-    public enum PageType: String, Codable, CaseIterable {
+    public enum PageType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case homeStatic = "HOME_STATIC"
         case homeUploads = "HOME_UPLOADS"
         case homeEditorial = "HOME_EDITORIAL"
@@ -23,6 +23,7 @@ public struct DynamicPagesAttributes: Codable, Hashable {
         case playlist = "PLAYLIST"
         case track = "TRACK"
         case video = "VIDEO"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Type of the page eg. home, artist */
     public var pageType: PageType

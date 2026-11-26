@@ -12,14 +12,16 @@ import AnyCodable
 
 public struct VideoManifestsAttributes: Codable, Hashable {
 
-    public enum PreviewReason: String, Codable, CaseIterable {
+    public enum PreviewReason: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case fullRequiresSubscription = "FULL_REQUIRES_SUBSCRIPTION"
         case fullRequiresPurchase = "FULL_REQUIRES_PURCHASE"
         case fullRequiresHigherAccessTier = "FULL_REQUIRES_HIGHER_ACCESS_TIER"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum VideoPresentation: String, Codable, CaseIterable {
+    public enum VideoPresentation: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case full = "FULL"
         case preview = "PREVIEW"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var drmData: DrmData?
     public var link: LinkObject?

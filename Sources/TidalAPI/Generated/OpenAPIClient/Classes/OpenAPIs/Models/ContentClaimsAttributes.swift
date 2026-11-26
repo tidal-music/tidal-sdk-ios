@@ -12,15 +12,17 @@ import AnyCodable
 
 public struct ContentClaimsAttributes: Codable, Hashable {
 
-    public enum Assertion: String, Codable, CaseIterable {
+    public enum Assertion: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case claim = "CLAIM"
         case disclaim = "DISCLAIM"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case _open = "OPEN"
         case inProgress = "IN_PROGRESS"
         case resolved = "RESOLVED"
         case rejected = "REJECTED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** The claim assertion type */
     public var assertion: Assertion

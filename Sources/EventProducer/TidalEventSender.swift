@@ -37,8 +37,12 @@ public final class TidalEventSender: EventSender {
 
 	// MARK: - Init
 
-	public init() {
-		self.eventQueue = EventQueue()
+	public convenience init() {
+		self.init(eventQueue: .shared)
+	}
+
+	init(eventQueue: EventQueue) {
+		self.eventQueue = eventQueue
 		self.monitoringQueue = MonitoringQueue()
 		self.monitoring = Monitoring(monitoringQueue: monitoringQueue)
 		self.eventSubmitter = EventSubmitter(eventsQueue: eventQueue, monitoring: monitoring)
@@ -119,8 +123,12 @@ public final class TidalEventSender: EventSender {
 		endOutage(eventName: event.name)
 	}
 
-	/// Used to explicitly send all events directly from the scheduler. Usage would depend on the client (ex. when app moves to the
-	/// background)
+	/// Sends every queued event, for example when the app moves to the background.
+	///
+	/// When another flush is already sending some of the events, this call sends the rest at once, then waits for that
+	/// flush to finish and sends again any event it left queued. It repeats this until no other flush holds a queued event,
+	/// and returns once all of these sends have finished.
+	/// - Throws: An error when a send fails. The undelivered events stay queued for a later flush.
 	public func sendAllEvents() async throws {
 		let headerHelper = HeaderHelper(credentialsProvider: config?.credentialsProvider)
 		do {

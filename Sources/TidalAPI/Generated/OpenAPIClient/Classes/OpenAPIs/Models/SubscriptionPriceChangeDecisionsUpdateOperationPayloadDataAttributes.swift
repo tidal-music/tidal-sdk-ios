@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct SubscriptionPriceChangeDecisionsUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case accepted = "ACCEPTED"
         case rejected = "REJECTED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** The decision to record. The only allowed transition is REJECTED -> ACCEPTED; acceptance is permanent. */
     public var status: Status

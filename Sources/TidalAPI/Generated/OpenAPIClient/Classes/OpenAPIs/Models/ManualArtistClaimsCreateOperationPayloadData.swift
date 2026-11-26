@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct ManualArtistClaimsCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case manualartistclaims = "manualArtistClaims"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var attributes: ManualArtistClaimsCreateOperationPayloadDataAttributes
     public var type: ModelType

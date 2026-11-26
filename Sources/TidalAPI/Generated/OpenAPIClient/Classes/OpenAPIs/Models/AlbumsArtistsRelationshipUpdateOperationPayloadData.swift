@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct AlbumsArtistsRelationshipUpdateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case artists = "artists"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let idRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public var id: String

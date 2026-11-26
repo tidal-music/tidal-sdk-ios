@@ -36,11 +36,13 @@ public enum ResourceGrantsAPITidal {
 	 */
 	public enum IncludeLinkage_resourceGrantsGet: String, CaseIterable {
 		case grantee = "grantee"
+		case invitation = "invitation"
 		case subject = "subject"
 
 		func toResourceGrantsAPIEnum() -> ResourceGrantsAPI.IncludeLinkage_resourceGrantsGet {
 			switch self {
 			case .grantee: return .grantee
+			case .invitation: return .invitation
 			case .subject: return .subject
 			}
 		}
@@ -75,11 +77,13 @@ public enum ResourceGrantsAPITidal {
 	 */
 	public enum IncludeLinkage_resourceGrantsIdGet: String, CaseIterable {
 		case grantee = "grantee"
+		case invitation = "invitation"
 		case subject = "subject"
 
 		func toResourceGrantsAPIEnum() -> ResourceGrantsAPI.IncludeLinkage_resourceGrantsIdGet {
 			switch self {
 			case .grantee: return .grantee
+			case .invitation: return .invitation
 			case .subject: return .subject
 			}
 		}
@@ -117,6 +121,18 @@ public enum ResourceGrantsAPITidal {
 	public static func resourceGrantsIdRelationshipsGranteeGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsGranteeSingleRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			ResourceGrantsAPI.resourceGrantsIdRelationshipsGranteeGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
+		}
+	}
+
+
+	/**
+     Get invitation relationship (\&quot;to-one\&quot;).
+     
+     - returns: ResourceGrantsInvitationSingleRelationshipDataDocument
+     */
+	public static func resourceGrantsIdRelationshipsInvitationGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantsInvitationSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			ResourceGrantsAPI.resourceGrantsIdRelationshipsInvitationGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia)
 		}
 	}
 

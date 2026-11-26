@@ -12,26 +12,31 @@ import AnyCodable
 
 public struct AtomicOperations403ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case requiredTermsNotAccepted = "REQUIRED_TERMS_NOT_ACCEPTED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?
+    public var meta: MissingTermsMeta?
     public var status: String
 
     public init(
         code: Code,
         detail: String? = nil,
+        meta: MissingTermsMeta? = nil,
         status: String
     ) {
         self.code = code
         self.detail = detail
+        self.meta = meta
         self.status = status
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case code
         case detail
+        case meta
         case status
     }
 
@@ -41,6 +46,7 @@ public struct AtomicOperations403ResponseBodyErrorsInner: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(code, forKey: .code)
         try container.encodeIfPresent(detail, forKey: .detail)
+        try container.encodeIfPresent(meta, forKey: .meta)
         try container.encode(status, forKey: .status)
     }
 }

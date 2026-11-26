@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct AlbumsCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case albums = "albums"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var attributes: AlbumsCreateOperationPayloadDataAttributes
     public var relationships: AlbumsCreateOperationPayloadDataRelationships

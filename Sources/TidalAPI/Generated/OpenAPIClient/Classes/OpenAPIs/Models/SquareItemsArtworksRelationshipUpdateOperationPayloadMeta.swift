@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct SquareItemsArtworksRelationshipUpdateOperationPayloadMeta: Codable, Hashable {
 
-    public enum Mode: String, Codable, CaseIterable {
+    public enum Mode: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case replaceAll = "REPLACE_ALL"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let expectedRevisionRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: 9007199254740991, exclusiveMaximum: false, multipleOf: nil)
     public var expectedRevision: Int64

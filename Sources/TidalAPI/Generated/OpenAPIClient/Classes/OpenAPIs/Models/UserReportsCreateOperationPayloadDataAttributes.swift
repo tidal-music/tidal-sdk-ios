@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct UserReportsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum Reason: String, Codable, CaseIterable {
+    public enum Reason: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case sexualContentOrNudity = "SEXUAL_CONTENT_OR_NUDITY"
         case violentOrDangerousContent = "VIOLENT_OR_DANGEROUS_CONTENT"
         case hatefulOrAbusiveContent = "HATEFUL_OR_ABUSIVE_CONTENT"
@@ -23,6 +23,7 @@ public struct UserReportsCreateOperationPayloadDataAttributes: Codable, Hashable
         case copyrightInfringement = "COPYRIGHT_INFRINGEMENT"
         case appeal = "APPEAL"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let descriptionRule = StringRule(minLength: 1, maxLength: 500, pattern: nil)
     public var description: String

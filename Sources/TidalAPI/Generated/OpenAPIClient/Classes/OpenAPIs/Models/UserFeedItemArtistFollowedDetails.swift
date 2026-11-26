@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct UserFeedItemArtistFollowedDetails: Codable, Hashable {
 
-    public enum ActivityType: String, Codable, CaseIterable {
+    public enum ActivityType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case artistFollowed = "ARTIST_FOLLOWED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Type of activity represented by the group */
     public var activityType: ActivityType

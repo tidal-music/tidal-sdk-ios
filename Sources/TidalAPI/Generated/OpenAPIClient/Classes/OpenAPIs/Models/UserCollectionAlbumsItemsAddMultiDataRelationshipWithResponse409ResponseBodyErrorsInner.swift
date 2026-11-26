@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct UserCollectionAlbumsItemsAddMultiDataRelationshipWithResponse409ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case duplicateItemsInCollection = "DUPLICATE_ITEMS_IN_COLLECTION"
         case idempotentRequestInProgress = "IDEMPOTENT_REQUEST_IN_PROGRESS"
         case tooManyItemsInCollection = "TOO_MANY_ITEMS_IN_COLLECTION"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

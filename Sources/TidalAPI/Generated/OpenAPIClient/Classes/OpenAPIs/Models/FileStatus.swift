@@ -13,27 +13,30 @@ import AnyCodable
 /** File status */
 public struct FileStatus: Codable, Hashable {
 
-    public enum AiScanningFileStatus: String, Codable, CaseIterable {
+    public enum AiScanningFileStatus: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case notScanned = "NOT_SCANNED"
         case scanning = "SCANNING"
         case isAi = "IS_AI"
         case notAi = "NOT_AI"
         case error = "ERROR"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum ModerationFileStatus: String, Codable, CaseIterable {
+    public enum ModerationFileStatus: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case notModerated = "NOT_MODERATED"
         case scanning = "SCANNING"
         case flagged = "FLAGGED"
         case takenDown = "TAKEN_DOWN"
         case ok = "OK"
         case error = "ERROR"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum TechnicalFileStatus: String, Codable, CaseIterable {
+    public enum TechnicalFileStatus: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case uploadRequested = "UPLOAD_REQUESTED"
         case processing = "PROCESSING"
         case ok = "OK"
         case error = "ERROR"
         case deleted = "DELETED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Status of scanning the file for being AI-generated. Only present for file types that support AI scanning (e.g. track source files) and when a scanning status is available for the file; absent otherwise. */
     public var aiScanningFileStatus: AiScanningFileStatus?

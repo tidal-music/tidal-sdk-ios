@@ -13,10 +13,11 @@ import AnyCodable
 /** Where buyers came from. items is present exactly when status is OK, and an empty items is a measured empty result */
 public struct ArtistSalesStatisticsBuyerSources: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case ok = "OK"
         case suppressed = "SUPPRESSED"
         case unavailable = "UNAVAILABLE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var items: [ArtistSalesStatisticsBuyerSourceShare]?
     /** Status of artist statistics that may be withheld. OK: the data is present. SUPPRESSED: withheld because too few people are counted to show it. UNAVAILABLE: not available at the moment */

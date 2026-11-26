@@ -12,15 +12,17 @@ import AnyCodable
 
 public struct OfflineTasksAttributes: Codable, Hashable {
 
-    public enum Action: String, Codable, CaseIterable {
+    public enum Action: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case store = "STORE"
         case remove = "REMOVE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum State: String, Codable, CaseIterable {
+    public enum State: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case pending = "PENDING"
         case inProgress = "IN_PROGRESS"
         case failed = "FAILED"
         case completed = "COMPLETED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Action to perform */
     public var action: Action

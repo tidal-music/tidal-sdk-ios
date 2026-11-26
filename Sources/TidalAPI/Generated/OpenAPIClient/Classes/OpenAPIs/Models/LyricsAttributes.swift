@@ -12,15 +12,17 @@ import AnyCodable
 
 public struct LyricsAttributes: Codable, Hashable {
 
-    public enum Direction: String, Codable, CaseIterable {
+    public enum Direction: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case leftToRight = "LEFT_TO_RIGHT"
         case rightToLeft = "RIGHT_TO_LEFT"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum TechnicalStatus: String, Codable, CaseIterable {
+    public enum TechnicalStatus: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case pending = "PENDING"
         case processing = "PROCESSING"
         case error = "ERROR"
         case ok = "OK"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var direction: Direction?
     public var lrcText: String?

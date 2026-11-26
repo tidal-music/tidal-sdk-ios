@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct ClientCertificatesCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case clientcertificates = "clientCertificates"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var relationships: ClientCertificatesCreateOperationPayloadDataRelationships
     public var type: ModelType

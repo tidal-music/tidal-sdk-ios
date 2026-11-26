@@ -56,6 +56,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case purchasesResourceObject(PurchasesResourceObject)
     case reactionSummariesResourceObject(ReactionSummariesResourceObject)
     case reactionsResourceObject(ReactionsResourceObject)
+    case resourceGrantInvitationsResourceObject(ResourceGrantInvitationsResourceObject)
     case resourceGrantsResourceObject(ResourceGrantsResourceObject)
     case savedSharesResourceObject(SavedSharesResourceObject)
     case scopesResourceObject(ScopesResourceObject)
@@ -71,6 +72,10 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case squareSitesResourceObject(SquareSitesResourceObject)
     case stripeConnectionsResourceObject(StripeConnectionsResourceObject)
     case stripeDashboardLinksResourceObject(StripeDashboardLinksResourceObject)
+    case studioHomeEventTilesResourceObject(StudioHomeEventTilesResourceObject)
+    case studioHomeInsightTilesResourceObject(StudioHomeInsightTilesResourceObject)
+    case studioHomeMerchTilesResourceObject(StudioHomeMerchTilesResourceObject)
+    case studioHomeMusicTilesResourceObject(StudioHomeMusicTilesResourceObject)
     case subscriptionPriceChangeDecisionsResourceObject(SubscriptionPriceChangeDecisionsResourceObject)
     case temporaryUserTokensResourceObject(TemporaryUserTokensResourceObject)
     case termsResourceObject(TermsResourceObject)
@@ -90,6 +95,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case userCollectionVideosResourceObject(UserCollectionVideosResourceObject)
     case userDailyMixesResourceObject(UserDailyMixesResourceObject)
     case userDataExportRequestsResourceObject(UserDataExportRequestsResourceObject)
+    case userDataExportsResourceObject(UserDataExportsResourceObject)
     case userDiscoveryMixesResourceObject(UserDiscoveryMixesResourceObject)
     case userFeedItemsResourceObject(UserFeedItemsResourceObject)
     case userFeedsResourceObject(UserFeedsResourceObject)
@@ -103,6 +109,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
     case videoManifestsResourceObject(VideoManifestsResourceObject)
     case videosResourceObject(VideosResourceObject)
     case viewerContextsResourceObject(ViewerContextsResourceObject)
+    case unknownDefaultOpenApi
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
@@ -197,6 +204,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .reactionsResourceObject(let value):
             try container.encode(value)
+        case .resourceGrantInvitationsResourceObject(let value):
+            try container.encode(value)
         case .resourceGrantsResourceObject(let value):
             try container.encode(value)
         case .savedSharesResourceObject(let value):
@@ -226,6 +235,14 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case .stripeConnectionsResourceObject(let value):
             try container.encode(value)
         case .stripeDashboardLinksResourceObject(let value):
+            try container.encode(value)
+        case .studioHomeEventTilesResourceObject(let value):
+            try container.encode(value)
+        case .studioHomeInsightTilesResourceObject(let value):
+            try container.encode(value)
+        case .studioHomeMerchTilesResourceObject(let value):
+            try container.encode(value)
+        case .studioHomeMusicTilesResourceObject(let value):
             try container.encode(value)
         case .subscriptionPriceChangeDecisionsResourceObject(let value):
             try container.encode(value)
@@ -265,6 +282,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .userDataExportRequestsResourceObject(let value):
             try container.encode(value)
+        case .userDataExportsResourceObject(let value):
+            try container.encode(value)
         case .userDiscoveryMixesResourceObject(let value):
             try container.encode(value)
         case .userFeedItemsResourceObject(let value):
@@ -291,6 +310,8 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             try container.encode(value)
         case .viewerContextsResourceObject(let value):
             try container.encode(value)
+        case .unknownDefaultOpenApi:
+            try container.encodeNil()
         }
     }
     
@@ -438,6 +459,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "reactions":
             let value = try ReactionsResourceObject(from: decoder)
             self = .reactionsResourceObject(value)
+        case "resourceGrantInvitations":
+            let value = try ResourceGrantInvitationsResourceObject(from: decoder)
+            self = .resourceGrantInvitationsResourceObject(value)
         case "resourceGrants":
             let value = try ResourceGrantsResourceObject(from: decoder)
             self = .resourceGrantsResourceObject(value)
@@ -483,6 +507,18 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "stripeDashboardLinks":
             let value = try StripeDashboardLinksResourceObject(from: decoder)
             self = .stripeDashboardLinksResourceObject(value)
+        case "studioHomeEventTiles":
+            let value = try StudioHomeEventTilesResourceObject(from: decoder)
+            self = .studioHomeEventTilesResourceObject(value)
+        case "studioHomeInsightTiles":
+            let value = try StudioHomeInsightTilesResourceObject(from: decoder)
+            self = .studioHomeInsightTilesResourceObject(value)
+        case "studioHomeMerchTiles":
+            let value = try StudioHomeMerchTilesResourceObject(from: decoder)
+            self = .studioHomeMerchTilesResourceObject(value)
+        case "studioHomeMusicTiles":
+            let value = try StudioHomeMusicTilesResourceObject(from: decoder)
+            self = .studioHomeMusicTilesResourceObject(value)
         case "subscriptionPriceChangeDecisions":
             let value = try SubscriptionPriceChangeDecisionsResourceObject(from: decoder)
             self = .subscriptionPriceChangeDecisionsResourceObject(value)
@@ -540,6 +576,9 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
         case "userDataExportRequests":
             let value = try UserDataExportRequestsResourceObject(from: decoder)
             self = .userDataExportRequestsResourceObject(value)
+        case "userDataExports":
+            let value = try UserDataExportsResourceObject(from: decoder)
+            self = .userDataExportsResourceObject(value)
         case "userDiscoveryMixes":
             let value = try UserDiscoveryMixesResourceObject(from: decoder)
             self = .userDiscoveryMixesResourceObject(value)
@@ -580,7 +619,7 @@ public enum IncludedInner: Codable, JSONEncodable, Hashable {
             let value = try ViewerContextsResourceObject(from: decoder)
             self = .viewerContextsResourceObject(value)
         default:
-            throw DecodingError.dataCorruptedError(forKey: .type, in: container, debugDescription: "Unknown type: \\(type)")
+            self = .unknownDefaultOpenApi
         }
     }
 }
@@ -634,6 +673,7 @@ extension IncludedInner: Identifiable {
         case .purchasesResourceObject(let value): return value.id
         case .reactionSummariesResourceObject(let value): return value.id
         case .reactionsResourceObject(let value): return value.id
+        case .resourceGrantInvitationsResourceObject(let value): return value.id
         case .resourceGrantsResourceObject(let value): return value.id
         case .savedSharesResourceObject(let value): return value.id
         case .scopesResourceObject(let value): return value.id
@@ -649,6 +689,10 @@ extension IncludedInner: Identifiable {
         case .squareSitesResourceObject(let value): return value.id
         case .stripeConnectionsResourceObject(let value): return value.id
         case .stripeDashboardLinksResourceObject(let value): return value.id
+        case .studioHomeEventTilesResourceObject(let value): return value.id
+        case .studioHomeInsightTilesResourceObject(let value): return value.id
+        case .studioHomeMerchTilesResourceObject(let value): return value.id
+        case .studioHomeMusicTilesResourceObject(let value): return value.id
         case .subscriptionPriceChangeDecisionsResourceObject(let value): return value.id
         case .temporaryUserTokensResourceObject(let value): return value.id
         case .termsResourceObject(let value): return value.id
@@ -668,6 +712,7 @@ extension IncludedInner: Identifiable {
         case .userCollectionVideosResourceObject(let value): return value.id
         case .userDailyMixesResourceObject(let value): return value.id
         case .userDataExportRequestsResourceObject(let value): return value.id
+        case .userDataExportsResourceObject(let value): return value.id
         case .userDiscoveryMixesResourceObject(let value): return value.id
         case .userFeedItemsResourceObject(let value): return value.id
         case .userFeedsResourceObject(let value): return value.id
@@ -681,6 +726,7 @@ extension IncludedInner: Identifiable {
         case .videoManifestsResourceObject(let value): return value.id
         case .videosResourceObject(let value): return value.id
         case .viewerContextsResourceObject(let value): return value.id
+        case .unknownDefaultOpenApi: return "unknown"
         }
     }
 }

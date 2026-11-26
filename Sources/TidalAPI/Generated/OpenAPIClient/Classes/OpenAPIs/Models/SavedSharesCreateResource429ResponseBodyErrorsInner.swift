@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct SavedSharesCreateResource429ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case sharePasswordAttemptsExceeded = "SHARE_PASSWORD_ATTEMPTS_EXCEEDED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

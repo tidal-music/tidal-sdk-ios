@@ -14,6 +14,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - **Source-breaking:** `ProductType` has a new case, `TRACK_SOURCE_FILE`; exhaustive `switch`es over it need to handle it (Player)
 
+## [0.15.3] - 2026-11-24
+
+### Added
+- Required `contentCounts` attribute (`albums`, `folders`) on `studioHomeMusicTiles`, with the totals of the user's uploads at every folder level (TidalAPI)
+- `filter[requiredAccessTier][satisfiedBy]` parameter on the `scopes` endpoint (TidalAPI)
+
+### Changed
+- `filter[requiredAccessTier]` on the `scopes` endpoint is now optional (TidalAPI)
+- Generated API code using spec version 1.10.260 (TidalAPI)
+
+## [0.15.2] - 2026-11-18
+
+### Added
+- `squareConnection` relationship on `studioHomeMerchTiles`, with its `/relationships/squareConnection` endpoint and `include=squareConnection`, so the merch tile can carry the seller's Square connection status (TidalAPI)
+- `ITEMS` capability name for `squareConnections` capabilities (TidalAPI)
+- Optional `shareCode` parameter on the `folderItems` and `folders` endpoints (TidalAPI)
+
+### Changed
+- Generated API code using spec version 1.10.257 (TidalAPI)
+
+## [0.15.1] - 2026-11-18
+
+### Changed
+- Generated API code using spec version 1.10.255, adding an `items` relationship and `/relationships/items` endpoint to `studioHomeMusicTiles` and `studioHomeInsightTiles` (TidalAPI)
+
+## [0.15.0] - 2026-11-16
+
+### Added
+- Studio Home tile resources (`studioHomeMerchTiles`, `studioHomeMusicTiles`, `studioHomeInsightTiles`, `studioHomeEventTiles`) and their read endpoints, so Studio Home modules can link a tile. The merch tile carries `requiredTerms` and an `items` relationship to `squareItems` (TidalAPI)
+
+### Changed
+- Generated API code using spec version 1.10.254 (TidalAPI)
+
+## [0.14.2] - 2026-11-13
+
+### Changed
+- Generated API code using spec version 1.10.245, including `numberOfFollowing` on artists and resource grant invitations (TidalAPI)
+- Generate unknown enum values and unknown resource types as `unknownDefaultOpenApi` instead of failing the whole response. Takes effect with the next API regeneration; exhaustive `switch` statements over generated enums and `IncludedInner` then need a new case (TidalAPI)
+
+## [0.14.1] - 2026-11-11
+
+### Fixed
+- Keep JSON request bytes stable across idempotent retries (TidalAPI)
+
+## [0.14.0] - 2026-11-10
+
+### Added
+- Optional `shareCode` on `MediaProduct`, sent with the track manifest request so a shared upload plays before the recipient saves it (Player)
+
 ## [0.13.1] - 2026-11-09
 
 ### Changed

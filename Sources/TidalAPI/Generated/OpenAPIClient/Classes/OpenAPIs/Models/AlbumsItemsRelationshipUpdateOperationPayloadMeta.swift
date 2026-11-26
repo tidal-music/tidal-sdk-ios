@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct AlbumsItemsRelationshipUpdateOperationPayloadMeta: Codable, Hashable {
 
-    public enum Mode: String, Codable, CaseIterable {
+    public enum Mode: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case incremental = "INCREMENTAL"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let positionIndexRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Relationship mutation mode. INCREMENTAL updates selected existing entries without adding or removing memberships; REPLACE_ALL replaces the complete membership and its order where applicable. Omission defaults to INCREMENTAL. */

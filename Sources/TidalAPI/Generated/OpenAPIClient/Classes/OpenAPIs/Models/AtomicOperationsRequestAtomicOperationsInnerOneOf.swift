@@ -13,8 +13,9 @@ import AnyCodable
 /** Creates a positive fixed-price variation linked by lid to the item added earlier in this atomic request. Inventory quantity is submitted separately. */
 public struct AtomicOperationsRequestAtomicOperationsInnerOneOf: Codable, Hashable {
 
-    public enum Op: String, Codable, CaseIterable {
+    public enum Op: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case add = "add"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var data: SquareItemVariationsCreateOperationPayloadLocalData
     public var op: Op

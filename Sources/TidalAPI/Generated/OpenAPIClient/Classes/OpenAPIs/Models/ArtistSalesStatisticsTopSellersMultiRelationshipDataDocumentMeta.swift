@@ -13,13 +13,15 @@ import AnyCodable
 /** status is the status of the sales statistics */
 public struct ArtistSalesStatisticsTopSellersMultiRelationshipDataDocumentMeta: Codable, Hashable {
 
-    public enum Currency: String, Codable, CaseIterable {
+    public enum Currency: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case usd = "USD"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case ok = "OK"
         case notSetUp = "NOT_SET_UP"
         case unavailable = "UNAVAILABLE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let currencyRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** Currency of netSalesAmount. Present when status is OK */

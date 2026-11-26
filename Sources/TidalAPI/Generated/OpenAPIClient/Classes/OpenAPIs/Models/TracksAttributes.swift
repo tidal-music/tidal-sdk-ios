@@ -12,17 +12,19 @@ import AnyCodable
 
 public struct TracksAttributes: Codable, Hashable {
 
-    public enum AccessType: String, Codable, CaseIterable {
+    public enum AccessType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Availability: String, Codable, CaseIterable {
+    public enum Availability: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case stream = "STREAM"
         case dj = "DJ"
         case stem = "STEM"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Key: String, Codable, CaseIterable {
+    public enum Key: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case unknown = "UNKNOWN"
         case c = "C"
         case csharp = "CSharp"
@@ -36,8 +38,9 @@ public struct TracksAttributes: Codable, Hashable {
         case a = "A"
         case bb = "Bb"
         case b = "B"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum KeyScale: String, Codable, CaseIterable {
+    public enum KeyScale: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case unknown = "UNKNOWN"
         case major = "MAJOR"
         case minor = "MINOR"
@@ -52,6 +55,7 @@ public struct TracksAttributes: Codable, Hashable {
         case phrygian = "PHRYGIAN"
         case melodicMinor = "MELODIC_MINOR"
         case pentatonicMinor = "PENTATONIC_MINOR"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let isrcRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     public static let titleRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)

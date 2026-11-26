@@ -13,10 +13,11 @@ import AnyCodable
 /** The viewer&#39;s effective role on the subject, from a grant or an implicit role such as an album&#39;s VIEWER through a grant on one of its tracks. Populated for owned albums, tracks and folders; omitted for other subjects. Share codes do not count. */
 public struct EffectiveRole: Codable, Hashable {
 
-    public enum Role: String, Codable, CaseIterable {
+    public enum Role: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case viewer = "VIEWER"
         case collaborator = "COLLABORATOR"
         case owner = "OWNER"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Effective role. */
     public var role: Role

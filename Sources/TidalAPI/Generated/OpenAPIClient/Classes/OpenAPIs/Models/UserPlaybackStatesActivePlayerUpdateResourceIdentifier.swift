@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct UserPlaybackStatesActivePlayerUpdateResourceIdentifier: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case installations = "installations"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var id: String
     public var type: ModelType

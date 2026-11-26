@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct ContentClaimsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum Assertion: String, Codable, CaseIterable {
+    public enum Assertion: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case claim = "CLAIM"
         case disclaim = "DISCLAIM"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var assertion: Assertion
 

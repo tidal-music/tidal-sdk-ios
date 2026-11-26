@@ -23,13 +23,16 @@ final class MonitoringTests: XCTestCase {
 	private let monitoringQueue: MonitoringQueue = .init()
 	private var headerHelper: HeaderHelper!
 	private let maxDiskUsageBytes = 204_800
+	private let eventQueue = EventQueue(
+		databaseURL: FileManager.default.temporaryDirectory.appendingPathComponent("MonitoringTests-\(UUID().uuidString).sqlite")
+	)
 
 	private var mockCredentialsProvider: CredentialsProvider {
 		MockCredentialsProvider(isUserLoggedIn: true)
 	}
 
 	private var mockMonitoringScheduler: MonitoringScheduler {
-		MonitoringScheduler(consumerUri: "https://consumer.uri", monitoring: sut, eventQueue: .init())
+		MonitoringScheduler(consumerUri: "https://consumer.uri", monitoring: sut, eventQueue: eventQueue)
 	}
 
 	override func setUp() {

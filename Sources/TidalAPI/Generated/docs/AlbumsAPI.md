@@ -204,7 +204,7 @@ Name | Type | Description  | Notes
 
 Update single album.
 
-Updates existing album.
+Updates existing album. A COLLABORATOR on the album may update it; changing accessType, published or barcodeId needs OWNER.
 
 ### Example
 ```swift
@@ -214,7 +214,7 @@ import OpenAPIClient
 let id = "id_example" // String | Album id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
-let albumsUpdateOperationPayload = AlbumsUpdateOperation_Payload(data: AlbumsUpdateOperation_Payload_Data(attributes: AlbumsUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", albumType: "albumType_example", barcodeId: "barcodeId_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumsUpdateOperation_Payload_Data_Relationships(genres: AlbumsUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumsUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsUpdateOperationPayload |  (optional)
+let albumsUpdateOperationPayload = AlbumsUpdateOperation_Payload(data: AlbumsUpdateOperation_Payload_Data(attributes: AlbumsUpdateOperation_Payload_Data_Attributes(accessType: "accessType_example", albumType: "albumType_example", barcodeId: "barcodeId_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, published: true, releaseDate: Date(), title: "title_example", version: "version_example"), id: "id_example", relationships: AlbumsUpdateOperation_Payload_Data_Relationships(genres: AlbumsUpdateOperation_Payload_Data_Relationships_Genres(data: [AlbumsUpdateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsUpdateOperationPayload |  (optional)
 
 // Update single album.
 do {
@@ -362,7 +362,7 @@ Name | Type | Description  | Notes
 
 Update artists relationship (\"to-many\").
 
-Sets the album's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the album. Only the album's owner can change its artists. Returns an acknowledgement.
+Sets the album's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the album. Owners and collaborators can change its artists. Returns an acknowledgement.
 
 ### Example
 ```swift
@@ -630,7 +630,7 @@ Name | Type | Description  | Notes
 
 Update items relationship (\"to-many\").
 
-Incrementally updates one existing track's 1-based track number to meta.positionIndex. Does not replace the album's items or add or remove tracks. Empty data is rejected. Returns an acknowledgement.
+Incrementally updates one existing track's 1-based track number to meta.positionIndex. Does not replace the album's items or add or remove tracks. Empty data is rejected. A COLLABORATOR on the album may reorder. Returns an acknowledgement.
 
 ### Example
 ```swift

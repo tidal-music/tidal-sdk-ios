@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct CommentsCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case comments = "comments"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var attributes: CommentsCreateOperationPayloadDataAttributes
     public var relationships: CommentsCreateOperationPayloadDataRelationships

@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct SharingSummariesAttributes: Codable, Hashable {
 
-    /** Whether a live grant to another user or an applicable undeleted, unexpired share exists on the subject or an ancestor. Everyone grants do not count. Ancestor folder links require VOUCHER; exhausted links still count. */
+    /** Whether a live grant to another user, an unexpired bearer grant or an applicable undeleted, unexpired share exists on the subject or an ancestor. Everyone grants do not count. Ancestor folder links require VOUCHER; exhausted links still count. */
     public var shared: Bool
     /** The same sharing check restricted to ancestor folders and albums. Descendants never contribute. */
     public var sharedViaParent: Bool

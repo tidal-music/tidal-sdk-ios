@@ -13,8 +13,9 @@ import AnyCodable
 /** One of your uploaded tracks reached a total play count. The &#x60;subject&#x60; is the track. &#x60;eventCount&#x60; is always 1, and actors are never listed */
 public struct UserFeedItemTrackPlayMilestoneDetails: Codable, Hashable {
 
-    public enum ActivityType: String, Codable, CaseIterable {
+    public enum ActivityType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case trackPlayMilestone = "TRACK_PLAY_MILESTONE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let thresholdRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Type of activity represented by the group */

@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct OfflineTasksUpdateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case offlinetasks = "offlineTasks"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var attributes: OfflineTasksUpdateOperationPayloadDataAttributes
     public var id: String

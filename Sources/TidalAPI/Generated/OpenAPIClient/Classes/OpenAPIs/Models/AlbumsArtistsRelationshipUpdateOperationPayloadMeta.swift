@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct AlbumsArtistsRelationshipUpdateOperationPayloadMeta: Codable, Hashable {
 
-    public enum Mode: String, Codable, CaseIterable {
+    public enum Mode: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case replaceAll = "REPLACE_ALL"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Relationship mutation mode. INCREMENTAL updates selected existing entries without adding or removing memberships; REPLACE_ALL replaces the complete membership and its order where applicable. Omission defaults to REPLACE_ALL. */
     public var mode: Mode? = .replaceAll

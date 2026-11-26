@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct ArtistStreamsStatisticsSourcePlays: Codable, Hashable {
 
-    public enum Source: String, Codable, CaseIterable {
+    public enum Source: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case mixesAndRadio = "MIXES_AND_RADIO"
         case albumsAndProfile = "ALBUMS_AND_PROFILE"
         case tidalPlaylists = "TIDAL_PLAYLISTS"
@@ -20,6 +20,7 @@ public struct ArtistStreamsStatisticsSourcePlays: Codable, Hashable {
         case listenerCollections = "LISTENER_COLLECTIONS"
         case search = "SEARCH"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let playsRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public static let shareRule = NumericRule<Double>(minimum: 0, exclusiveMinimum: false, maximum: 1, exclusiveMaximum: false, multipleOf: nil)

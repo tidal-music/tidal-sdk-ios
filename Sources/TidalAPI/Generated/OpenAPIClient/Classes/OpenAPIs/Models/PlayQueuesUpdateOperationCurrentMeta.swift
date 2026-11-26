@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct PlayQueuesUpdateOperationCurrentMeta: Codable, Hashable {
 
-    public enum Mode: String, Codable, CaseIterable {
+    public enum Mode: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case firstFutureItem = "FIRST_FUTURE_ITEM"
         case item = "ITEM"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Queue item identifier; required for ITEM. */
     public var itemId: String?

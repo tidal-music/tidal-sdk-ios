@@ -21,9 +21,12 @@ final class EventsTests: XCTestCase {
 		var isUserLoggedIn: Bool
 	}
 
-	private var eventSender = TidalEventSender.shared
+	private let databaseURL = temporaryDatabaseURL()
+	private let senderDatabaseURL = temporaryDatabaseURL()
+	private lazy var queue = EventQueue(databaseURL: databaseURL)
+	private lazy var senderQueue = EventQueue(databaseURL: senderDatabaseURL)
+	private lazy var eventSender = TidalEventSender(eventQueue: senderQueue)
 	private let testAccessToken = "testAccessToken"
-	private let queue = EventQueue()
 	private let monitoring = Monitoring(monitoringQueue: .init())
 	private var headerHelper: HeaderHelper!
 	private let maxDiskUsageBytes = 204_800
@@ -37,7 +40,16 @@ final class EventsTests: XCTestCase {
 				maxDiskUsageBytes: maxDiskUsageBytes
 			)
 		)
-		try await queue.deleteAllEvents()
+	}
+
+	override func tearDown() async throws {
+		try? FileManager.default.removeItem(at: databaseURL)
+		try? FileManager.default.removeItem(at: senderDatabaseURL)
+		try await super.tearDown()
+	}
+
+	private static func temporaryDatabaseURL() -> URL {
+		FileManager.default.temporaryDirectory.appendingPathComponent("EventsTests-\(UUID().uuidString).sqlite")
 	}
 
 	private func mockCredentialsProvider(withToken token: String) -> CredentialsProvider {
@@ -230,7 +242,7 @@ final class EventsTests: XCTestCase {
 			payload: "firstPayload"
 		)
 
-		let fetchedEvents = try await queue.getAllEvents()
+		let fetchedEvents = try await senderQueue.getAllEvents()
 		XCTAssertEqual(fetchedEvents.count, 1)
 		XCTAssertFalse(fetchedEvents.contains(where: { $0.name == "PerformanceEvent" }))
 		XCTAssertTrue(fetchedEvents.contains(where: { $0.name == "NecessaryEvent" }))
@@ -262,7 +274,7 @@ final class EventsTests: XCTestCase {
 			payload: "firstPayload"
 		)
 
-		let fetchedEvents = try await queue.getAllEvents()
+		let fetchedEvents = try await senderQueue.getAllEvents()
 
 		XCTAssertEqual(fetchedEvents.count, 3)
 		XCTAssertEqual(

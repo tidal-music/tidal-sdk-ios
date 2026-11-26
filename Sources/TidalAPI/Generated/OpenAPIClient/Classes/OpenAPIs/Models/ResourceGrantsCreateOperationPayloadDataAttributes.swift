@@ -10,11 +10,13 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Required for a direct grant; omitted when redeeming. */
 public struct ResourceGrantsCreateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum Role: String, Codable, CaseIterable {
+    public enum Role: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case viewer = "VIEWER"
         case collaborator = "COLLABORATOR"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var role: Role
 

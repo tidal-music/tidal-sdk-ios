@@ -5,6 +5,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **code** | **String** |  | 
 **detail** | **String** |  | [optional] 
+**meta** | [**MissingTermsMeta**](MissingTermsMeta.md) |  | [optional] 
 **status** | **String** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

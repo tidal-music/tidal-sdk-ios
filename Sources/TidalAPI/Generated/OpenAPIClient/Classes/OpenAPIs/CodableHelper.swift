@@ -22,7 +22,8 @@ open class CodableHelper {
     private static var defaultJSONEncoder: JSONEncoder = {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .formatted(CodableHelper.dateFormatter)
-        encoder.outputFormatting = .prettyPrinted
+        // Idempotent retries must send identical bytes, including object key order.
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         return encoder
     }()
 

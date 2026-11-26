@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct VideosAttributes: Codable, Hashable {
 
-    public enum Availability: String, Codable, CaseIterable {
+    public enum Availability: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case stream = "STREAM"
         case dj = "DJ"
         case stem = "STEM"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Available usage for this video. Deprecated: use 'usageRules' instead. This field will be removed in a future version. */
     @available(*, deprecated, message: "This property is deprecated.")

@@ -12,7 +12,7 @@ import AnyCodable
 
 public struct PlaylistGenerationSchedulesUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum Weekday: String, Codable, CaseIterable {
+    public enum Weekday: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case monday = "MONDAY"
         case tuesday = "TUESDAY"
         case wednesday = "WEDNESDAY"
@@ -20,6 +20,7 @@ public struct PlaylistGenerationSchedulesUpdateOperationPayloadDataAttributes: C
         case friday = "FRIDAY"
         case saturday = "SATURDAY"
         case sunday = "SUNDAY"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let timeZoneRule = StringRule(minLength: 1, maxLength: 255, pattern: nil)
     /** IANA Time Zone Database identifier used to evaluate local civil time. */

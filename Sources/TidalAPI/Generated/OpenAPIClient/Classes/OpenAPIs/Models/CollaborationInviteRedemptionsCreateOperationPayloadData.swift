@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct CollaborationInviteRedemptionsCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case collaborationinviteredemptions = "collaborationInviteRedemptions"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var relationships: CollaborationInviteRedemptionsCreateOperationPayloadDataRelationships
     public var type: ModelType

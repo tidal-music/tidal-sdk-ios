@@ -12,11 +12,12 @@ import AnyCodable
 
 public struct ResourceGrantsSubject: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case albums = "albums"
         case tracks = "tracks"
         case folders = "folders"
         case playlists = "playlists"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var id: String
     public var type: ModelType

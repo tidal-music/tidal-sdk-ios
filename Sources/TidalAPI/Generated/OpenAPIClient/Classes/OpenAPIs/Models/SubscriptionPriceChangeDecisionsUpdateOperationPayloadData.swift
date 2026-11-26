@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct SubscriptionPriceChangeDecisionsUpdateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case subscriptionpricechangedecisions = "subscriptionPriceChangeDecisions"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var attributes: SubscriptionPriceChangeDecisionsUpdateOperationPayloadDataAttributes
     public var id: String

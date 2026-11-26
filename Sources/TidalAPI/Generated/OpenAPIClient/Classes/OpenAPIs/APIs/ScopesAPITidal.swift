@@ -34,13 +34,32 @@ public enum ScopesAPITidal {
 	}
 
 	/**
+	 * enum for parameter filterRequiredAccessTierSatisfiedBy
+	 */
+	public enum FilterRequiredAccessTierSatisfiedBy_scopesGet: String, CaseIterable {
+		case thirdParty = "THIRD_PARTY"
+		case thirdPartyProd = "THIRD_PARTY_PROD"
+		case partner = "PARTNER"
+		case _internal = "INTERNAL"
+
+		func toScopesAPIEnum() -> ScopesAPI.FilterRequiredAccessTierSatisfiedBy_scopesGet {
+			switch self {
+			case .thirdParty: return .thirdParty
+			case .thirdPartyProd: return .thirdPartyProd
+			case .partner: return .partner
+			case ._internal: return ._internal
+			}
+		}
+	}
+
+	/**
      Get multiple scopes.
      
      - returns: ScopesMultiResourceDataDocument
      */
-	public static func scopesGet(filterRequiredAccessTier: [ScopesAPITidal.FilterRequiredAccessTier_scopesGet]) async throws -> ScopesMultiResourceDataDocument {
+	public static func scopesGet(filterRequiredAccessTier: [ScopesAPITidal.FilterRequiredAccessTier_scopesGet]? = nil, filterRequiredAccessTierSatisfiedBy: ScopesAPITidal.FilterRequiredAccessTierSatisfiedBy_scopesGet? = nil) async throws -> ScopesMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ScopesAPI.scopesGetWithRequestBuilder(filterRequiredAccessTier: filterRequiredAccessTier.compactMap { $0.toScopesAPIEnum() })
+			ScopesAPI.scopesGetWithRequestBuilder(filterRequiredAccessTier: filterRequiredAccessTier?.compactMap { $0.toScopesAPIEnum() }, filterRequiredAccessTierSatisfiedBy: filterRequiredAccessTierSatisfiedBy?.toScopesAPIEnum())
 		}
 	}
 }

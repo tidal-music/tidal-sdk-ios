@@ -13,12 +13,14 @@ import AnyCodable
 /** A new history mix of the viewer&#39;s own listening is ready. The &#x60;subject&#x60; is the mix, as a playlist. &#x60;frequency&#x60; is how often the mix is generated. &#x60;eventCount&#x60; is always 1, and actors are never listed */
 public struct UserFeedItemHistoryMixReadyDetails: Codable, Hashable {
 
-    public enum ActivityType: String, Codable, CaseIterable {
+    public enum ActivityType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case historyMixReady = "HISTORY_MIX_READY"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Frequency: String, Codable, CaseIterable {
+    public enum Frequency: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case monthly = "MONTHLY"
         case yearly = "YEARLY"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let periodRule = StringRule(minLength: nil, maxLength: nil, pattern: "^[0-9]{4}(-(0[1-9]|1[0-2]))?$")
     /** Type of activity represented by the group */

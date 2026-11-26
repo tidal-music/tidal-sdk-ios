@@ -13,7 +13,7 @@ import AnyCodable
 /** Available audio measurements for this source. May be absent independently of waveform. */
 public struct Audio: Codable, Hashable {
 
-    public enum Codec: String, Codable, CaseIterable {
+    public enum Codec: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case flac = "FLAC"
         case alac = "ALAC"
         case aac = "AAC"
@@ -30,6 +30,7 @@ public struct Audio: Codable, Hashable {
         case eac3 = "EAC3"
         case ac4 = "AC4"
         case mha1 = "MHA1"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let bitDepthRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public static let bitrateRule = NumericRule<Int64>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)

@@ -13,10 +13,11 @@ import AnyCodable
 /** Listeners by country. Without a note, items and otherListeners add up to all listeners, and an absent otherListeners means no listeners are left. With note HIDDEN, part of the listeners is withheld, so an absent otherListeners is unknown rather than zero */
 public struct ArtistStreamsStatisticsTopCountries: Codable, Hashable {
 
-    public enum Note: String, Codable, CaseIterable {
+    public enum Note: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case grouped = "GROUPED"
         case hidden = "HIDDEN"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let otherListenersRule = NumericRule<Int64>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public var items: [ArtistStreamsStatisticsCountryListeners]

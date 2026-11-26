@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct PriceConfigurationsCreateOperationPayloadSubjects: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case tracks = "tracks"
         case albums = "albums"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var id: String
     public var type: ModelType

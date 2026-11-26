@@ -13,8 +13,9 @@ import AnyCodable
 /** The items to unpublish */
 public struct SquareSitesItemsRelationshipRemoveOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case squareitems = "squareItems"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var id: String
     public var type: ModelType

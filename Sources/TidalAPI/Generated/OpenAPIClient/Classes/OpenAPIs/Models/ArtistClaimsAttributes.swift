@@ -12,16 +12,18 @@ import AnyCodable
 
 public struct ArtistClaimsAttributes: Codable, Hashable {
 
-    public enum Provider: String, Codable, CaseIterable {
+    public enum Provider: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case distrokid = "DISTROKID"
         case cdbaby = "CDBABY"
         case tunecore = "TUNECORE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Recommendation: String, Codable, CaseIterable {
+    public enum Recommendation: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case claimProfile = "CLAIM_PROFILE"
         case claimContent = "CLAIM_CONTENT"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case awaitingOauth = "AWAITING_OAUTH"
         case fetchingContent = "FETCHING_CONTENT"
         case verified = "VERIFIED"
@@ -33,6 +35,7 @@ public struct ArtistClaimsAttributes: Codable, Hashable {
         case cancelled = "CANCELLED"
         case nameMismatch = "NAME_MISMATCH"
         case claimedArtistMismatch = "CLAIMED_ARTIST_MISMATCH"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let artistIdRule = StringRule(minLength: 1, maxLength: nil, pattern: nil)
     /** The artist id which is being claimed */

@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct PlaylistGenerationsTrackPreferencesRelationshipUpdateOperationPayloadMeta: Codable, Hashable {
 
-    public enum Mode: String, Codable, CaseIterable {
+    public enum Mode: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case incremental = "INCREMENTAL"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let expectedPreferenceVersionRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public var expectedPreferenceVersion: Int

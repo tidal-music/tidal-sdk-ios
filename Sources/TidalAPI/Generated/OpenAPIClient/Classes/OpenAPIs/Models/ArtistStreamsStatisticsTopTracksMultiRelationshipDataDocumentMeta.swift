@@ -13,10 +13,11 @@ import AnyCodable
 /** status is the breakdownsStatus of the statistics. When it is not OK the entries are withheld, so the empty linkage is not a measured empty result */
 public struct ArtistStreamsStatisticsTopTracksMultiRelationshipDataDocumentMeta: Codable, Hashable {
 
-    public enum Status: String, Codable, CaseIterable {
+    public enum Status: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case ok = "OK"
         case suppressed = "SUPPRESSED"
         case unavailable = "UNAVAILABLE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let hiddenCountRule = NumericRule<Int>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     /** Tracks left out because too few people listened to them. Present when status is OK */

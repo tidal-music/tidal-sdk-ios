@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 # **folderItemsGet**
 ```swift
-    open class func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSelfMatchesQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsMultiResourceDataDocument
+    open class func folderItemsGet(filterParentId: String? = nil, filterParentIsRoot: String? = nil, filterParentOwnersId: String? = nil, filterSelfMatchesQuery: String? = nil, filterSubjectAlbumsPublished: String? = nil, filterSubjectOwnersId: String? = nil, filterSubjectOwnersIdNe: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsMultiResourceDataDocument
 ```
 
 Get multiple folderItems.
@@ -41,10 +41,11 @@ let include = ["inner_example"] // [String] | Include related resources. Availab
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: breadcrumb.children.subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get multiple folderItems.
 do {
-    let response = try await FolderItemsAPI.folderItemsGet(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSelfMatchesQuery: filterSelfMatchesQuery, filterSubjectAlbumsPublished: filterSubjectAlbumsPublished, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    let response = try await FolderItemsAPI.folderItemsGet(filterParentId: filterParentId, filterParentIsRoot: filterParentIsRoot, filterParentOwnersId: filterParentOwnersId, filterSelfMatchesQuery: filterSelfMatchesQuery, filterSubjectAlbumsPublished: filterSubjectAlbumsPublished, filterSubjectOwnersId: filterSubjectOwnersId, filterSubjectOwnersIdNe: filterSubjectOwnersIdNe, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -66,6 +67,7 @@ Name | Type | Description  | Notes
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -84,7 +86,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdDelete**
 ```swift
-    open class func folderItemsIdDelete(id: String, idempotencyKey: String? = nil) async throws -> MutationResponseDocument
+    open class func folderItemsIdDelete(id: String, idempotencyKey: String? = nil, shareCode: String? = nil) async throws -> MutationResponseDocument
 ```
 
 Delete single folderItem.
@@ -98,10 +100,11 @@ import OpenAPIClient
 
 let id = "id_example" // String | Folder item id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Delete single folderItem.
 do {
-    let response = try await FolderItemsAPI.folderItemsIdDelete(id: id, idempotencyKey: idempotencyKey)
+    let response = try await FolderItemsAPI.folderItemsIdDelete(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -114,6 +117,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder item id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -132,7 +136,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdGet**
 ```swift
-    open class func folderItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSingleResourceDataDocument
+    open class func folderItemsIdGet(id: String, include: [String]? = nil, includeLinkage: [IncludeLinkage_folderItemsIdGet]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsSingleResourceDataDocument
 ```
 
 Get single folderItem.
@@ -148,10 +152,11 @@ let id = "id_example" // String | Folder item id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: breadcrumb, owners, parent, sharingSummary, subject (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: breadcrumb.children.subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get single folderItem.
 do {
-    let response = try await FolderItemsAPI.folderItemsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia)
+    let response = try await FolderItemsAPI.folderItemsIdGet(id: id, include: include, includeLinkage: includeLinkage, replaceMedia: replaceMedia, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -166,6 +171,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: breadcrumb, owners, parent, sharingSummary, subject | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -173,7 +179,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
 
 ### HTTP request headers
 
@@ -184,7 +190,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdRelationshipsBreadcrumbGet**
 ```swift
-    open class func folderItemsIdRelationshipsBreadcrumbGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> FolderItemsBreadcrumbMultiRelationshipDataDocument
+    open class func folderItemsIdRelationshipsBreadcrumbGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsBreadcrumbMultiRelationshipDataDocument
 ```
 
 Get breadcrumb relationship (\"to-many\").
@@ -200,10 +206,11 @@ let id = "id_example" // String | Folder item id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: breadcrumb (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: breadcrumb.children.subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get breadcrumb relationship (\"to-many\").
 do {
-    let response = try await FolderItemsAPI.folderItemsIdRelationshipsBreadcrumbGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsBreadcrumbGet(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -218,6 +225,7 @@ Name | Type | Description  | Notes
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: breadcrumb | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: breadcrumb.children.subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -236,7 +244,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdRelationshipsOwnersGet**
 ```swift
-    open class func folderItemsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil) async throws -> FolderItemsOwnersMultiRelationshipDataDocument
+    open class func folderItemsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> FolderItemsOwnersMultiRelationshipDataDocument
 ```
 
 Get owners relationship (\"to-many\").
@@ -251,10 +259,11 @@ import OpenAPIClient
 let id = "id_example" // String | Folder item id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get owners relationship (\"to-many\").
 do {
-    let response = try await FolderItemsAPI.folderItemsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor)
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsOwnersGet(id: id, include: include, pageCursor: pageCursor, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -268,6 +277,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Folder item id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -275,7 +285,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
 
 ### HTTP request headers
 
@@ -286,7 +296,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdRelationshipsParentGet**
 ```swift
-    open class func folderItemsIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsParentSingleRelationshipDataDocument
+    open class func folderItemsIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsParentSingleRelationshipDataDocument
 ```
 
 Get parent relationship (\"to-one\").
@@ -301,10 +311,11 @@ import OpenAPIClient
 let id = "id_example" // String | Folder item id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: parent (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: parent.children.subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get parent relationship (\"to-one\").
 do {
-    let response = try await FolderItemsAPI.folderItemsIdRelationshipsParentGet(id: id, include: include, replaceMedia: replaceMedia)
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsParentGet(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -318,6 +329,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Folder item id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: parent | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: parent.children.subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -336,12 +348,12 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdRelationshipsParentPatch**
 ```swift
-    open class func folderItemsIdRelationshipsParentPatch(id: String, idempotencyKey: String? = nil, folderItemsParentRelationshipUpdateOperationPayload: FolderItemsParentRelationshipUpdateOperationPayload? = nil) async throws -> FolderItemsParentUpdateSingleRelationshipDataDocument
+    open class func folderItemsIdRelationshipsParentPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, folderItemsParentRelationshipUpdateOperationPayload: FolderItemsParentRelationshipUpdateOperationPayload? = nil) async throws -> FolderItemsParentUpdateSingleRelationshipDataDocument
 ```
 
 Update parent relationship (\"to-one\").
 
-Moves the item to the supplied parent folder, replacing its previous parent. To move to the top level, supply the root folder explicitly; null data is rejected. Returns the new parent linkage.
+Moves the item to the supplied parent folder, replacing its previous parent. To move to the top level, supply the root folder explicitly; null data is rejected. The caller needs at least COLLABORATOR on the new parent. Within the item's tree they need OWNER on the item or COLLABORATOR on the folder holding it; only its creator moves it into another user's tree. Returns the new parent linkage.
 
 ### Example
 ```swift
@@ -350,11 +362,12 @@ import OpenAPIClient
 
 let id = "id_example" // String | Folder item id
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 let folderItemsParentRelationshipUpdateOperationPayload = FolderItemsParentRelationshipUpdateOperation_Payload(data: FolderItemsParentRelationshipUpdateOperation_Payload_Data(id: "id_example", type: "type_example")) // FolderItemsParentRelationshipUpdateOperationPayload |  (optional)
 
 // Update parent relationship (\"to-one\").
 do {
-    let response = try await FolderItemsAPI.folderItemsIdRelationshipsParentPatch(id: id, idempotencyKey: idempotencyKey, folderItemsParentRelationshipUpdateOperationPayload: folderItemsParentRelationshipUpdateOperationPayload)
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsParentPatch(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, folderItemsParentRelationshipUpdateOperationPayload: folderItemsParentRelationshipUpdateOperationPayload)
     dump(response)
 } catch {
     print(error)
@@ -367,6 +380,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Folder item id | 
  **idempotencyKey** | **String** | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
  **folderItemsParentRelationshipUpdateOperationPayload** | [**FolderItemsParentRelationshipUpdateOperationPayload**](FolderItemsParentRelationshipUpdateOperationPayload.md) |  | [optional] 
 
 ### Return type
@@ -386,7 +400,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdRelationshipsSharingSummaryGet**
 ```swift
-    open class func folderItemsIdRelationshipsSharingSummaryGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSharingSummarySingleRelationshipDataDocument
+    open class func folderItemsIdRelationshipsSharingSummaryGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsSharingSummarySingleRelationshipDataDocument
 ```
 
 Get sharingSummary relationship (\"to-one\").
@@ -401,10 +415,11 @@ import OpenAPIClient
 let id = "id_example" // String | Folder item id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: sharingSummary (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: sharingSummary.subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get sharingSummary relationship (\"to-one\").
 do {
-    let response = try await FolderItemsAPI.folderItemsIdRelationshipsSharingSummaryGet(id: id, include: include, replaceMedia: replaceMedia)
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsSharingSummaryGet(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -418,6 +433,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Folder item id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: sharingSummary | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: sharingSummary.subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -436,7 +452,7 @@ Name | Type | Description  | Notes
 
 # **folderItemsIdRelationshipsSubjectGet**
 ```swift
-    open class func folderItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil) async throws -> FolderItemsSubjectSingleRelationshipDataDocument
+    open class func folderItemsIdRelationshipsSubjectGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FolderItemsSubjectSingleRelationshipDataDocument
 ```
 
 Get subject relationship (\"to-one\").
@@ -451,10 +467,11 @@ import OpenAPIClient
 let id = "id_example" // String | Folder item id
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: subject (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
 
 // Get subject relationship (\"to-one\").
 do {
-    let response = try await FolderItemsAPI.folderItemsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia)
+    let response = try await FolderItemsAPI.folderItemsIdRelationshipsSubjectGet(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
     dump(response)
 } catch {
     print(error)
@@ -468,6 +485,7 @@ Name | Type | Description  | Notes
  **id** | **String** | Folder item id | 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: subject | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
 
 ### Return type
 
@@ -475,7 +493,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE), [Client_Credentials](../README.md#Client_Credentials)
 
 ### HTTP request headers
 

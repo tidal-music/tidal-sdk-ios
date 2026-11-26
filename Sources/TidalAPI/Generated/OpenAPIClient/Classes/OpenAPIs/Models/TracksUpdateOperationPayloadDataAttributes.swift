@@ -12,12 +12,13 @@ import AnyCodable
 
 public struct TracksUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum AccessType: String, Codable, CaseIterable {
+    public enum AccessType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Key: String, Codable, CaseIterable {
+    public enum Key: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case unknown = "UNKNOWN"
         case c = "C"
         case csharp = "CSharp"
@@ -31,8 +32,9 @@ public struct TracksUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case a = "A"
         case bb = "Bb"
         case b = "B"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum KeyScale: String, Codable, CaseIterable {
+    public enum KeyScale: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case unknown = "UNKNOWN"
         case major = "MAJOR"
         case minor = "MINOR"
@@ -47,6 +49,7 @@ public struct TracksUpdateOperationPayloadDataAttributes: Codable, Hashable {
         case phrygian = "PHRYGIAN"
         case melodicMinor = "MELODIC_MINOR"
         case pentatonicMinor = "PENTATONIC_MINOR"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let bpmRule = NumericRule<Float>(minimum: 0, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public static let isrcRule = StringRule(minLength: nil, maxLength: 12, pattern: "^$|^[A-Z]{2}[A-Z0-9]{3}[0-9]{2}[0-9]{5}$")
@@ -57,7 +60,7 @@ public struct TracksUpdateOperationPayloadDataAttributes: Codable, Hashable {
     public var bpm: Float?
     /** Explicit content */
     public var explicit: Bool?
-    /** An ISRC the rights holder already owns: the 12 characters ISO 3901 defines, without the hyphens of the display form. An ISRC set here can be replaced until the track is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The ISRC TIDAL assigns at the track's first sale is permanent. Omit the field to leave the ISRC unchanged. */
+    /** An ISRC the rights holder already owns: the 12 characters ISO 3901 defines, without the hyphens of the display form. An ISRC set here can be replaced until the track is first sold, and null resets it to the default value. An empty string is also accepted as a reset for now, for compatibility. After the first sale both are rejected. The ISRC TIDAL assigns at the track's first sale is permanent. Omit the field to leave the ISRC unchanged. Only the track's owners can set it. */
     public var isrc: String?
     public var key: Key?
     public var keyScale: KeyScale?

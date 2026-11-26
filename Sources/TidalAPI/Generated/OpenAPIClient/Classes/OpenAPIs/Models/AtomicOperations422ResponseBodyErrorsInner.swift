@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct AtomicOperations422ResponseBodyErrorsInner: Codable, Hashable {
 
-    public enum Code: String, Codable, CaseIterable {
+    public enum Code: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case idempotentRequestPayloadMismatch = "IDEMPOTENT_REQUEST_PAYLOAD_MISMATCH"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var code: Code
     public var detail: String?

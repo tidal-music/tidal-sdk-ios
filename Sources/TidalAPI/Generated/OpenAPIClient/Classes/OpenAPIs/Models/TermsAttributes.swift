@@ -12,11 +12,12 @@ import AnyCodable
 
 public struct TermsAttributes: Codable, Hashable {
 
-    public enum TermsType: String, Codable, CaseIterable {
+    public enum TermsType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case developer = "DEVELOPER"
         case uploadMarketplace = "UPLOAD_MARKETPLACE"
         case merchGuidelines = "MERCH_GUIDELINES"
         case tidalConnectDeveloper = "TIDAL_CONNECT_DEVELOPER"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var contentLink: LinkObject
     public var countryCode: String

@@ -11,7 +11,8 @@ import AnyCodable
 #endif
 
 /** Calendar width of each bucket. Absent when the producer&#39;s width is not recognized */
-public enum ArtistStatisticsBucketPeriod: String, Codable, CaseIterable {
+public enum ArtistStatisticsBucketPeriod: String, Codable, CaseIterable, CaseIterableDefaultsLast {
     case p1D = "P1D"
     case p7D = "P7D"
+    case unknownDefaultOpenApi = "unknown_default_open_api"
 }

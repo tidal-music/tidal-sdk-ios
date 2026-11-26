@@ -12,8 +12,9 @@ import AnyCodable
 
 public struct TemporaryUserTokensCreateOperationPayloadData: Codable, Hashable {
 
-    public enum ModelType: String, Codable, CaseIterable {
+    public enum ModelType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case temporaryusertokens = "temporaryUserTokens"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var type: ModelType
 

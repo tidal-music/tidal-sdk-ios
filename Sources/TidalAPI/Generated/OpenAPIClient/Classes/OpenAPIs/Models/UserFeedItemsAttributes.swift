@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct UserFeedItemsAttributes: Codable, Hashable {
 
-    public enum Surface: String, Codable, CaseIterable {
+    public enum Surface: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case inbox = "INBOX"
         case feed = "FEED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let eventCountRule = NumericRule<Int>(minimum: 1, exclusiveMinimum: false, maximum: nil, exclusiveMaximum: false, multipleOf: nil)
     public var activityDetails: UserFeedItemActivityDetails

@@ -405,6 +405,8 @@ private extension OfflineTasksResourceObject {
 			default:
 				return nil
 			}
+		default:
+			return nil
 		}
 	}
 }

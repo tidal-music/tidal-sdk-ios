@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct UserPlaybackStatesUpdateOperationPayloadDataAttributes: Codable, Hashable {
 
-    public enum PlaybackStatus: String, Codable, CaseIterable {
+    public enum PlaybackStatus: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case playing = "PLAYING"
         case paused = "PAUSED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var playbackStatus: PlaybackStatus?
 

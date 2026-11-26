@@ -28,12 +28,13 @@ final class EventScheduler: Scheduler {
 		consumerUri: String?,
 		maxDiskUsageBytes: Int? = EventConfig.defaultQueueMaxDiskUsageBytes,
 		eventQueue: EventQueue,
-		monitoring: Monitoring
+		monitoring: Monitoring,
+		transport: any HTTPTransport = URLSession.shared
 	) {
 		self.consumerUri = consumerUri
 		self.maxDiskUsageBytes = maxDiskUsageBytes
 		self.eventQueue = eventQueue
-		networkService = NetworkingService(consumerUri: consumerUri)
+		networkService = NetworkingService(consumerUri: consumerUri, transport: transport)
 		self.monitoring = monitoring
 	}
 
@@ -48,7 +49,7 @@ final class EventScheduler: Scheduler {
 
 	func timerTriggered(headerHelper: HeaderHelper) async throws {
 		do {
-			try await sendAllEvents(headerHelper: headerHelper)
+			try await sendUnclaimedEvents(headerHelper: headerHelper)
 		} catch let EventProducerError.unauthorized(code) {
 			_ = try await headerHelper.credentialsProvider?.getCredentials(apiErrorSubStatus: code.description)
 		} catch {
@@ -56,12 +57,32 @@ final class EventScheduler: Scheduler {
 		}
 	}
 
-	/// Fetches all events from the local storage, and sends them to the backend in batches.
 	func sendAllEvents(headerHelper: HeaderHelper) async throws {
-		let allEvents = try await eventQueue.getAllEvents()
-		let batches = allEvents.chunkedBy(Constants.batchSize)
+		var heldElsewhere = try await sendUnclaimedEvents(headerHelper: headerHelper)
+		while !heldElsewhere.isEmpty {
+			await eventQueue.waitUntilReleased(heldElsewhere)
+			heldElsewhere = try await sendUnclaimedEvents(headerHelper: headerHelper)
+		}
+	}
 
-		for batch in batches {
+	@discardableResult
+	private func sendUnclaimedEvents(headerHelper: HeaderHelper) async throws -> Set<String> {
+		let (claimedEvents, heldElsewhere) = try await eventQueue.claimQueuedEvents()
+		var sendError: Error?
+		do {
+			try await send(claimedEvents, headerHelper: headerHelper)
+		} catch {
+			sendError = error
+		}
+		await eventQueue.release(claimedEvents)
+		if let sendError {
+			throw sendError
+		}
+		return heldElsewhere
+	}
+
+	private func send(_ events: [Event], headerHelper: HeaderHelper) async throws {
+		for batch in events.chunkedBy(Constants.batchSize) {
 			let allowedBatchSize = getAllowedBatch(batch)
 			guard !allowedBatchSize.isEmpty else {
 				throw EventProducerError.eventSendBatchRequestFailure("Limit Exceeded")

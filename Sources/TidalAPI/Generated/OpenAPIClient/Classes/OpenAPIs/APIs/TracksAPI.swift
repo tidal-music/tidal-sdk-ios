@@ -290,7 +290,7 @@ internal class TracksAPI {
     /**
      Update single track.
      - PATCH /tracks/{id}
-     - Updates existing track.
+     - Updates existing track. A COLLABORATOR on the track may update it; changing accessType or isrc needs OWNER.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -414,7 +414,7 @@ internal class TracksAPI {
     /**
      Update albums relationship (\"to-many\").
      - PATCH /tracks/{id}/relationships/albums
-     - Moves the uploaded track to the supplied album, replacing its previous album association. Exactly one album is required; empty data cannot clear it. Returns an acknowledgement.
+     - Moves the uploaded track to the supplied album, replacing its previous album association. Exactly one album is required; empty data cannot clear it. The caller needs COLLABORATOR on the track and the album. The album must be in the same user's folders as the track (409 otherwise). Returns an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -538,7 +538,7 @@ internal class TracksAPI {
     /**
      Update artists relationship (\"to-many\").
      - PATCH /tracks/{id}/relationships/artists
-     - Sets the track's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the track or its album. Only the track's owner can change its artists. Returns an acknowledgement.
+     - Sets the track's artists, replacing the current list. Artists are listed in the order given. Provide 1 to 10 distinct artists. You can add your own artist profile and the profiles of users who have owner or collaborator access to the track or its album. Owners and collaborators can change its artists. Returns an acknowledgement.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE

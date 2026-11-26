@@ -12,16 +12,18 @@ import AnyCodable
 
 public struct PlaylistsAttributes: Codable, Hashable {
 
-    public enum AccessType: String, Codable, CaseIterable {
+    public enum AccessType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case _public = "PUBLIC"
         case unlisted = "UNLISTED"
         case _private = "PRIVATE"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum PlaylistType: String, Codable, CaseIterable {
+    public enum PlaylistType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case editorial = "EDITORIAL"
         case user = "USER"
         case mix = "MIX"
         case artist = "ARTIST"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let descriptionRule = StringRule(minLength: nil, maxLength: 4096, pattern: nil)
     public static let nameRule = StringRule(minLength: 1, maxLength: 1024, pattern: nil)

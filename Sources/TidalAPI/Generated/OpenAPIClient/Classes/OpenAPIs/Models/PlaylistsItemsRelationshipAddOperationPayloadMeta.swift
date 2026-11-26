@@ -12,10 +12,11 @@ import AnyCodable
 
 public struct PlaylistsItemsRelationshipAddOperationPayloadMeta: Codable, Hashable {
 
-    public enum OnDuplicates: String, Codable, CaseIterable {
+    public enum OnDuplicates: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case add = "ADD"
         case fail = "FAIL"
         case skip = "SKIP"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public static let positionBeforeRule = StringRule(minLength: 1, maxLength: 36, pattern: nil)
     /** How to handle available items already present in the playlist. Presence is evaluated against playlist state immediately before the operation; duplicate occurrences within this request do not make one another already present. ADD adds every requested occurrence. FAIL returns 409 and adds nothing when any requested resource type and id is already present. SKIP adds only absent resources and reports every omitted occurrence in response meta.skipped with reason ALREADY_PRESENT. Track and video identities with the same id are distinct. Defaults to ADD. */

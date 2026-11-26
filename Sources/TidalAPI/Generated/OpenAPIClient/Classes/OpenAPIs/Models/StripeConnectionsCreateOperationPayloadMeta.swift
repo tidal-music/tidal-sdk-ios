@@ -12,9 +12,10 @@ import AnyCodable
 
 public struct StripeConnectionsCreateOperationPayloadMeta: Codable, Hashable {
 
-    public enum IntegrationType: String, Codable, CaseIterable {
+    public enum IntegrationType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case redirect = "REDIRECT"
         case embedded = "EMBEDDED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Integration type for Stripe onboarding */
     public var integrationType: IntegrationType = .redirect

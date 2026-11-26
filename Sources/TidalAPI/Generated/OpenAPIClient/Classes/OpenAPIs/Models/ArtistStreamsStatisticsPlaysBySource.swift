@@ -13,10 +13,11 @@ import AnyCodable
 /** Plays by where they started. other holds the plays not in items. Without a note, items and other add up to all plays, and an absent other means no plays are left. With note HIDDEN, part of the plays is withheld, so an absent other is unknown rather than zero */
 public struct ArtistStreamsStatisticsPlaysBySource: Codable, Hashable {
 
-    public enum Note: String, Codable, CaseIterable {
+    public enum Note: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case grouped = "GROUPED"
         case hidden = "HIDDEN"
         case unknown = "UNKNOWN"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     public var items: [ArtistStreamsStatisticsSourcePlays]
     /** How a breakdown relates to its total. GROUPED: the remainder includes entries too small to show alone, and the breakdown still adds up to the total. HIDDEN: part of the total is withheld, so the breakdown adds up to less than the total. UNKNOWN: a note this API does not know, so the breakdown may not add up */

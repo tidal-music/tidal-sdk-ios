@@ -13,18 +13,22 @@ import AnyCodable
 public struct ResourceGrantsRelationships: Codable, Hashable {
 
     public var grantee: ResourceGrantsGranteeSingleRelationshipDataDocument?
+    public var invitation: ResourceGrantsInvitationSingleRelationshipDataDocument?
     public var subject: ResourceGrantsSubjectSingleRelationshipDataDocument?
 
     public init(
         grantee: ResourceGrantsGranteeSingleRelationshipDataDocument? = nil,
+        invitation: ResourceGrantsInvitationSingleRelationshipDataDocument? = nil,
         subject: ResourceGrantsSubjectSingleRelationshipDataDocument? = nil
     ) {
         self.grantee = grantee
+        self.invitation = invitation
         self.subject = subject
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case grantee
+        case invitation
         case subject
     }
 
@@ -33,6 +37,7 @@ public struct ResourceGrantsRelationships: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(grantee, forKey: .grantee)
+        try container.encodeIfPresent(invitation, forKey: .invitation)
         try container.encodeIfPresent(subject, forKey: .subject)
     }
 }

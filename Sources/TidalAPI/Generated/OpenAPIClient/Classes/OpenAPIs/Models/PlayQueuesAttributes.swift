@@ -12,15 +12,17 @@ import AnyCodable
 
 public struct PlayQueuesAttributes: Codable, Hashable {
 
-    public enum Repeat: String, Codable, CaseIterable {
+    public enum Repeat: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case _none = "NONE"
         case one = "ONE"
         case batch = "BATCH"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
-    public enum Shuffle: String, Codable, CaseIterable {
+    public enum Shuffle: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case off = "OFF"
         case batch = "BATCH"
         case all = "ALL"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** ISO 8601 creation timestamp */
     public var createdAt: Date

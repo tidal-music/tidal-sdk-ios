@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**clientPreset** | **String** | Client preset defining default OAuth settings and supported audio formats. | [optional] 
 **description** | **String** |  | [optional] 
 **name** | **String** |  | [optional] 
 **redirectUris** | **[String]** |  | [optional] 

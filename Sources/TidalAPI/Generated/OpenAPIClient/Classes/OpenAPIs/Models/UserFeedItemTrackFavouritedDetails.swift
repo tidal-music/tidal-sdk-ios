@@ -13,8 +13,9 @@ import AnyCodable
 /** Listeners saved one of your tracks. &#x60;eventCount&#x60; is the number of distinct people who saved it in the item&#39;s day; actors are never listed */
 public struct UserFeedItemTrackFavouritedDetails: Codable, Hashable {
 
-    public enum ActivityType: String, Codable, CaseIterable {
+    public enum ActivityType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case trackFavourited = "TRACK_FAVOURITED"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
     }
     /** Type of activity represented by the group */
     public var activityType: ActivityType
