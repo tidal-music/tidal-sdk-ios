@@ -12,6 +12,8 @@ Name | Type | Description | Notes
 **name** | **String** | Artist name | 
 **numberOfFollowers** | **Int** | Number of users in the followers relationship | [optional] 
 **numberOfFollowing** | **Int** | Number of artists in the following relationship | [optional] 
+**ownerAgeRestricted** | **Bool** |  | [optional] 
+**ownerAgeRestriction** | **String** |  | [optional] 
 **ownerType** | **String** | Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created profile, MIXED: claimed profile with both label and user content. May be null during rollout/backfill. | [optional] 
 **popularity** | **Double** | Artist popularity (0.0 - 1.0) | 
 **spotlighted** | **Bool** | Is the artist spotlighted? | [optional] 

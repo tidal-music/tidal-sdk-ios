@@ -1199,6 +1199,7 @@ internal class TracksAPI {
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: TracksSharesMultiRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func tracksIdRelationshipsSharesGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> TracksSharesMultiRelationshipDataDocument {
         do {
@@ -1212,7 +1213,7 @@ internal class TracksAPI {
     /**
      Get shares relationship (\"to-many\").
      - GET /tracks/{id}/relationships/shares
-     - The track's share links, active and expired, newest first.
+     - The track's share links, active and expired, newest first. Deprecated: use `resourceGrantInvitations` instead.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -1223,6 +1224,7 @@ internal class TracksAPI {
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<TracksSharesMultiRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func tracksIdRelationshipsSharesGetWithRequestBuilder(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<TracksSharesMultiRelationshipDataDocument> {
         var localVariablePath = "/tracks/{id}/relationships/shares"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"

@@ -76,7 +76,7 @@ Name | Type | Description  | Notes
 
 Delete single share.
 
-Delete share. Effectively revokes bearer access and acceptance.
+Delete share. Effectively revokes bearer access and acceptance. Deprecated: use `resourceGrantInvitations` instead.
 
 ### Example
 ```swift
@@ -178,7 +178,7 @@ Name | Type | Description  | Notes
 
 Update single share.
 
-Set, change or remove the share's password. Setting one also removes BEARER access; removing one leaves the access modes unchanged. Existing savers keep their access.
+Set, change or remove the share's password. Setting one also removes BEARER access; removing one leaves the access modes unchanged. Existing savers keep their access. Deprecated: use `resourceGrantInvitations` instead.
 
 ### Example
 ```swift
@@ -330,7 +330,7 @@ Name | Type | Description  | Notes
 
 Create single share.
 
-Creates a new share. Deprecated for playlists: use `resourceGrantInvitations` instead.
+Creates a new share. Deprecated: use `resourceGrantInvitations` instead.
 
 ### Example
 ```swift

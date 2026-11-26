@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct SavedSharesCreateResource429ResponseBody: Codable, Hashable {
 
-    public var errors: [SavedSharesCreateResource429ResponseBodyErrorsInner]
+    public var errors: [ResourceGrantsCreateResource429ResponseBodyErrorsInner]
 
     public init(
-        errors: [SavedSharesCreateResource429ResponseBodyErrorsInner]
+        errors: [ResourceGrantsCreateResource429ResponseBodyErrorsInner]
     ) {
         self.errors = errors
     }

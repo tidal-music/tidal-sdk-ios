@@ -894,7 +894,7 @@ Name | Type | Description  | Notes
 
 Get shares relationship (\"to-many\").
 
-The album's share links, active and expired, newest first.
+The album's share links, active and expired, newest first. Deprecated: use `resourceGrantInvitations` instead.
 
 ### Example
 ```swift

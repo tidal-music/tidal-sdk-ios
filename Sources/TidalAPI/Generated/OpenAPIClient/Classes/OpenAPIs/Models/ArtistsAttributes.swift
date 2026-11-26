@@ -12,6 +12,11 @@ import AnyCodable
 
 public struct ArtistsAttributes: Codable, Hashable {
 
+    public enum OwnerAgeRestriction: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case minor = "MINOR"
+        case noBirthday = "NO_BIRTHDAY"
+        case unknownDefaultOpenApi = "unknown_default_open_api"
+    }
     public enum OwnerType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
         case label = "LABEL"
         case user = "USER"
@@ -41,6 +46,8 @@ public struct ArtistsAttributes: Codable, Hashable {
     public var numberOfFollowers: Int?
     /** Number of artists in the following relationship */
     public var numberOfFollowing: Int?
+    public var ownerAgeRestricted: Bool?
+    public var ownerAgeRestriction: OwnerAgeRestriction?
     /** Ownership type of the artist profile. LABEL: label-managed profile, USER: user-created profile, MIXED: claimed profile with both label and user content. May be null during rollout/backfill. */
     public var ownerType: OwnerType?
     /** Artist popularity (0.0 - 1.0) */
@@ -58,6 +65,8 @@ public struct ArtistsAttributes: Codable, Hashable {
         name: String,
         numberOfFollowers: Int? = nil,
         numberOfFollowing: Int? = nil,
+        ownerAgeRestricted: Bool? = nil,
+        ownerAgeRestriction: OwnerAgeRestriction? = nil,
         ownerType: OwnerType? = nil,
         popularity: Double,
         spotlighted: Bool? = nil
@@ -71,6 +80,8 @@ public struct ArtistsAttributes: Codable, Hashable {
         self.name = name
         self.numberOfFollowers = numberOfFollowers
         self.numberOfFollowing = numberOfFollowing
+        self.ownerAgeRestricted = ownerAgeRestricted
+        self.ownerAgeRestriction = ownerAgeRestriction
         self.ownerType = ownerType
         self.popularity = popularity
         self.spotlighted = spotlighted
@@ -86,6 +97,8 @@ public struct ArtistsAttributes: Codable, Hashable {
         case name
         case numberOfFollowers
         case numberOfFollowing
+        case ownerAgeRestricted
+        case ownerAgeRestriction
         case ownerType
         case popularity
         case spotlighted
@@ -104,6 +117,8 @@ public struct ArtistsAttributes: Codable, Hashable {
         try container.encode(name, forKey: .name)
         try container.encodeIfPresent(numberOfFollowers, forKey: .numberOfFollowers)
         try container.encodeIfPresent(numberOfFollowing, forKey: .numberOfFollowing)
+        try container.encodeIfPresent(ownerAgeRestricted, forKey: .ownerAgeRestricted)
+        try container.encodeIfPresent(ownerAgeRestriction, forKey: .ownerAgeRestriction)
         try container.encodeIfPresent(ownerType, forKey: .ownerType)
         try container.encode(popularity, forKey: .popularity)
         try container.encodeIfPresent(spotlighted, forKey: .spotlighted)

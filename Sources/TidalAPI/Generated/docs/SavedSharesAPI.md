@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 Create single savedShare.
 
-Redeem an active share with VOUCHER access mode for its offered role. A share without VOUCHER mode returns 403. Every save, repeated ones included, needs a password-protected share's password and counts as a use of a limited share; password attempts are rate limited. Deprecated for playlist shares: use `POST /resourceGrants` with an `invitation` relationship instead.
+Redeem an active share for its offered role. Every save, repeated ones included, needs a password-protected share's password and counts as a use of a limited share; password attempts are rate limited. The share's creator cannot save it. Deprecated: use `POST /resourceGrants` with an `invitation` relationship instead.
 
 ### Example
 ```swift
