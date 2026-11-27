@@ -29,18 +29,23 @@ public struct DynamicPagesAttributes: Codable, Hashable {
     public var pageType: PageType
     /** Id used for reporting user events */
     public var reportingId: UUID
+    /** Title of the page */
+    public var title: String?
 
     public init(
         pageType: PageType,
-        reportingId: UUID
+        reportingId: UUID,
+        title: String? = nil
     ) {
         self.pageType = pageType
         self.reportingId = reportingId
+        self.title = title
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case pageType
         case reportingId
+        case title
     }
 
     // Encodable protocol methods
@@ -49,5 +54,6 @@ public struct DynamicPagesAttributes: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(pageType, forKey: .pageType)
         try container.encode(reportingId, forKey: .reportingId)
+        try container.encodeIfPresent(title, forKey: .title)
     }
 }
