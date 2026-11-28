@@ -14,18 +14,22 @@ public struct AlbumsCreateOperationPayloadDataRelationships: Codable, Hashable {
 
     public var artists: AlbumsCreateOperationPayloadDataRelationshipsArtists
     public var genres: AlbumsCreateOperationPayloadDataRelationshipsGenres?
+    public var location: AlbumsCreateOperationPayloadDataRelationshipsLocation?
 
     public init(
         artists: AlbumsCreateOperationPayloadDataRelationshipsArtists,
-        genres: AlbumsCreateOperationPayloadDataRelationshipsGenres? = nil
+        genres: AlbumsCreateOperationPayloadDataRelationshipsGenres? = nil,
+        location: AlbumsCreateOperationPayloadDataRelationshipsLocation? = nil
     ) {
         self.artists = artists
         self.genres = genres
+        self.location = location
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case artists
         case genres
+        case location
     }
 
     // Encodable protocol methods
@@ -34,5 +38,6 @@ public struct AlbumsCreateOperationPayloadDataRelationships: Codable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(artists, forKey: .artists)
         try container.encodeIfPresent(genres, forKey: .genres)
+        try container.encodeIfPresent(location, forKey: .location)
     }
 }

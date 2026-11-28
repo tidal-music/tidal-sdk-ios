@@ -595,6 +595,7 @@ internal class FolderItemsAPI {
      - parameter folderItemsCreateOperationPayload: (body)  (optional)
      - returns: FolderItemsCreateSingleResourceDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func folderItemsPost(idempotencyKey: String? = nil, folderItemsCreateOperationPayload: FolderItemsCreateOperationPayload? = nil) async throws -> FolderItemsCreateSingleResourceDataDocument {
         do {
@@ -608,7 +609,7 @@ internal class FolderItemsAPI {
     /**
      Create single folderItem.
      - POST /folderItems
-     - Creates a new folderItem.
+     - Places a folder or album in a folder. Deprecated: create albums and folders with their `location` relationship.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -616,6 +617,7 @@ internal class FolderItemsAPI {
      - parameter folderItemsCreateOperationPayload: (body)  (optional)
      - returns: RequestBuilder<FolderItemsCreateSingleResourceDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func folderItemsPostWithRequestBuilder(idempotencyKey: String? = nil, folderItemsCreateOperationPayload: FolderItemsCreateOperationPayload? = nil) -> RequestBuilder<FolderItemsCreateSingleResourceDataDocument> {
         let localVariablePath = "/folderItems"
         let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath

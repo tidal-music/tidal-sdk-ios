@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct FoldersUpdateResource400ResponseBody: Codable, Hashable {
 
-    public var errors: [FoldersDeleteResource400ResponseBodyErrorsInner]
+    public var errors: [FoldersCreateResource400ResponseBodyErrorsInner]
 
     public init(
-        errors: [FoldersDeleteResource400ResponseBodyErrorsInner]
+        errors: [FoldersCreateResource400ResponseBodyErrorsInner]
     ) {
         self.errors = errors
     }

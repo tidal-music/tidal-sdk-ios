@@ -15,7 +15,7 @@ internal class PriceConfigurationsAPI {
     /**
      Get multiple priceConfigurations.
      
-     - parameter filterId: (query) List of price configurations IDs (e.g. &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;) 
+     - parameter filterId: (query) List of price configurations IDs (e.g. &#x60;3suohewWQFbLbNrEzU3xzB2Ead&#x60;) 
      - returns: PriceConfigurationsMultiResourceDataDocument
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -38,7 +38,7 @@ internal class PriceConfigurationsAPI {
      - OAuth:
        - type: oauth2
        - name: Client_Credentials
-     - parameter filterId: (query) List of price configurations IDs (e.g. &#x60;cHJpY2UtY29uZmlnLTEyMzpVUw&#x60;) 
+     - parameter filterId: (query) List of price configurations IDs (e.g. &#x60;3suohewWQFbLbNrEzU3xzB2Ead&#x60;) 
      - returns: RequestBuilder<PriceConfigurationsMultiResourceDataDocument> 
      */
     internal class func priceConfigurationsGetWithRequestBuilder(filterId: [String]) -> RequestBuilder<PriceConfigurationsMultiResourceDataDocument> {

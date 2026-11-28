@@ -10,6 +10,8 @@ import Foundation
 import AnyCodable
 #endif
 
+/** Deprecated: use &#x60;location&#x60;. */
+@available(*, deprecated, message: "This schema is deprecated.")
 public struct FoldersCreateOperationPayloadDataRelationshipsParent: Codable, Hashable {
 
     public var data: FoldersParentIdentifier

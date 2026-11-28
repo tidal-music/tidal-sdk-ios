@@ -13,17 +13,21 @@ import AnyCodable
 public struct FoldersRelationships: Codable, Hashable {
 
     public var children: FoldersChildrenMultiRelationshipObject?
+    public var location: FoldersLocationSingleRelationshipObject?
     public var owners: FoldersOwnersMultiRelationshipObject?
+    @available(*, deprecated, message: "This property is deprecated.")
     public var parent: FoldersParentSingleRelationshipObject?
     public var preview: FoldersPreviewMultiRelationshipObject?
 
     public init(
         children: FoldersChildrenMultiRelationshipObject? = nil,
+        location: FoldersLocationSingleRelationshipObject? = nil,
         owners: FoldersOwnersMultiRelationshipObject? = nil,
         parent: FoldersParentSingleRelationshipObject? = nil,
         preview: FoldersPreviewMultiRelationshipObject? = nil
     ) {
         self.children = children
+        self.location = location
         self.owners = owners
         self.parent = parent
         self.preview = preview
@@ -31,6 +35,7 @@ public struct FoldersRelationships: Codable, Hashable {
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
         case children
+        case location
         case owners
         case parent
         case preview
@@ -41,6 +46,7 @@ public struct FoldersRelationships: Codable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(children, forKey: .children)
+        try container.encodeIfPresent(location, forKey: .location)
         try container.encodeIfPresent(owners, forKey: .owners)
         try container.encodeIfPresent(parent, forKey: .parent)
         try container.encodeIfPresent(preview, forKey: .preview)

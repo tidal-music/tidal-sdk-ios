@@ -28,6 +28,7 @@ internal class DynamicPagesAPI {
      * enum for parameter filterPageType
      */
     public enum FilterPageType_dynamicPagesGet: String, CaseIterable {
+        case home = "HOME"
         case homeStatic = "HOME_STATIC"
         case homeUploads = "HOME_UPLOADS"
         case homeEditorial = "HOME_EDITORIAL"

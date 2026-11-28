@@ -13,6 +13,7 @@ import AnyCodable
 public struct DynamicPagesAttributes: Codable, Hashable {
 
     public enum PageType: String, Codable, CaseIterable, CaseIterableDefaultsLast {
+        case home = "HOME"
         case homeStatic = "HOME_STATIC"
         case homeUploads = "HOME_UPLOADS"
         case homeEditorial = "HOME_EDITORIAL"

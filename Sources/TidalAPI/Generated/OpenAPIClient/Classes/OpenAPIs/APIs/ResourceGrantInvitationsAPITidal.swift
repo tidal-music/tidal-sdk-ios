@@ -36,9 +36,9 @@ public enum ResourceGrantInvitationsAPITidal {
      
      - returns: ResourceGrantInvitationsMultiResourceDataDocument
      */
-	public static func resourceGrantInvitationsGet(filterCode: String? = nil, filterSelfAppliesTo: String? = nil, include: [String]? = nil, includeLinkage: [ResourceGrantInvitationsAPITidal.IncludeLinkage_resourceGrantInvitationsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantInvitationsMultiResourceDataDocument {
+	public static func resourceGrantInvitationsGet(filterCode: String? = nil, filterSelfAppliesTo: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [ResourceGrantInvitationsAPITidal.IncludeLinkage_resourceGrantInvitationsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantInvitationsMultiResourceDataDocument {
 		return try await RequestHelper.createRequest {
-			ResourceGrantInvitationsAPI.resourceGrantInvitationsGetWithRequestBuilder(filterCode: filterCode, filterSelfAppliesTo: filterSelfAppliesTo, include: include, includeLinkage: includeLinkage?.compactMap { $0.toResourceGrantInvitationsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
+			ResourceGrantInvitationsAPI.resourceGrantInvitationsGetWithRequestBuilder(filterCode: filterCode, filterSelfAppliesTo: filterSelfAppliesTo, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage?.compactMap { $0.toResourceGrantInvitationsAPIEnum() }, pageCursor: pageCursor, replaceMedia: replaceMedia)
 		}
 	}
 
