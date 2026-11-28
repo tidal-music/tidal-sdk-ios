@@ -17,6 +17,7 @@ public struct AlbumsRelationships: Codable, Hashable {
     public var coverArt: AlbumsCoverArtMultiRelationshipObject?
     public var genres: AlbumsGenresMultiRelationshipObject?
     public var items: AlbumsItemsMultiRelationshipObject?
+    public var location: AlbumsLocationSingleRelationshipObject?
     public var owners: AlbumsOwnersMultiRelationshipObject?
     public var priceConfig: AlbumsPriceConfigSingleRelationshipObject?
     public var providers: AlbumsProvidersMultiRelationshipObject?
@@ -32,6 +33,7 @@ public struct AlbumsRelationships: Codable, Hashable {
         coverArt: AlbumsCoverArtMultiRelationshipObject? = nil,
         genres: AlbumsGenresMultiRelationshipObject? = nil,
         items: AlbumsItemsMultiRelationshipObject? = nil,
+        location: AlbumsLocationSingleRelationshipObject? = nil,
         owners: AlbumsOwnersMultiRelationshipObject? = nil,
         priceConfig: AlbumsPriceConfigSingleRelationshipObject? = nil,
         providers: AlbumsProvidersMultiRelationshipObject? = nil,
@@ -46,6 +48,7 @@ public struct AlbumsRelationships: Codable, Hashable {
         self.coverArt = coverArt
         self.genres = genres
         self.items = items
+        self.location = location
         self.owners = owners
         self.priceConfig = priceConfig
         self.providers = providers
@@ -62,6 +65,7 @@ public struct AlbumsRelationships: Codable, Hashable {
         case coverArt
         case genres
         case items
+        case location
         case owners
         case priceConfig
         case providers
@@ -81,6 +85,7 @@ public struct AlbumsRelationships: Codable, Hashable {
         try container.encodeIfPresent(coverArt, forKey: .coverArt)
         try container.encodeIfPresent(genres, forKey: .genres)
         try container.encodeIfPresent(items, forKey: .items)
+        try container.encodeIfPresent(location, forKey: .location)
         try container.encodeIfPresent(owners, forKey: .owners)
         try container.encodeIfPresent(priceConfig, forKey: .priceConfig)
         try container.encodeIfPresent(providers, forKey: .providers)

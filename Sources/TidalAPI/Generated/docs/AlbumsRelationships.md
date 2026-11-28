@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **coverArt** | [**AlbumsCoverArtMultiRelationshipObject**](AlbumsCoverArtMultiRelationshipObject.md) |  | [optional] 
 **genres** | [**AlbumsGenresMultiRelationshipObject**](AlbumsGenresMultiRelationshipObject.md) |  | [optional] 
 **items** | [**AlbumsItemsMultiRelationshipObject**](AlbumsItemsMultiRelationshipObject.md) |  | [optional] 
+**location** | [**AlbumsLocationSingleRelationshipObject**](AlbumsLocationSingleRelationshipObject.md) |  | [optional] 
 **owners** | [**AlbumsOwnersMultiRelationshipObject**](AlbumsOwnersMultiRelationshipObject.md) |  | [optional] 
 **priceConfig** | [**AlbumsPriceConfigSingleRelationshipObject**](AlbumsPriceConfigSingleRelationshipObject.md) |  | [optional] 
 **providers** | [**AlbumsProvidersMultiRelationshipObject**](AlbumsProvidersMultiRelationshipObject.md) |  | [optional] 

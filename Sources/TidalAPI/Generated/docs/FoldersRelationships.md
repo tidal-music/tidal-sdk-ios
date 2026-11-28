@@ -4,6 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **children** | [**FoldersChildrenMultiRelationshipObject**](FoldersChildrenMultiRelationshipObject.md) |  | [optional] 
+**location** | [**FoldersLocationSingleRelationshipObject**](FoldersLocationSingleRelationshipObject.md) |  | [optional] 
 **owners** | [**FoldersOwnersMultiRelationshipObject**](FoldersOwnersMultiRelationshipObject.md) |  | [optional] 
 **parent** | [**FoldersParentSingleRelationshipObject**](FoldersParentSingleRelationshipObject.md) |  | [optional] 
 **preview** | [**FoldersPreviewMultiRelationshipObject**](FoldersPreviewMultiRelationshipObject.md) |  | [optional] 

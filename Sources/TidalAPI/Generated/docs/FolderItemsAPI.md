@@ -509,7 +509,7 @@ Name | Type | Description  | Notes
 
 Create single folderItem.
 
-Creates a new folderItem.
+Places a folder or album in a folder. Deprecated: create albums and folders with their `location` relationship.
 
 ### Example
 ```swift

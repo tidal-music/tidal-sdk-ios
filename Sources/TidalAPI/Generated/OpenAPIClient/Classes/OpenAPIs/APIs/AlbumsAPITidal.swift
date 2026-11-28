@@ -23,6 +23,7 @@ public enum AlbumsAPITidal {
 		case coverart = "coverArt"
 		case genres = "genres"
 		case items = "items"
+		case location = "location"
 		case owners = "owners"
 		case priceconfig = "priceConfig"
 		case providers = "providers"
@@ -39,6 +40,7 @@ public enum AlbumsAPITidal {
 			case .coverart: return .coverart
 			case .genres: return .genres
 			case .items: return .items
+			case .location: return .location
 			case .owners: return .owners
 			case .priceconfig: return .priceconfig
 			case .providers: return .providers
@@ -103,6 +105,7 @@ public enum AlbumsAPITidal {
 		case coverart = "coverArt"
 		case genres = "genres"
 		case items = "items"
+		case location = "location"
 		case owners = "owners"
 		case priceconfig = "priceConfig"
 		case providers = "providers"
@@ -119,6 +122,7 @@ public enum AlbumsAPITidal {
 			case .coverart: return .coverart
 			case .genres: return .genres
 			case .items: return .items
+			case .location: return .location
 			case .owners: return .owners
 			case .priceconfig: return .priceconfig
 			case .providers: return .providers
@@ -247,6 +251,18 @@ public enum AlbumsAPITidal {
 	public static func albumsIdRelationshipsItemsPatch(id: String, idempotencyKey: String? = nil, shareCode: String? = nil, albumsItemsRelationshipUpdateOperationPayload: AlbumsItemsRelationshipUpdateOperationPayload? = nil) async throws -> MutationResponseDocument {
 		return try await RequestHelper.createRequest {
 			AlbumsAPI.albumsIdRelationshipsItemsPatchWithRequestBuilder(id: id, idempotencyKey: idempotencyKey, shareCode: shareCode, albumsItemsRelationshipUpdateOperationPayload: albumsItemsRelationshipUpdateOperationPayload)
+		}
+	}
+
+
+	/**
+     Get location relationship (\&quot;to-one\&quot;).
+     
+     - returns: AlbumsLocationSingleRelationshipDataDocument
+     */
+	public static func albumsIdRelationshipsLocationGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsLocationSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			AlbumsAPI.albumsIdRelationshipsLocationGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 

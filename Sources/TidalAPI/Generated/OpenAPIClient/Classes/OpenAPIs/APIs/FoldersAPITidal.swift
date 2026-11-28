@@ -19,6 +19,7 @@ public enum FoldersAPITidal {
 	 */
 	public enum IncludeLinkage_foldersGet: String, CaseIterable {
 		case children = "children"
+		case location = "location"
 		case owners = "owners"
 		case parent = "parent"
 		case preview = "preview"
@@ -26,6 +27,7 @@ public enum FoldersAPITidal {
 		func toFoldersAPIEnum() -> FoldersAPI.IncludeLinkage_foldersGet {
 			switch self {
 			case .children: return .children
+			case .location: return .location
 			case .owners: return .owners
 			case .parent: return .parent
 			case .preview: return .preview
@@ -62,6 +64,7 @@ public enum FoldersAPITidal {
 	 */
 	public enum IncludeLinkage_foldersIdGet: String, CaseIterable {
 		case children = "children"
+		case location = "location"
 		case owners = "owners"
 		case parent = "parent"
 		case preview = "preview"
@@ -69,6 +72,7 @@ public enum FoldersAPITidal {
 		func toFoldersAPIEnum() -> FoldersAPI.IncludeLinkage_foldersIdGet {
 			switch self {
 			case .children: return .children
+			case .location: return .location
 			case .owners: return .owners
 			case .parent: return .parent
 			case .preview: return .preview
@@ -108,6 +112,18 @@ public enum FoldersAPITidal {
 	public static func foldersIdRelationshipsChildrenGet(id: String, include: [String]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersChildrenMultiRelationshipDataDocument {
 		return try await RequestHelper.createRequest {
 			FoldersAPI.foldersIdRelationshipsChildrenGetWithRequestBuilder(id: id, include: include, pageCursor: pageCursor, replaceMedia: replaceMedia, shareCode: shareCode)
+		}
+	}
+
+
+	/**
+     Get location relationship (\&quot;to-one\&quot;).
+     
+     - returns: FoldersLocationSingleRelationshipDataDocument
+     */
+	public static func foldersIdRelationshipsLocationGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersLocationSingleRelationshipDataDocument {
+		return try await RequestHelper.createRequest {
+			FoldersAPI.foldersIdRelationshipsLocationGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
 		}
 	}
 

@@ -41,6 +41,7 @@ public enum DynamicPagesAPITidal {
 	 * enum for parameter filterPageType
 	 */
 	public enum FilterPageType_dynamicPagesGet: String, CaseIterable {
+		case home = "HOME"
 		case homeStatic = "HOME_STATIC"
 		case homeUploads = "HOME_UPLOADS"
 		case homeEditorial = "HOME_EDITORIAL"
@@ -54,6 +55,7 @@ public enum DynamicPagesAPITidal {
 
 		func toDynamicPagesAPIEnum() -> DynamicPagesAPI.FilterPageType_dynamicPagesGet {
 			switch self {
+			case .home: return .home
 			case .homeStatic: return .homeStatic
 			case .homeUploads: return .homeUploads
 			case .homeEditorial: return .homeEditorial

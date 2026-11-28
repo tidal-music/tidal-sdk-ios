@@ -17,6 +17,7 @@ internal class FoldersAPI {
      */
     public enum IncludeLinkage_foldersGet: String, CaseIterable {
         case children = "children"
+        case location = "location"
         case owners = "owners"
         case parent = "parent"
         case preview = "preview"
@@ -26,7 +27,7 @@ internal class FoldersAPI {
      Get multiple folders.
      
      - parameter filterId: (query) Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;). Also accepts &#x60;me&#x60;. 
-     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview (optional)
+     - parameter include: (query) Include related resources. Available relationships: children, location, owners, parent, preview (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
@@ -53,7 +54,7 @@ internal class FoldersAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter filterId: (query) Folder id (e.g. &#x60;e3226624-355b-48f8-aa93-db42532caa66&#x60;). Also accepts &#x60;me&#x60;. 
-     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview (optional)
+     - parameter include: (query) Include related resources. Available relationships: children, location, owners, parent, preview (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
@@ -143,6 +144,7 @@ internal class FoldersAPI {
      */
     public enum IncludeLinkage_foldersIdGet: String, CaseIterable {
         case children = "children"
+        case location = "location"
         case owners = "owners"
         case parent = "parent"
         case preview = "preview"
@@ -152,7 +154,7 @@ internal class FoldersAPI {
      Get single folder.
      
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview (optional)
+     - parameter include: (query) Include related resources. Available relationships: children, location, owners, parent, preview (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
@@ -179,7 +181,7 @@ internal class FoldersAPI {
        - type: oauth2
        - name: Client_Credentials
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
-     - parameter include: (query) Include related resources. Available relationships: children, owners, parent, preview (optional)
+     - parameter include: (query) Include related resources. Available relationships: children, location, owners, parent, preview (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: children.subject (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
@@ -331,6 +333,64 @@ internal class FoldersAPI {
     }
 
     /**
+     Get location relationship (\"to-one\").
+     
+     - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter include: (query) Include related resources. Available relationships: location (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: location.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: FoldersLocationSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func foldersIdRelationshipsLocationGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersLocationSingleRelationshipDataDocument {
+        do {
+            return try await foldersIdRelationshipsLocationGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get location relationship (\"to-one\").
+     - GET /folders/{id}/relationships/location
+     - Retrieves location relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
+     - parameter include: (query) Include related resources. Available relationships: location (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: location.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: RequestBuilder<FoldersLocationSingleRelationshipDataDocument> 
+     */
+    internal class func foldersIdRelationshipsLocationGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<FoldersLocationSingleRelationshipDataDocument> {
+        var localVariablePath = "/folders/{id}/relationships/location"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<FoldersLocationSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
      Get owners relationship (\"to-many\").
      
      - parameter id: (path) Folder id. Use &#x60;me&#x60; for the authenticated user&#39;s resource 
@@ -400,6 +460,7 @@ internal class FoldersAPI {
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: FoldersParentSingleRelationshipDataDocument
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     internal class func foldersIdRelationshipsParentGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> FoldersParentSingleRelationshipDataDocument {
         do {
@@ -413,7 +474,7 @@ internal class FoldersAPI {
     /**
      Get parent relationship (\"to-one\").
      - GET /folders/{id}/relationships/parent
-     - Retrieves parent relationship.
+     - Deprecated. Use location.
      - OAuth:
        - type: oauth2
        - name: Authorization_Code_PKCE
@@ -423,6 +484,7 @@ internal class FoldersAPI {
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
      - returns: RequestBuilder<FoldersParentSingleRelationshipDataDocument> 
      */
+    @available(*, deprecated, message: "This operation is deprecated.")
     internal class func foldersIdRelationshipsParentGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<FoldersParentSingleRelationshipDataDocument> {
         var localVariablePath = "/folders/{id}/relationships/parent"
         let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"

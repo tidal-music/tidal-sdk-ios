@@ -12,15 +12,20 @@ import AnyCodable
 
 public struct FoldersCreateOperationPayloadDataRelationships: Codable, Hashable {
 
+    public var location: FoldersCreateOperationPayloadDataRelationshipsLocation?
+    @available(*, deprecated, message: "This property is deprecated.")
     public var parent: FoldersCreateOperationPayloadDataRelationshipsParent?
 
     public init(
+        location: FoldersCreateOperationPayloadDataRelationshipsLocation? = nil,
         parent: FoldersCreateOperationPayloadDataRelationshipsParent? = nil
     ) {
+        self.location = location
         self.parent = parent
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case location
         case parent
     }
 
@@ -28,6 +33,7 @@ public struct FoldersCreateOperationPayloadDataRelationships: Codable, Hashable 
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(location, forKey: .location)
         try container.encodeIfPresent(parent, forKey: .parent)
     }
 }

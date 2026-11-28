@@ -16,6 +16,7 @@ Method | HTTP request | Description
 [**albumsIdRelationshipsGenresGet**](AlbumsAPI.md#albumsidrelationshipsgenresget) | **GET** /albums/{id}/relationships/genres | Get genres relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsItemsGet**](AlbumsAPI.md#albumsidrelationshipsitemsget) | **GET** /albums/{id}/relationships/items | Get items relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsItemsPatch**](AlbumsAPI.md#albumsidrelationshipsitemspatch) | **PATCH** /albums/{id}/relationships/items | Update items relationship (\&quot;to-many\&quot;).
+[**albumsIdRelationshipsLocationGet**](AlbumsAPI.md#albumsidrelationshipslocationget) | **GET** /albums/{id}/relationships/location | Get location relationship (\&quot;to-one\&quot;).
 [**albumsIdRelationshipsOwnersGet**](AlbumsAPI.md#albumsidrelationshipsownersget) | **GET** /albums/{id}/relationships/owners | Get owners relationship (\&quot;to-many\&quot;).
 [**albumsIdRelationshipsPriceConfigGet**](AlbumsAPI.md#albumsidrelationshipspriceconfigget) | **GET** /albums/{id}/relationships/priceConfig | Get priceConfig relationship (\&quot;to-one\&quot;).
 [**albumsIdRelationshipsProvidersGet**](AlbumsAPI.md#albumsidrelationshipsprovidersget) | **GET** /albums/{id}/relationships/providers | Get providers relationship (\&quot;to-many\&quot;).
@@ -45,7 +46,7 @@ let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country c
 let filterBarcodeId = ["inner_example"] // [String] | List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. `196589525444`) (optional)
 let filterId = ["inner_example"] // [String] | List of album IDs (e.g. `251380836`) (optional)
 let filterOwnersId = ["inner_example"] // [String] | User id. Also accepts `me`. (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, location, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
@@ -69,7 +70,7 @@ Name | Type | Description  | Notes
  **filterBarcodeId** | [**[String]**](String.md) | List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. &#x60;196589525444&#x60;) | [optional] 
  **filterId** | [**[String]**](String.md) | List of album IDs (e.g. &#x60;251380836&#x60;) | [optional] 
  **filterOwnersId** | [**[String]**](String.md) | User id. Also accepts &#x60;me&#x60;. | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, location, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums | [optional] 
@@ -157,7 +158,7 @@ import OpenAPIClient
 
 let id = "id_example" // String | Album id
 let countryCode = "countryCode_example" // String | ISO 3166-1 alpha-2 country code (optional)
-let include = ["inner_example"] // [String] | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, location, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: artists.albums (optional)
 let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
@@ -177,7 +178,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String** | Album id | 
  **countryCode** | **String** | ISO 3166-1 alpha-2 country code | [optional] 
- **include** | [**[String]**](String.md) | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules | [optional] 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, location, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums | [optional] 
  **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
@@ -675,6 +676,58 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **albumsIdRelationshipsLocationGet**
+```swift
+    open class func albumsIdRelationshipsLocationGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsLocationSingleRelationshipDataDocument
+```
+
+Get location relationship (\"to-one\").
+
+Retrieves location relationship.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import OpenAPIClient
+
+let id = "id_example" // String | Album id
+let include = ["inner_example"] // [String] | Include related resources. Available relationships: location (optional)
+let replaceMedia = "replaceMedia_example" // String | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow `include` syntax. Example: location.children.subject (optional)
+let shareCode = "shareCode_example" // String | Share code used as a bearer credential for the resource. (optional)
+
+// Get location relationship (\"to-one\").
+do {
+    let response = try await AlbumsAPI.albumsIdRelationshipsLocationGet(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode)
+    dump(response)
+} catch {
+    print(error)
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String** | Album id | 
+ **include** | [**[String]**](String.md) | Include related resources. Available relationships: location | [optional] 
+ **replaceMedia** | **String** | Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: location.children.subject | [optional] 
+ **shareCode** | **String** | Share code used as a bearer credential for the resource. | [optional] 
+
+### Return type
+
+[**AlbumsLocationSingleRelationshipDataDocument**](AlbumsLocationSingleRelationshipDataDocument.md)
+
+### Authorization
+
+[Authorization_Code_PKCE](../README.md#Authorization_Code_PKCE)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/vnd.api+json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **albumsIdRelationshipsOwnersGet**
 ```swift
     open class func albumsIdRelationshipsOwnersGet(id: String, include: [String]? = nil, pageCursor: String? = nil, shareCode: String? = nil) async throws -> AlbumsOwnersMultiRelationshipDataDocument
@@ -1116,7 +1169,7 @@ Creates an uploaded album. Album creation is not atomic with its artist assignme
 import OpenAPIClient
 
 let idempotencyKey = "idempotencyKey_example" // String | Unique idempotency key for safe retry of mutation requests. If the same caller repeats a key with the same method, path, query and payload, the original response is replayed. If the request differs, a 422 error is returned. (optional)
-let albumsCreateOperationPayload = AlbumsCreateOperation_Payload(data: AlbumsCreateOperation_Payload_Data(attributes: AlbumsCreateOperation_Payload_Data_Attributes(albumType: "albumType_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), relationships: AlbumsCreateOperation_Payload_Data_Relationships(artists: AlbumsCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumsCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: AlbumsCreateOperation_Payload_Data_Relationships_Genres(data: [AlbumsCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")])), type: "type_example")) // AlbumsCreateOperationPayload |  (optional)
+let albumsCreateOperationPayload = AlbumsCreateOperation_Payload(data: AlbumsCreateOperation_Payload_Data(attributes: AlbumsCreateOperation_Payload_Data_Attributes(albumType: "albumType_example", copyright: Copyright(text: "text_example"), explicit: false, explicitLyrics: false, releaseDate: Date(), title: "title_example", version: "version_example"), relationships: AlbumsCreateOperation_Payload_Data_Relationships(artists: AlbumsCreateOperation_Payload_Data_Relationships_Artists(data: [AlbumsCreateOperation_Payload_Data_Relationships_Artists_Data(id: "id_example", type: "type_example")]), genres: AlbumsCreateOperation_Payload_Data_Relationships_Genres(data: [AlbumsCreateOperation_Payload_Data_Relationships_Genres_Data(id: "id_example", type: "type_example")]), location: AlbumsCreateOperation_Payload_Data_Relationships_Location(data: AlbumsCreateOperation_Payload_Data_Relationships_Location_Data(id: "id_example", type: "type_example"))), type: "type_example")) // AlbumsCreateOperationPayload |  (optional)
 
 // Create single album.
 do {

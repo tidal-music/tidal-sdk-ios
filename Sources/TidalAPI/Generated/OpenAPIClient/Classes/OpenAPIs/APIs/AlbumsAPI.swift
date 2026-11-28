@@ -21,6 +21,7 @@ internal class AlbumsAPI {
         case coverart = "coverArt"
         case genres = "genres"
         case items = "items"
+        case location = "location"
         case owners = "owners"
         case priceconfig = "priceConfig"
         case providers = "providers"
@@ -48,7 +49,7 @@ internal class AlbumsAPI {
      - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. &#x60;196589525444&#x60;) (optional)
      - parameter filterId: (query) List of album IDs (e.g. &#x60;251380836&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. (optional)
-     - parameter include: (query) Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
+     - parameter include: (query) Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, location, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
@@ -80,7 +81,7 @@ internal class AlbumsAPI {
      - parameter filterBarcodeId: (query) List of barcode IDs (EAN-13 or UPC-A). NOTE: Supplying more than one barcode ID will currently only return one album per barcode ID. (e.g. &#x60;196589525444&#x60;) (optional)
      - parameter filterId: (query) List of album IDs (e.g. &#x60;251380836&#x60;) (optional)
      - parameter filterOwnersId: (query) User id. Also accepts &#x60;me&#x60;. (optional)
-     - parameter include: (query) Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
+     - parameter include: (query) Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, location, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter pageCursor: (query) Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
@@ -181,6 +182,7 @@ internal class AlbumsAPI {
         case coverart = "coverArt"
         case genres = "genres"
         case items = "items"
+        case location = "location"
         case owners = "owners"
         case priceconfig = "priceConfig"
         case providers = "providers"
@@ -196,7 +198,7 @@ internal class AlbumsAPI {
      
      - parameter id: (path) Album id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
+     - parameter include: (query) Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, location, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
@@ -224,7 +226,7 @@ internal class AlbumsAPI {
        - name: Client_Credentials
      - parameter id: (path) Album id 
      - parameter countryCode: (query) ISO 3166-1 alpha-2 country code (optional)
-     - parameter include: (query) Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
+     - parameter include: (query) Include related resources. Available relationships: albumStatistics, artists, coverArt, genres, items, location, owners, priceConfig, providers, replacement, shares, similarAlbums, suggestedCoverArts, usageRules (optional)
      - parameter includeLinkage: (query) Comma-separated direct relationships to return as linkage only, without related content. (optional)
      - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: artists.albums (optional)
      - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
@@ -801,6 +803,64 @@ internal class AlbumsAPI {
         let localVariableRequestBuilder: RequestBuilder<MutationResponseDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "PATCH", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
+    }
+
+    /**
+     Get location relationship (\"to-one\").
+     
+     - parameter id: (path) Album id 
+     - parameter include: (query) Include related resources. Available relationships: location (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: location.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: AlbumsLocationSingleRelationshipDataDocument
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    internal class func albumsIdRelationshipsLocationGet(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) async throws -> AlbumsLocationSingleRelationshipDataDocument {
+        do {
+            return try await albumsIdRelationshipsLocationGetWithRequestBuilder(id: id, include: include, replaceMedia: replaceMedia, shareCode: shareCode).execute().body
+        } catch let httpError as HTTPErrorResponse {
+            throw ErrorResponse.fromHTTPError(httpError)
+        }
+        // URLError and other errors propagate as-is
+    }
+
+    /**
+     Get location relationship (\"to-one\").
+     - GET /albums/{id}/relationships/location
+     - Retrieves location relationship.
+     - OAuth:
+       - type: oauth2
+       - name: Authorization_Code_PKCE
+     - parameter id: (path) Album id 
+     - parameter include: (query) Include related resources. Available relationships: location (optional)
+     - parameter replaceMedia: (query) Applies context-dependent replacements to media resource identifiers in selected relationships without changing stored data. Paths are comma-separated and follow &#x60;include&#x60; syntax. Example: location.children.subject (optional)
+     - parameter shareCode: (query) Share code used as a bearer credential for the resource. (optional)
+     - returns: RequestBuilder<AlbumsLocationSingleRelationshipDataDocument> 
+     */
+    internal class func albumsIdRelationshipsLocationGetWithRequestBuilder(id: String, include: [String]? = nil, replaceMedia: String? = nil, shareCode: String? = nil) -> RequestBuilder<AlbumsLocationSingleRelationshipDataDocument> {
+        var localVariablePath = "/albums/{id}/relationships/location"
+        let idPreEscape = "\(APIHelper.mapValueToPathItem(id))"
+        let idPostEscape = idPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{id}", with: idPostEscape, options: .literal, range: nil)
+        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "include": (wrappedValue: include?.encodeToJSON(), isExplode: true),
+            "replaceMedia": (wrappedValue: replaceMedia?.encodeToJSON(), isExplode: true),
+            "shareCode": (wrappedValue: shareCode?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<AlbumsLocationSingleRelationshipDataDocument>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: true)
     }
 
     /**

@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 # **resourceGrantInvitationsGet**
 ```swift
-    open class func resourceGrantInvitationsGet(filterCode: String? = nil, filterSelfAppliesTo: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantInvitationsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantInvitationsMultiResourceDataDocument
+    open class func resourceGrantInvitationsGet(filterCode: String? = nil, filterSelfAppliesTo: String? = nil, filterSubject: String? = nil, include: [String]? = nil, includeLinkage: [IncludeLinkage_resourceGrantInvitationsGet]? = nil, pageCursor: String? = nil, replaceMedia: String? = nil) async throws -> ResourceGrantInvitationsMultiResourceDataDocument
 ```
 
 Get multiple resourceGrantInvitations.
@@ -29,6 +29,7 @@ import OpenAPIClient
 
 let filterCode = "filterCode_example" // String | Invitation code (e.g. `42179b73-6f0c-405c-b926-2fdb45363c44`) (optional)
 let filterSelfAppliesTo = "filterSelfAppliesTo_example" // String | Album, track or folder owned by the caller. Selects undeleted, unexpired invitations on the resource or its ancestors; used-up ones are included. Each keeps its own subject. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then ID; at most 20 invitations per page. Also accepts `folders:me`. (optional)
+let filterSubject = "filterSubject_example" // String | Resource the invitations offer a role on. Also accepts `folders:me`. (optional)
 let include = ["inner_example"] // [String] | Include related resources. Available relationships: owners, previewGrant, subject (optional)
 let includeLinkage = ["includeLinkage_example"] // [String] | Comma-separated direct relationships to return as linkage only, without related content. (optional)
 let pageCursor = "pageCursor_example" // String | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified (optional)
@@ -36,7 +37,7 @@ let replaceMedia = "replaceMedia_example" // String | Applies context-dependent 
 
 // Get multiple resourceGrantInvitations.
 do {
-    let response = try await ResourceGrantInvitationsAPI.resourceGrantInvitationsGet(filterCode: filterCode, filterSelfAppliesTo: filterSelfAppliesTo, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
+    let response = try await ResourceGrantInvitationsAPI.resourceGrantInvitationsGet(filterCode: filterCode, filterSelfAppliesTo: filterSelfAppliesTo, filterSubject: filterSubject, include: include, includeLinkage: includeLinkage, pageCursor: pageCursor, replaceMedia: replaceMedia)
     dump(response)
 } catch {
     print(error)
@@ -49,6 +50,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **filterCode** | **String** | Invitation code (e.g. &#x60;42179b73-6f0c-405c-b926-2fdb45363c44&#x60;) | [optional] 
  **filterSelfAppliesTo** | **String** | Album, track or folder owned by the caller. Selects undeleted, unexpired invitations on the resource or its ancestors; used-up ones are included. Each keeps its own subject. Cannot be combined with other filters. Missing or non-owned resources and subjects without a live access node return no records. Ordered by expiry then ID; at most 20 invitations per page. Also accepts &#x60;folders:me&#x60;. | [optional] 
+ **filterSubject** | **String** | Resource the invitations offer a role on. Also accepts &#x60;folders:me&#x60;. | [optional] 
  **include** | [**[String]**](String.md) | Include related resources. Available relationships: owners, previewGrant, subject | [optional] 
  **includeLinkage** | [**[String]**](String.md) | Comma-separated direct relationships to return as linkage only, without related content. | [optional] 
  **pageCursor** | **String** | Server-generated cursor value pointing a certain page of items. Optional, targets first page if not specified | [optional] 
